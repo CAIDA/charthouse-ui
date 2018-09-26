@@ -14,12 +14,10 @@ Encore
      * Add 1 entry for each "page" of your app
      * (including one that's included on every page - e.g. "app")
      *
-     * Each entry will result in one JavaScript file (e.g. app.js)
-     * and one CSS file (e.g. app.css) if you JavaScript imports CSS.
+     * Each entry will result in one JavaScript file (e.g. explorer.js)
+     * and one CSS file (e.g. explorer.css) if you JavaScript imports CSS.
      */
-    .addEntry('app', './assets/js/app.js')
-    //.addEntry('page1', './assets/js/page1.js')
-    //.addEntry('page2', './assets/js/page2.js')
+    .addEntry('explorer', './assets/js/explorer.js')
 
     /*
      * FEATURE CONFIG
@@ -33,6 +31,9 @@ Encore
     .enableSourceMaps(!Encore.isProduction())
     // enables hashed filenames (e.g. app.abc123.css)
     .enableVersioning(Encore.isProduction())
+
+    // enables React support
+    .enableReactPreset()
 
     // enables Sass/SCSS support
     //.enableSassLoader()

@@ -5,10 +5,10 @@
  * (and its CSS file) in your base layout (base.html.twig).
  */
 
-// any CSS you require will output into a single css file (app.css in this case)
-require('../css/app.css');
+// any CSS you require will output into a single css file (explorer.css in this case)
+require('../css/explorer.css');
 
 // Need jQuery? Install it with "yarn add jquery", then uncomment to require it.
 // var $ = require('jquery');
 
-console.log('Hello Webpack Encore! Edit me in assets/js/app.js');
+console.log('Hello Webpack Encore! Edit me in assets/js/explorer.js');
