@@ -19,6 +19,12 @@ Encore
      */
     .addEntry('explorer', './assets/js/explorer.js')
 
+    // shim to webpackify the horribly old jquery BBQ plugin
+    .addLoader({
+        test: require.resolve('jquery2-bbq'),
+        loader: 'exports-loader?jQuery.bbq!imports-loader?jQuery=jquery,this=>window'
+    })
+
     /*
      * FEATURE CONFIG
      *

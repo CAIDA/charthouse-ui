@@ -15,7 +15,7 @@ class CharthouseController extends AbstractController
      *
      * @return Response
      */
-    public function explorerUi()
+    public function explorerUi(): Response
     {
         return $this->render(
             'explorer.html.twig'

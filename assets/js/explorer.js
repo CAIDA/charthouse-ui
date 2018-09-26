@@ -4,6 +4,7 @@ import '../css/Explorer/explorer.css';
 import '../css/Explorer/viz-plugins.css';
 
 // JS deps
-import StaticCfg from './Explorer/static-config';
+import Explorer from './Explorer/explorer';
+import React from 'react';
 
-console.log("Config: " + StaticCfg.apiUrl);
+React.render(<Explorer/>, document.getElementById('explorer-main'));
