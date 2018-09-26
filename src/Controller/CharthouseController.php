@@ -18,7 +18,7 @@ class CharthouseController extends AbstractController
     public function explorerUi()
     {
         return $this->render(
-            'base.html.twig'
+            'explorer.html.twig'
         );
     }
 }

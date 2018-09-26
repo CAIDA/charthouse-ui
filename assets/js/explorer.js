@@ -1,14 +1,9 @@
-/*
- * Welcome to your app's main JavaScript file!
- *
- * We recommend including the built version of this JavaScript file
- * (and its CSS file) in your base layout (base.html.twig).
- */
+// CSS dependencies
+import '../css/base.css';
+import '../css/Explorer/explorer.css';
+import '../css/Explorer/viz-plugins.css';
 
-// any CSS you require will output into a single css file (explorer.css in this case)
-require('../css/explorer.css');
+// JS deps
+import StaticCfg from './Explorer/static-config';
 
-// Need jQuery? Install it with "yarn add jquery", then uncomment to require it.
-// var $ = require('jquery');
-
-console.log('Hello Webpack Encore! Edit me in assets/js/explorer.js');
+console.log("Config: " + StaticCfg.apiUrl);
