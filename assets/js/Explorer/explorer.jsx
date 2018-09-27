@@ -4,6 +4,8 @@ import config from './config/config';
 import StaticCfg from './config/static';
 import CharthouseTime from './utils/time';
 import Expression from './utils/expression';
+import ControlPanel from './components/control-panel';
+import Visualizer from './components/visualizer';
 
 const Explorer = React.createClass({
 
@@ -108,7 +110,6 @@ const Explorer = React.createClass({
 
     render: function () {
         return <div className="container-fluid">
-            /*
             <div
                 className={this.state.showController ? 'col col-sm-4 col-lg-3' : ''}
                 style={this.state.showController ? {} : {display: 'none'}}
@@ -132,7 +133,6 @@ const Explorer = React.createClass({
                     plugin={this.state.plugin}
                 />
             </div>
-            */
         </div>
     }
 });

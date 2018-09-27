@@ -25,6 +25,8 @@ Encore
         loader: 'exports-loader?jQuery.bbq!imports-loader?jQuery=jquery,this=>window'
     })
 
+    // TODO: add shim for jstree (provide plugin?)
+
     /*
      * FEATURE CONFIG
      *
@@ -51,4 +53,11 @@ Encore
     //.autoProvidejQuery()
 ;
 
-module.exports = Encore.getWebpackConfig();
+let webpackConfig = Encore.getWebpackConfig();
+
+// hax to get daterangepicker to work correctly
+webpackConfig.resolve.alias = {
+    'jquery': require.resolve('jquery')
+};
+
+module.exports = webpackConfig;
