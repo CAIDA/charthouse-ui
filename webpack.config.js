@@ -17,7 +17,7 @@ Encore
      * Each entry will result in one JavaScript file (e.g. explorer.js)
      * and one CSS file (e.g. explorer.css) if you JavaScript imports CSS.
      */
-    .addEntry('explorer', './assets/js/explorer.js')
+    .addEntry('explorer', ['babel-polyfill', './assets/js/explorer.js'])
 
     // shim to webpackify the horribly old jquery BBQ plugin
     .addLoader({
