@@ -1,3 +1,5 @@
+import $ from 'jquery';
+
 var ExpressionObj = function (json) {
     this.json = null;
     this.setJson(json);

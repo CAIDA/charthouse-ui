@@ -31,6 +31,14 @@ Encore
         loader: 'imports-loader?jQuery=jquery'
     })
 
+    // bootstrap-loader config
+    //.addLoader({test: /\.scss$/, loaders: ['style', 'css', 'postcss', 'sass']})
+    //.addLoader({test: /\.(woff2?|ttf|eot|svg)$/, loader: 'url?limit=10000'})
+    .addLoader({
+        test: /bootstrap\/js\//,
+        loader: 'imports-loader?jQuery=jquery'
+    })
+
     /*
      * FEATURE CONFIG
      *
