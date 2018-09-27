@@ -1,10 +1,14 @@
 import React from 'react';
+
 import config from '../config/config';
 import Expression from '../utils/expression';
 import CharthouseTime from '../utils/time';
 import TimeRangeControl from './time-range-control';
 import PluginSelector from './plugin-selector';
 import ExpressionComposer from './expression-composer';
+
+import hicubeLogo from '../../../images/logos/hicube-full.png';
+import caidaLogo from '../../../images/logos/caida_logo_small.png';
 
 const ControlPanel = React.createClass({
 
@@ -71,7 +75,7 @@ const ControlPanel = React.createClass({
             <div className="panel panel-default controller-panel">
                 <div className="panel-heading text-center">
                     <img
-                        src={config.getParam('staticFilesPath') + '/images/logos/hicube-full.png'}
+                        src={hicubeLogo}
                         style={{
                             maxWidth: "100%",
                             maxHeight: "80px"
@@ -137,7 +141,7 @@ const ControlPanel = React.createClass({
                     }}>
                         <a href="https://www.caida.org">
                             <img
-                                src={config.getParam('staticFilesPath') + '/images/logos/caida_logo_small.png'}
+                                src={caidaLogo}
                                 style={{
                                     width: "75px"
                                 }}

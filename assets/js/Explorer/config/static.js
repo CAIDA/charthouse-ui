@@ -1,7 +1,5 @@
 export default {
 
-    staticFilesPath: '/bundles/caidacharthousefrontend/',
-
     api: {
         url: 'https://api.hicube.caida.org/test',
         timeout: 1000
