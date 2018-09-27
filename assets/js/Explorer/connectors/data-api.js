@@ -1,19 +1,17 @@
+import $ from 'jquery';
+
 import config from '../config/config';
 
 var CharthouseApiConnector = function () {
 
     var apiCfg = config.getParam('api');
 
-    this.apiUrl = apiCfg.url + '/data';
+    this.apiUrl = apiCfg.url;
     this.timeout = (apiCfg.timeout || 20) * 1000;
 
-    this.METRICS_QUERY_LIST = '/meta/hierarchical/list';
-    this.METRICS_QUERY_SEARCH = '/meta/hierarchical/find';
-    this.FUNCTIONS_QUERY = '/meta/functions';
-    this.DATA_QUERY = '/ts'; //'/render/';
-
-    // Use JSONP to work-around same origin policy, if CORS is disabled
-    this.USE_JSONP = false;
+    this.METRICS_QUERY_LIST = '/ts/list';
+    this.FUNCTIONS_QUERY = '/expression/functions';
+    this.DATA_QUERY = '/ts/query';
 };
 
 CharthouseApiConnector.prototype._getJson = function (url, params, headerParams, success, error) {
@@ -31,17 +29,17 @@ CharthouseApiConnector.prototype._getJson = function (url, params, headerParams,
         urlSize += 1;
         urlSize += params[p].toString().length;
     }
-
+    var xThis = this;
     return $.ajax({
         url: url,
         data: params,
         headers: headerParams,
         type: urlSize > MAX_GET_CHARS ? 'POST' : 'GET',
-        dataType: this.USE_JSONP ? 'jsonp' : 'json',
+        dataType: 'json',
         xhrFields: {
-            withCredentials: true
+            withCredentials: false
         },
-        timeout: this.timeout,
+        timeout: xThis.timeout,
         success: function (json, textStatus, xOptions) {
             if (json.hasOwnProperty('error') && json.error) {
                 error(json.error);

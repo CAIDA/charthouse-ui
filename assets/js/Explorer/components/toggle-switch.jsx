@@ -1,4 +1,5 @@
 import React from 'react';
+import $ from 'jquery';
 // TODO: jq-toggles
 
 const ToggleSwitch = React.createClass({

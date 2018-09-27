@@ -3,7 +3,7 @@ import $ from 'jquery';
 import 'jstree';
 
 // TODO: Dialog
-// TODO: ApiConnector
+import DataApi from '../connectors/data-api';
 import Expression from '../utils/expression';
 import HeirarchyExplorer from './hierarchy-explorer';
 // TODO: FunctionBrowser
@@ -179,7 +179,7 @@ const ExpressionTree = React.createClass({
     // Private methods
     _loadFunctionSpecs: function () {
         var rThis = this;
-        var apiConnector = new ApiConnector();
+        var apiConnector = new DataApi();
 
         apiConnector.getFunctionSpecs(
             function (json) {
