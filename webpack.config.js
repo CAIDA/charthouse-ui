@@ -25,7 +25,11 @@ Encore
         loader: 'exports-loader?jQuery.bbq!imports-loader?jQuery=jquery,this=>window'
     })
 
-    // TODO: add shim for jstree (provide plugin?)
+    // shim for jstree to inject jquery
+    .addLoader({
+        test: require.resolve('jstree'),
+        loader: 'imports-loader?jQuery=jquery'
+    })
 
     /*
      * FEATURE CONFIG
