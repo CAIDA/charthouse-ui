@@ -1,5 +1,7 @@
 import moment from 'moment';
 
+// TODO: figure out how to fix the moment warning
+
 var CharthouseTime = function (time) {
 
     this.isRelative = false;
