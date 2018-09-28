@@ -9,32 +9,23 @@ var CharthouseApiConnector = function () {
     this.apiUrl = apiCfg.url;
     this.timeout = (apiCfg.timeout || 20) * 1000;
 
-    this.METRICS_QUERY_LIST = '/ts/list';
-    this.FUNCTIONS_QUERY = '/expression/functions';
-    this.DATA_QUERY = '/ts/query';
+    this.METRICS_QUERY_LIST = '/ts/list/';
+    this.FUNCTIONS_QUERY = '/expression/functions/';
+    this.DATA_QUERY = '/ts/query/';
 };
 
-CharthouseApiConnector.prototype._getJson = function (url, params, headerParams, success, error) {
-
-    var MAX_GET_CHARS = 1024; // Requests above this size will use POST
-
+CharthouseApiConnector.prototype._getJson = function (httpMethod, url, params, headerParams, success, error) {
     headerParams = headerParams || {};
 
-    error = error || function () {
-    }; // Error function optional
+    error = error || function () {}; // Error function optional
 
-    var urlSize = url.length + 1;
-    for (var p in params) {
-        urlSize += p.toString().length;
-        urlSize += 1;
-        urlSize += params[p].toString().length;
-    }
     var xThis = this;
     return $.ajax({
         url: url,
-        data: params,
+        data: httpMethod === 'POST' ? JSON.stringify(params) : params,
         headers: headerParams,
-        type: urlSize > MAX_GET_CHARS ? 'POST' : 'GET',
+        contentType: httpMethod === 'POST' ? 'application/json; charset=utf-8' : 'text/plain',
+        type: httpMethod,
         dataType: 'json',
         xhrFields: {
             withCredentials: false
@@ -42,25 +33,17 @@ CharthouseApiConnector.prototype._getJson = function (url, params, headerParams,
         timeout: xThis.timeout,
         success: function (json, textStatus, xOptions) {
             if (json.hasOwnProperty('error') && json.error) {
-                error(json.error);
+                // shouldn't happen. errors should return HTTP error codes
+                error(json.error + ' (Please contact hicube-info@caida to report this error)');
                 return;
             }
-
-            var fullGetUrl = url
-                + (Object.keys(params).length ? '?' : '')
-                + Object.keys(params)
-                    .map(function (p) {
-                        return p + '=' + params[p];
-                    })
-                    .join('&');
-
-            json.jsonRequestUrl = fullGetUrl;                    // Tag url in the data
             json.jsonRequestSize = xOptions.responseText.length; // Tag json size (bytes) in data
             success(json);
         },
-        error: function (xOptions, textStatus, errorThrown) {
-            if (textStatus == "abort") return;  // Call intentionally aborted
-            error(textStatus + (errorThrown ? ' (' + errorThrown + ')' : ''));
+        error: function (jqXHR, textStatus, errorThrown) {
+            var json = JSON.parse(jqXHR.responseText);
+            if (textStatus === "abort") return;  // Call intentionally aborted
+            error((errorThrown ? errorThrown + ': ' : '') + json.error);
         }
     });
 };
@@ -73,10 +56,10 @@ CharthouseApiConnector.prototype.getHierarchicalMetaData = function (path, succe
     var unlimit = config.getParam('unlimit') != null;
 
     return this._getJson(
-        this.apiUrl + this.METRICS_QUERY_LIST + '/json',
+        'GET',
+        this.apiUrl + this.METRICS_QUERY_LIST,
         $.extend({
-                path: path,
-                brief: true
+                path: path
             }, disableCache ? {noCache: true} : {}
             , unlimit ? {unlimit: true} : {}),
         disableCache ? {'Cache-Control': 'no-cache'} : {},
@@ -87,7 +70,8 @@ CharthouseApiConnector.prototype.getHierarchicalMetaData = function (path, succe
 
 CharthouseApiConnector.prototype.getFunctionSpecs = function (success, error) {
     return this._getJson(
-        this.apiUrl + this.FUNCTIONS_QUERY + '/json',
+        'GET',
+        this.apiUrl + this.FUNCTIONS_QUERY,
         {},
         {},
         success,
@@ -107,7 +91,8 @@ CharthouseApiConnector.prototype.getTsData = function (params, success, error) {
     var unlimit = config.getParam('unlimit') != null;
 
     return this._getJson(
-        this.apiUrl + this.DATA_QUERY + '/json',
+        'POST',
+        this.apiUrl + this.DATA_QUERY,
         $.extend(
             {
                 from: params.from,
@@ -139,16 +124,6 @@ CharthouseApiConnector.prototype.getTsData = function (params, success, error) {
             success(json);
         }
     }
-};
-
-CharthouseApiConnector.prototype.getSpecialTsData = function (specialUrl, success, error) {
-    return this._getJson(
-        this.apiUrl + specialUrl,
-        {},
-        {},
-        success,
-        error
-    );
 };
 
 export default CharthouseApiConnector;

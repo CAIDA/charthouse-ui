@@ -11,7 +11,6 @@ const Explorer = React.createClass({
 
     const: {
         // Module Constants
-        DEFAULT_EXPRESSION: null,
         DEFAULT_QUERYTIME: [
             new CharthouseTime('-1d'),
             new CharthouseTime()    // Now
@@ -20,13 +19,7 @@ const Explorer = React.createClass({
     },
 
     getInitialState: function () {
-        var expression = new Expression();
-        try {
-            expression.setSerialJson(config.getParam('expression') || this.const.DEFAULT_EXPRESSION);
-        } catch (e) {
-            expression.setJson(null);
-        }
-
+        var expression = new Expression(config.getParam('expression'));
         return {
             expression: expression,
             from: config.getParam("from")

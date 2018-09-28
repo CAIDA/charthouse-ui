@@ -1,8 +1,10 @@
 import React from 'react';
 import _ from 'underscore';
+import $ from 'jquery';
+import 'jstree';
 
-// TODO ApiConnector
-// TODO jstree
+import '../utils/proto-mods';
+import DataApi from '../connectors/data-api';
 
 const HeirarchyExplorer = React.createClass({
 
@@ -34,7 +36,7 @@ const HeirarchyExplorer = React.createClass({
 
     componentDidMount: function () {
         var rThis = this;
-        var apiConnector = new ApiConnector();
+        var apiConnector = new DataApi();
 
         // Wrapped jQuery plugin
         this.$tree = $(this.refs.treeExplorer.getDOMNode());
