@@ -1,3 +1,4 @@
+import $ from 'jquery';
 import bbq from 'jquery2-bbq';
 
 import tools from '../utils/tools';
