@@ -1,5 +1,7 @@
 import $ from 'jquery';
 
+// TODO: ensure that expressions are always stored as objects not simple paths
+
 var ExpressionObj = function (json) {
     this.json = null;
     this.setJson(json);
@@ -26,8 +28,10 @@ ExpressionObj.prototype.getSerialJson = function () {
 
     if (typeof this.json == "string") return this.json; // It's already a single string
 
+    /*
     if (typeof this.json == "object" && this.json.type == "path")
         return this.json.path;                          // Return single paths as string
+        */
 
     return JSON.stringify(this.json).replace(/\\\\/g, '\\'); // Don't escape backslashes
 };
