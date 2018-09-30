@@ -41,6 +41,7 @@ CharthouseApiConnector.prototype._getJson = function (httpMethod, url, params, h
             success(json);
         },
         error: function (jqXHR, textStatus, errorThrown) {
+            // TODO: correctly handle non-JSON responses
             var json = JSON.parse(jqXHR.responseText);
             if (textStatus === "abort") return;  // Call intentionally aborted
             error((errorThrown ? errorThrown + ': ' : '') + json.error);
