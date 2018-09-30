@@ -1,13 +1,14 @@
 import React from 'react';
 import $ from 'jquery';
 import 'jstree';
+import 'jstree/dist/themes/default/style.css';
+import 'font-awesome/css/font-awesome.css';
 
 // TODO: Dialog
 import DataApi from '../connectors/data-api';
 import Expression from '../utils/expression';
 import HeirarchyExplorer from './hierarchy-explorer';
 // TODO: FunctionBrowser
-// TODO: jstree
 
 const ExpressionTree = React.createClass({
 
@@ -539,7 +540,7 @@ const ExpressionTree = React.createClass({
                     React.unmountComponentAtNode($anchor[0]);
                 }}
             >
-                <MetricExplorer
+                <HeirarchyExplorer
                     onLeafSelected={
                         function (id) {
                             rModal.close();
@@ -651,7 +652,7 @@ const ExpressionTree = React.createClass({
                             React.unmountComponentAtNode($anchor[0]);
                         }}
                     >
-                        <MetricExplorer
+                        <HeirarchyExplorer
                             initExpandPath={$node.data.path}
                             onLeafSelected={
                                 function (id) {

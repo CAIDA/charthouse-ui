@@ -1,8 +1,9 @@
 import React from 'react';
 import moment from 'moment';
 import $ from 'jquery';
-//import '../../../libs/daterangepicker/js/daterangepicker.custom';
 import 'bootstrap-daterangepicker';
+import 'bootstrap-daterangepicker/daterangepicker.css'
+// TODO: figure out how to re-apply vasco's custom mods
 
 import CharthouseTime from '../utils/time';
 
