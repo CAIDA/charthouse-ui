@@ -1,0 +1,324 @@
+import React from 'react';
+import $ from 'jquery';
+import 'jstree';
+import 'jstree/dist/themes/default/style.css';
+
+import '../utils/proto-mods';
+
+const FunctionTree = React.createClass({
+    propTypes: {
+        functionSpecs: React.PropTypes.object.isRequired,
+        filterBy: React.PropTypes.string,
+        onFunctionClick: React.PropTypes.func,
+        onFunctionHover: React.PropTypes.func,
+        onFunctionDehover: React.PropTypes.func
+    },
+
+    getDefaultProps: function () {
+        return {
+            filterBy: null,
+            onFunctionClick: function (funcId) {
+            },
+            onFunctionHover: function (funcId) {
+            },
+            onFunctionDehover: function (funcId) {
+            }
+        };
+    },
+
+    componentDidMount: function () {
+        var rThis = this;
+
+        // Wrapped jQuery plugin
+        this.$tree = $(this.refs.functionTree.getDOMNode());
+
+        this.$tree.jstree({
+            "core": {
+                "check_callback": true,
+                themes: {
+                    //stripes: true
+                    variant: "small",
+                    dots: false
+                },
+                data: specs2tree(rThis.props.functionSpecs)
+            },
+            types: {
+                function: {
+                    icon: "glyphicon glyphicon-cog"
+                },
+                tagGroup: {
+                    icon: "fa fa-folder-open"
+                }
+            },
+            search: {
+                show_only_matches: true,
+                fuzzy: false,
+                case_sensitive: false,
+                search_leaves_only: true,
+                close_opened_onclear: true,
+                search_callback: function (str, node) {
+                    // Matches name or id
+                    return node.data
+                        && (node.data.id + '|' + node.data.name).toLowerCase().indexOf(str.toLowerCase()) != -1;
+                }
+            },
+            plugins: ["types", "search"]
+        });
+
+        this.$tree.delegate(".jstree-open>a", "click.jstree", function (e) {
+            $.jstree.reference(this).close_node(this, false, false);
+        })
+            .delegate(".jstree-closed>a", "click.jstree", function (e) {
+                $.jstree.reference(this).open_node(this, false, false);
+            });
+
+        // Node/leaf selected
+        this.$tree.bind("select_node.jstree", function (e, data) {
+            if (data.node.type != "function") return; // Ignore tag folder selection
+            rThis.props.onFunctionClick(data.node.data.id);
+        });
+
+        // Node/leaf hover
+        this.$tree.bind("hover_node.jstree", function (e, data) {
+            if (data.node.type != "function") return; // Ignore folder hover
+            rThis.props.onFunctionHover(data.node.data.id);
+        });
+
+        // Node/leaf hover
+        this.$tree.bind("dehover_node.jstree", function (e, data) {
+            if (data.node.type != "function") return; // Ignore folder dehover
+            rThis.props.onFunctionDehover(data.node.data.id);
+        });
+
+        if (this.props.filterBy) {
+            this.$tree.on('ready.jstree', function (e, data) {
+                data.instance.search(rThis.props.filterBy);
+            });
+        }
+
+        //
+
+        function specs2tree(specs) {
+
+            var byTag = indexByTag(specs);
+
+            return Object.keys(byTag).sort().map(function (tag) {
+                return {
+                    text: tag,
+                    type: 'tagGroup',
+                    children: byTag[tag].map(func2tree)
+                }
+            });
+
+            //
+
+            function func2tree(func) {
+                return {
+                    text: specs[func].name,
+                    data: $.extend({id: func}, specs[func]),
+                    type: 'function',
+                    children: false
+                };
+            }
+        }
+
+        function indexByTag(specs) {
+
+            var byTag = {};
+
+            Object.keys(specs)
+                .sort(function (a, b) {
+                    return specs[a].name.alphanumCompare(specs[b].name);
+                })
+                .forEach(function (func) {
+                    specs[func].tags.forEach(function (tag) {
+                        if (!byTag.hasOwnProperty(tag)) {
+                            byTag[tag] = [];
+                        }
+                        byTag[tag].push(func);
+                    });
+                });
+
+            return byTag;
+        }
+    },
+
+    componentDidUpdate: function (oldProps) {
+        if (this.props.filterBy != oldProps.filterBy) {
+            this.$tree.jstree(true).search(this.props.filterBy || '');
+        }
+    },
+
+    componentWillUnmount: function () {
+        // Destroy jQuery plugin
+        var $elem = $(this.refs.functionTree.getDOMNode());
+        $.removeData($elem.get(0));
+    },
+
+    render: function () {
+        return <div ref="functionTree"/>;
+    },
+
+    getFirstVisibleFunction: function () {
+        var $tree = this.$tree;
+        var topLeaf;
+        $tree.jstree('get_node', '#').children_d.some(function (c) {
+            var node = $tree.jstree('get_node', c);
+            if (node.type == 'function' && $('#' + c).is(':visible')) {
+                topLeaf = node.data.id;
+                return true; // Break out of loop
+            }
+        });
+        return topLeaf;
+    }
+});
+
+const FunctionInfo = React.createClass({
+
+    propTypes: {
+        funcSpecs: React.PropTypes.object
+    },
+
+    getDefaultProps: function () {
+        return {
+            funcSpecs: null
+        };
+    },
+
+    render: function () {
+        var func = this.props.funcSpecs;
+
+        // Empty
+        if (!func) return <div/>;
+
+        var hasMultiple = func.args.some(function (arg) {
+            return arg.multiple;
+        });
+
+        return <div>
+            <h3>{func.name}</h3>
+            <p>({func.id})</p>
+            <small style={{marginLeft: 10}}>{func.desc}</small>
+            <h4>Arguments (
+                {func.args.length}
+                {hasMultiple ? ' [*]' : ''}
+                )
+                {func.args.length ? ':' : ''}
+            </h4>
+            {func.args.map(function (arg) {
+                return <div key={arg.name}>
+                    {arg.multiple ? '* ' : ''}
+                    <b>{arg.name}</b> ({arg.type})
+                    {arg.mandatory ? '' : ' [optional]'}
+                    <br/>
+                    <small className="small" style={{marginLeft: 10}}>
+                        {arg.desc}
+                    </small>
+                </div>;
+            })}
+        </div>;
+    }
+});
+
+
+// Main component
+const FunctionBrowser = React.createClass({
+
+    propTypes: {
+        functionSpecs: React.PropTypes.object.isRequired,
+        initSearch: React.PropTypes.string,
+        initHighlight: React.PropTypes.string,
+        onFunctionSelected: React.PropTypes.func
+    },
+
+    getDefaultProps: function () {
+        return {
+            initSearch: '',
+            initHighlight: null,
+            onFunctionSelected: function (funcId) {
+            }
+        };
+    },
+
+    getInitialState: function () {
+        return {
+            search: this.props.initSearch,
+            highlightFunction: this.props.initHighlight
+        };
+    },
+
+    componentDidMount: function () {
+        // Allow time for dom to be built, say on an animated modal, before setting focus on the search bar
+        var rThis = this;
+        setTimeout(function () {
+            rThis.refs.SearchBox.getDOMNode().focus();
+        }, 500);
+    },
+
+    _handleSearchChange: function (event) {
+        this.setState({search: event.target.value});
+    },
+
+    _handleSearchKeyPress: function (event) {
+        if (event.key == 'Enter' && this.state.search.length) {
+            // Auto-select first match on enter
+            var funcId = this.refs.FunctionTree.getFirstVisibleFunction();
+            if (funcId) this.props.onFunctionSelected(funcId);
+        }
+    },
+
+    render: function () {
+        var rThis = this;
+
+        function highlight(funcId) {
+            if (rThis.isMounted())
+                rThis.setState({highlightFunction: funcId});
+        }
+
+        return <div
+            style={{fontSize: 14}}
+        >
+            <input type="text"
+                   ref="SearchBox"
+                   className="form-control input-sm"
+                   placeholder="Search"
+                   style={{
+                       'marginRight': 0,
+                       'marginLeft': 'auto',
+                       'width': 150,
+                       'height': 25
+                   }}
+                   value={this.state.search}
+                   onChange={this._handleSearchChange}
+                   onKeyDown={this._handleSearchKeyPress}
+            />
+            <div className="row">
+                <div className="col-sm-5">
+                    <FunctionTree
+                        ref="FunctionTree"
+                        functionSpecs={this.props.functionSpecs}
+                        filterBy={this.state.search || null}
+                        onFunctionClick={this.props.onFunctionSelected}
+                        onFunctionHover={highlight}
+                        onFunctionDehover={function () {
+                            highlight(null);
+                        }}
+                    />
+                </div>
+                <div className="col-sm-7">
+                    <FunctionInfo
+                        funcSpecs={this.state.highlightFunction
+                            ? $.extend(
+                                {id: this.state.highlightFunction},
+                                this.props.functionSpecs[this.state.highlightFunction]
+                            )
+                            : null
+                        }
+                    />
+                </div>
+            </div>
+        </div>;
+    }
+});
+
+export default FunctionBrowser;

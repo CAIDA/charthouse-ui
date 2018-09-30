@@ -8,7 +8,7 @@ import Dialog from './dialog';
 import DataApi from '../connectors/data-api';
 import Expression from '../utils/expression';
 import HeirarchyExplorer from './hierarchy-explorer';
-// TODO: FunctionBrowser
+import FunctionBrowser from './function-browser';
 
 const ExpressionTree = React.createClass({
 
@@ -184,6 +184,8 @@ const ExpressionTree = React.createClass({
 
         apiConnector.getFunctionSpecs(
             function (json) {
+                // TODO: update to use new function specs API (significant changes)
+                // TODO: can the function browser load the specs itself?
                 rThis.setState({functionSpecs: json.data});
 
                 // Refresh function descriptions already in tree
