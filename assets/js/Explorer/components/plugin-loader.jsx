@@ -533,7 +533,7 @@ const VizPlugin = React.createClass({
                 if (!rThis.props.configMan.globalCfg) {
                     var dataTitle = chData.summary().commonPrefix || (rThis.props.title.length < 40 ? rThis.props.title.trim() : '');
                     // TODO: figure out if there is a better way to do this
-                    document.title = [dataTitle, 'Hi<sup>3</sup>']
+                    document.title = [dataTitle, 'Hi&sup3;']
                         .filter(function (s) {
                             return s.length;
                         })
