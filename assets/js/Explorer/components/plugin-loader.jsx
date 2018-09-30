@@ -3,7 +3,7 @@ import React from 'react';
 import 'font-awesome/css/font-awesome.css';
 
 import Toggle from './toggle-switch';
-// TODO: Dialog
+import Dialog from './dialog';
 // TODO: TimeLogger
 // TODO: PermalinkForm
 import CharthouseDataSet from '../utils/dataset';

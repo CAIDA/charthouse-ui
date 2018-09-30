@@ -4,7 +4,7 @@ import 'jstree';
 import 'jstree/dist/themes/default/style.css';
 import 'font-awesome/css/font-awesome.css';
 
-// TODO: Dialog
+import Dialog from './dialog';
 import DataApi from '../connectors/data-api';
 import Expression from '../utils/expression';
 import HeirarchyExplorer from './hierarchy-explorer';
