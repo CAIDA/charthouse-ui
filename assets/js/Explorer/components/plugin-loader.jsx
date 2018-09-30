@@ -73,6 +73,7 @@ const PluginContent = React.createClass({
     // Private methods
     _loadPluginModule: function () {
         var rThis = this;
+        // TODO: figure out how to get rid of the webpack warning
         require([this.props.pluginCfg.jsFile], function (Plugin) {
             if (!rThis.isUnmounted) {
                 rThis.setState({ReactPlugin: Plugin});
@@ -531,7 +532,8 @@ const VizPlugin = React.createClass({
                 // config...
                 if (!rThis.props.configMan.globalCfg) {
                     var dataTitle = chData.summary().commonPrefix || (rThis.props.title.length < 40 ? rThis.props.title.trim() : '');
-                    document.title = [dataTitle, 'Explorer', 'Charthouse']
+                    // TODO: figure out if there is a better way to do this
+                    document.title = [dataTitle, 'Hi<sup>3</sup>']
                         .filter(function (s) {
                             return s.length;
                         })
