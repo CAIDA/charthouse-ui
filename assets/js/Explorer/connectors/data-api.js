@@ -111,13 +111,15 @@ CharthouseApiConnector.prototype.getTsData = function (params, success, error) {
     );
 
     function checkedSuccess(json) {
+        // TODO handle parsing of from/until datetime values (use moment?)
         if (Object.keys(json.data.series || []).every(function (ser) {
-            var series = json.data.series[ser];
-            var isTimeConsistent = (series.until - series.from) / series.step == series.values.length;
+            let series = json.data.series[ser];
+            let expectedVals = (series.until - series.from) / series.step;
+            let isTimeConsistent = expectedVals === series.values.length;
             if (!isTimeConsistent) {
-                error("The " + series.values.length + " values in series " + (series.name || ser)
+                error("The number of values in series " + (series.name || ser)
                     + " are inconsistent with the specified time range (" + series.from + " - " + series.until + ")"
-                    + " and step of " + series.step + "s.");
+                    + " and step of " + series.step + "s. Expected " + expectedVals + " but got " + series.values.length + ".");
             }
             return isTimeConsistent;
         })
