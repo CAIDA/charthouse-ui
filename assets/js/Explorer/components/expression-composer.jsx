@@ -1,4 +1,5 @@
 import React from 'react/addons';
+import 'font-awesome/css/font-awesome.css';
 
 import Expression from '../utils/expression';
 import HeirarchyExplorer from './hierarchy-explorer';

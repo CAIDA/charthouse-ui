@@ -2,7 +2,8 @@ import React from 'react';
 import _ from 'underscore';
 import $ from 'jquery';
 import 'jstree';
-// TODO: jstree css?
+import 'jstree/dist/themes/default/style.css';
+import 'font-awesome/css/font-awesome.css';
 
 import '../utils/proto-mods';
 import DataApi from '../connectors/data-api';

@@ -1,5 +1,6 @@
 import React from 'react';
 // TODO: jquery-controls
+import 'font-awesome/css/font-awesome.css';
 
 import Toggle from './toggle-switch';
 // TODO: Dialog

@@ -1,6 +1,7 @@
 import React from 'react';
 import RBootstrap from 'react-bootstrap';
 import $ from 'jquery';
+import 'font-awesome/css/font-awesome.css';
 
 import ExpressionTree from './expression-tree';
 import Expression from '../utils/expression';
