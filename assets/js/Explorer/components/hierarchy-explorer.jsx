@@ -2,6 +2,7 @@ import React from 'react';
 import _ from 'underscore';
 import $ from 'jquery';
 import 'jstree';
+// TODO: jstree css?
 
 import '../utils/proto-mods';
 import DataApi from '../connectors/data-api';
@@ -165,9 +166,9 @@ const HeirarchyExplorer = React.createClass({
             }).length > 1) {
                 newNodes.push(getChildStruct({
                     path: '*',
-                    name: '✲',
+                    human_name: '✲',
                     leaf: true,
-                    pathCount: _.reduce(treeData, function (prev, cur) {
+                    path_count: _.reduce(treeData, function (prev, cur) {
                             return prev + (cur.leaf ? cur.path_ount : 0);
                         },
                         0
@@ -190,9 +191,9 @@ const HeirarchyExplorer = React.createClass({
             }).length > 1) {
                 newNodes.push(getChildStruct({
                     path: '*',
-                    name: '✲',
+                    human_name: '✲',
                     leaf: false
-                    //pathCount: treeData.filter(function(child) { return !child.leaf }).length
+                    //path_count: treeData.filter(function(child) { return !child.leaf }).length
                 }));
             }
 
