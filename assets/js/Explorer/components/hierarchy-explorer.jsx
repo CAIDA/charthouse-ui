@@ -139,8 +139,8 @@ const HeirarchyExplorer = React.createClass({
             var getChildStruct = function (child) {
                 return {
                     data: (target.length ? target + '.' : '') + child.path,
-                    text: child.name + ((child.leaf && child.hasOwnProperty('pathCount') && child.pathCount > 1)
-                            ? '<span class="badge" title="Generates total of ' + child.pathCount + ' series">' + child.pathCount + '</span>'
+                    text: child.human_name + ((child.leaf && child.hasOwnProperty('path_ount') && child.path_ount > 1)
+                            ? '<span class="badge" title="Generates total of ' + child.path_count + ' series">' + child.path_ount + '</span>'
                             : ''
                     ),
                     type: ((child.leaf ? 'leaf' : 'branch') + (child.path === '*' ? 'All' : '')),
@@ -148,7 +148,7 @@ const HeirarchyExplorer = React.createClass({
                 };
             };
 
-            treeData.alphanumSort(false, 'name')
+            treeData.alphanumSort(false, 'human_name')
                 .forEach(function (node) {
                     node.path = node.path.replace(/([\?\*])/g, "\\$1");
                 });
@@ -159,7 +159,7 @@ const HeirarchyExplorer = React.createClass({
                 return target.indexOf(path) == -1;
             });
 
-            // Leaf star (if there's more than one leave)
+            // Leaf star (if there's more than one leaf)
             if (includeWildcards && treeData.filter(function (child) {
                 return child.leaf
             }).length > 1) {
@@ -168,7 +168,7 @@ const HeirarchyExplorer = React.createClass({
                     name: '✲',
                     leaf: true,
                     pathCount: _.reduce(treeData, function (prev, cur) {
-                            return prev + (cur.leaf ? cur.pathCount : 0);
+                            return prev + (cur.leaf ? cur.path_ount : 0);
                         },
                         0
                     )
