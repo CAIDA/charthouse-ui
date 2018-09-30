@@ -1,4 +1,5 @@
 import React from 'react/addons';
+import $ from 'jquery';
 import 'font-awesome/css/font-awesome.css';
 
 import Expression from '../utils/expression';

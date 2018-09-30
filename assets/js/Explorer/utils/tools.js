@@ -1,4 +1,5 @@
 import d3 from 'd3';
+import $ from 'jquery';
 import _ from 'underscore';
 
 var extractSeriesMeta = function (seriesNames) {
