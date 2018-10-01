@@ -83,9 +83,10 @@ const ControlPanel = React.createClass({
                     />
                 </div>
                 <div className="panel-body">
+                    {/* TODO: fixme when we have auth integrated */}
                         <span>
                             Logged in as <a
-                            href={config.getParam('userProfileRoute')}><i>{config.getParam('username')}</i></a>
+                            href="#"><i>anonymous</i></a>
                         </span>
                     <a className="btn btn-default btn-xs pull-right"
                        title="Log out" href={config.getParam('logoutRoute')}
