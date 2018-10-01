@@ -1,8 +1,9 @@
 import $ from 'jquery';
+import moment from 'moment';
 
 import config from '../config/config';
 
-var CharthouseApiConnector = function () {
+const CharthouseApiConnector = function () {
 
     var apiCfg = config.getParam('api');
 
@@ -88,8 +89,8 @@ CharthouseApiConnector.prototype.getTsData = function (params, success, error) {
     // Quadruple escape backslashes to suit backend needs. This should be fixed server-side eventually!
     //target = target.replace(/\\/g, "\\\\\\\\");
 
-    var disableCache = config.getParam('noCache') != null;
-    var unlimit = config.getParam('unlimit') != null;
+    const disableCache = config.getParam('noCache') != null;
+    const unlimit = config.getParam('unlimit') != null;
 
     return this._getJson(
         'POST',
@@ -106,16 +107,30 @@ CharthouseApiConnector.prototype.getTsData = function (params, success, error) {
             params.downSampleFunc ? {downSampleFunc: params.downSampleFunc} : {}
         ),
         disableCache ? {'Cache-Control': 'no-cache'} : {},
-        checkedSuccess,
+        parseResponse,
         error
     );
 
-    function checkedSuccess(json) {
-        // TODO handle parsing of from/until datetime values (use moment?)
-        if (Object.keys(json.data.series || []).every(function (ser) {
-            let series = json.data.series[ser];
-            let expectedVals = (series.until - series.from) / series.step;
-            let isTimeConsistent = expectedVals === series.values.length;
+    function parseResponse(json) {
+        const allSeries = json.data.series;
+        const keys = Object.keys(allSeries) || [];
+
+        // iterate over all time series and parse data values and do some sanity
+        // checking on things. returning false from the 'every' callback will
+        // prevent the 'success' callback from being triggered.
+        //
+        // note that this is done here so that we still have the option to error
+        // out if we find something amiss
+        if (keys.every(function (ser) {
+            const series = allSeries[ser];
+
+            // parse the dates using moment
+            // TODO: convert all use of the data to use moment
+            series.from = moment(series.from).unix();
+            series.until = moment(series.until).unix();
+
+            const expectedVals = (series.until - series.from) / series.step;
+            const isTimeConsistent = expectedVals === series.values.length;
             if (!isTimeConsistent) {
                 error("The number of values in series " + (series.name || ser)
                     + " are inconsistent with the specified time range (" + series.from + " - " + series.until + ")"
