@@ -2,6 +2,7 @@ import React from 'react';
 import $ from 'jquery';
 import 'jstree';
 import 'jstree/dist/themes/default/style.css';
+import 'font-awesome/css/font-awesome.css';
 
 import '../utils/proto-mods';
 
@@ -17,17 +18,14 @@ const FunctionTree = React.createClass({
     getDefaultProps: function () {
         return {
             filterBy: null,
-            onFunctionClick: function (funcId) {
-            },
-            onFunctionHover: function (funcId) {
-            },
-            onFunctionDehover: function (funcId) {
-            }
+            onFunctionClick: function (funcId) {},
+            onFunctionHover: function (funcId) {},
+            onFunctionDehover: function (funcId) {}
         };
     },
 
     componentDidMount: function () {
-        var rThis = this;
+        const rThis = this;
 
         // Wrapped jQuery plugin
         this.$tree = $(this.refs.functionTree.getDOMNode());
@@ -80,8 +78,10 @@ const FunctionTree = React.createClass({
 
         // Node/leaf hover
         this.$tree.bind("hover_node.jstree", function (e, data) {
-            if (data.node.type != "function") return; // Ignore folder hover
-            rThis.props.onFunctionHover(data.node.data.id);
+            if (data.node.type === "function") {
+                rThis.props.onFunctionHover(data.node.data.id);
+            }
+            // TODO: add hover/dehover for tag groups (show descr)
         });
 
         // Node/leaf hover
@@ -100,11 +100,13 @@ const FunctionTree = React.createClass({
 
         function specs2tree(specs) {
 
-            var byTag = indexByTag(specs);
+            const tags = specs.tags;
+            const byTag = indexByTag(specs.prototypes);
 
             return Object.keys(byTag).sort().map(function (tag) {
                 return {
-                    text: tag,
+                    text: tags[tag].name,
+                    data: $.extend({id: tag}, tags[tag]),
                     type: 'tagGroup',
                     children: byTag[tag].map(func2tree)
                 }
@@ -114,7 +116,7 @@ const FunctionTree = React.createClass({
 
             function func2tree(func) {
                 return {
-                    text: specs[func].name,
+                    text: specs.prototypes[func].title,
                     data: $.extend({id: func}, specs[func]),
                     type: 'function',
                     children: false
@@ -122,16 +124,16 @@ const FunctionTree = React.createClass({
             }
         }
 
-        function indexByTag(specs) {
+        function indexByTag(protos) {
 
-            var byTag = {};
+            const byTag = {};
 
-            Object.keys(specs)
+            Object.keys(protos)
                 .sort(function (a, b) {
-                    return specs[a].name.alphanumCompare(specs[b].name);
+                    return protos[a].title.alphanumCompare(protos[b].title);
                 })
                 .forEach(function (func) {
-                    specs[func].tags.forEach(function (tag) {
+                    protos[func].tags.forEach(function (tag) {
                         if (!byTag.hasOwnProperty(tag)) {
                             byTag[tag] = [];
                         }
@@ -176,43 +178,43 @@ const FunctionTree = React.createClass({
 const FunctionInfo = React.createClass({
 
     propTypes: {
-        funcSpecs: React.PropTypes.object
+        funcProtos: React.PropTypes.object
     },
 
     getDefaultProps: function () {
         return {
-            funcSpecs: null
+            funcProtos: null
         };
     },
 
     render: function () {
-        var func = this.props.funcSpecs;
+        var func = this.props.funcProtos;
 
         // Empty
         if (!func) return <div/>;
 
-        var hasMultiple = func.args.some(function (arg) {
+        var hasMultiple = func.parameters.some(function (arg) {
             return arg.multiple;
         });
 
         return <div>
-            <h3>{func.name}</h3>
+            <h3>{func.title}</h3>
             <p>({func.id})</p>
-            <small style={{marginLeft: 10}}>{func.desc}</small>
+            <small style={{marginLeft: 10}}>{func.description}</small>
             <h4>Arguments (
-                {func.args.length}
+                {func.parameters.length}
                 {hasMultiple ? ' [*]' : ''}
                 )
-                {func.args.length ? ':' : ''}
+                {func.parameters.length ? ':' : ''}
             </h4>
-            {func.args.map(function (arg) {
+            {func.parameters.map(function (arg) {
                 return <div key={arg.name}>
                     {arg.multiple ? '* ' : ''}
                     <b>{arg.name}</b> ({arg.type})
                     {arg.mandatory ? '' : ' [optional]'}
                     <br/>
                     <small className="small" style={{marginLeft: 10}}>
-                        {arg.desc}
+                        {arg.description}
                     </small>
                 </div>;
             })}
@@ -307,10 +309,10 @@ const FunctionBrowser = React.createClass({
                 </div>
                 <div className="col-sm-7">
                     <FunctionInfo
-                        funcSpecs={this.state.highlightFunction
+                        funcProtos={this.state.highlightFunction
                             ? $.extend(
                                 {id: this.state.highlightFunction},
-                                this.props.functionSpecs[this.state.highlightFunction]
+                                this.props.functionSpecs.prototypes[this.state.highlightFunction]
                             )
                             : null
                         }

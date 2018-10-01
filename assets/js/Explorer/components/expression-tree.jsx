@@ -184,8 +184,6 @@ const ExpressionTree = React.createClass({
 
         apiConnector.getFunctionSpecs(
             function (json) {
-                // TODO: update to use new function specs API (significant changes)
-                // TODO: can the function browser load the specs itself?
                 rThis.setState({functionSpecs: json.data});
 
                 // Refresh function descriptions already in tree
@@ -225,11 +223,12 @@ const ExpressionTree = React.createClass({
     _buildFunctionNodeHtml: function (func, nArgs) {
         var specTxt = '';
 
-        if (this.state.functionSpecs && this.state.functionSpecs.hasOwnProperty(func)) {
-            var spec = this.state.functionSpecs[func];
+        if (this.state.functionSpecs &&
+            this.state.functionSpecs.prototypes.hasOwnProperty(func)) {
+            var spec = this.state.functionSpecs.prototypes[func];
 
-            specTxt = spec.name + ': ' + func + '('
-                + spec.args.map(function (arg) {
+            specTxt = spec.title + ': ' + func + '('
+                + spec.parameters.map(function (arg) {
                     var argTxt = '<' + arg.type + '> ' + (arg.multiple ? '✲' : '') + arg.name;
                     return arg.mandatory ? argTxt : ('[' + argTxt + ']');
                 }).join(', ')
@@ -425,9 +424,9 @@ const ExpressionTree = React.createClass({
     getErrors: function () {
 
         var $tree = this.$tree;
-        var functionSpecs = this.state.functionSpecs;
+        var functionProtos = this.state.functionSpecs && this.state.functionSpecs.prototypes;
 
-        if (!functionSpecs || !Object.keys(functionSpecs).length) return null; // Can't validate
+        if (!functionProtos || !Object.keys(functionProtos).length) return null; // Can't validate
 
         var errors = [];
 
@@ -437,27 +436,28 @@ const ExpressionTree = React.createClass({
             })
             .forEach(function (func) {
                 var name = func.data.func;
-                if (!functionSpecs.hasOwnProperty(name)) {
-                    errors.push('Unrecognised function: ' + name + '()');
+                if (!functionProtos.hasOwnProperty(name)) {
+                    errors.push('Unrecognized function: ' + name + '()');
                 } else {
-                    var spec = functionSpecs[name];
-                    var mandatoryArgs = spec.args.filter(function (arg) {
+                    const spec = functionProtos[name];
+                    const params = spec.parameters;
+                    var mandatoryArgs = params.filter(function (arg) {
                         return arg.mandatory;
                     }).length;
-                    var hasMultiple = spec.args.some(function (arg) {
+                    var hasMultiple = params.some(function (arg) {
                         return arg.multiple;
                     });
                     if (func.children.length < mandatoryArgs) {
                         errors.push(name + '() is missing ' + (mandatoryArgs - func.children.length) + ' mandatory arguments');
                     }
-                    if (func.children.length > spec.args.length && !hasMultiple) {
-                        errors.push(name + '() has too many arguments (should be max ' + spec.args.length + ')');
+                    if (func.children.length > params.length && !hasMultiple) {
+                        errors.push(name + '() has too many arguments (should be max ' + params.length + ')');
                     }
                     for (var i = 0, len = func.children.length; i < len; i++) {
 
                         var child = $tree.jstree('get_node', func.children[i]);
-                        var argType = spec.args[Math.min(i, spec.args.length - 1)].type;
-                        if (i >= spec.args.length && !hasMultiple && child.data) {
+                        var argType = params[Math.min(i, params.length - 1)].type;
+                        if (i >= params.length && !hasMultiple && child.data) {
                             argType = child.data.type
                         }
 
