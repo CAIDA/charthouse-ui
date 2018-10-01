@@ -1,10 +1,11 @@
 import React from 'react';
+import $ from 'jquery';
 // TODO: jquery-controls
 import 'font-awesome/css/font-awesome.css';
 
 import Toggle from './toggle-switch';
 import Dialog from './dialog';
-// TODO: TimeLogger
+import TimeLogger from './time-logger';
 // TODO: PermalinkForm
 import CharthouseDataSet from '../utils/dataset';
 import CHARTHOUSE_PLUGIN_SPECS from '../config/plugin-specs';
