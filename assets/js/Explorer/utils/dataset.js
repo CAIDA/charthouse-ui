@@ -1,6 +1,7 @@
+import $ from 'jquery';
 import moment from 'moment';
 
-var CharthouseDataSet = function (apiData) {
+const CharthouseDataSet = function (apiData) {
     this.apiData = apiData;
     this.numSeries = apiData ? this.cntSeries() : 0;
 };
@@ -19,16 +20,12 @@ CharthouseDataSet.prototype.clone = function () {
     return new CharthouseDataSet($.extend(true, {}, this.apiData));
 };
 
-CharthouseDataSet.prototype.jsonUrl = function () {
-    return this.apiData.jsonRequestUrl;
-};
-
 CharthouseDataSet.prototype.jsonSize = function () {
     return this.apiData.jsonRequestSize;
 };
 
 CharthouseDataSet.prototype.jsonSizeHuman = function () {
-    var fileSize = this.jsonSize();
+    const fileSize = this.jsonSize();
     return (fileSize < 999
             ? fileSize
             : (fileSize < 999999
@@ -52,7 +49,7 @@ CharthouseDataSet.prototype.series = function () {
 
 CharthouseDataSet.prototype.isEmpty = function () {
     // Returns false at the first occurrence of a non-null val in any series
-    var series = this.series();
+    const series = this.series();
     return !series ||
         !Object.keys(series).some(function (serName) {
             return series[serName].values.some(function (val) {
@@ -66,12 +63,13 @@ CharthouseDataSet.prototype.cntSeries = function () {
 };
 
 CharthouseDataSet.prototype.cntNonNullPnts = function () {
-    var numPoints = 0;
-    for (ts in this.series()) {
-        numPoints += this.series()[ts].values.filter(function (val) {
+    let numPoints = 0;
+    const series = this.series();
+    Object.keys(series).forEach(function (ts) {
+        numPoints += series[ts].values.filter(function (val) {
             return val != null;
         }).length;
-    }
+    });
     return numPoints;
 };
 
