@@ -73,9 +73,8 @@ const PluginContent = React.createClass({
 
     // Private methods
     _loadPluginModule: function () {
-        var rThis = this;
-        // TODO: figure out how to get rid of the webpack warning
-        require([this.props.pluginCfg.jsFile], function (Plugin) {
+        const rThis = this;
+        this.props.pluginCfg.import.then(function({default: Plugin}) {
             if (!rThis.isUnmounted) {
                 rThis.setState({ReactPlugin: Plugin});
             }

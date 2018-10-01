@@ -32,8 +32,6 @@ Encore
     })
 
     // bootstrap-loader config
-    //.addLoader({test: /\.scss$/, loaders: ['style', 'css', 'postcss', 'sass']})
-    //.addLoader({test: /\.(woff2?|ttf|eot|svg)$/, loader: 'url?limit=10000'})
     .addLoader({
         test: /bootstrap\/js\//,
         loader: 'imports-loader?jQuery=jquery'
@@ -63,6 +61,10 @@ Encore
 
     // uncomment if you're having problems with a jQuery plugin
     //.autoProvidejQuery()
+
+    .configureBabel(function (babelConfig) {
+        babelConfig.plugins.push('syntax-dynamic-import');
+    });
 ;
 
 let webpackConfig = Encore.getWebpackConfig();
