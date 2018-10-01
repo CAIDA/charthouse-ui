@@ -192,8 +192,9 @@ const PluginFooter = React.createClass({
                 <span className="glyphicon glyphicon-link"/> Short URL
             </button>
 
+            {/* TODO: Generate a cURL link since our queries are POST-only now */}
             <a target='_blank' className="pull-right btn btn-info btn-xs"
-               href={this.props.data.jsonUrl()}
+               href="#"
                title="Download json data file"
             >
                 <span className="glyphicon glyphicon-save"/> json <small>
@@ -530,10 +531,10 @@ const VizPlugin = React.createClass({
                 // this check reads a little strangely because .globalCfg
                 // returns the global config iff it is not the global
                 // config...
+                // TODO: figure out if there is a better way to do this
                 if (!rThis.props.configMan.globalCfg) {
                     var dataTitle = chData.summary().commonPrefix || (rThis.props.title.length < 40 ? rThis.props.title.trim() : '');
-                    // TODO: figure out if there is a better way to do this
-                    document.title = [dataTitle, 'Hi&sup3;']
+                    document.title = [dataTitle, 'Hi³']
                         .filter(function (s) {
                             return s.length;
                         })

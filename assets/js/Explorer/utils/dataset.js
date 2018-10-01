@@ -179,6 +179,7 @@ CharthouseDataSet.prototype.toCrossfilter = function () {
 };
 
 CharthouseDataSet.prototype.diffData = function (that) {
+    // TODO clean up and improve performance of this func
     var diff = {
         removeSeries: [],
         addSeries: {},
