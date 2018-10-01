@@ -1,11 +1,11 @@
 import React from 'react';
 
-import config from './config/config';
-import StaticCfg from './config/static';
-import CharthouseTime from './utils/time';
-import Expression from './utils/expression';
-import ControlPanel from './components/control-panel';
-import Visualizer from './components/visualizer';
+import config from '../config/config';
+import StaticCfg from '../config/static';
+import CharthouseTime from '../utils/time';
+import Expression from '../utils/expression';
+import ControlPanel from './control-panel';
+import Visualizer from './visualizer';
 
 const Explorer = React.createClass({
 

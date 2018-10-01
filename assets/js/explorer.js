@@ -11,7 +11,7 @@ import '../css/Explorer/viz-plugins.css';
 import React from 'react';
 
 // internal JS deps
-import Explorer from './Explorer/explorer';
+import Explorer from './Explorer/components/explorer';
 
 
 React.render(<Explorer/>, document.getElementById('explorer-main'));
