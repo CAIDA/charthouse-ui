@@ -19,7 +19,7 @@ CharthouseApiConnector.prototype._getJson = function (httpMethod, url, params, h
 
     error = error || function () {}; // Error function optional
 
-    var xThis = this;
+    const xThis = this;
     return $.ajax({
         url: url,
         data: httpMethod === 'POST' ? JSON.stringify(params) : params,
@@ -30,22 +30,22 @@ CharthouseApiConnector.prototype._getJson = function (httpMethod, url, params, h
         xhrFields: {
             withCredentials: false
         },
-        timeout: xThis.timeout,
-        success: function (json, textStatus, xOptions) {
-            if (json.hasOwnProperty('error') && json.error) {
-                // shouldn't happen. errors should return HTTP error codes
-                error(json.error + ' (Please contact hicube-info@caida to report this error)');
-                return;
-            }
-            json.jsonRequestSize = xOptions.responseText.length; // Tag json size (bytes) in data
-            success(json);
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
-            // TODO: correctly handle non-JSON responses
-            var json = JSON.parse(jqXHR.responseText);
-            if (textStatus === "abort") return;  // Call intentionally aborted
-            error((errorThrown ? errorThrown + ': ' : '') + json.error);
+        timeout: xThis.timeout
+    })
+    .done(function (json, textStatus, xOptions) {
+        if (json.hasOwnProperty('error') && json.error) {
+            // shouldn't happen. errors should return HTTP error codes
+            error(json.error + ' (Please contact hicube-info@caida to report this error)');
+            return;
         }
+        json.jsonRequestSize = xOptions.responseText.length; // Tag json size (bytes) in data
+        success(json);
+    })
+    .fail(function (jqXHR, textStatus, errorThrown) {
+        if (textStatus === "abort") return;  // Call intentionally aborted
+        const rJson = jqXHR.responseJSON;
+        error((errorThrown ? errorThrown + ': ' : '') +
+            (rJson && rJson.error ? rJson.error : 'An unknown error occurred'));
     });
 };
 
