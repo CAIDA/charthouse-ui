@@ -613,8 +613,7 @@ const CharthouseXYChart = React.createClass({
 
     render: function () {
         return <div className="charthouse-highcharts-graph"
-                    style={{height: this.props.height}}
-        ></div>
+                    style={{height: this.props.height}} />
     },
 
     toggleAllSeries: function () {
@@ -625,14 +624,14 @@ const CharthouseXYChart = React.createClass({
     },
 
     _draw: function () {
-        var $chart = $(this.getDOMNode());
-        this.$chart = $chart;
+        const node = this.getDOMNode();
+        this.node = node;
 
-        var yRange = this.props.data.getValRange();
+        const yRange = this.props.data.getValRange();
+        const rThis = this;
 
-        var that = this;
-
-        $chart.highcharts('StockChart', {
+        // TODO: refactor this config
+        this.highchart = HighStock.stockChart(node, {
             title: {
                 text: null
             },
@@ -645,16 +644,16 @@ const CharthouseXYChart = React.createClass({
                 style: {
                     fontFamily: "Source Sans Pro"
                 },
-                zoomType: (that.props.zoomMode == "auto") ? 'x' : 'xy',
+                zoomType: (rThis.props.zoomMode === "auto") ? 'x' : 'xy',
                 spacingBottom: 0,
                 events: {
                     click: function () { // Dbl-clicking on background brings all series back
-                        var dblClickTime = 500; //ms
+                        const dblClickTime = 500; //ms
 
-                        if (this.hasOwnProperty('chartJustClicked') && this.chartJustClicked == true) {
+                        if (this.hasOwnProperty('chartJustClicked') && this.chartJustClicked === true) {
                             // Double-click
                             this.chartJustClicked = false;
-                            $chart.highcharts().series.forEach(function (series) {
+                            rThis.highchart.series.forEach(function (series) {
                                 series.setVisible(true, false);
                             });
                             this.redraw();
@@ -662,30 +661,22 @@ const CharthouseXYChart = React.createClass({
                         }
 
                         // Normal click - flag click timeout
-                        var thisChart = this;
+                        const thisChart = this;
                         thisChart.chartJustClicked = true;
                         setTimeout(function () {
                             thisChart.chartJustClicked = false;
                         }, dblClickTime);
                     },
                     load: function () {
-                        that._chartChanged($chart.highcharts());
+                        rThis._chartChanged();
                     },
                     redraw: function () {
-                        that._chartChanged($chart.highcharts())
+                        rThis._chartChanged();
                     }
                 }
             },
             credits: {
                 enabled: false
-            },
-            exporting: {
-                enabled: false,
-                filename: 'caida-charthouse',
-                sourceWidth: 1200,
-                sourceHeight: 800,
-                scale: 1,
-                contextButton: []
             },
             xAxis: {
                 title: {
@@ -698,7 +689,7 @@ const CharthouseXYChart = React.createClass({
                     minute: '%l:%M%P'
                 },
                 // Display markers as plot lines
-                plotLines: that._createPlotLines()
+                plotLines: rThis._createPlotLines()
             },
             yAxis: [
                 this._axisConf = {
@@ -748,9 +739,12 @@ const CharthouseXYChart = React.createClass({
                 crosshairs: true,
                 snap: 10,
                 //hideDelay: 5,
+                /*
+                // TODO: AK comments optimistically with new version of highcharts
                 positioner: function () {
                     return {x: 50, y: 10};
                 },
+                */
                 shared: false   // Include all series or just one
             },
             legend: {
@@ -789,13 +783,14 @@ const CharthouseXYChart = React.createClass({
                     },
                     events: {
                         click: function () { // Hide series on click / show-only on dbl-click
+                            // TODO: can these click handlers be refactored into common funcs?
                             var dblClickTime = 300; //ms
 
-                            if (this.hasOwnProperty('seriesJustClicked') && this.seriesJustClicked == true) {
+                            if (this.hasOwnProperty('seriesJustClicked') && this.seriesJustClicked === true) {
                                 // Double-click
                                 clearTimeout(this.toggleTimeout);
                                 this.seriesJustClicked = false;
-                                $chart.highcharts().series.forEach(function (series) {
+                                rThis.highchart.series.forEach(function (series) {
                                     series.setVisible(false, false);
                                 });
                                 this.show();
@@ -813,10 +808,10 @@ const CharthouseXYChart = React.createClass({
                         legendItemClick: function () {  // On dbl-click show only series
                             var dblClickTime = 300; //ms
 
-                            if (this.hasOwnProperty('legendJustClicked') && this.legendJustClicked == true) {
+                            if (this.hasOwnProperty('legendJustClicked') && this.legendJustClicked === true) {
                                 // Double-click
                                 this.legendJustClicked = false;
-                                $chart.highcharts().series.forEach(function (series) {
+                                rThis.highchart.series.forEach(function (series) {
                                     series.setVisible(false, false);
                                 });
                                 this.show();
@@ -828,7 +823,7 @@ const CharthouseXYChart = React.createClass({
                             series.legendJustClicked = true;
                             setTimeout(function () {
                                 series.legendJustClicked = false;
-                                $chart.highcharts().redraw();
+                                rThis.highchart.redraw();
                             }, dblClickTime);
                             this.setVisible(!this.visible, false);
                             return false;
@@ -855,21 +850,6 @@ const CharthouseXYChart = React.createClass({
             series: this._parseData(this.props.data.series())
 
         });
-
-        this.highchart = $chart.highcharts();
-
-        // Series: sorted, and difference between each pair of adjacent numbers is almost the same
-        function indexOfSeries(arr, val, property) {
-            var key = function (d) {
-                return (property == null) ? d : d[property];
-            };
-            var start = key(arr[0]),
-                end = key(arr[arr.length - 1]),
-                step = (end - start) / (arr.length - 1);
-            return (start <= val && val <= end)
-                ? (val - start) / step
-                : null;
-        }
     },
 
     _parseData: function (seriesData) {
@@ -1109,9 +1089,28 @@ const CharthouseXYChart = React.createClass({
                 b.time - a.time
                 : (b.to - b.from) - (a.to - a.from);
         });
+
+        // Series: sorted, and difference between each pair of adjacent numbers is almost the same
+        // TODO: put this func in the correct place
+        function indexOfSeries(arr, val, property) {
+            var key = function (d) {
+                return (property == null) ? d : d[property];
+            };
+            var start = key(arr[0]),
+                end = key(arr[arr.length - 1]),
+                step = (end - start) / (arr.length - 1);
+            return (start <= val && val <= end)
+                ? (val - start) / step
+                : null;
+        }
     },
 
-    _chartChanged: function (highchart) {
+    _chartChanged: function () {
+        const highchart = this.highchart;
+        if (!highchart) {
+            // race condition while chart is being built
+            return;
+        }
         var xRange = [
             highchart.axes[0].getExtremes().userMin
             || highchart.axes[0].getExtremes().dataMin
