@@ -1,5 +1,5 @@
 // external CSS deps
-import 'bootstrap/dist/css/bootstrap.css';
+import '../css/theme/css/bootstrap-flatly.css';
 
 // internal CSS dependencies
 // TODO: move these to the components that need them (and break them up)

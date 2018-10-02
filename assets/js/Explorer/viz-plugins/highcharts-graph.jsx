@@ -642,7 +642,7 @@ const CharthouseXYChart = React.createClass({
             chart: {
                 backgroundColor: null,
                 style: {
-                    fontFamily: "Source Sans Pro"
+                    fontFamily: '-apple-system, BlinkMacSystemFont, "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif'
                 },
                 zoomType: (rThis.props.zoomMode === "auto") ? 'x' : 'xy',
                 spacingBottom: 0,
