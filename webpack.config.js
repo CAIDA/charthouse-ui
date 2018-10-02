@@ -8,6 +8,9 @@ Encore
     // only needed for CDN's or sub-directory deploy
     //.setManifestKeyPrefix('build/')
 
+    // enable hash in file name to force cache busting
+    .enableVersioning()
+
     /*
      * ENTRY CONFIG
      *
@@ -31,12 +34,13 @@ Encore
         loader: 'imports-loader?jQuery=jquery'
     })
 
+    // boostrap-select
     .addLoader({
         test: require.resolve('bootstrap-select/dist/js/bootstrap-select'),
         loader: 'imports-loader?jQuery=jquery'
     })
 
-    // bootstrap-loader config
+    // bootstrap
     .addLoader({
         test: /bootstrap\/js\//,
         loader: 'imports-loader?jQuery=jquery'
