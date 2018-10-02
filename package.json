@@ -19,10 +19,12 @@
     "dependencies": {
         "bootstrap": "3.3",
         "bootstrap-daterangepicker": "^3.0.3",
+        "bootstrap-select": "1.6.3",
         "classnames": "^2.2.6",
         "d3": "3",
         "exports-loader": "^0.7.0",
         "font-awesome": "^4.7.0",
+        "highcharts": "5.0.14",
         "imports-loader": "^0.8.0",
         "jquery": "2.1.0",
         "jquery-toggles": "^4.0.0",

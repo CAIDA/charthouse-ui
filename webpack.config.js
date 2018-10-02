@@ -31,6 +31,11 @@ Encore
         loader: 'imports-loader?jQuery=jquery'
     })
 
+    .addLoader({
+        test: require.resolve('bootstrap-select/dist/js/bootstrap-select'),
+        loader: 'imports-loader?jQuery=jquery'
+    })
+
     // bootstrap-loader config
     .addLoader({
         test: /bootstrap\/js\//,

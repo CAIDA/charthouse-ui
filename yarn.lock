@@ -1073,6 +1073,13 @@ bootstrap-daterangepicker@^3.0.3:
     jquery ">=1.10"
     moment "^2.9.0"
 
+bootstrap-select@1.6.3:
+  version "1.6.3"
+  resolved "https://registry.yarnpkg.com/bootstrap-select/-/bootstrap-select-1.6.3.tgz#a9d2ac2673b52975ae7aaff3ec658c1f3c763c02"
+  integrity sha1-qdKsJnO1KXWueq/z7GWMHzx2PAI=
+  dependencies:
+    jquery ">=1.8"
+
 bootstrap@3.3:
   version "3.3.7"
   resolved "https://registry.yarnpkg.com/bootstrap/-/bootstrap-3.3.7.tgz#5a389394549f23330875a3b150656574f8a9eb71"
@@ -2884,6 +2891,11 @@ hash.js@^1.0.0, hash.js@^1.0.3:
     inherits "^2.0.3"
     minimalistic-assert "^1.0.1"
 
+highcharts@5.0.14:
+  version "5.0.14"
+  resolved "https://registry.yarnpkg.com/highcharts/-/highcharts-5.0.14.tgz#0ef14cca9f1345408568b533dae1478950d96810"
+  integrity sha512-mgJLyh1GYaLTh6hoEu8eB+Cl4tGygegRlJv7BBGWSafeZnADVsILbWo73RDH6kKyZDJqdb+G2tAo0sFvVv8k1Q==
+
 hmac-drbg@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/hmac-drbg/-/hmac-drbg-1.0.1.tgz#d2745701025a6c775a6c545793ed502fc0c649a1"
@@ -3432,7 +3444,7 @@ jquery@2.1.0:
   resolved "https://registry.yarnpkg.com/jquery/-/jquery-2.1.0.tgz#1c9a8c971d2b53dae10d72e16cbb5a1df16a4ace"
   integrity sha1-HJqMlx0rU9rhDXLhbLtaHfFqSs4=
 
-jquery@>=1.10, jquery@>=1.9.1:
+jquery@>=1.10, jquery@>=1.8, jquery@>=1.9.1:
   version "3.3.1"
   resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.3.1.tgz#958ce29e81c9790f31be7792df5d4d95fc57fbca"
   integrity sha512-Ubldcmxp5np52/ENotGxlLe6aGMvmF4R8S6tZjsP6Knsaxd/xp3Zrh50cG93lR6nPXyUFwzN3ZSOQI0wRJNdGg==

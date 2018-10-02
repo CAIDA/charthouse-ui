@@ -14,7 +14,7 @@ export default {
         internal: false
     },
     xyGraph: {
-        import: import(/* webpackChunkName: "highcharts-graph" */ '../viz-plugins/raw-text'), // TODO
+        import: import(/* webpackChunkName: "highcharts-graph" */ '../viz-plugins/highcharts-graph'),
         title: 'XY Graph',
         description: 'Shows a line/area/bar chart representation of the data',
         dynamic: true
