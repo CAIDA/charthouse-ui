@@ -10,6 +10,9 @@ import TimeLogger from './time-logger';
 import CharthouseDataSet from '../utils/dataset';
 import CHARTHOUSE_PLUGIN_SPECS from '../config/plugin-specs';
 import tools from '../utils/tools';
+import '../utils/jquery-plugins';
+
+// TODO: this component could probably be refactored into multiple modules
 
 const PluginContent = React.createClass({
 

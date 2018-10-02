@@ -7,6 +7,7 @@ import HeirarchyExplorer from './hierarchy-explorer';
 import ExpressionBuilder from './expression-builder';
 import ExpressionTxtEditor from './expression-txt-editor';
 import Toggle from './toggle-switch';
+import '../utils/jquery-plugins';
 
 const ExpressionComposer = React.createClass({
 
