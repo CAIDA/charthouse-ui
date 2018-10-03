@@ -2,6 +2,7 @@ import $ from 'jquery';
 import moment from 'moment';
 
 import config from '../config/config';
+import Expression from '../utils/expression';
 
 const CharthouseApiConnector = function () {
 
@@ -112,7 +113,7 @@ CharthouseApiConnector.prototype.getTsData = function (params, success, error) {
     );
 
     function parseResponse(json) {
-        const allSeries = json.data.series;
+        const allSeries = (json.data && json.data.series) ? json.data.series : {};
         const keys = Object.keys(allSeries) || [];
 
         // iterate over all time series and parse data values and do some sanity
@@ -129,6 +130,11 @@ CharthouseApiConnector.prototype.getTsData = function (params, success, error) {
             series.from = moment(series.from).unix();
             series.until = moment(series.until).unix();
 
+            // convert the expression json into an expression object
+            series.expression = new Expression(series.expression);
+
+            // check time consistency (we made changes to how graphite thinks
+            // about time, so we want to check that these changes are always used)
             const expectedVals = (series.until - series.from) / series.step;
             const isTimeConsistent = expectedVals === series.values.length;
             if (!isTimeConsistent) {
@@ -141,6 +147,15 @@ CharthouseApiConnector.prototype.getTsData = function (params, success, error) {
         ) {
             success(json);
         }
+
+        // parse the earliest_from and last_until times in the summary
+        const summary = json.data ? json.data.summary : null;
+        summary.earliest_from = moment(summary.earliest_from).unix();
+        summary.last_until = moment(summary.last_until).unix();
+
+        // convert the common prefix/suffix json into expression objects
+        summary.common_prefix = new Expression(summary.common_prefix);
+        summary.common_suffix = new Expression(summary.common_suffix);
     }
 };
 

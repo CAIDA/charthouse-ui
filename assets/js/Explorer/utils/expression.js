@@ -1,9 +1,8 @@
 import $ from 'jquery';
 
-// TODO: ensure that expressions are always stored as objects not simple paths
-
 var ExpressionObj = function (json) {
     this.json = null;
+    // TODO: try and detect serialized JSON and parse that first
     this.setJson(json);
 };
 
@@ -23,10 +22,18 @@ ExpressionObj.prototype.setJson = function (json) {
     this.json = json;
 };
 
+// TODO: where is this used? just in config? do we need it?
 ExpressionObj.prototype.getSerialJson = function () {
     if (this.json == null) return '';
 
+    if (typeof this.json !== "object") {
+        console.error("Expression JSON is not an object!");
+        return;
+    }
+
+    /*
     if (typeof this.json == "string") return this.json; // It's already a single string
+    */
 
     /*
     if (typeof this.json == "object" && this.json.type == "path")
@@ -36,6 +43,7 @@ ExpressionObj.prototype.getSerialJson = function () {
     return JSON.stringify(this.json).replace(/\\\\/g, '\\'); // Don't escape backslashes
 };
 
+/* DEPRECATED
 ExpressionObj.prototype.setSerialJson = function (txt) {
     if (txt == null) {
         this.setJson(null);
@@ -48,15 +56,21 @@ ExpressionObj.prototype.setSerialJson = function (txt) {
             : JSON.parse(txt.replace(/\\/g, '\\\\'))
     );
 };
+*/
 
 // Returns a pretty-printed version of the canonical expression format
 ExpressionObj.prototype.getCanonicalTxt = function () {
     return json2Canonical(this.getJson());
 };
 
-// Returns the canonical expression format
+// Returns the canonical expression format (unused?)
 ExpressionObj.prototype.getCanonicalStr = function () {
     return json2Canonical(this.getJson(), -1);
+};
+
+// Returns the canonical expression format, humanized
+ExpressionObj.prototype.getCanonicalHuman = function () {
+    return json2Canonical(this.getJson(), -1, true);
 };
 
 ExpressionObj.prototype.setCanonicalTxt = function (txt) {
@@ -114,6 +128,7 @@ ExpressionObj.prototype.equals = function (anotherExp) {
 
 // Will throw exception if json is not in valid format
 function validate(json) {
+    // TODO make typeof == string an exception!
     if (json == null || typeof json == "string") return;
 
     if ($.isArray(json)) {
@@ -145,7 +160,7 @@ function validate(json) {
 }
 
 // if indentCnt is -1, then indenting and newlines are turned off
-function json2Canonical(json, indentCnt) {
+function json2Canonical(json, indentCnt, human) {
     if (json == null) return '';
 
     indentCnt = indentCnt || 0;
@@ -170,9 +185,9 @@ function json2Canonical(json, indentCnt) {
         case 'constant':
             return indent + (isNaN(json.value) ? ('"' + json.value + '"') : json.value);
         case 'path':
-            return indent + json.path;
+            return indent + (human ? json.human_name : json.path);
         case 'function':
-            return indent + json.func + '(' + newLine +
+            return indent + (human ? json.human_name : json.func) + '(' + newLine +
                 forceArray(json.args)
                     .map(function (d) {
                         return json2Canonical(d, childIndent);

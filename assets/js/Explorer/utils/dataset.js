@@ -80,17 +80,19 @@ CharthouseDataSet.prototype.getResolution = function (durationFormatter) {
         return m;
     };
 
-    return Object.keys(self.summary().nativeSteps || [])
+    const nativeSteps = self.summary().native_steps;
+
+    return Object.keys(nativeSteps || [])
         .sort(function (a, b) {
             return parseInt(a) - parseInt(b)
         })
         .map(function (nativeStep) {
             return [
                 durationFormatter(moment.duration(nativeStep * 1000)),
-                self.summary().nativeSteps[nativeStep]
+                nativeSteps[nativeStep]
                 // Remove redundant cases that have aggregation equal only to native step
                     .filter(function (realStep) {
-                        return realStep != nativeStep || self.summary().nativeSteps[nativeStep].length > 1;
+                        return realStep != nativeStep || nativeSteps[nativeStep].length > 1;
                     })
                     .sort(function (a, b) {
                         return parseInt(a) - parseInt(b)
@@ -259,19 +261,19 @@ CharthouseDataSet.prototype.mergeData = function (updDataSet) {
     // Work on a separate copy, in case there are merging errors
     var merged = this.clone();
 
-    merged.summary().earliestFrom = Math.min(merged.summary().earliestFrom, updDataSet.summary().earliestFrom);
-    merged.summary().lastUntil = Math.max(merged.summary().lastUntil, updDataSet.summary().lastUntil);
+    merged.summary().earliest_from = Math.min(merged.summary().earliest_from, updDataSet.summary().earliest_from);
+    merged.summary().last_until = Math.max(merged.summary().last_until, updDataSet.summary().last_until);
 
     Object.keys(updDataSet.series()).forEach(function (serName) {
         var updSer = updDataSet.series()[serName];
 
         if (!merged.series().hasOwnProperty(serName)) {
             // Series is new, update summary steps
-            if (!merged.summary().nativeSteps.hasOwnProperty(updSer.nativeStep)) {
-                merged.summary().nativeSteps[updSer.nativeStep] = [];
+            if (!merged.summary().native_steps.hasOwnProperty(updSer.native_step)) {
+                merged.summary().native_steps[updSer.native_step] = [];
             }
-            if (merged.summary().nativeSteps[updSer.nativeStep].indexOf(updSer.step) == -1) {
-                merged.summary().nativeSteps[updSer.nativeStep].push(updSer.step);
+            if (merged.summary().native_steps[updSer.native_step].indexOf(updSer.step) == -1) {
+                merged.summary().native_steps[updSer.native_step].push(updSer.step);
             }
             if (merged.summary().steps.indexOf(updSer.step) == -1) {
                 merged.summary().steps.push(updSer.step);
@@ -463,9 +465,10 @@ CharthouseCfData.prototype.applyDataDiff = function (origData, diff) {
     function getSeriesMeta(seriesId, seriesData) {
         var meta = {
             series: seriesId,
-            name: seriesData.name
+            name: seriesData.human_name
         };
 
+        // TODO: do annotations work correctly?
         if (seriesData.annotations)
             seriesData.annotations
                 .filter(function (a) {

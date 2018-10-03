@@ -694,7 +694,7 @@ const CharthouseXYChart = React.createClass({
             yAxis: [
                 this._axisConf = {
                     title: {
-                        text: (this.props.data.summary().commonSuffix || '') // series units
+                        text: (this.props.data.summary().common_suffix.getCanonicalHuman() || '') // series units
                     },
                     opposite: false, // Axis on left side
                     gridLineWidth: 0.6,
@@ -735,7 +735,7 @@ const CharthouseXYChart = React.createClass({
                     minute: "%A, %b %e, %l:%M%P",
                     hour: "%A, %b %e, %l:%M%P"
                 },
-                valueSuffix: ' ' + (this.props.data.summary().commonSuffix || ''),
+                valueSuffix: ' ' + (this.props.data.summary().common_suffix.getCanonicalHuman() || ''),
                 crosshairs: true,
                 snap: 10,
                 //hideDelay: 5,
@@ -1240,8 +1240,8 @@ const HighchartsGraph = React.createClass({
         var showLegend = this.props.configMan.getParam('showLegend', true);
 
         return {
-            visibleFrom: this.props.data.summary().earliestFrom * 1000,
-            visibleUntil: this.props.data.summary().lastUntil * 1000,
+            visibleFrom: this.props.data.summary().earliest_from * 1000,
+            visibleUntil: this.props.data.summary().last_until * 1000,
             chartType: this.props.configMan.getParam('chartType') || 'line',
             sortBy: this.props.configMan.getParam('sortBy') || '',
             sortAscending: tools.fuzzyBoolean(ascending),
@@ -1372,8 +1372,8 @@ const HighchartsGraph = React.createClass({
 
     _onTimeRangeChanged: function (newFrom, newUntil) {
         this.setState({
-            visibleFrom: newFrom || this.props.data.summary().earliestFrom * 1000,
-            visibleUntil: newUntil || this.props.data.summary().lastUntil * 1000
+            visibleFrom: newFrom || this.props.data.summary().earliest_from * 1000,
+            visibleUntil: newUntil || this.props.data.summary().last_until * 1000
         });
         this.props.onTimeChange([this.state.visibleFrom, this.state.visibleUntil])
     },

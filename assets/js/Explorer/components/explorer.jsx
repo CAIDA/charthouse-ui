@@ -19,7 +19,7 @@ const Explorer = React.createClass({
     },
 
     getInitialState: function () {
-        var expression = new Expression(config.getParam('expression'));
+        const expression = new Expression(config.getParam('expression'));
         return {
             expression: expression,
             from: config.getParam("from")
@@ -32,7 +32,7 @@ const Explorer = React.createClass({
             showController: config.getParam('hideControl') == null,
 
             // Only expand if expression is not the default (statically) configured
-            initExpandMetricTree: expression.getSerialJson() != StaticCfg.expression
+            initExpandMetricTree: !expression.equals(new Expression(StaticCfg.expression))
         };
     },
 
@@ -49,10 +49,8 @@ const Explorer = React.createClass({
         var updQueryState = {};
 
         if (newParams.hasOwnProperty('expression')) {
-            updQueryState.expression = new Expression();
-            updQueryState.expression.setSerialJson(
-                newParams.expression != null ? newParams.expression : this.const.DEFAULT_EXPRESSION
-            );
+            // TODO: what if expression is null?
+            updQueryState.expression = new Expression(newParams.expression);
         }
 
         if (newParams.hasOwnProperty('from')) {

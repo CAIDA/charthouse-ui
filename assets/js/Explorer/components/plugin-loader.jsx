@@ -1,6 +1,5 @@
 import React from 'react';
 import $ from 'jquery';
-// TODO: jquery-controls
 import 'font-awesome/css/font-awesome.css';
 
 import Toggle from './toggle-switch';
@@ -492,8 +491,8 @@ const VizPlugin = React.createClass({
         if (this.props.plugin != prevProps.plugin && this.state.dataLoaded) {
             this.setState({
                 vizTimeRange: [
-                    this.state.data.summary().earliestFrom * 1000,
-                    this.state.data.summary().lastUntil * 1000
+                    this.state.data.summary().earliest_from * 1000,
+                    this.state.data.summary().last_until * 1000
                 ]
             });
         }
@@ -524,8 +523,8 @@ const VizPlugin = React.createClass({
                     parsing: false,
                     data: chData,
                     vizTimeRange: [
-                        chData.summary().earliestFrom * 1000,
-                        chData.summary().lastUntil * 1000
+                        chData.summary().earliest_from * 1000,
+                        chData.summary().last_until * 1000
                     ]
                 });
 
@@ -536,7 +535,7 @@ const VizPlugin = React.createClass({
                 // config...
                 // TODO: figure out if there is a better way to do this
                 if (!rThis.props.configMan.globalCfg) {
-                    var dataTitle = chData.summary().commonPrefix || (rThis.props.title.length < 40 ? rThis.props.title.trim() : '');
+                    var dataTitle = chData.summary().common_prefix || (rThis.props.title.length < 40 ? rThis.props.title.trim() : '');
                     document.title = [dataTitle, 'Hi³']
                         .filter(function (s) {
                             return s.length;
@@ -589,7 +588,7 @@ const VizPlugin = React.createClass({
         var panelTitle = this.props.title
             ? this.props.title.trim()
             : (this.state.dataLoaded
-                    ? this.state.data.summary().commonPrefix
+                    ? this.state.data.summary().common_prefix
                     : (this.props.queryTxt || null)
             );
 
@@ -731,8 +730,8 @@ const VizPlugin = React.createClass({
             this.setState({
                 data: newDataSet,
                 vizTimeRange: [
-                    newDataSet.summary().earliestFrom * 1000,
-                    newDataSet.summary().lastUntil * 1000
+                    newDataSet.summary().earliest_from * 1000,
+                    newDataSet.summary().last_until * 1000
                 ]
             });
         }
