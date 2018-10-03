@@ -86,6 +86,7 @@ const PluginContent = React.createClass({
 
 const DataInfo = React.createClass({
 
+    // TODO: why is vizTimeRange not updating when we get new data?
     propTypes: {
         data: React.PropTypes.instanceOf(CharthouseDataSet.api).isRequired,
         vizTimeRange: React.PropTypes.array
