@@ -535,7 +535,7 @@ const VizPlugin = React.createClass({
                 // config...
                 // TODO: figure out if there is a better way to do this
                 if (!rThis.props.configMan.globalCfg) {
-                    var dataTitle = chData.summary().common_prefix || (rThis.props.title.length < 40 ? rThis.props.title.trim() : '');
+                    const dataTitle = chData.summary().common_prefix.getCanonicalHuman() || (rThis.props.title.length < 40 ? rThis.props.title.trim() : '');
                     document.title = [dataTitle, 'Hi³']
                         .filter(function (s) {
                             return s.length;
@@ -588,7 +588,7 @@ const VizPlugin = React.createClass({
         var panelTitle = this.props.title
             ? this.props.title.trim()
             : (this.state.dataLoaded
-                    ? this.state.data.summary().common_prefix
+                    ? this.state.data.summary().common_prefix.getCanonicalHuman()
                     : (this.props.queryTxt || null)
             );
 

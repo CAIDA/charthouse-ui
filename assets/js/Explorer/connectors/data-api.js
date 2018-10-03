@@ -116,13 +116,16 @@ CharthouseApiConnector.prototype.getTsData = function (params, success, error) {
         const allSeries = (json.data && json.data.series) ? json.data.series : {};
         const keys = Object.keys(allSeries) || [];
 
-        // iterate over all time series and parse data values and do some sanity
-        // checking on things. returning false from the 'every' callback will
-        // prevent the 'success' callback from being triggered.
-        //
-        // note that this is done here so that we still have the option to error
-        // out if we find something amiss
-        if (keys.every(function (ser) {
+        /*
+         * iterate over all time series and parse data values and do some sanity
+         * checking on things. returning false from the 'every' callback will
+         * prevent the 'success' callback from being triggered. (if this is the
+         * case, the error callback should be called instead.)
+         *
+         * note that this is done here so that we still have the option to error
+         * out if we find something amiss
+         */
+        if (!keys.every(function (ser) {
             const series = allSeries[ser];
 
             // parse the dates using moment
@@ -145,7 +148,7 @@ CharthouseApiConnector.prototype.getTsData = function (params, success, error) {
             return isTimeConsistent;
         })
         ) {
-            success(json);
+            return; // no point doing further parsing
         }
 
         // parse the earliest_from and last_until times in the summary
@@ -156,6 +159,8 @@ CharthouseApiConnector.prototype.getTsData = function (params, success, error) {
         // convert the common prefix/suffix json into expression objects
         summary.common_prefix = new Expression(summary.common_prefix);
         summary.common_suffix = new Expression(summary.common_suffix);
+
+        success(json);
     }
 };
 

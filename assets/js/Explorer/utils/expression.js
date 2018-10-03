@@ -68,6 +68,7 @@ ExpressionObj.prototype.getCanonicalStr = function () {
     return json2Canonical(this.getJson(), -1);
 };
 
+// TODO: is this naming convention the same as in php?
 // Returns the canonical expression format, humanized
 ExpressionObj.prototype.getCanonicalHuman = function () {
     return json2Canonical(this.getJson(), -1, true);
