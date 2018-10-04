@@ -1,27 +1,35 @@
-class AbstractExpression {
+import has from 'has';
 
-    // TODO: getJson
+class AbstractExpression {
 
     // TODO: pretty-printed canonical
 // TODO: handle creation from pretty-printed canonical
 // TODO: handle appendExpression at a higher level
 // TODO: expA.equals(expB)
 
-    static INDENT_STR = '  ';
-
     constructor(type) {
         if (new.target === AbstractExpression) {
-            throw "Cannot directly create AbstractExpression objects. Use ExpressionFactory instead";
+            throw new TypeError("Cannot directly create AbstractExpression objects. Use ExpressionFactory instead");
         }
         this.type = type;
     }
 
     toString() {
-        throw 'Expression objects cannot be implicitly converted to string.';
+        throw new TypeError('Expression objects cannot be implicitly converted to string.');
+    }
+
+    static checkJsonType(json, type) {
+        if (!json) {
+            throw new TypeError(`Malformed expression JSON`);
+        }
+        if (!has(json, 'type') || json.type !== type) {
+            throw new TypeError(`Malformed expression JSON: expected type of '${type}', got '${json.type}`);
+        }
     }
 
     _indentedStr(indent, str) {
-        return (indent !== null ? AbstractExpression.INDENT_STR.repeat(indent) : '') + str;
+        const INDENT_STR = '  ';
+        return (indent >= 0 ? INDENT_STR.repeat(indent) : '') + str;
     }
 
     getType() {
@@ -40,6 +48,7 @@ class AbstractExpression {
         return type === this.type ? [this] : [];
     }
 
+    // ABSTRACT METHODS:
     /**
      * Get the canonical representation of the expression.
      *
@@ -48,25 +57,25 @@ class AbstractExpression {
      * null.
      * @param indent
      */
-    getCanonicalStr(indent) {
-        throw `Missing implementation of getCanonicalStr for ${this.type} expressions`;
-    }
+    /*
+    getCanonicalStr(indent);
+    */
 
-    getCanonicalHumanized() {
-        throw `Missing implementation of getCanonicalHumanized for ${this.type} expressions`;
-    }
+    /*
+    getCanonicalHumanized();
+    */
 
-    getJson() {
-        throw `Missing implementation of getJson for ${this.type} expression`;
-    }
+    /*
+    getJson();
+    */
 
-    static createFromJson() {
-        throw `Missing implementation of createFromJson for ${this.type} expressions`;
-    }
+    /*
+    static createFromJson();
+    */
 
-    static createFromCanonicalStr() {
-        throw `Missing implementation of createFromCanonical for ${this.type} expressions`;
-    }
+    /*
+    static createFromCanonicalStr();
+    */
 
 }
 

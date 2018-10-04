@@ -6,6 +6,14 @@ class PathExpression extends AbstractExpression {
 
     constructor(path, humanPath) {
         super("path");
+        if (!path || typeof path !== 'string') {
+            throw new TypeError(`Missing/invalid path parameter: '${path}'`);
+        }
+        if (typeof humanPath !== 'undefined'
+            && (humanPath && typeof humanPath !== 'string')
+            || humanPath === '') {
+            throw new TypeError(`Invalid humanPath parameter: '${humanPath}'`);
+        }
         this.path = path;
         this.humanPath = humanPath;
     }
@@ -22,10 +30,16 @@ class PathExpression extends AbstractExpression {
         return this.humanPath || this.getPath();
     }
 
+    getJson() {
+        return {
+            type: this.type,
+            path: this.path,
+            human_name: this.humanPath
+        };
+    }
+
     static createFromJson(json) {
-        if (!has(json, "path") || typeof json.path !== "string") {
-            throw "Malformed path expression";
-        }
+        AbstractExpression.checkJsonType(json, 'path');
         return new PathExpression(json.path, json.human_name);
     }
 

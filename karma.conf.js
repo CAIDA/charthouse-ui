@@ -13,15 +13,20 @@ module.exports = function (config) {
         frameworks: ['mocha', 'chai'],
         files: ['tests/**/*.js'],
         exclude: [],
-        preprocessors: {"tests/**/*.js": ["webpack"]},
+        preprocessors: {
+            "tests/**/*.js": ["webpack"]
+        },
         webpack: webpackConfig,
-        reporters: ['progress'],
+        reporters: ['progress', 'coverage'],
         port: 9876,
         colors: true,
         logLevel: config.LOG_INFO,
         autoWatch: false,
-        browsers: ['Chrome', 'Firefox'],
+        browsers: ['ChromeHeadless', 'FirefoxHeadless'],
         singleRun: true,
-        concurrency: Infinity
+        concurrency: Infinity,
+        coverageReporter: {
+            type: 'text'
+        }
     });
 };

@@ -54,7 +54,7 @@ Encore
      * https://symfony.com/doc/current/frontend.html#adding-more-features
      */
     .cleanupOutputBeforeBuild()
-    .enableBuildNotifications()
+    //.enableBuildNotifications()
     .enableSourceMaps(!Encore.isProduction())
     // enables hashed filenames (e.g. app.abc123.css)
     .enableVersioning(Encore.isProduction())
@@ -73,6 +73,7 @@ Encore
 
     .configureBabel(function (babelConfig) {
         babelConfig.plugins.push('syntax-dynamic-import');
+        babelConfig.plugins.push('istanbul');
     });
 ;
 
