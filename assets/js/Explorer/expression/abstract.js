@@ -16,6 +16,10 @@ class AbstractExpression {
         this.type = type;
     }
 
+    toString() {
+        throw 'Expression objects cannot be implicitly converted to string.';
+    }
+
     _indentedStr(indent, str) {
         return (indent !== null ? AbstractExpression.INDENT_STR.repeat(indent) : '') + str;
     }
