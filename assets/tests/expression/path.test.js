@@ -37,7 +37,7 @@ function testPath(pe, humanValid) {
     it("should fail when implicitly converted to string", () => {
         chai.expect(() => {
             return '' + pe;
-        }).to.throw();
+        }).to.throw(TypeError);
     });
 
     it("should return itself to getAllByType('path') ", () => {
@@ -57,37 +57,37 @@ describe("PathExpression direct constructor", () => {
     it("should fail when given a null path", () => {
         chai.expect(() => {
             return new PathExpression()
-        }).to.throw();
+        }).to.throw(TypeError);
     });
 
     it("should fail when given an empty path", () => {
         chai.expect(() => {
             return new PathExpression("")
-        }).to.throw();
+        }).to.throw(TypeError);
     });
 
     it("should fail when given a non-string path", () => {
         chai.expect(() => {
             return new PathExpression(12345)
-        }).to.throw();
+        }).to.throw(TypeError);
     });
 
     it("should not fail when given a null humanPath", () => {
         chai.expect(() => {
             return new PathExpression(path, null)
-        }).not.to.throw();
+        }).not.to.throw(TypeError);
     });
 
     it("should fail when given an empty humanPath", () => {
         chai.expect(() => {
             return new PathExpression(path, '')
-        }).to.throw();
+        }).to.throw(TypeError);
     });
 
     it("should fail when given a non-string humanPath", () => {
         chai.expect(() => {
             return new PathExpression(path, 12345)
-        }).to.throw();
+        }).to.throw(TypeError);
     });
 });
 
@@ -99,13 +99,13 @@ describe("PathExpression.createFromJson", () => {
     it("should fail when given no json object", () => {
         chai.expect(() => {
             return PathExpression.createFromJson()
-        }).to.throw();
+        }).to.throw(TypeError);
     });
 
     it("should fail when given an empty json object", () => {
         chai.expect(() => {
             return PathExpression.createFromJson({})
-        }).to.throw();
+        }).to.throw(TypeError);
     });
 
     it("should fail when given a missing type parameter", () => {
@@ -114,7 +114,7 @@ describe("PathExpression.createFromJson", () => {
                 path,
                 human_name: humanPath
             })
-        }).to.throw();
+        }).to.throw(TypeError);
     });
 
     it("should fail when given an incorrect type parameter", () => {
@@ -124,7 +124,7 @@ describe("PathExpression.createFromJson", () => {
                 human_name: humanPath,
                 path
             })
-        }).to.throw();
+        }).to.throw(TypeError);
     });
 
     it("should fail when missing the path parameter", () => {
@@ -133,7 +133,7 @@ describe("PathExpression.createFromJson", () => {
                 type: 'path',
                 human_name: humanPath
             })
-        }).to.throw();
+        }).to.throw(TypeError);
     });
 
     it("should fail when given an empty human_name parameter", () => {
@@ -143,7 +143,7 @@ describe("PathExpression.createFromJson", () => {
                 human_name: '',
                 path
             })
-        }).to.throw();
+        }).to.throw(TypeError);
     });
 
     it("should not fail when missing the human_name parameter", () => {
@@ -152,7 +152,7 @@ describe("PathExpression.createFromJson", () => {
                 type: 'path',
                 path
             })
-        }).not.to.throw();
+        }).not.to.throw(TypeError);
     });
 
 });

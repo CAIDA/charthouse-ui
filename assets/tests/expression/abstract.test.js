@@ -7,7 +7,7 @@ describe("AbstractExpression", () => {
     it("should fail when constructed directly", () => {
         chai.expect(() => {
             return new AbstractExpression()
-        }).to.throw();
+        }).to.throw(TypeError);
     });
 
 });
