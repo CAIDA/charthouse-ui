@@ -1,5 +1,3 @@
-import has from 'has';
-
 import AbstractExpression from './abstract';
 
 class PathExpression extends AbstractExpression {

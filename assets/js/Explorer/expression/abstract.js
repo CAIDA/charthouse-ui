@@ -54,7 +54,7 @@ class AbstractExpression {
      *
      * If indent is given, indent at the given level. An indent of 0 is a valid
      * indent. To explicitly disable indenting (and thus pretty-printing), pass
-     * null.
+     * null or undefined.
      * @param indent
      */
     /*

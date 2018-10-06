@@ -7,7 +7,7 @@ class FunctionExpression extends AbstractExpression {
     constructor(func, args) {
         super("function");
         this.func = func;
-        this.args = args; // may be null
+        this.args = args;
     }
 
     getFunc() {
@@ -30,8 +30,8 @@ class FunctionExpression extends AbstractExpression {
     }
 
     getCanonicalStr(indent) {
-        const childIndent = (indent !== null) ? indent + 1 : indent;
-        const newLine = (indent !== null) ? '\n' : '';
+        const childIndent = (indent >= 0) ? indent + 1 : indent;
+        const newLine = (indent >= 0 && this.getArgs().length > 0) ? '\n' : '';
 
         /*
          *  funcName(
@@ -39,20 +39,29 @@ class FunctionExpression extends AbstractExpression {
          *    arg2,
          *  )
          */
-        return this._indentedStr(
-            indent,
-            this.getFunc() + '(' + newLine
-            + this.args.map(arg => {
+        return this._indentedStr(indent, this.getFunc() + '(' + newLine)
+            + this.getArgs().map(arg => {
                 return arg.getCanonicalStr(childIndent);
-            }) + newLine
-            + indent + ')'
-        );
+            }).join(',' + newLine) + newLine
+            + this._indentedStr(indent, ')');
     }
 
     getCanonicalHumanized() {
-        return this.getFunc() + '(' + this.getArgs().map(arg => {
-            arg.getCanonicalHumanized()
-        }) + ')';
+        return this.getFunc() + '('
+            + this.getArgs().map(arg => {
+                return arg.getCanonicalHumanized()
+            }).join(',')
+            + ')';
+    }
+
+    getJson() {
+        return {
+            type: this.type,
+            func: this.func,
+            args: this.getArgs().map(arg => {
+                return arg.getJson();
+            })
+        }
     }
 
     static createFromJson(json, factory) {
