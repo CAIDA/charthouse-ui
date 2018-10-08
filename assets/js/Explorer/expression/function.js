@@ -1,6 +1,7 @@
 import has from 'has';
 
 import AbstractExpression from './abstract';
+import ExpressionFactory from "./factory";
 
 class FunctionExpression extends AbstractExpression {
 
@@ -42,15 +43,15 @@ class FunctionExpression extends AbstractExpression {
         return this._indentedStr(indent, this.getFunc() + '(' + newLine)
             + this.getArgs().map(arg => {
                 return arg.getCanonicalStr(childIndent);
-            }).join(',' + newLine) + newLine
-            + this._indentedStr(indent, ')');
+            }).join(',' + (newLine || ' ')) + newLine
+            + this._indentedStr(this.getArgs().length > 0 ? indent : 0, ')');
     }
 
     getCanonicalHumanized() {
         return this.getFunc() + '('
             + this.getArgs().map(arg => {
                 return arg.getCanonicalHumanized()
-            }).join(',')
+            }).join(', ')
             + ')';
     }
 
@@ -64,7 +65,7 @@ class FunctionExpression extends AbstractExpression {
         }
     }
 
-    static createFromJson(json, factory) {
+    static createFromJson(json) {
         if (!has(json, 'func') || typeof json.func !== 'string') {
             throw 'Malformed function expression: missing/invalid func property';
         }
@@ -73,11 +74,11 @@ class FunctionExpression extends AbstractExpression {
             || !Array.isArray(json.args)) {
             throw 'Malformed function expression: missing/invalid args property';
         }
-        const argExps = json.args.map(arg => factory.createFromJson(arg));
+        const argExps = json.args.map(arg => ExpressionFactory.createFromJson(arg));
         return new FunctionExpression(json.func, argExps);
     }
 
-    static createFromCanonicalStr(expStr, factory) {
+    static createFromCanonicalStr(expStr) {
         expStr = expStr.replace(/\n/g, '').trim();
 
         const openCnt = (expStr.match(/\(/g) || []).length;
@@ -90,9 +91,11 @@ class FunctionExpression extends AbstractExpression {
         }
         const pos = expStr.indexOf('(');
         const funcName = expStr.slice(0, pos);
-        const argStr = expStr.substring(funcName.length, expStr.length - 1);
-        const argExps = factory.createFromCanonicalStr(argStr);
-        return new FunctionExpression(funcName, argExps);
+        const argStr = expStr.substring(funcName.length+1, expStr.length - 1);
+        const argExps = argStr ? ExpressionFactory.createFromCanonicalStr(argStr) : [];
+
+        return new FunctionExpression(funcName,
+            Array.isArray(argExps) ? argExps : [argExps]);
     }
 }
 
