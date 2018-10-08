@@ -15,8 +15,6 @@ class ExpressionFactory {
         return clz[type];
     }
 
-    // TODO: when parsing from canonical, remove newlines, collapse spaces and trim
-
     static createFromJson(json) {
         if (typeof json !== 'object') {
             // be generous, and try and detect if we've been given serialized JSON
@@ -61,8 +59,14 @@ class ExpressionFactory {
             const noQuotes = carry.split('"').filter(function (_, i) {
                 return i % 2 === 0;
             }).join('');
-            if (carry.trim().length
-                && cntChr(noQuotes, /\(/g) === cntChr(noQuotes, /\)/g)
+            if (!carry.trim().length) {
+                // note that if we ever want to allow "null" args to be passed
+                // then we'll have to change this
+                // the problem is that currently would be ignored, instead of
+                // being parsed to be e.g., a special null constant
+                throw new TypeError('Invalid expression: Empty sub-expression');
+            }
+            if (cntChr(noQuotes, /\(/g) === cntChr(noQuotes, /\)/g)
                 && cntChr(carry, /"/g) % 2 === 0) {
                 chunks.push(carry);
                 carry = '';

@@ -66,28 +66,35 @@ class FunctionExpression extends AbstractExpression {
     }
 
     static createFromJson(json) {
-        if (!has(json, 'func') || typeof json.func !== 'string') {
-            throw 'Malformed function expression: missing/invalid func property';
+        AbstractExpression.checkJsonType(json, 'function');
+        if (!has(json, 'func') || typeof json.func !== 'string' || !json.func) {
+            throw new TypeError('Malformed function expression: missing/invalid func property');
         }
         if (!has(json, 'args')
             || typeof json.args !== 'object'
             || !Array.isArray(json.args)) {
-            throw 'Malformed function expression: missing/invalid args property';
+            throw new TypeError('Malformed function expression: missing/invalid args property');
         }
         const argExps = json.args.map(arg => ExpressionFactory.createFromJson(arg));
         return new FunctionExpression(json.func, argExps);
     }
 
     static createFromCanonicalStr(expStr) {
+        if (!expStr) {
+            throw new TypeError('Malformed function expression: Empty expression string');
+        }
+        if (typeof expStr !== 'string') {
+            throw new TypeError(`Malformed function expression: '${expStr}' is not a string`);
+        }
         expStr = expStr.replace(/\n/g, '').trim();
 
         const openCnt = (expStr.match(/\(/g) || []).length;
         const closeCnt = (expStr.match(/\)/g) || []).length;
         if (expStr.charAt(expStr.length - 1) !== ')' || openCnt !== closeCnt) {
-            throw `Malformed function expression: '${expStr}'`;
+            throw new TypeError(`Malformed function expression: '${expStr}'`);
         }
         if (expStr.charAt(0) === '(') {
-            throw `Malformed function expression: missing function name: '${expStr}'`;
+            throw new TypeError(`Malformed function expression: missing function name: '${expStr}'`);
         }
         const pos = expStr.indexOf('(');
         const funcName = expStr.slice(0, pos);

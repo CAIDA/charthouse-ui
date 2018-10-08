@@ -3,6 +3,7 @@ import chai from 'chai';
 import FunctionExpression from '../../js/Explorer/expression/function';
 import PathExpression from "../../js/Explorer/expression/path";
 import ConstantExpression from "../../js/Explorer/expression/constant";
+import ExpressionFactory from "../../js/Explorer/expression/factory";
 
 const type = 'function';
 
@@ -459,6 +460,62 @@ describe("FunctionExpression createFromCanonical (pretty, complex)", () => {
     });
 });
 
+describe("FunctionExpression createFromCanonical (invalid)", () => {
+    it('should fail when given no expression string', () => {
+        chai.expect(() => {
+            FunctionExpression.createFromCanonicalStr();
+        }).to.throw(TypeError);
+    });
+
+    it('should fail when given an empty expression string', () => {
+        chai.expect(() => {
+            FunctionExpression.createFromCanonicalStr('');
+        }).to.throw(TypeError);
+    });
+
+    it('should fail when given a non-string argument', () => {
+        chai.expect(() => {
+            FunctionExpression.createFromCanonicalStr(12345);
+        }).to.throw(TypeError);
+        chai.expect(() => {
+            FunctionExpression.createFromCanonicalStr({});
+        }).to.throw(TypeError);
+    });
+
+    it('should fail when given a malformed expression', () => {
+        chai.expect(() => {
+            FunctionExpression.createFromCanonicalStr('testFunc(');
+        }).to.throw(TypeError);
+        chai.expect(() => {
+            FunctionExpression.createFromCanonicalStr('testFunc)');
+        }).to.throw(TypeError);
+        chai.expect(() => {
+            FunctionExpression.createFromCanonicalStr('(testFunc)');
+        }).to.throw(TypeError);
+        chai.expect(() => {
+            FunctionExpression.createFromCanonicalStr('()testFunc');
+        }).to.throw(TypeError);
+        chai.expect(() => {
+            FunctionExpression.createFromCanonicalStr('()');
+        }).to.throw(TypeError);
+    });
+
+    it('should fail when given malformed function args', () => {
+        chai.expect(() => {
+            FunctionExpression.createFromCanonicalStr('testFunc(,path)');
+        }).to.throw(TypeError);
+        chai.expect(() => {
+            FunctionExpression.createFromCanonicalStr('testFunc(path,)');
+        }).to.throw(TypeError);
+        chai.expect(() => {
+            FunctionExpression.createFromCanonicalStr('testFunc(path,,)');
+        }).to.throw(TypeError);
+        chai.expect(() => {
+            FunctionExpression.createFromCanonicalStr('testFunc(path,,path)');
+        }).to.throw(TypeError);
+    });
+});
+
 describe("FunctionExpression createFromJson (no args)", () => {
     const json = {
         type,
@@ -551,7 +608,7 @@ describe("FunctionExpression createFromJson (single nested func, path arg)", () 
     });
 });
 
-describe("FunctionExpression createFromCanonical (complex)", () => {
+describe("FunctionExpression createFromJson (complex)", () => {
     const canon = `${testFunc}(${nestedFunc}(${testPathA}, ${testPathB}), ${nestedFuncB}(${testPathA}, "${testStrA}"))`;
     const canonPretty = `${testFunc}(\n  ${nestedFunc}(\n    ${testPathA},\n    ${testPathB}\n  ),\n  ${nestedFuncB}(\n    ${testPathA},\n    "${testStrA}"\n  )\n)`;
     const canonHuman = `${testFunc}(${nestedFunc}(${testPathHumanA}, ${testPathHumanB}), ${nestedFuncB}(${testPathHumanA}, "${testStrA}"))`;
@@ -587,5 +644,151 @@ describe("FunctionExpression createFromCanonical (complex)", () => {
         chai.expect(feFromCanon.getAllByType('constant').map(c => {
             return c.getJson()
         })).to.eql([ceA.getJson()]);
+    });
+});
+
+describe("ExpressionFactory createFromJson (complex, serialized)", () => {
+    const canon = `${testFunc}(${nestedFunc}(${testPathA}, ${testPathB}), ${nestedFuncB}(${testPathA}, "${testStrA}"))`;
+    const canonPretty = `${testFunc}(\n  ${nestedFunc}(\n    ${testPathA},\n    ${testPathB}\n  ),\n  ${nestedFuncB}(\n    ${testPathA},\n    "${testStrA}"\n  )\n)`;
+    const canonHuman = `${testFunc}(${nestedFunc}(${testPathHumanA}, ${testPathHumanB}), ${nestedFuncB}(${testPathHumanA}, "${testStrA}"))`;
+    const nfA = new FunctionExpression(nestedFunc, [peA, peB]);
+    const nfB = new FunctionExpression(nestedFuncB, [peA, ceA]);
+    const json = {
+        type,
+        func: testFunc,
+        args: [
+            nfA.getJson(),
+            nfB.getJson()
+        ]
+    };
+
+    // NOTE: uses ExpressionFactory to parse the serialized JSON
+    const feFromCanon = ExpressionFactory.createFromJson(JSON.stringify(json));
+
+    testFunction(feFromCanon, testFunc, canon, canonPretty, canonHuman,
+        [nfA.getJson(), nfB.getJson()]);
+
+    it('should return three children of type "function"', () => {
+        chai.expect(feFromCanon.getAllByType('function').map(c => {
+            return c.getJson()
+        })).to.eql([feFromCanon.getJson(), nfA.getJson(), nfB.getJson()]);
+    });
+
+    it('should return three children of type "path"', () => {
+        chai.expect(feFromCanon.getAllByType('path').map(c => {
+            return c.getJson()
+        })).to.eql([peA.getJson(), peB.getJson(), peA.getJson()]);
+    });
+
+    it('should return one child of type "constant"', () => {
+        chai.expect(feFromCanon.getAllByType('constant').map(c => {
+            return c.getJson()
+        })).to.eql([ceA.getJson()]);
+    });
+});
+
+describe("FunctionExpression createFromJson (invalid)", () => {
+    it('should fail when given no type', () => {
+        chai.expect(() => {
+            return FunctionExpression.createFromJson({
+                func: testFunc,
+                args: []
+            });
+        }).to.throw(TypeError);
+    });
+
+    it('should fail when given an incorrect type', () => {
+        chai.expect(() => {
+            return FunctionExpression.createFromJson({
+                type: 'constant',
+                func: testFunc,
+                args: []
+            });
+        }).to.throw(TypeError);
+    });
+
+    it('should fail when given no function name', () => {
+        chai.expect(() => {
+            return FunctionExpression.createFromJson({
+                type,
+                args: []
+            });
+        }).to.throw(TypeError);
+    });
+
+    it('should fail when given an empty function name', () => {
+        chai.expect(() => {
+            return FunctionExpression.createFromJson({
+                type,
+                func: '',
+                args: []
+            });
+        }).to.throw(TypeError);
+    });
+
+    it('should fail when given a null function name', () => {
+        chai.expect(() => {
+            return FunctionExpression.createFromJson({
+                type,
+                func: null,
+                args: []
+            });
+        }).to.throw(TypeError);
+    });
+
+    it('should fail when given an integer function name', () => {
+        chai.expect(() => {
+            return FunctionExpression.createFromJson({
+                type,
+                func: 12345,
+                args: []
+            });
+        }).to.throw(TypeError);
+    });
+
+    it('should fail when given an object function name', () => {
+        chai.expect(() => {
+            return FunctionExpression.createFromJson({
+                type,
+                func: {},
+                args: []
+            });
+        }).to.throw(TypeError);
+    });
+
+    it('should fail when given no args', () => {
+        chai.expect(() => {
+            return FunctionExpression.createFromJson({
+                type,
+                func: testFunc
+            });
+        }).to.throw(TypeError);
+    });
+
+    it('should not fail when given empty arg list', () => {
+        chai.expect(() => {
+            return FunctionExpression.createFromJson({
+                type,
+                func: testFunc,
+                args: []
+            });
+        }).not.to.throw(TypeError);
+    });
+
+    it('should fail when given a non-array args parameter', () => {
+        chai.expect(() => {
+            return FunctionExpression.createFromJson({
+                type,
+                func: testFunc,
+                args: {}
+            });
+        }).to.throw(TypeError);
+        chai.expect(() => {
+            return FunctionExpression.createFromJson({
+                type,
+                func: testFunc,
+                args: 'ERROR'
+            });
+        }).to.throw(TypeError);
     });
 });
