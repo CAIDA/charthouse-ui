@@ -687,6 +687,55 @@ describe("ExpressionFactory createFromJson (complex, serialized)", () => {
     });
 });
 
+describe("ExpressionFactory createFromJson (complex, array)", () => {
+    const canon = `${testFunc}(${nestedFunc}(${testPathA}, ${testPathB}), ${nestedFuncB}(${testPathA}, "${testStrA}"))`;
+    const canonPretty = `${testFunc}(\n  ${nestedFunc}(\n    ${testPathA},\n    ${testPathB}\n  ),\n  ${nestedFuncB}(\n    ${testPathA},\n    "${testStrA}"\n  )\n)`;
+    const canonHuman = `${testFunc}(${nestedFunc}(${testPathHumanA}, ${testPathHumanB}), ${nestedFuncB}(${testPathHumanA}, "${testStrA}"))`;
+    const nfA = new FunctionExpression(nestedFunc, [peA, peB]);
+    const nfB = new FunctionExpression(nestedFuncB, [peA, ceA]);
+    const json = {
+        type,
+        func: testFunc,
+        args: [
+            nfA.getJson(),
+            nfB.getJson()
+        ]
+    };
+
+    // NOTE: uses ExpressionFactory to parse the serialized JSON
+    const feFromCanonArr = ExpressionFactory.createFromJsonArray([json, json]);
+
+    it('should create an array of two expressions', () => {
+        chai.expect(feFromCanonArr.length).to.equal(2);
+    });
+
+    const feFromCanon = feFromCanonArr[0];
+    testFunction(feFromCanon, testFunc, canon, canonPretty, canonHuman,
+        [nfA.getJson(), nfB.getJson()]);
+
+    it('should return three children of type "function"', () => {
+        chai.expect(feFromCanon.getAllByType('function').map(c => {
+            return c.getJson()
+        })).to.eql([feFromCanon.getJson(), nfA.getJson(), nfB.getJson()]);
+    });
+
+    it('should return three children of type "path"', () => {
+        chai.expect(feFromCanon.getAllByType('path').map(c => {
+            return c.getJson()
+        })).to.eql([peA.getJson(), peB.getJson(), peA.getJson()]);
+    });
+
+    it('should return one child of type "constant"', () => {
+        chai.expect(feFromCanon.getAllByType('constant').map(c => {
+            return c.getJson()
+        })).to.eql([ceA.getJson()]);
+    });
+
+    it('should convert back to an array of two JSON objects', () => {
+        chai.expect(ExpressionFactory.toJsonArray(feFromCanonArr)).to.eql([json, json]);
+    });
+});
+
 describe("FunctionExpression createFromJson (invalid)", () => {
     it('should fail when given no type', () => {
         chai.expect(() => {

@@ -1,10 +1,10 @@
 import chai from 'chai';
 
 import ExpressionFactory from '../../js/Explorer/expression/factory';
+import PathExpression from "../../js/Explorer/expression/path";
 
 // most of the expression factory code is tested from the specific expression
 // type checks
-
 
 describe("ExpressionFactory createFromJson (invalid)", () => {
     it('should fail when given no json', () => {
@@ -68,6 +68,28 @@ describe("ExpressionFactory createFromCanonical (invalid)", () => {
     it('should fail when given a malformed argument expression', () => {
         chai.expect(() => {
             ExpressionFactory.createFromCanonicalStr('testFunc(a, b, "xyz)');
+        }).to.throw(TypeError);
+    });
+});
+
+describe("ExpressionFactory createFromJsonArray (invalid)", () => {
+    it('should fail when given something other than an array', () => {
+        chai.expect(() => {
+            ExpressionFactory.createFromJsonArray(new PathExpression('a.test.path'));
+        }).to.throw(TypeError);
+    });
+});
+
+describe("ExpressionFactory toJsonArray (invalid)", () => {
+    it('should fail when given something other than an array', () => {
+        chai.expect(() => {
+            ExpressionFactory.toJsonArray(new PathExpression('a.test.path'));
+        }).to.throw(TypeError);
+    });
+
+    it('should fail if the array contains a non-expression object', () => {
+        chai.expect(() => {
+            ExpressionFactory.toJsonArray(['test']);
         }).to.throw(TypeError);
     });
 });

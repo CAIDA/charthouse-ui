@@ -3,6 +3,7 @@ import has from 'has';
 import ConstantExpression from './constant';
 import PathExpression from './path';
 import FunctionExpression from './function';
+import AbstractExpression from "./abstract";
 
 class ExpressionFactory {
 
@@ -18,7 +19,7 @@ class ExpressionFactory {
     static createFromJson(json) {
         if (typeof json !== 'object') {
             // be generous, and try and detect if we've been given serialized JSON
-            if(typeof json === 'string' && json.charAt(0) === '{') {
+            if (typeof json === 'string' && json.charAt(0) === '{') {
                 json = JSON.parse(json);
             } else {
                 throw new TypeError(`Invalid expression JSON: '${json}'`);
@@ -97,6 +98,25 @@ class ExpressionFactory {
         } // else: path
         const expClz = ExpressionFactory.getExpressionClass(type);
         return expClz.createFromCanonicalStr(expStr);
+    }
+
+    static toJsonArray(expressions) {
+        if (!Array.isArray(expressions)) {
+            throw new TypeError('expression parameter must be an array');
+        }
+        return expressions.map(e => {
+            if (!(e instanceof AbstractExpression)) {
+                throw new TypeError('Item is not an AbstractExpression instance');
+            }
+            return e.getJson();
+        });
+    }
+
+    static createFromJsonArray(jsonArray) {
+        if (!Array.isArray(jsonArray)) {
+            throw new TypeError('expression parameter must be an array');
+        }
+        return jsonArray.map(ExpressionFactory.createFromJson);
     }
 
 }
