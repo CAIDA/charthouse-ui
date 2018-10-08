@@ -4,6 +4,7 @@ import FunctionExpression from '../../js/Explorer/expression/function';
 import PathExpression from "../../js/Explorer/expression/path";
 import ConstantExpression from "../../js/Explorer/expression/constant";
 import ExpressionFactory from "../../js/Explorer/expression/factory";
+import ExpressionSet from "../../js/Explorer/expression/set";
 
 const type = 'function';
 
@@ -703,13 +704,13 @@ describe("ExpressionFactory createFromJson (complex, array)", () => {
     };
 
     // NOTE: uses ExpressionFactory to parse the serialized JSON
-    const feFromCanonArr = ExpressionFactory.createFromJsonArray([json, json]);
+    const expSet = ExpressionSet.createFromJsonArray([json, json]);
 
-    it('should create an array of two expressions', () => {
-        chai.expect(feFromCanonArr.length).to.equal(2);
+    it('should create a set with one expression', () => {
+        chai.expect(expSet.getSize()).to.equal(1);
     });
 
-    const feFromCanon = feFromCanonArr[0];
+    const feFromCanon = expSet.getExpression(canon);
     testFunction(feFromCanon, testFunc, canon, canonPretty, canonHuman,
         [nfA.getJson(), nfB.getJson()]);
 
@@ -731,8 +732,8 @@ describe("ExpressionFactory createFromJson (complex, array)", () => {
         })).to.eql([ceA.getJson()]);
     });
 
-    it('should convert back to an array of two JSON objects', () => {
-        chai.expect(ExpressionFactory.toJsonArray(feFromCanonArr)).to.eql([json, json]);
+    it('should convert back to an array of one JSON object', () => {
+        chai.expect(expSet.toJsonArray(expSet)).to.eql([json]);
     });
 });
 

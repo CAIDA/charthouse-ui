@@ -71,25 +71,3 @@ describe("ExpressionFactory createFromCanonical (invalid)", () => {
         }).to.throw(TypeError);
     });
 });
-
-describe("ExpressionFactory createFromJsonArray (invalid)", () => {
-    it('should fail when given something other than an array', () => {
-        chai.expect(() => {
-            ExpressionFactory.createFromJsonArray(new PathExpression('a.test.path'));
-        }).to.throw(TypeError);
-    });
-});
-
-describe("ExpressionFactory toJsonArray (invalid)", () => {
-    it('should fail when given something other than an array', () => {
-        chai.expect(() => {
-            ExpressionFactory.toJsonArray(new PathExpression('a.test.path'));
-        }).to.throw(TypeError);
-    });
-
-    it('should fail if the array contains a non-expression object', () => {
-        chai.expect(() => {
-            ExpressionFactory.toJsonArray(['test']);
-        }).to.throw(TypeError);
-    });
-});

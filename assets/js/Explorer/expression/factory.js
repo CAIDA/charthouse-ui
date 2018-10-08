@@ -99,26 +99,6 @@ class ExpressionFactory {
         const expClz = ExpressionFactory.getExpressionClass(type);
         return expClz.createFromCanonicalStr(expStr);
     }
-
-    static toJsonArray(expressions) {
-        if (!Array.isArray(expressions)) {
-            throw new TypeError('expression parameter must be an array');
-        }
-        return expressions.map(e => {
-            if (!(e instanceof AbstractExpression)) {
-                throw new TypeError('Item is not an AbstractExpression instance');
-            }
-            return e.getJson();
-        });
-    }
-
-    static createFromJsonArray(jsonArray) {
-        if (!Array.isArray(jsonArray)) {
-            throw new TypeError('expression parameter must be an array');
-        }
-        return jsonArray.map(ExpressionFactory.createFromJson);
-    }
-
 }
 
 export default ExpressionFactory;
