@@ -3,7 +3,6 @@ import has from 'has';
 import ConstantExpression from './constant';
 import PathExpression from './path';
 import FunctionExpression from './function';
-import AbstractExpression from "./abstract";
 
 class ExpressionFactory {
 
