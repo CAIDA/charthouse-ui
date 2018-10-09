@@ -77,14 +77,16 @@ class ExpressionSet {
     }
 
     static createFromJsonArray(jsonArray) {
+        const set = new ExpressionSet();
         if (!Array.isArray(jsonArray)) {
-            if (typeof jsonArray === 'string' && jsonArray.charAt(0) === '[') {
+            if (!jsonArray) {
+                return set;
+            } else if (typeof jsonArray === 'string' && jsonArray.charAt(0) === '[') {
                 jsonArray = JSON.parse(jsonArray);
             } else {
                 throw new TypeError('expression parameter must be an array');
             }
         }
-        const set = new ExpressionSet();
         jsonArray.forEach(j => {
             set.addExpression(ExpressionFactory.createFromJson(j));
         });
