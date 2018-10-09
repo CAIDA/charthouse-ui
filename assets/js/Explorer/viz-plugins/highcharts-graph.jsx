@@ -889,7 +889,7 @@ const CharthouseXYChart = React.createClass({
             return {
                 lineWidth: 1,
                 id: series,
-                name: vals.name ? vals.name.abbrFit(250) : null,
+                name: vals.contextual_name ? vals.contextual_name.abbrFit(250) : null,
                 yAxis: 0,
                 pointInterval: step,
                 pointStart: vals.from * 1000,
