@@ -57,10 +57,9 @@ const Visualizer = React.createClass({
     },
 
     render: function () {
-        var exprStr = this.props.expressionSet.toSerialJson();
-
+        const expCnt = this.props.expressionSet.getSize();
         return <div>
-            {(!exprStr || !exprStr.length || !this.props.from || !this.props.until || !this.props.plugin)
+            {(expCnt === 0 || !this.props.from || !this.props.until || !this.props.plugin)
                 ? <p className="lead">{this.const.PLACEHOLDER_TXT}</p>
                 : <VizPlugin
                     ref="vizPlugin"
