@@ -308,6 +308,9 @@ const ExpressionTree = React.createClass({
         var tree = $tree.jstree(true);
 
         const json = node2json(tree.get_node(nodeId));
+        if (!json) {
+            return new ExpressionSet();
+        }
         if (!Array.isArray(json)) {
             throw new TypeError("Ensure node2json always returns an array");
         }

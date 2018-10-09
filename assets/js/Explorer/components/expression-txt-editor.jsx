@@ -48,7 +48,7 @@ const ExpressionTxtEditor = React.createClass({
         // Performance boost
         return (nextState.isValid !== this.state.isValid)
             || (nextState.expTxt !== this.state.expTxt)
-            || (!nextProps.expressionSet.equals(this.props.expressionSet));
+            || !nextProps.expressionSet.equals(this.props.expressionSet);
     },
 
     mixins: [React.addons.LinkedStateMixin],

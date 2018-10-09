@@ -84,7 +84,7 @@ const Visualizer = React.createClass({
     _dataCall: function (success, error) {
         return this.state.apiConnector.getTsData(
             {
-                expression: this.props.expressionSet.toJsonArray(),
+                expressions: this.props.expressionSet.toJsonArray(),
                 from: this.props.from.toParamStr(),
                 until: this.props.until.toParamStr(),
                 downSampleFunc: this.props.configMan.getParam('downSampleFunc')

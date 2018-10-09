@@ -100,9 +100,10 @@ CharthouseApiConnector.prototype.getTsData = function (params, success, error) {
             {
                 from: params.from,
                 until: params.until,
-                expression: params.expression,
                 annotate: true
             },
+            params.expression ? {expression: params.expression} : {},
+            params.expressions ? {expressions: params.expressions} : {},
             disableCache ? {noCache: true} : {},
             unlimit ? {unlimit: true} : {},
             params.downSampleFunc ? {downSampleFunc: params.downSampleFunc} : {}

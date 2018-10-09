@@ -384,7 +384,7 @@ const ExpressionBuilder = React.createClass({
         return (nextState.isValid !== this.state.isValid)
             || (JSON.stringify(nextState.errors) !== JSON.stringify(this.state.errors))
             || (JSON.stringify(nextState.currentSelected) !== JSON.stringify(this.state.currentSelected))
-            || (!nextProps.expressionSet.equals(this.props.expressionSet));
+            || !nextProps.expressionSet.equals(this.props.expressionSet);
     },
 
     render: function () {

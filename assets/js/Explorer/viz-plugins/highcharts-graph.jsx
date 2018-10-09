@@ -694,7 +694,7 @@ const CharthouseXYChart = React.createClass({
             yAxis: [
                 this._axisConf = {
                     title: {
-                        text: (this.props.data.summary().common_suffix.getCanonicalHuman() || '') // series units
+                        text: this._getCommonSuffix() // series units
                     },
                     opposite: false, // Axis on left side
                     gridLineWidth: 0.6,
@@ -735,7 +735,7 @@ const CharthouseXYChart = React.createClass({
                     minute: "%A, %b %e, %l:%M%P",
                     hour: "%A, %b %e, %l:%M%P"
                 },
-                valueSuffix: ' ' + (this.props.data.summary().common_suffix.getCanonicalHuman() || ''),
+                valueSuffix: ' ' + this._getCommonSuffix(),
                 crosshairs: true,
                 snap: 10,
                 //hideDelay: 5,
@@ -850,6 +850,11 @@ const CharthouseXYChart = React.createClass({
             series: this._parseData(this.props.data.series())
 
         });
+    },
+
+    _getCommonSuffix: function() {
+        const cs = this.props.data.summary().common_suffix;
+        return cs ? cs.getCanonicalHumanized() : '';
     },
 
     _parseData: function (seriesData) {
