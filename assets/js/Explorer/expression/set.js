@@ -47,6 +47,32 @@ class ExpressionSet {
         return JSON.stringify(this.toJsonArray());
     }
 
+    equals(that) {
+        return (this === that || this.toSerialJson() === that.toSerialJson());
+    }
+
+    getAllByType(type) {
+        let exps = [];
+        this.getExpressions().forEach(e => {
+            exps = exps.concat(e.getAllByType(type));
+        });
+        return exps;
+    }
+
+    getCanonicalStr(indent) {
+        return this.getExpressions().map(e => {
+            return e.getCanonicalStr(indent);
+        }).join(indent ? ',\n' : ',');
+    }
+
+    static createFromCanonicalStr(expStr) {
+        const set = new ExpressionSet();
+        ExpressionFactory.createFromCanonicalStr(expStr).forEach(e => {
+            set.addExpression(e);
+        });
+        return set;
+    }
+
     static createFromJsonArray(jsonArray) {
         if (!Array.isArray(jsonArray)) {
             if (typeof jsonArray === 'string' && jsonArray.charAt(0) === '[') {

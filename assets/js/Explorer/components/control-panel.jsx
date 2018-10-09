@@ -1,11 +1,11 @@
 import React from 'react';
 
 import config from '../config/config';
-import Expression from '../utils/expression';
 import CharthouseTime from '../utils/time';
 import TimeRangeControl from './time-range-control';
 import PluginSelector from './plugin-selector';
 import ExpressionComposer from './expression-composer';
+import ExpressionSet from "../expression/set";
 
 import hicubeLogo from '../../../images/logos/hicube-full.png';
 import caidaLogo from '../../../images/logos/caida_logo_small.png';
@@ -18,7 +18,7 @@ const ControlPanel = React.createClass({
     },
 
     propTypes: {
-        expression: React.PropTypes.instanceOf(Expression).isRequired,
+        expressionSet: React.PropTypes.instanceOf(ExpressionSet).isRequired,
         from: React.PropTypes.instanceOf(CharthouseTime).isRequired,
         until: React.PropTypes.instanceOf(CharthouseTime).isRequired,
         plugin: React.PropTypes.string.isRequired,
@@ -63,9 +63,9 @@ const ControlPanel = React.createClass({
         this.props.onChange({plugin: selPlugin});
     },
 
-    _expressionEntered: function (newExp) {
-        if (!newExp || !newExp.equals(this.props.expression)) {
-            this.props.onChange({expression: newExp});
+    _expressionEntered: function (newExpSet) {
+        if (!newExpSet || !newExpSet.equals(this.props.expressionSet)) {
+            this.props.onChange({expressionSet: newExpSet});
         }
     },
 
@@ -121,11 +121,11 @@ const ControlPanel = React.createClass({
             </div>
             <div className="panel panel-default controller-panel">
                 <div className="panel-heading panel-title">
-                    Specify metrics expression
+                    Specify metric expression
                 </div>
                 <div className="panel-body">
                     <ExpressionComposer
-                        expression={this.props.expression}
+                        expressionSet={this.props.expressionSet}
                         initExpandMetricTree={this.props.initExpandMetricTree}
                         maxHeight={Math.max(300, this.state.windowHeight - this.const.HIERARCHY_EXPLORER_VERTICAL_OFFSET)}
                         onExpressionEntered={this._expressionEntered}

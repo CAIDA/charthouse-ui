@@ -4,7 +4,7 @@ import $ from 'jquery';
 import 'font-awesome/css/font-awesome.css';
 
 import ExpressionTree from './expression-tree';
-import Expression from '../utils/expression';
+import ExpressionSet from "../expression/set";
 
 const ToolbarBtn = React.createClass({
 
@@ -319,18 +319,16 @@ const ExpressionBuilder = React.createClass({
     },
 
     propTypes: {
-        expression: React.PropTypes.instanceOf(Expression),
+        expressionSet: React.PropTypes.instanceOf(ExpressionSet),
         onChange: React.PropTypes.func,
         onValidStateChange: React.PropTypes.func
     },
 
     getDefaultProps: function () {
         return {
-            expression: new Expression(),
-            onChange: function (newExpression) {
-            },
-            onValidStateChange: function (newState) {
-            }
+            expressionSet: new ExpressionSet(),
+            onChange: function (newExpression) {},
+            onValidStateChange: function (newState) {}
         };
     },
 
@@ -372,21 +370,21 @@ const ExpressionBuilder = React.createClass({
     },
 
     componentDidUpdate: function (prevProps, prevState) {
-        if (!prevProps.expression.equals(this.props.expression)) {
+        if (!prevProps.expressionSet.equals(this.props.expressionSet)) {
             this.componentDidMount();
         }
 
-        if (prevState.isValid != this.state.isValid) {
+        if (prevState.isValid !== this.state.isValid) {
             this.props.onValidStateChange(this.state.isValid);
         }
     },
 
     shouldComponentUpdate: function (nextProps, nextState) {
         // Performance boost
-        return (nextState.isValid != this.state.isValid)
-            || (JSON.stringify(nextState.errors) != JSON.stringify(this.state.errors))
-            || (JSON.stringify(nextState.currentSelected) != JSON.stringify(this.state.currentSelected))
-            || (!nextProps.expression.equals(this.props.expression));
+        return (nextState.isValid !== this.state.isValid)
+            || (JSON.stringify(nextState.errors) !== JSON.stringify(this.state.errors))
+            || (JSON.stringify(nextState.currentSelected) !== JSON.stringify(this.state.currentSelected))
+            || (!nextProps.expressionSet.equals(this.props.expressionSet));
     },
 
     render: function () {
@@ -410,14 +408,14 @@ const ExpressionBuilder = React.createClass({
 
             <ExpressionTree
                 ref="expressionTree"
-                expression={this.props.expression}
+                expressionSet={this.props.expressionSet}
                 onChange={this._expChanged}
                 onSelectionChange={this._adjustToolbarState}
                 icons={this.const.ICONS}
             />
             <p
                 className="small text-center text-muted"
-                style={{display: this.props.expression.getJson() ? 'none' : false}}
+                style={{display: this.props.expressionSet.getSize() > 0 ? 'none' : false}}
             >
                 Empty expression. Add metrics from the tree below...
             </p>
@@ -526,7 +524,7 @@ const ExpressionBuilder = React.createClass({
         var $node = $sel.length > 0 ? $sel[0] : null; // If multi selected, append to first
 
         // Add inside for functions, otherwise next to it
-        rTree.addExpression(exp, $node, !($node && $node.type == 'function'));
+        rTree.addExpression(exp, $node, !($node && $node.type === 'function'));
     }
 });
 

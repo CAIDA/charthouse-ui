@@ -2,7 +2,7 @@ import $ from 'jquery';
 import moment from 'moment';
 
 import config from '../config/config';
-import Expression from '../utils/expression';
+import ExpressionFactory from '../expression/factory';
 
 const CharthouseApiConnector = function () {
 
@@ -134,7 +134,7 @@ CharthouseApiConnector.prototype.getTsData = function (params, success, error) {
             series.until = moment(series.until).unix();
 
             // convert the expression json into an expression object
-            series.expression = new Expression(series.expression);
+            series.expression = ExpressionFactory.createFromJson(series.expression);
 
             // check time consistency (we made changes to how graphite thinks
             // about time, so we want to check that these changes are always used)
@@ -157,8 +157,8 @@ CharthouseApiConnector.prototype.getTsData = function (params, success, error) {
         summary.last_until = moment(summary.last_until).unix();
 
         // convert the common prefix/suffix json into expression objects
-        summary.common_prefix = new Expression(summary.common_prefix);
-        summary.common_suffix = new Expression(summary.common_suffix);
+        summary.common_prefix = ExpressionFactory.createFromJson(summary.common_prefix);
+        summary.common_suffix = ExpressionFactory.createFromJson(summary.common_suffix);
 
         success(json);
     }

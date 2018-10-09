@@ -6,9 +6,15 @@ import 'font-awesome/css/font-awesome.css';
 
 import Dialog from './dialog';
 import DataApi from '../connectors/data-api';
-import Expression from '../utils/expression';
 import HeirarchyExplorer from './hierarchy-explorer';
 import FunctionBrowser from './function-browser';
+import ExpressionSet from "../expression/set";
+import ExpressionFactory from "../expression/factory";
+import FunctionExpression from "../expression/function";
+import ConstantExpression from "../expression/constant";
+import PathExpression from "../expression/path";
+
+// TODO: this tree still uses a lot of json hax instead of using Expression objects directly
 
 const ExpressionTree = React.createClass({
 
@@ -17,7 +23,7 @@ const ExpressionTree = React.createClass({
     },
 
     propTypes: {
-        expression: React.PropTypes.instanceOf(Expression),
+        expressionSet: React.PropTypes.instanceOf(ExpressionSet),
         onChange: React.PropTypes.func,
         onSelectionChange: React.PropTypes.func,
         icons: React.PropTypes.object
@@ -25,11 +31,9 @@ const ExpressionTree = React.createClass({
 
     getDefaultProps: function () {
         return {
-            expression: new Expression(),
-            onChange: function (newExpression) {
-            },
-            onSelectionChange: function ($selectedNodes) {
-            },
+            expressionSet: new ExpressionSet(),
+            onChange: function (newExpression) { },
+            onSelectionChange: function ($selectedNodes) { },
             icons: {
                 func: "glyphicon glyphicon-cog",
                 path: "fa fa-leaf",
@@ -130,7 +134,7 @@ const ExpressionTree = React.createClass({
                 clearTimeout(changeEventDamper);
             changeEventDamper = setTimeout(
                 function () {
-                    rThis.props.onChange(rThis._getExpression());
+                    rThis.props.onChange(rThis._getExpressionSet());
                     rThis._refreshArgsCounters();
                 },
                 rThis.const.CHANGE_DAMPER_DELAY
@@ -149,18 +153,19 @@ const ExpressionTree = React.createClass({
 
         /////
 
-        if (this.props.expression.getJson())
-            this.addExpression(this.props.expression);
+        if (this.props.expressionSet) {
+            this.props.expressionSet.getExpressions().forEach(this.addExpression);
+        }
 
         this._loadFunctionSpecs();
     },
 
     componentDidUpdate: function (prevProps) {
-        if (!this.props.expression.equals(prevProps.expression)
-            && !this.props.expression.equals(this._getExpression())) {
+        if (!this.props.expressionSet.equals(prevProps.expressionSet)
+            && !this.props.expressionSet.equals(this._getExpressionSet())) {
             // Expression changed
             this._clear();
-            this.addExpression(this.props.expression);
+            this.props.expressionSet.getExpressions().forEach(this.addExpression);
         }
     },
 
@@ -245,7 +250,7 @@ const ExpressionTree = React.createClass({
     },
 
     _expression2tree: function (exp) {
-        var rThis = this;
+        const rThis = this;
         return json2tree(exp.getJson());
 
         function json2tree(json) {
@@ -255,13 +260,6 @@ const ExpressionTree = React.createClass({
 
             if (!json) {
                 return json;
-            }
-
-            if (typeof json == "string") { // Same as path object
-                json = {
-                    type: 'path',
-                    path: json
-                }
             }
 
             // Array
@@ -302,14 +300,25 @@ const ExpressionTree = React.createClass({
         }
     },
 
-    _tree2expression: function ($tree, nodeId) {
+    _tree2expression: function ($tree, nodeId, asSet) {
 
         nodeId = nodeId || '#';
         nodeId = nodeId.hasOwnProperty('id') ? nodeId.id : nodeId;
 
         var tree = $tree.jstree(true);
 
-        return new Expression(node2json(tree.get_node(nodeId)));
+        const json = node2json(tree.get_node(nodeId));
+        if (!Array.isArray(json)) {
+            throw new TypeError("Ensure node2json always returns an array");
+        }
+        if (asSet) {
+            return ExpressionSet.createFromJsonArray(json);
+        } else {
+            if (json.length !== 1) {
+                throw new TypeError(`Expecting a single expression, but found ${json.length}`);
+            }
+            return ExpressionFactory.createFromJson(json[0]);
+        }
 
         //
 
@@ -321,11 +330,9 @@ const ExpressionTree = React.createClass({
                 }).filter(function (c) {
                     return c != null;
                 });
-                return !rootData.length
+                return rootData.length === 0
                     ? null           // Empty
-                    : rootData.length == 1
-                        ? rootData[0]
-                        : rootData; // Return single element
+                    : rootData; // Return single element
             }
 
             if (node.type == 'default') { // Just default folder with values
@@ -360,8 +367,8 @@ const ExpressionTree = React.createClass({
         }
     },
 
-    _getExpression: function (nodeId) {
-        return this._tree2expression(this.$tree, nodeId);
+    _getExpressionSet: function (nodeId) {
+        return this._tree2expression(this.$tree, nodeId, true);
     },
 
     _getAllChildrenNodes: function (parentId, dfs) {
@@ -511,11 +518,7 @@ const ExpressionTree = React.createClass({
                         function (func) {
                             rModal.close();
                             var newNode = rThis.addExpression(
-                                new Expression({
-                                    type: "function",
-                                    func: func,
-                                    args: []
-                                }),
+                                new FunctionExpression(func),
                                 parentId,
                                 inline
                             );
@@ -528,6 +531,7 @@ const ExpressionTree = React.createClass({
         );
     },
 
+    /* DEPRECATED
     addMetric: function (parentId, inline, callback) {
         parentId = parentId || '#';
         parentId = parentId.hasOwnProperty('id') ? parentId.id : parentId;
@@ -547,10 +551,7 @@ const ExpressionTree = React.createClass({
                         function (id) {
                             rModal.close();
                             var newNode = rThis.addExpression(
-                                new Expression({
-                                    type: "path",
-                                    path: id
-                                }),
+                                new PathExpression(id),
                                 parentId,
                                 inline
                             );
@@ -562,15 +563,13 @@ const ExpressionTree = React.createClass({
             $anchor[0]
         );
     },
+    */
 
     addConstant: function (parentId, inline) {
         parentId = parentId || '#';
         parentId = parentId.hasOwnProperty('id') ? parentId.id : parentId;
 
-        var nodeId = this.addExpression(new Expression({
-                type: "constant",
-                value: ''
-            }),
+        var nodeId = this.addExpression(new ConstantExpression(''),
             parentId,
             inline
         );
@@ -655,15 +654,12 @@ const ExpressionTree = React.createClass({
                         }}
                     >
                         <HeirarchyExplorer
-                            initExpandPath={$node.data.path}
+                            initExpandPath={[new PathExpression($node.data.path)]}
                             onLeafSelected={
                                 function (id) {
                                     rModal.close();
                                     tree.rename_node($node, id);
-                                    $node.data = new Expression({
-                                        type: "path",
-                                        path: id
-                                    }).getJson();
+                                    $node.data = new PathExpression(id).getJson();
                                 }
                             }
                         />

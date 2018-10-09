@@ -1,11 +1,10 @@
 import React from 'react';
 
 import config from '../config/config';
-import StaticCfg from '../config/static';
 import CharthouseTime from '../utils/time';
-import Expression from '../utils/expression';
 import ControlPanel from './control-panel';
 import Visualizer from './visualizer';
+import ExpressionSet from "../expression/set";
 
 const Explorer = React.createClass({
 
@@ -19,9 +18,9 @@ const Explorer = React.createClass({
     },
 
     getInitialState: function () {
-        const expression = new Expression(config.getParam('expression'));
+        const expressionSet = ExpressionSet.createFromJsonArray(config.getParam('expressions'));
         return {
-            expression: expression,
+            expressionSet: expressionSet,
             from: config.getParam("from")
                 ? new CharthouseTime(config.getParam("from"))
                 : this.const.DEFAULT_QUERYTIME[0],
@@ -31,8 +30,8 @@ const Explorer = React.createClass({
             plugin: config.getParam("plugin") || this.const.DEFAULT_PLUGIN,
             showController: config.getParam('hideControl') == null,
 
-            // Only expand if expression is not the default (statically) configured
-            initExpandMetricTree: !expression.equals(new Expression(StaticCfg.expression))
+            // used to be that we only expanded for non-default expression
+            initExpandMetricTree: true
         };
     },
 
@@ -48,9 +47,8 @@ const Explorer = React.createClass({
     _configChangeHandler: function (newParams) {
         var updQueryState = {};
 
-        if (newParams.hasOwnProperty('expression')) {
-            // TODO: what if expression is null?
-            updQueryState.expression = new Expression(newParams.expression);
+        if (newParams.hasOwnProperty('expressions')) {
+            updQueryState.expressionSet = ExpressionSet.createFromJsonArray(newParams.expressions);
         }
 
         if (newParams.hasOwnProperty('from')) {
@@ -84,8 +82,8 @@ const Explorer = React.createClass({
         // Component state change managed by config manager
         var pushState = {};
 
-        if (changedQueryParams.expression)
-            pushState.expression = changedQueryParams.expression.getSerialJson();
+        if (changedQueryParams.expressionSet)
+            pushState.expressions = changedQueryParams.expressionSet.toSerialJson();
 
         if (changedQueryParams.from)
             pushState.from = changedQueryParams.from.toParamStr();
@@ -106,7 +104,7 @@ const Explorer = React.createClass({
                 style={this.state.showController ? {} : {display: 'none'}}
             >
                 <ControlPanel
-                    expression={this.state.expression}
+                    expressionSet={this.state.expressionSet}
                     from={this.state.from}
                     until={this.state.until}
                     plugin={this.state.plugin}
@@ -118,7 +116,7 @@ const Explorer = React.createClass({
                 className={this.state.showController ? 'col col-sm-8 col-lg-9' : ''}
             >
                 <Visualizer
-                    expression={this.state.expression}
+                    expressionSet={this.state.expressionSet}
                     from={this.state.from}
                     until={this.state.until}
                     plugin={this.state.plugin}

@@ -2,12 +2,13 @@ import React from 'react/addons';
 import $ from 'jquery';
 import 'font-awesome/css/font-awesome.css';
 
-import Expression from '../utils/expression';
 import HeirarchyExplorer from './hierarchy-explorer';
 import ExpressionBuilder from './expression-builder';
 import ExpressionTxtEditor from './expression-txt-editor';
 import Toggle from './toggle-switch';
 import '../utils/jquery-plugins';
+import ExpressionSet from "../expression/set";
+import PathExpression from "../expression/path";
 
 const ExpressionComposer = React.createClass({
 
@@ -17,7 +18,7 @@ const ExpressionComposer = React.createClass({
     },
 
     propTypes: {
-        expression: React.PropTypes.instanceOf(Expression),
+        expressionSet: React.PropTypes.instanceOf(ExpressionSet),
         initExpandMetricTree: React.PropTypes.bool,
         maxHeight: React.PropTypes.number,
         onExpressionEntered: React.PropTypes.func
@@ -25,11 +26,10 @@ const ExpressionComposer = React.createClass({
 
     getDefaultProps: function () {
         return {
-            expression: new Expression(),
+            expressionSet: new ExpressionSet(),
             initExpandMetricTree: true,
             maxHeight: 500,
-            onExpressionEntered: function (newExp) {
-            }
+            onExpressionEntered: function (newExp) {}
         };
     },
 
@@ -39,7 +39,7 @@ const ExpressionComposer = React.createClass({
             isValid: true,
             autoApply: true,
             replaceMode: false,
-            editExpression: this.props.expression
+            editExpression: this.props.expressionSet
         }
     },
 
@@ -50,8 +50,8 @@ const ExpressionComposer = React.createClass({
     },
 
     componentDidUpdate: function (prevProps, prevState) {
-        if (!this.props.expression.equals(prevProps.expression)) {
-            this.setState({editExpression: this.props.expression});
+        if (!this.props.expressionSet.equals(prevProps.expressionSet)) {
+            this.setState({editExpressionSet: this.props.expressionSet});
         }
 
         if (!this.state.editExpression.equals(prevState.editExpression)) {
@@ -86,7 +86,7 @@ const ExpressionComposer = React.createClass({
             <div style={{display: this.state.txtMode ? 'none' : false}}>
                 <ExpressionBuilder
                     ref="uiEditor"
-                    expression={this.state.editExpression}
+                    expressionSet={this.state.editExpression}
                     onChange={this._expChanged}
                     onValidStateChange={this._validityChanged}
                 />
@@ -95,7 +95,7 @@ const ExpressionComposer = React.createClass({
             <div style={{display: this.state.txtMode ? false : 'none'}}>
                 <ExpressionTxtEditor
                     ref="txtEditor"
-                    expression={this.state.editExpression}
+                    expressionSet={this.state.editExpression}
                     onChange={this._expChanged}
                     onValidStateChange={this._validityChanged}
                 />
@@ -153,7 +153,7 @@ const ExpressionComposer = React.createClass({
                 <HeirarchyExplorer
                     ref="metricExplorer"
                     onLeafSelected={this._metricSelected}
-                    initExpandPath={this.props.initExpandMetricTree ? this.props.expression.getAllMetrics() : []}
+                    initExpandPath={this.props.initExpandMetricTree ? this.props.expressionSet.getAllByType('path') : []}
                 />
             </div>
 
@@ -200,13 +200,11 @@ const ExpressionComposer = React.createClass({
     },
 
     _metricSelected: function (id) {
-        var metricExp = new Expression({
-            type: "path",
-            path: id
-        });
-
+        const metricExp = new PathExpression(id);
         if (this.state.replaceMode) {
-            this.setState({editExpression: metricExp});
+            const newSet = new ExpressionSet();
+            newSet.addExpression(metricExp)
+            this.setState({editExpression: newSet});
         } else {
             this.refs[this.state.txtMode ? 'txtEditor' : 'uiEditor'].injectExpression(metricExp);
         }

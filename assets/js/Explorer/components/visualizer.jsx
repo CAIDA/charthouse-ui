@@ -1,9 +1,9 @@
 import React from 'react';
 import config from '../config/config';
-import Expression from '../utils/expression';
 import CharthouseTime from '../utils/time';
 import DataApi from '../connectors/data-api';
 import VizPlugin from './plugin-loader';
+import ExpressionSet from "../expression/set";
 
 const Visualizer = React.createClass({
 
@@ -12,7 +12,7 @@ const Visualizer = React.createClass({
     },
 
     propTypes: {
-        expression: React.PropTypes.instanceOf(Expression).isRequired,
+        expressionSet: React.PropTypes.instanceOf(ExpressionSet).isRequired,
         from: React.PropTypes.instanceOf(CharthouseTime).isRequired,
         until: React.PropTypes.instanceOf(CharthouseTime).isRequired,
         plugin: React.PropTypes.string.isRequired,
@@ -47,9 +47,9 @@ const Visualizer = React.createClass({
     componentDidUpdate: function (prevProps) {
         var cur = this.props;
         if (this.refs.vizPlugin &&
-            (!cur.expression.equals(prevProps.expression)
-                || cur.from.toParamStr() != prevProps.from.toParamStr()
-                || cur.until.toParamStr() != prevProps.until.toParamStr()
+            (!cur.expressionSet.equals(prevProps.expressionSet)
+                || cur.from.toParamStr() !== prevProps.from.toParamStr()
+                || cur.until.toParamStr() !== prevProps.until.toParamStr()
             )
         ) {
             this.refs.vizPlugin.refresh();
@@ -57,7 +57,7 @@ const Visualizer = React.createClass({
     },
 
     render: function () {
-        var exprStr = this.props.expression.getSerialJson();
+        var exprStr = this.props.expressionSet.toSerialJson();
 
         return <div>
             {(!exprStr || !exprStr.length || !this.props.from || !this.props.until || !this.props.plugin)
@@ -67,7 +67,7 @@ const Visualizer = React.createClass({
                     plugin={this.props.plugin}
                     title={this.props.title}
                     header={this.props.header}
-                    queryTxt={this.props.expression.getCanonicalTxt()}
+                    queryTxt={this.props.expressionSet.getCanonicalStr(true)}
                     loadingTxt={this.props.loadingTxt}
                     dataCall={this._dataCall}
                     markersDataCall={this.props.markersDataCall
@@ -84,7 +84,7 @@ const Visualizer = React.createClass({
     _dataCall: function (success, error) {
         return this.state.apiConnector.getTsData(
             {
-                expression: this.props.expression.getJson(),
+                expression: this.props.expressionSet.toJsonArray(),
                 from: this.props.from.toParamStr(),
                 until: this.props.until.toParamStr(),
                 downSampleFunc: this.props.configMan.getParam('downSampleFunc')

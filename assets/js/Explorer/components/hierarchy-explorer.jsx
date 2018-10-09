@@ -21,10 +21,7 @@ const HeirarchyExplorer = React.createClass({
     },
 
     propTypes: {
-        initExpandPath: React.PropTypes.oneOfType([
-            React.PropTypes.string,
-            React.PropTypes.array  // Array of paths to expand
-        ]),
+        initExpandPath: React.PropTypes.array,
         onLeafSelected: React.PropTypes.func
     },
 
@@ -141,8 +138,8 @@ const HeirarchyExplorer = React.createClass({
             var getChildStruct = function (child) {
                 return {
                     data: (target.length ? target + '.' : '') + child.path,
-                    text: child.human_name + ((child.leaf && child.hasOwnProperty('path_ount') && child.path_ount > 1)
-                            ? '<span class="badge" title="Generates total of ' + child.path_count + ' series">' + child.path_ount + '</span>'
+                    text: child.human_name + ((child.leaf && child.hasOwnProperty('path_count') && child.path_count > 1)
+                            ? '<span class="badge" title="Generates total of ' + child.path_count + ' series">' + child.path_count + '</span>'
                             : ''
                     ),
                     type: ((child.leaf ? 'leaf' : 'branch') + (child.path === '*' ? 'All' : '')),
@@ -170,7 +167,7 @@ const HeirarchyExplorer = React.createClass({
                     human_name: '✲',
                     leaf: true,
                     path_count: _.reduce(treeData, function (prev, cur) {
-                            return prev + (cur.leaf ? cur.path_ount : 0);
+                            return prev + (cur.leaf ? cur.path_count : 0);
                         },
                         0
                     )
@@ -267,12 +264,12 @@ const HeirarchyExplorer = React.createClass({
     // Also accepts a list of paths in an array structure
     expandPath: function (path) {
 
-        if (path.constructor === Array) {
+        if (Array.isArray(path)) {
             path.forEach(this.expandPath);
             return;
         }
 
-        path = path.split('.').slice(0, -1); // Leaf doesn't need expansion
+        path = path.getPath().split('.').slice(0, -1); // Leaf doesn't need expansion
 
         var $tree = this.$tree;
         waitForInit();
