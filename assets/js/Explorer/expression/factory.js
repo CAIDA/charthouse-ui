@@ -17,6 +17,12 @@ class ExpressionFactory {
     }
 
     static createFromJson(json) {
+        if (!json) {
+            if (json === null) {
+                return null;
+            }
+            throw new TypeError(`Cannot create expression from '${json}'`);
+        }
         if (typeof json !== 'object') {
             // be generous, and try and detect if we've been given serialized JSON
             if (typeof json === 'string' && json.charAt(0) === '{') {
@@ -25,7 +31,6 @@ class ExpressionFactory {
                 throw new TypeError(`Invalid expression JSON: '${json}'`);
             }
         }
-
         if (!has(json, 'type')) {
             throw new TypeError('Invalid expression JSON: missing type field');
         }
