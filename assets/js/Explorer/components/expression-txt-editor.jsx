@@ -95,7 +95,11 @@ const ExpressionTxtEditor = React.createClass({
         try {
             return ExpressionSet.createFromCanonicalStr(this.state.expTxt);
         } catch (err) {
-            return false;
+            if (err instanceof TypeError) {
+                return false;
+            } else {
+                throw err;
+            }
         }
     },
 

@@ -61,15 +61,18 @@ class ExpressionSet {
 
     getCanonicalStr(indent) {
         return this.getExpressions().map(e => {
-            return e.getCanonicalStr(indent);
+            return e.getCanonicalStr(0);
         }).join(indent ? ',\n' : ',');
     }
 
     static createFromCanonicalStr(expStr) {
         const set = new ExpressionSet();
-        ExpressionFactory.createFromCanonicalStr(expStr).forEach(e => {
-            set.addExpression(e);
-        });
+        const exps = ExpressionFactory.createFromCanonicalStr(expStr);
+        if (Array.isArray(exps)) {
+            exps.forEach(set.addExpression);
+        } else {
+            set.addExpression(exps);
+        }
         return set;
     }
 
