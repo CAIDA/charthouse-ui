@@ -121,7 +121,7 @@ const ControlPanel = React.createClass({
             </div>
             <div className="panel panel-default controller-panel">
                 <div className="panel-heading panel-title">
-                    Specify metric expression
+                    Build query expression
                 </div>
                 <div className="panel-body">
                     <ExpressionComposer
