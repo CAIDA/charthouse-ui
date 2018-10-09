@@ -39,7 +39,7 @@ const ExpressionComposer = React.createClass({
             isValid: true,
             autoApply: true,
             replaceMode: false,
-            editExpression: this.props.expressionSet
+            editExpressionSet: this.props.expressionSet
         }
     },
 
@@ -54,7 +54,7 @@ const ExpressionComposer = React.createClass({
             this.setState({editExpressionSet: this.props.expressionSet});
         }
 
-        if (!this.state.editExpression.equals(prevState.editExpression)) {
+        if (!this.state.editExpressionSet.equals(prevState.editExpressionSet)) {
             this.setState({isValid: this.refs[this.state.txtMode ? 'txtEditor' : 'uiEditor'].isValid()});
             if (this.state.autoApply) {
                 // Auto apply expression
@@ -86,7 +86,7 @@ const ExpressionComposer = React.createClass({
             <div style={{display: this.state.txtMode ? 'none' : false}}>
                 <ExpressionBuilder
                     ref="uiEditor"
-                    expressionSet={this.state.editExpression}
+                    expressionSet={this.state.editExpressionSet}
                     onChange={this._expChanged}
                     onValidStateChange={this._validityChanged}
                 />
@@ -95,7 +95,7 @@ const ExpressionComposer = React.createClass({
             <div style={{display: this.state.txtMode ? false : 'none'}}>
                 <ExpressionTxtEditor
                     ref="txtEditor"
-                    expressionSet={this.state.editExpression}
+                    expressionSet={this.state.editExpressionSet}
                     onChange={this._expChanged}
                     onValidStateChange={this._validityChanged}
                 />
@@ -183,7 +183,7 @@ const ExpressionComposer = React.createClass({
     },
 
     _expChanged: function (exp) {
-        this.setState({editExpression: exp});
+        this.setState({editExpressionSet: exp});
     },
 
     _validityChanged: function (newState) {
@@ -192,7 +192,7 @@ const ExpressionComposer = React.createClass({
 
     _applyExpression: function () {
         if (this.state.isValid)
-            this.props.onExpressionEntered(this.state.editExpression);
+            this.props.onExpressionEntered(this.state.editExpressionSet);
     },
 
     _toggleReplaceMode: function (newState) {
@@ -204,7 +204,7 @@ const ExpressionComposer = React.createClass({
         if (this.state.replaceMode) {
             const newSet = new ExpressionSet();
             newSet.addExpression(metricExp)
-            this.setState({editExpression: newSet});
+            this.setState({editExpressionSet: newSet});
         } else {
             this.refs[this.state.txtMode ? 'txtEditor' : 'uiEditor'].injectExpression(metricExp);
         }
