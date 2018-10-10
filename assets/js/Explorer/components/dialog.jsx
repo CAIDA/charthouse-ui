@@ -36,9 +36,8 @@ class Dialog extends React.Component {
                 backdrop={this.props.backdrop}     // Darkens background
                 keyboard={this.props.keyboard}     // Closes on esc keypress
                 animation={true}    // Rendering animation
-                closeButton={this.props.showCloseButton}  // cross button on top-right
             >
-                <Modal.Header>
+                <Modal.Header closeButton={this.props.showCloseButton}>
                     <Modal.Title>
                         {this.props.title}
                     </Modal.Title>
