@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import ReactDOM from 'react-dom';
 import $ from 'jquery';
 import 'font-awesome/css/font-awesome.css';
 
@@ -162,7 +163,7 @@ const ExpressionComposer = React.createClass({
     _switchEditMode: function () {
         if (this.state.txtMode && !this.refs.txtEditor.isValid()) {
             // Can't switch
-            $(this.refs.editMode.getDOMNode()).flash(160, 2);
+            $(ReactDOM.findDOMNode(this.refs.editMode)).flash(160, 2);
             return;
         }
 
@@ -170,12 +171,12 @@ const ExpressionComposer = React.createClass({
         var rThis = this;
         var inComp = this.refs[this.state.txtMode ? 'uiEditor' : 'txtEditor'];
         var outComp = this.refs[!this.state.txtMode ? 'uiEditor' : 'txtEditor'];
-        $(outComp.getDOMNode()).fadeOut(200, function () {
+        $(ReactDOM.findDOMNode(outComp)).fadeOut(200, function () {
             rThis.setState({
                 txtMode: !rThis.state.txtMode,
                 isValid: inComp.isValid()
             });
-            $(inComp.getDOMNode()).fadeIn(200);
+            $(ReactDOM.findDOMNode(inComp)).fadeIn(200);
         });
 
     },

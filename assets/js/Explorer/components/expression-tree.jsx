@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import ReactDOM from 'react-dom';
 import $ from 'jquery';
 import 'jstree';
 import 'jstree/dist/themes/default/style.css';
@@ -51,7 +52,7 @@ const ExpressionTree = React.createClass({
         var rThis = this;
 
         // Wrapped jQuery plugin
-        var $tree = (this.$tree = $(this.refs.ExpressionTree.getDOMNode()));
+        var $tree = (this.$tree = $(ReactDOM.findDOMNode(this.refs.ExpressionTree)));
 
         $tree.jstree({
             core: {
@@ -170,7 +171,7 @@ const ExpressionTree = React.createClass({
 
     componentWillUnmount: function () {
         // Destroy jQuery plugin
-        var $elem = $(this.refs.ExpressionTree.getDOMNode());
+        var $elem = $(ReactDOM.findDOMNode(this.refs.ExpressionTree));
         $.removeData($elem.get(0));
     },
 

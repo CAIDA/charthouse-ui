@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import ReactDOM from 'react-dom';
 import $ from 'jquery';
 import 'font-awesome/css/font-awesome.css';
 
@@ -107,11 +108,11 @@ const DataInfo = React.createClass({
 
         // Blink on data changes
         if (this.props.data.numSeries != prevProps.data.numSeries) {
-            $(this.refs.numSeries.getDOMNode()).flash(500, 2);
+            $(ReactDOM.findDOMNode(this.refs.numSeries)).flash(500, 2);
         }
 
         if (this.state.numPoints != prevState.numPoints) {
-            $(this.refs.numPoints.getDOMNode()).flash(500, 2);
+            $(ReactDOM.findDOMNode(this.refs.numPoints)).flash(500, 2);
         }
     },
 
@@ -170,7 +171,7 @@ const PluginFooter = React.createClass({
 
         // Blink on data changes
         if (data.jsonSize() != prevData.jsonSize()) {
-            $(this.refs.jsonSize.getDOMNode()).flash(500, 2);
+            $(ReactDOM.findDOMNode(this.refs.jsonSize)).flash(500, 2);
         }
     },
 

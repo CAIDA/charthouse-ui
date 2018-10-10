@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import ReactDOM from 'react-dom';
 import $ from 'jquery';
 import moment from 'moment';
 // TODO: re-apply or upgrade to version with following patch:
@@ -34,7 +35,7 @@ const Y2Control = React.createClass({
     },
 
     componentDidMount: function () {
-        this.$select = $(this.refs.selectPicker.getDOMNode());
+        this.$select = $(ReactDOM.findDOMNode(this.refs.selectPicker));
         this.$select.selectpicker({
             style: 'btn-default btn-xs',
             size: 14,
@@ -621,7 +622,7 @@ const CharthouseXYChart = React.createClass({
     },
 
     _draw: function () {
-        const node = this.getDOMNode();
+        const node = ReactDOM.findDOMNode(this);
         this.node = node;
 
         const yRange = this.props.data.getValRange();

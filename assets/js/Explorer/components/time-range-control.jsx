@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import ReactDOM from 'react-dom';
 import moment from 'moment';
 import $ from 'jquery';
 import 'bootstrap-daterangepicker';
@@ -79,7 +80,7 @@ const TimeRangeControl = React.createClass({
         defaultRanges[$customLastHtml[0].outerHTML] = [customLastFunc, moment.duration()];
 
         var rThis = this;
-        this.$dateRangePicker = $(this.refs.DateRangePicker.getDOMNode())
+        this.$dateRangePicker = $(ReactDOM.findDOMNode(this.refs.DateRangePicker))
             .daterangepicker({
                     startDate: this.props.from.getMomentObj(),
                     endDate: this.props.until.getMomentObj(),
@@ -137,7 +138,7 @@ const TimeRangeControl = React.createClass({
 
     componentWillUnmount: function () {
         // Destroy plugin
-        var $elem = $(this.refs.DateRangePicker.getDOMNode());
+        var $elem = $(ReactDOM.findDOMNode(this.refs.DateRangePicker));
         $.removeData($elem.get(0));
     },
 

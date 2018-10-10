@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import ReactDOM from 'react-dom';
 import _ from 'underscore';
 import $ from 'jquery';
 import 'jstree';
@@ -37,7 +38,7 @@ const HeirarchyExplorer = React.createClass({
         var apiConnector = new DataApi();
 
         // Wrapped jQuery plugin
-        this.$tree = $(this.refs.treeExplorer.getDOMNode());
+        this.$tree = $(ReactDOM.findDOMNode(this.refs.treeExplorer));
 
         this.$tree.jstree({
             "core": {
@@ -250,7 +251,7 @@ const HeirarchyExplorer = React.createClass({
 
     componentWillUnmount: function () {
         // Destroy jQuery plugin
-        var $elem = $(this.refs.treeExplorer.getDOMNode());
+        var $elem = $(ReactDOM.findDOMNode(this.refs.treeExplorer));
         $.removeData($elem.get(0));
     },
 

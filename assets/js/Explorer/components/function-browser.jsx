@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import ReactDOM from 'react-dom';
 import $ from 'jquery';
 import 'jstree';
 import 'jstree/dist/themes/default/style.css';
@@ -29,7 +30,7 @@ const FunctionTree = React.createClass({
         const rThis = this;
 
         // Wrapped jQuery plugin
-        this.$tree = $(this.refs.functionTree.getDOMNode());
+        this.$tree = $(ReactDOM.findDOMNode(this.refs.functionTree));
 
         this.$tree.jstree({
             "core": {
@@ -154,7 +155,7 @@ const FunctionTree = React.createClass({
 
     componentWillUnmount: function () {
         // Destroy jQuery plugin
-        var $elem = $(this.refs.functionTree.getDOMNode());
+        var $elem = $(ReactDOM.findDOMNode(this.refs.functionTree));
         $.removeData($elem.get(0));
     },
 
@@ -254,7 +255,7 @@ const FunctionBrowser = React.createClass({
         // Allow time for dom to be built, say on an animated modal, before setting focus on the search bar
         var rThis = this;
         setTimeout(function () {
-            rThis.refs.SearchBox.getDOMNode().focus();
+            ReactDOM.findDOMNode(rThis.refs.SearchBox).focus();
         }, 500);
     },
 
