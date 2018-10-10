@@ -11,12 +11,10 @@ import ExpressionSet from "../expression/set";
 import hicubeLogo from '../../../images/logos/hicube-full.png';
 import caidaLogo from '../../../images/logos/caida_logo_small.png';
 
-const ControlPanel = React.createClass({
+// Module constants
+const HIERARCHY_EXPLORER_VERTICAL_OFFSET = 430; // # vertical px already in use by headers, other controls, etc
 
-    const: {
-        // Module Constants
-        HIERARCHY_EXPLORER_VERTICAL_OFFSET: 430 // # vertical px already in use by headers, other controls, etc
-    },
+const ControlPanel = React.createClass({
 
     propTypes: {
         expressionSet: PropTypes.instanceOf(ExpressionSet).isRequired,
@@ -128,7 +126,7 @@ const ControlPanel = React.createClass({
                     <ExpressionComposer
                         expressionSet={this.props.expressionSet}
                         initExpandMetricTree={this.props.initExpandMetricTree}
-                        maxHeight={Math.max(300, this.state.windowHeight - this.const.HIERARCHY_EXPLORER_VERTICAL_OFFSET)}
+                        maxHeight={Math.max(300, this.state.windowHeight - HIERARCHY_EXPLORER_VERTICAL_OFFSET)}
                         onExpressionEntered={this._expressionEntered}
                     />
                 </div>
