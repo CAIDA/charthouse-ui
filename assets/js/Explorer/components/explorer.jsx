@@ -6,6 +6,10 @@ import ControlPanel from './control-panel';
 import Visualizer from './visualizer';
 import ExpressionSet from "../expression/set";
 
+// TODO: break these styles up and move them to the actual components that use them
+import '../../../css/Explorer/explorer.css';
+import '../../../css/Explorer/viz-plugins.css';
+
 // TODO: remove these and force config in static.js
 const DEFAULT_QUERYTIME = [
     new CharthouseTime('-1d'),
@@ -97,29 +101,31 @@ class Explorer extends React.Component {
     };
 
     render() {
-        return <div className="container-fluid">
-            <div
-                className={this.state.showController ? 'col col-sm-4 col-lg-3' : ''}
-                style={this.state.showController ? {} : {display: 'none'}}
-            >
-                <ControlPanel
-                    expressionSet={this.state.expressionSet}
-                    from={this.state.from}
-                    until={this.state.until}
-                    plugin={this.state.plugin}
-                    onChange={this._changeQueryParams}
-                    initExpandMetricTree={this.state.initExpandMetricTree}
-                />
-            </div>
-            <div
-                className={this.state.showController ? 'col col-sm-8 col-lg-9' : ''}
-            >
-                <Visualizer
-                    expressionSet={this.state.expressionSet}
-                    from={this.state.from}
-                    until={this.state.until}
-                    plugin={this.state.plugin}
-                />
+        return <div id="explorer-main">
+            <div className="container-fluid">
+                <div
+                    className={this.state.showController ? 'col col-sm-4 col-lg-3' : ''}
+                    style={this.state.showController ? {} : {display: 'none'}}
+                >
+                    <ControlPanel
+                        expressionSet={this.state.expressionSet}
+                        from={this.state.from}
+                        until={this.state.until}
+                        plugin={this.state.plugin}
+                        onChange={this._changeQueryParams}
+                        initExpandMetricTree={this.state.initExpandMetricTree}
+                    />
+                </div>
+                <div
+                    className={this.state.showController ? 'col col-sm-8 col-lg-9' : ''}
+                >
+                    <Visualizer
+                        expressionSet={this.state.expressionSet}
+                        from={this.state.from}
+                        until={this.state.until}
+                        plugin={this.state.plugin}
+                    />
+                </div>
             </div>
         </div>
     }

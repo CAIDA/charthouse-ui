@@ -16,11 +16,8 @@ Encore
      *
      * Add 1 entry for each "page" of your app
      * (including one that's included on every page - e.g. "app")
-     *
-     * Each entry will result in one JavaScript file (e.g. explorer.js)
-     * and one CSS file (e.g. explorer.css) if you JavaScript imports CSS.
      */
-    .addEntry('explorer', ['babel-polyfill', './assets/js/explorer.js'])
+    .addEntry('hi3', ['babel-polyfill', './assets/js/hi3.js'])
 
     // shim to webpackify the horribly old jquery BBQ plugin
     .addLoader({

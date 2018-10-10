@@ -8,17 +8,17 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class CharthouseController extends AbstractController
+class Hi3Controller extends AbstractController
 {
     /**
-     * @Route("/", methods={"GET"}, name="explorer")
+     * @Route("/{reactRouting}", defaults={"reactRouting": null}, methods={"GET"}, name="hi3")
      *
      * @return Response
      */
-    public function explorerUi(): Response
+    public function hi3(): Response
     {
         return $this->render(
-            'explorer.html.twig'
+            'hi3.html.twig'
         );
     }
 }
