@@ -530,40 +530,6 @@ class ExpressionTree extends React.Component {
         );
     };
 
-    /* DEPRECATED
-    addMetric: function (parentId, inline, callback) {
-        parentId = parentId || '#';
-        parentId = parentId.hasOwnProperty('id') ? parentId.id : parentId;
-
-        var rThis = this;
-        var $anchor = $('<span>');
-        var rModal = React.render(
-            <Dialog
-                title="Choose a metric"
-                onClose={function () {
-                    // GC rogue modal
-                    React.unmountComponentAtNode($anchor[0]);
-                }}
-            >
-                <HeirarchyExplorer
-                    onLeafSelected={
-                        function (id) {
-                            rModal.close();
-                            var newNode = rThis.addExpression(
-                                new PathExpression(id),
-                                parentId,
-                                inline
-                            );
-                            if (callback) callback(newNode);
-                        }
-                    }
-                />
-            </Dialog>,
-            $anchor[0]
-        );
-    },
-    */
-
     addConstant = (parentId, inline) => {
         parentId = parentId || '#';
         parentId = parentId.hasOwnProperty('id') ? parentId.id : parentId;
