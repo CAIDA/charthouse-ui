@@ -14,61 +14,56 @@ import caidaLogo from '../../../images/logos/caida_logo_small.png';
 // Module constants
 const HIERARCHY_EXPLORER_VERTICAL_OFFSET = 430; // # vertical px already in use by headers, other controls, etc
 
-const ControlPanel = React.createClass({
-
-    propTypes: {
+class ControlPanel extends React.Component {
+    static propTypes = {
         expressionSet: PropTypes.instanceOf(ExpressionSet).isRequired,
         from: PropTypes.instanceOf(CharthouseTime).isRequired,
         until: PropTypes.instanceOf(CharthouseTime).isRequired,
         plugin: PropTypes.string.isRequired,
         initExpandMetricTree: PropTypes.bool,
         onChange: PropTypes.func
-    },
+    };
 
-    getDefaultProps: function () {
-        return {
-            initExpandMetricTree: true,
-            onChange: function (changedParams) {
-            }
-        };
-    },
+    static defaultProps = {
+        initExpandMetricTree: true,
+        onChange: function (changedParams) {
+        }
+    };
 
-    getInitialState: function () {
-        return {
-            windowHeight: window.innerHeight
-        };
-    },
+    state = {
+        windowHeight: window.innerHeight
+    };
 
-    componentDidMount: function () {
+    componentDidMount() {
         window.addEventListener('resize', this._setWindowHeight);
-    },
+    }
 
-    componentWillUnmount: function () {
+    componentWillUnmount() {
         window.removeEventListener('resize', this._setWindowHeight);
-    },
+    }
 
-    _setWindowHeight: function () {
+    _setWindowHeight = () => {
         this.setState({windowHeight: window.innerHeight});
-    },
+    };
 
-    _timeSelected: function (from, until) {
+    _timeSelected = (from, until) => {
         this.props.onChange({
             from: from,
             until: until
         });
-    },
+    };
 
-    _pluginSelected: function (selPlugin) {
+    _pluginSelected = (selPlugin) => {
         this.props.onChange({plugin: selPlugin});
-    },
+    };
 
-    _expressionEntered: function (newExpSet) {
+    _expressionEntered = (newExpSet) => {
         if (!newExpSet || !newExpSet.equals(this.props.expressionSet)) {
             this.props.onChange({expressionSet: newExpSet});
         }
-    },
+    };
 
-    render: function () {
+    render() {
 
         return <div>
             <div className="panel panel-default controller-panel">
@@ -178,6 +173,6 @@ const ControlPanel = React.createClass({
             </div>
         </div>
     }
-});
+}
 
 export default ControlPanel;
