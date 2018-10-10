@@ -465,8 +465,7 @@ const MAX_GRAPH_VERTICES = 100000;
 const MAX_SERIES_TO_ANIMATE = 20;
 const POINTS_PER_PIXEL = 2;
 
-// TODO: should extend React.PureComponent
-class CharthouseXYChart extends React.Component {
+class CharthouseXYChart extends React.PureComponent {
     static propTypes = {
         data: PropTypes.instanceOf(CharthouseData.api).isRequired,
         height: PropTypes.number.isRequired,
