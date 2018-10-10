@@ -18,22 +18,19 @@ const PATHS_WITHOUT_WILDCARDS = [
     'darknet.ucsd-nt.non-erratic.routing.provider'
 ];
 
-const HeirarchyExplorer = React.createClass({
-
-    propTypes: {
+class HeirarchyExplorer extends React.Component {
+    static propTypes = {
         initExpandPath: PropTypes.array,
         onLeafSelected: PropTypes.func
-    },
+    };
 
-    getDefaultProps: function () {
-        return {
-            initExpandPath: null,
-            onLeafSelected: function (id, name) {
-            }
-        };
-    },
+    static defaultProps = {
+        initExpandPath: null,
+        onLeafSelected: function (id, name) {
+        }
+    };
 
-    componentDidMount: function () {
+    componentDidMount() {
         var rThis = this;
         var apiConnector = new DataApi();
 
@@ -247,22 +244,22 @@ const HeirarchyExplorer = React.createClass({
                     return $tree.jstree('get_node', id).text.split('<')[0].trim(); // Remove all from right of 1st html tag
                 });
         }
-    },
+    }
 
-    componentWillUnmount: function () {
+    componentWillUnmount() {
         // Destroy jQuery plugin
         var $elem = $(ReactDOM.findDOMNode(this.refs.treeExplorer));
         $.removeData($elem.get(0));
-    },
+    }
 
-    render: function () {
+    render() {
         return <div className="tree-explorer" ref="treeExplorer"/>;
-    },
+    }
 
     // Public methods
 
     // Also accepts a list of paths in an array structure
-    expandPath: function (path) {
+    expandPath = (path) => {
 
         if (Array.isArray(path)) {
             path.forEach(this.expandPath);
@@ -318,7 +315,7 @@ const HeirarchyExplorer = React.createClass({
                 });
             }
         }
-    }
-});
+    };
+}
 
 export default HeirarchyExplorer;

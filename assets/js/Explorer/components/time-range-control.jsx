@@ -11,22 +11,19 @@ import CharthouseTime from '../utils/time';
 
 const MOMENT_DATE_FORMAT = 'LL h:mma z';
 
-const TimeRangeControl = React.createClass({
-
-    propTypes: {
+class TimeRangeControl extends React.Component {
+    static propTypes = {
         from: PropTypes.instanceOf(CharthouseTime).isRequired,
         until: PropTypes.instanceOf(CharthouseTime).isRequired,
         onChange: PropTypes.func
-    },
+    };
 
-    getDefaultProps: function () {
-        return {
-            onChange: function (newFrom, newUntil) {
-            }
-        };
-    },
+    static defaultProps = {
+        onChange: function (newFrom, newUntil) {
+        }
+    };
 
-    componentDidMount: function () {
+    componentDidMount() {
 
         var customLastUniqueId = "datePickerCustomId_" + Math.round(Math.random() * 1000000);
         var $customLastHtml = $('<div class="form-inline" id="' + customLastUniqueId + '">').append(
@@ -123,9 +120,9 @@ const TimeRangeControl = React.createClass({
             rThis.$dateRangePicker.data('daterangepicker').setStartDate(customLastFunc());
             rThis.$dateRangePicker.data('daterangepicker').setEndDate(moment.duration());
         });
-    },
+    }
 
-    componentDidUpdate: function () {
+    componentDidUpdate() {
         // Update date range picker
         var curStart = new CharthouseTime(this.$dateRangePicker.data('daterangepicker').startDate);
         if (curStart.toParamStr() !== this.props.from.toParamStr())
@@ -134,21 +131,21 @@ const TimeRangeControl = React.createClass({
         var curEnd = new CharthouseTime(this.$dateRangePicker.data('daterangepicker').endDate);
         if (curEnd.toParamStr() !== this.props.until.toParamStr())
             this.$dateRangePicker.data('daterangepicker').setEndDate(this.props.until.getMomentObj());
-    },
+    }
 
-    componentWillUnmount: function () {
+    componentWillUnmount() {
         // Destroy plugin
         var $elem = $(ReactDOM.findDOMNode(this.refs.DateRangePicker));
         $.removeData($elem.get(0));
-    },
+    }
 
-    _clickCalendarIcon: function (e) {
+    _clickCalendarIcon = (e) => {
         // Open UI on icon click
         e.stopPropagation();
         this.$dateRangePicker.data('daterangepicker').toggle();
-    },
+    };
 
-    render: function () {
+    render() {
 
         return <div className="input-group input-group-sm">
                 <span className="input-group-addon btn">
@@ -161,7 +158,6 @@ const TimeRangeControl = React.createClass({
             />
         </div>;
     }
-
-});
+}
 
 export default TimeRangeControl;

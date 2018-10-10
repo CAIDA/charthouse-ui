@@ -26,15 +26,14 @@ const YAXIS_COLORS = ['teal', 'sienna'];
 // Row 1
 
 // Y2 Series Assignment control
-const Y2Control = React.createClass({
-
-    propTypes: {
+class Y2Control extends React.Component {
+    static propTypes = {
         seriesList: PropTypes.object.isRequired, // id=>{series}
         y2Series: PropTypes.arrayOf(PropTypes.string).isRequired,
         onY2SeriesChanged: PropTypes.func.isRequired
-    },
+    };
 
-    componentDidMount: function () {
+    componentDidMount() {
         this.$select = $(ReactDOM.findDOMNode(this.refs.selectPicker));
         this.$select.selectpicker({
             style: 'btn-default btn-xs',
@@ -42,15 +41,15 @@ const Y2Control = React.createClass({
             showIcon: false,
             countSelectedText: '{0} series selected'
         }).change(this._seriesSelectionChanged);
-    },
+    }
 
-    componentDidUpdate: function () {
+    componentDidUpdate() {
         if (this.props.y2Series.length && Object.keys(this.props.seriesList).length > 1) {
             this.$select.selectpicker('val', this.props.y2Series);
         }
-    },
+    }
 
-    render: function () {
+    render() {
         var sList = this.props.seriesList;
         return <div
             className='text-left'
@@ -91,26 +90,24 @@ const Y2Control = React.createClass({
                 }
             </select>
         </div>
-    },
-
-    _seriesSelectionChanged: function () {
-        this.props.onY2SeriesChanged(this.$select.selectpicker('val') || []);
     }
 
-});
+    _seriesSelectionChanged = () => {
+        this.props.onY2SeriesChanged(this.$select.selectpicker('val') || []);
+    };
+}
 
 // Point Aggregation control
-const PointAggControl = React.createClass({
-
-    propTypes: {
+class PointAggControl extends React.Component {
+    static propTypes = {
         interactive: PropTypes.bool.isRequired,
         ptsPerPx: PropTypes.number,
         timePerPx: PropTypes.string,
         aggrFunc: PropTypes.string.isRequired,
         onAggrFuncChanged: PropTypes.func.isRequired
-    },
+    };
 
-    render: function () {
+    render() {
         var aggrFuncs = [
             ["average", "Avg"],
             ["sum", "Sum"],
@@ -166,37 +163,32 @@ const PointAggControl = React.createClass({
                     </span>
                 </span>
         </div>
-    },
-
-    _onChange: function (e) {
-        this.props.onAggrFuncChanged(e.target.value);
     }
 
-});
-
+    _onChange = (e) => {
+        this.props.onAggrFuncChanged(e.target.value);
+    };
+}
 
 // Sort by method
-const SortBy = React.createClass({
-
-    propTypes: {
+class SortBy extends React.Component {
+    static propTypes = {
         sortBy: PropTypes.string,
         onSortByChanged: PropTypes.func,
         sortAscending: PropTypes.bool,
         onToggleSortAscending: PropTypes.func
-    },
+    };
 
-    getDefaultProps: function () {
-        return {
-            sortBy: 'alpha',
-            sortAscending: true,
-            onSortByChanged: function (newVal) {
-            },
-            onToggleSortAscending: function (newVal) {
-            }
+    static defaultProps = {
+        sortBy: 'alpha',
+        sortAscending: true,
+        onSortByChanged: function (newVal) {
+        },
+        onToggleSortAscending: function (newVal) {
         }
-    },
+    };
 
-    render: function () {
+    render() {
 
         var sortByOptions = [
             ['alpha', 'Name'],
@@ -256,27 +248,26 @@ const SortBy = React.createClass({
                     />
                 </span>
         </div>
-    },
+    }
 
     // Private methods
-    _changedSortBy: function (e) {
+    _changedSortBy = (e) => {
         this.props.onSortByChanged(e.target.value);
-    },
+    };
 
-    _toggleSortAscending: function (newVal) {
+    _toggleSortAscending = (newVal) => {
         this.props.onToggleSortAscending(newVal == 't');
-    }
-});
+    };
+}
 
 // Y-Axis Zoom toggle
-const YAxisZoomToggle = React.createClass({
-
-    propTypes: {
+class YAxisZoomToggle extends React.Component {
+    static propTypes = {
         zoomMode: PropTypes.string.isRequired,
         onZoomModeChanged: PropTypes.func.isRequired
-    },
+    };
 
-    render: function () {
+    render() {
         return <div
             className="text-left"
             style={{
@@ -298,24 +289,22 @@ const YAxisZoomToggle = React.createClass({
                 />
             </div>
         </div>
-    },
-
-    _onToggle: function (newState) {
-        this.props.onZoomModeChanged(newState ? "auto" : "manual");
     }
 
-});
+    _onToggle = (newState) => {
+        this.props.onZoomModeChanged(newState ? "auto" : "manual");
+    };
+}
 
 // Row 2
 
 // Downsample Notice
-const DownsampledNotice = React.createClass({
-
-    propTypes: {
+class DownsampledNotice extends React.Component {
+    static propTypes = {
         stepHuman: PropTypes.string
-    },
+    };
 
-    render: function () {
+    render() {
 
         if (!this.props.stepHuman) return null;
 
@@ -325,17 +314,15 @@ const DownsampledNotice = React.createClass({
                 </em>
             </span>
     }
-
-});
+}
 
 // All-Series toggle
-const AllSeriesToggle = React.createClass({
-
-    propTypes: {
+class AllSeriesToggle extends React.Component {
+    static propTypes = {
         onToggleAllSeries: PropTypes.func.isRequired
-    },
+    };
 
-    render: function () {
+    render() {
         return <span>
                 click series to toggle on/off, dbl-click to solo (
                 <a
@@ -349,13 +336,11 @@ const AllSeriesToggle = React.createClass({
                 )
             </span>
     }
-
-});
+}
 
 // Set of controls above the chart
-const Controls = React.createClass({
-
-    propTypes: {
+class Controls extends React.Component {
+    static propTypes = {
         seriesList: PropTypes.object.isRequired, // id=>{series}
         chartType: PropTypes.string,
         sortBy: PropTypes.string.isRequired,
@@ -374,19 +359,17 @@ const Controls = React.createClass({
         onToggleAllSeries: PropTypes.func.isRequired,
         onSortByChanged: PropTypes.func,
         onToggleSortAscending: PropTypes.func
-    },
+    };
 
-    getDefaultProps: function () {
-        return {
-            interactive: true,
-            onSortByChanged: function (newVal) {
-            },
-            onToggleSortAscending: function (newVal) {
-            }
+    static defaultProps = {
+        interactive: true,
+        onSortByChanged: function (newVal) {
+        },
+        onToggleSortAscending: function (newVal) {
         }
-    },
+    };
 
-    render: function () {
+    render() {
         var showAllSeriesToggle = this.props.interactive && Object.keys(this.props.seriesList).length > 1;
 
         return <div>
@@ -461,18 +444,17 @@ const Controls = React.createClass({
                 }
             </div>
         </div>;
-    },
-
-    // Private methods
-    _changedSortBy: function (e) {
-        this.props.onChangeSortBy(e.target.value);
-    },
-
-    _toggleSortAscending: function (newVal) {
-        this.props.onToggleSortAscending(newVal == 't');
     }
 
-});
+    // Private methods
+    _changedSortBy = (e) => {
+        this.props.onChangeSortBy(e.target.value);
+    };
+
+    _toggleSortAscending = (newVal) => {
+        this.props.onToggleSortAscending(newVal == 't');
+    };
+}
 
 // XY Chart
 
@@ -484,9 +466,8 @@ const MAX_SERIES_TO_ANIMATE = 20;
 const POINTS_PER_PIXEL = 2;
 
 // TODO: should extend React.PureComponent
-const CharthouseXYChart = React.createClass({
-
-    propTypes: {
+class CharthouseXYChart extends React.Component {
+    static propTypes = {
         data: PropTypes.instanceOf(CharthouseData.api).isRequired,
         height: PropTypes.number.isRequired,
         type: PropTypes.string.isRequired,
@@ -500,21 +481,19 @@ const CharthouseXYChart = React.createClass({
         onDownsampledStepChanged: PropTypes.func.isRequired,
         showLegend: PropTypes.bool.isRequired,
         markers: PropTypes.object.isRequired
-    },
+    };
 
-    getDefaultProps: function () {
-        return {
-            sortBy: 'alpha',
-            sortAscending: true
-        }
-    },
+    static defaultProps = {
+        sortBy: 'alpha',
+        sortAscending: true
+    };
 
-    componentDidMount: function () {
+    componentDidMount() {
         this._draw();
         this.componentDidUpdate(this.props);
-    },
+    }
 
-    componentDidUpdate: function (prevProps) {
+    componentDidUpdate(prevProps) {
         var redraw = false;
         var fullRedraw = false;
 
@@ -607,21 +586,21 @@ const CharthouseXYChart = React.createClass({
         } else if (redraw) {
             this.highchart.redraw();
         }
-    },
+    }
 
-    render: function () {
+    render() {
         return <div className="charthouse-highcharts-graph"
                     style={{height: this.props.height}} />
-    },
+    }
 
-    toggleAllSeries: function () {
+    toggleAllSeries = () => {
         this.highchart.series.forEach(function (series) {
             series.setVisible(!series.visible, false);
         });
         this.highchart.redraw();
-    },
+    };
 
-    _draw: function () {
+    _draw = () => {
         const node = ReactDOM.findDOMNode(this);
         this.node = node;
 
@@ -848,14 +827,14 @@ const CharthouseXYChart = React.createClass({
             series: this._parseData(this.props.data.series())
 
         });
-    },
+    };
 
-    _getCommonSuffix: function() {
+    _getCommonSuffix = () => {
         const cs = this.props.data.summary().common_suffix;
         return cs ? cs.getCanonicalHumanized() : '';
-    },
+    };
 
-    _parseData: function (seriesData) {
+    _parseData = (seriesData) => {
         var seriesNames = Object.keys(seriesData);
 
         var numVertices = seriesNames.map(function (serName) {
@@ -899,9 +878,9 @@ const CharthouseXYChart = React.createClass({
                 type: chartType,
             }
         });
-    },
+    };
 
-    _updateData: function (diff) {
+    _updateData = (diff) => {
         var chart = this.highchart;
 
         var newData = this.props.data;
@@ -989,9 +968,9 @@ const CharthouseXYChart = React.createClass({
 
         // Draw changes just once
         if (bulkRedraw) chart.redraw();
-    },
+    };
 
-    _updateMarkers: function () {
+    _updateMarkers = () => {
         // remove all the markers
         var xAxis = this.highchart.axes[0];
         xAxis.plotLinesAndBands.forEach(function (pl) {
@@ -1002,9 +981,9 @@ const CharthouseXYChart = React.createClass({
         this._createPlotLines().forEach(function (pl) {
             xAxis.addPlotBandOrLine(pl, 'plotLines');
         });
-    },
+    };
 
-    _createPlotLines: function () {
+    _createPlotLines = () => {
         var rThis = this;
         return [].concat.apply([], Object.keys(this.props.markers).map(function (s) {
             return rThis.props.markers[s].map(function (marker) {
@@ -1106,9 +1085,9 @@ const CharthouseXYChart = React.createClass({
                 ? (val - start) / step
                 : null;
         }
-    },
+    };
 
-    _chartChanged: function () {
+    _chartChanged = () => {
         const highchart = this.highchart;
         if (!highchart) {
             // race condition while chart is being built
@@ -1143,9 +1122,9 @@ const CharthouseXYChart = React.createClass({
             numAggrPoints,
             moment.duration(numAggrPoints * smallestStep).humanize()
         );
-    },
+    };
 
-    _getSortMethod: function () {
+    _getSortMethod = () => {
 
         var props = this.props;
         var ascending = this.props.sortAscending;
@@ -1200,79 +1179,76 @@ const CharthouseXYChart = React.createClass({
         return function (a, b) {
             return (ascending ? 1 : -1) * (preProcessData[a] - preProcessData[b]);
         };
-    }
-
-});
+    };
+}
 
 // Main HighCharts viz component
 
 const VERTICAL_HEADROOM = 85;
 const VERTICAL_HEADROOM_NO_CONTROLS = 75;
 
-const HighchartsGraph = React.createClass({
-
-    propTypes: {
+class HighchartsGraph extends React.Component {
+    static propTypes = {
         data: PropTypes.instanceOf(CharthouseData.api).isRequired,
         markers: PropTypes.object,
         configMan: PropTypes.object,
         maxHeight: PropTypes.number
-    },
+    };
 
-    getDefaultProps: function () {
-        return {
-            configMan: {
-                getParam: function (key) {
-                },
-                setParams: function (keVals) {
-                },
-                onParamChange: function (cb, key) {
-                },
-                unsubscribe: function (cb, key) {
-                }
+    static defaultProps = {
+        configMan: {
+            getParam: function (key) {
             },
-            maxHeight: window.innerHeight * .7,
-            markers: {}
-        }
-    },
+            setParams: function (keVals) {
+            },
+            onParamChange: function (cb, key) {
+            },
+            unsubscribe: function (cb, key) {
+            }
+        },
+        maxHeight: window.innerHeight * .7,
+        markers: {}
+    };
 
-    getInitialState: function () {
+    constructor(props, context) {
+        super(props, context);
 
-        var showControls = this.props.configMan.getParam('showControls', true);
-        var ascending = this.props.configMan.getParam('sortAscending', true);
-        var showLegend = this.props.configMan.getParam('showLegend', true);
+        var showControls = props.configMan.getParam('showControls', true);
+        var ascending = props.configMan.getParam('sortAscending', true);
+        var showLegend = props.configMan.getParam('showLegend', true);
 
-        return {
-            visibleFrom: this.props.data.summary().earliest_from * 1000,
-            visibleUntil: this.props.data.summary().last_until * 1000,
-            chartType: this.props.configMan.getParam('chartType') || 'line',
-            sortBy: this.props.configMan.getParam('sortBy') || '',
+        this.state = {
+            visibleFrom: props.data.summary().earliest_from * 1000,
+            visibleUntil: props.data.summary().last_until * 1000,
+            chartType: props.configMan.getParam('chartType') || 'line',
+            sortBy: props.configMan.getParam('sortBy') || '',
             sortAscending: tools.fuzzyBoolean(ascending),
-            y2Series: this._filterExistingSeries(this.props.configMan.getParam('y2Series') || []),
+            y2Series: this._filterExistingSeries(props.configMan.getParam('y2Series') || []),
             zoomMode: "auto", // or "manual"
             aggrPtsPerPx: null,
             aggrTimePerPx: null,
-            pntAggregation: this.props.configMan.getParam('pntAggregation') || "average",
+            pntAggregation: props.configMan.getParam('pntAggregation') || "average",
             downsampledStepHuman: null,
             showControls: tools.fuzzyBoolean(showControls),
             showLegend: tools.fuzzyBoolean(showLegend)
-        }
-    },
+        };
+    }
 
-    componentWillMount: function () {
+    componentWillMount() {
         this.props.configMan.onParamChange(this._configChanged);
-    },
+    }
 
-    componentWillUnmount: function () {
+    componentWillUnmount() {
         this.props.configMan.unsubscribe(this._configChanged);
-    },
+    }
 
-    componentWillUpdate: function (nextProps) {
+    componentWillUpdate(nextProps) {
         if (nextProps.data != this.props.data) {
             this._onY2SeriesChanged(this._filterExistingSeries(this.props.configMan.getParam('y2Series') || []));
         }
-    },
+    }
 
-    render: function () {
+    render() {
 
         return <div>
             <Controls
@@ -1313,10 +1289,10 @@ const HighchartsGraph = React.createClass({
             />
         </div>
 
-    },
+    }
 
     // Private methods
-    _configChanged: function (newParams) {
+    _configChanged = (newParams) => {
         var rThis = this;
 
         var keepProps = [
@@ -1362,60 +1338,59 @@ const HighchartsGraph = React.createClass({
 
             return val;
         }
-    },
+    };
 
-    _filterExistingSeries: function (seriesToFilter) {
+    _filterExistingSeries = (seriesToFilter) => {
         seriesToFilter = Array.isArray(seriesToFilter) ? seriesToFilter : [seriesToFilter];
         var series = this.props.data.series();
         return seriesToFilter.filter(function (s) {
             return series.hasOwnProperty(s);
         });
-    },
+    };
 
-    _onTimeRangeChanged: function (newFrom, newUntil) {
+    _onTimeRangeChanged = (newFrom, newUntil) => {
         this.setState({
             visibleFrom: newFrom || this.props.data.summary().earliest_from * 1000,
             visibleUntil: newUntil || this.props.data.summary().last_until * 1000
         });
         this.props.onTimeChange([this.state.visibleFrom, this.state.visibleUntil])
-    },
+    };
 
-    _onAggregationRatioChanged: function (aggrPoints, aggrTime) {
+    _onAggregationRatioChanged = (aggrPoints, aggrTime) => {
         this.setState({aggrPtsPerPx: aggrPoints, aggrTimePerPx: aggrTime});
-    },
+    };
 
-    _onChartTypeChanged: function (newType) {
+    _onChartTypeChanged = (newType) => {
         this.props.configMan.setParams({'chartType': newType});
-    },
+    };
 
-    _onY2SeriesChanged: function (y2Series) {
+    _onY2SeriesChanged = (y2Series) => {
         this.props.configMan.setParams({'y2Series': y2Series});
-    },
+    };
 
-    _onZoomModeChanged: function (newZoomMode) {
+    _onZoomModeChanged = (newZoomMode) => {
         this.setState({zoomMode: newZoomMode});
-    },
+    };
 
-    _onAggrFuncChanged: function (newFunc) {
+    _onAggrFuncChanged = (newFunc) => {
         this.props.configMan.setParams({pntAggregation: newFunc});
-    },
+    };
 
-    _onToggleAllSeries: function () {
+    _onToggleAllSeries = () => {
         this.refs.charthouseXY.toggleAllSeries();
-    },
+    };
 
-    _onDownsampledStepChanged: function (dss) {
+    _onDownsampledStepChanged = (dss) => {
         this.setState({downsampledStepHuman: dss})
-    },
+    };
 
-    _changeSortBy: function (newMethod) {
+    _changeSortBy = (newMethod) => {
         this.props.configMan.setParams({sortBy: newMethod});
-    },
+    };
 
-    _toggleSortAscending: function (newVal) {
+    _toggleSortAscending = (newVal) => {
         this.props.configMan.setParams({sortAscending: newVal});
-    }
-
-});
+    };
+}
 
 export default HighchartsGraph;

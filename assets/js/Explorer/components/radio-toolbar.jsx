@@ -2,27 +2,24 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { ButtonGroup, Button } from 'react-bootstrap';
 
-const RadioToolbar = React.createClass({
-
-    propTypes: {
+class RadioToolbar extends React.Component {
+    static propTypes = {
         options: PropTypes.arrayOf(PropTypes.object),    // Each { val: [string], display: [React component] }
         selected: PropTypes.string,
         fontSize: PropTypes.string,
         description: PropTypes.string,
         onChange: PropTypes.func
-    },
+    };
 
-    getDefaultProps: function () {
-        return {
-            options: [],
-            description: '',
-            fontSize: '13px',
-            onChange: function (newVal) {
-            }
-        };
-    },
+    static defaultProps = {
+        options: [],
+        description: '',
+        fontSize: '13px',
+        onChange: function (newVal) {
+        }
+    };
 
-    render: function () {
+    render() {
         const rThis = this;
 
         return <ButtonGroup
@@ -44,6 +41,6 @@ const RadioToolbar = React.createClass({
             })}
         </ButtonGroup>;
     }
-});
+}
 
 export default RadioToolbar;

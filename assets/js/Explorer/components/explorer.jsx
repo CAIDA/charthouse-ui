@@ -13,11 +13,12 @@ const DEFAULT_QUERYTIME = [
 ];
 const DEFAULT_PLUGIN = 'xyGraph';
 
-const Explorer = React.createClass({
-
-    getInitialState: function () {
+class Explorer extends React.Component {
+    constructor(props) {
+        super(props);
         const expressionSet = ExpressionSet.createFromJsonArray(config.getParam('expressions'));
-        return {
+
+        this.state = {
             expressionSet: expressionSet,
             from: config.getParam("from")
                 ? new CharthouseTime(config.getParam("from"))
@@ -31,18 +32,18 @@ const Explorer = React.createClass({
             // used to be that we only expanded for non-default expression
             initExpandMetricTree: true
         };
-    },
+    }
 
-    componentDidMount: function () {
+    componentDidMount() {
         // Monitor params change
         config.onParamChange(this._configChangeHandler);
-    },
+    }
 
-    componentWillUnmount: function () {
+    componentWillUnmount() {
         config.unsubscribe(this._configChangeHandler);
-    },
+    }
 
-    _configChangeHandler: function (newParams) {
+    _configChangeHandler = (newParams) => {
         var updQueryState = {};
 
         if (newParams.hasOwnProperty('expressions')) {
@@ -73,9 +74,9 @@ const Explorer = React.createClass({
             // Set new query params in one go
             this.setState(updQueryState);
         }
-    },
+    };
 
-    _changeQueryParams: function (changedQueryParams) {
+    _changeQueryParams = (changedQueryParams) => {
 
         // Component state change managed by config manager
         var pushState = {};
@@ -93,9 +94,9 @@ const Explorer = React.createClass({
             pushState.plugin = changedQueryParams.plugin;
 
         config.setParams(pushState);
-    },
+    };
 
-    render: function () {
+    render() {
         return <div className="container-fluid">
             <div
                 className={this.state.showController ? 'col col-sm-4 col-lg-3' : ''}
@@ -122,6 +123,6 @@ const Explorer = React.createClass({
             </div>
         </div>
     }
-});
+}
 
 export default Explorer

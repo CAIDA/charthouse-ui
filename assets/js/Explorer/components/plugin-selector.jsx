@@ -5,28 +5,25 @@ import $ from 'jquery';
 import CHARTHOUSE_PLUGIN_SPECS from '../config/plugin-specs';
 import '../utils/proto-mods';
 
-const PluginSelector = React.createClass({
-
-    propTypes: {
+class PluginSelector extends React.Component {
+    static propTypes = {
         selectedPlugin: PropTypes.string,
         onPluginSelected: PropTypes.func,
         height: PropTypes.string
-    },
+    };
 
-    getDefaultProps: function () {
-        return {
-            selectedPlugin: null,
-            onPluginSelected: null
-        };
-    },
+    static defaultProps = {
+        selectedPlugin: null,
+        onPluginSelected: null
+    };
 
-    _handleChange: function (event) {
+    _handleChange = (event) => {
         if (this.props.onPluginSelected) {
             this.props.onPluginSelected(event.target.value);
         }
-    },
+    };
 
-    render: function () {
+    render() {
 
         return <select
             value={this.props.selectedPlugin}
@@ -56,7 +53,6 @@ const PluginSelector = React.createClass({
 
         </select>
     }
-
-});
+}
 
 export default PluginSelector;

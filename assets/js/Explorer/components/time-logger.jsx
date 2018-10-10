@@ -4,14 +4,13 @@ import moment from 'moment';
 
 const MOMENT_FORMAT = 'LL h:mma';
 
-const TimeLogger = React.createClass({
-
-    propTypes: {
+class TimeLogger extends React.Component {
+    static propTypes = {
         start: PropTypes.number,
         end: PropTypes.number
-    },
+    };
 
-    render: function () {
+    render() {
         return <span>
                 <em className="text-primary">
                     {this.props.start ? moment(this.props.start).utc().format(MOMENT_FORMAT) : null}
@@ -22,6 +21,6 @@ const TimeLogger = React.createClass({
                 </em>
             </span>;
     }
-});
+}
 
 export default TimeLogger;

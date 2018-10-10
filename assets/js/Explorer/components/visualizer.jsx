@@ -6,9 +6,8 @@ import DataApi from '../connectors/data-api';
 import VizPlugin from './plugin-loader';
 import ExpressionSet from "../expression/set";
 
-const Visualizer = React.createClass({
-
-    propTypes: {
+class Visualizer extends React.Component {
+    static propTypes = {
         expressionSet: PropTypes.instanceOf(ExpressionSet).isRequired,
         from: PropTypes.instanceOf(CharthouseTime).isRequired,
         until: PropTypes.instanceOf(CharthouseTime).isRequired,
@@ -22,26 +21,22 @@ const Visualizer = React.createClass({
         markersDataCall: PropTypes.func,
         markersDataCallParams: PropTypes.object,
         postProcessMarkersData: PropTypes.func
-    },
+    };
 
-    getDefaultProps: function () {
-        return {
-            configMan: config,   // Use global config if no namespace is specified
-            markersDataCall: null,
-            markersDataCallParams: {},
-            postProcessMarkersData: function (data) {
-                return data;
-            }
+    static defaultProps = {
+        configMan: config,   // Use global config if no namespace is specified
+        markersDataCall: null,
+        markersDataCallParams: {},
+        postProcessMarkersData: function (data) {
+            return data;
         }
-    },
+    };
 
-    getInitialState: function () {
-        return {
-            apiConnector: new DataApi()
-        }
-    },
+    state = {
+        apiConnector: new DataApi()
+    };
 
-    componentDidUpdate: function (prevProps) {
+    componentDidUpdate(prevProps) {
         var cur = this.props;
         if (this.refs.vizPlugin &&
             (!cur.expressionSet.equals(prevProps.expressionSet)
@@ -51,9 +46,9 @@ const Visualizer = React.createClass({
         ) {
             this.refs.vizPlugin.refresh();
         }
-    },
+    }
 
-    render: function () {
+    render() {
         const expCnt = this.props.expressionSet.getSize();
         return <div>
             {(expCnt === 0 || !this.props.from || !this.props.until || !this.props.plugin)
@@ -74,10 +69,10 @@ const Visualizer = React.createClass({
                 />
             }
         </div>;
-    },
+    }
 
     // Private methods
-    _dataCall: function (success, error) {
+    _dataCall = (success, error) => {
         return this.state.apiConnector.getTsData(
             {
                 expressions: this.props.expressionSet.toJsonArray(),
@@ -88,9 +83,9 @@ const Visualizer = React.createClass({
             success,
             error
         );
-    },
+    };
 
-    _markersDataCallWrapper: function (success, error) {
+    _markersDataCallWrapper = (success, error) => {
         return this.props.markersDataCall(
             this.props.markersDataCallParams,
             function (data) {
@@ -98,7 +93,7 @@ const Visualizer = React.createClass({
             }.bind(this),
             error
         );
-    }
-});
+    };
+}
 
 export default Visualizer;

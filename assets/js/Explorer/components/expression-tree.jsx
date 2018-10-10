@@ -20,35 +20,30 @@ import PathExpression from "../expression/path";
 
 const CHANGE_DAMPER_DELAY = 100; //ms. How long to wait for other chained events before triggering a global change
 
-const ExpressionTree = React.createClass({
-
-    propTypes: {
+class ExpressionTree extends React.Component {
+    static propTypes = {
         expressionSet: PropTypes.instanceOf(ExpressionSet),
         onChange: PropTypes.func,
         onSelectionChange: PropTypes.func,
         icons: PropTypes.object
-    },
+    };
 
-    getDefaultProps: function () {
-        return {
-            expressionSet: new ExpressionSet(),
-            onChange: function (newExpression) { },
-            onSelectionChange: function ($selectedNodes) { },
-            icons: {
-                func: "glyphicon glyphicon-cog",
-                path: "fa fa-leaf",
-                constant: "charthousicon-constant"
-            }
-        };
-    },
-
-    getInitialState: function () {
-        return {
-            functionSpecs: null
+    static defaultProps = {
+        expressionSet: new ExpressionSet(),
+        onChange: function (newExpression) { },
+        onSelectionChange: function ($selectedNodes) { },
+        icons: {
+            func: "glyphicon glyphicon-cog",
+            path: "fa fa-leaf",
+            constant: "charthousicon-constant"
         }
-    },
+    };
 
-    componentDidMount: function () {
+    state = {
+        functionSpecs: null
+    };
+
+    componentDidMount() {
         var rThis = this;
 
         // Wrapped jQuery plugin
@@ -158,32 +153,32 @@ const ExpressionTree = React.createClass({
         }
 
         this._loadFunctionSpecs();
-    },
+    }
 
-    componentDidUpdate: function (prevProps) {
+    componentDidUpdate(prevProps) {
         if (!this.props.expressionSet.equals(prevProps.expressionSet)
             && !this.props.expressionSet.equals(this._getExpressionSet())) {
             // Expression changed
             this._clear();
             this.props.expressionSet.getExpressions().forEach(this.addExpression);
         }
-    },
+    }
 
-    componentWillUnmount: function () {
+    componentWillUnmount() {
         // Destroy jQuery plugin
         var $elem = $(ReactDOM.findDOMNode(this.refs.ExpressionTree));
         $.removeData($elem.get(0));
-    },
+    }
 
-    render: function () {
+    render() {
         return <div
             className="expression-tree"
             ref="ExpressionTree"
         />;
-    },
+    }
 
     // Private methods
-    _loadFunctionSpecs: function () {
+    _loadFunctionSpecs = () => {
         var rThis = this;
         var apiConnector = new DataApi();
 
@@ -207,9 +202,9 @@ const ExpressionTree = React.createClass({
             function () { // Error handle
             }
         );
-    },
+    };
 
-    _refreshArgsCounters: function () {
+    _refreshArgsCounters = () => {
         var rThis = this;
         var $tree = this.$tree;
         this._getAllChildrenNodes()
@@ -223,9 +218,9 @@ const ExpressionTree = React.createClass({
                     rThis._buildFunctionNodeHtml(n.data.func, n.data.args)
                 );
             });
-    },
+    };
 
-    _buildFunctionNodeHtml: function (func, nArgs) {
+    _buildFunctionNodeHtml = (func, nArgs) => {
         var specTxt = '';
 
         if (this.state.functionSpecs &&
@@ -247,9 +242,9 @@ const ExpressionTree = React.createClass({
                 title={'Function has ' + nArgs + ' argument' + (nArgs == 1 ? '' : 's')}
             >{nArgs}</span>)
             + ')';
-    },
+    };
 
-    _expression2tree: function (exp) {
+    _expression2tree = (exp) => {
         const rThis = this;
         return json2tree(exp.getJson());
 
@@ -298,9 +293,9 @@ const ExpressionTree = React.createClass({
                     }
             }
         }
-    },
+    };
 
-    _tree2expression: function ($tree, nodeId, asSet) {
+    _tree2expression = ($tree, nodeId, asSet) => {
 
         nodeId = nodeId || '#';
         nodeId = nodeId.hasOwnProperty('id') ? nodeId.id : nodeId;
@@ -368,13 +363,13 @@ const ExpressionTree = React.createClass({
             // All other types
             return $.extend(true, {}, node.data);
         }
-    },
+    };
 
-    _getExpressionSet: function (nodeId) {
+    _getExpressionSet = (nodeId) => {
         return this._tree2expression(this.$tree, nodeId, true);
-    },
+    };
 
-    _getAllChildrenNodes: function (parentId, dfs) {
+    _getAllChildrenNodes = (parentId, dfs) => {
 
         dfs = dfs || false; // DFS or BFS
         parentId = parentId || '#';
@@ -401,9 +396,9 @@ const ExpressionTree = React.createClass({
         }
 
         return children;
-    },
+    };
 
-    _clear: function () {
+    _clear = () => {
         var $tree = this.$tree;
         var root = $tree.jstree('get_node', '#');
         root.children.map(function (c) {
@@ -411,9 +406,9 @@ const ExpressionTree = React.createClass({
         }).forEach(function (c) {
             $tree.jstree('delete_node', c);
         });
-    },
+    };
 
-    _addNode: function (nodeJson, parentId, inline) {
+    _addNode = (nodeJson, parentId, inline) => {
         var $tree = this.$tree;
         parentId = $tree.jstree('get_node', parentId || '#'); // Add to root by default
         inline = inline || false; // Whether to insert after or add inside (default)
@@ -422,16 +417,16 @@ const ExpressionTree = React.createClass({
             newNodeIds.push($tree.jstree(true).create_node(parentId, node, inline ? 'after' : 'last'));
         });
         return newNodeIds.length == 1 ? newNodeIds[0] : newNodeIds;
-    },
+    };
 
-    _moveNodes: function (nodeIds, newParentId, inline) {
+    _moveNodes = (nodeIds, newParentId, inline) => {
         newParentId = this.$tree.jstree('get_node', newParentId || '#'); // Move to root by default
         inline = inline || false; // Whether to move after or inside (default)
         this.$tree.jstree(true).move_node(nodeIds, newParentId, inline ? 'after' : 'last');
-    },
+    };
 
     // Public methods
-    getErrors: function () {
+    getErrors = () => {
 
         var $tree = this.$tree;
         var functionProtos = this.state.functionSpecs && this.state.functionSpecs.prototypes;
@@ -488,20 +483,20 @@ const ExpressionTree = React.createClass({
             });
 
         return errors;
-    },
+    };
 
-    getSelected: function (dfs) {
+    getSelected = (dfs) => {
         return this._getAllChildrenNodes('#', dfs)
             .filter(function (n) {
                 return n.state.selected;
             });
-    },
+    };
 
-    addExpression: function (exp, parentId, inline) {
+    addExpression = (exp, parentId, inline) => {
         return this._addNode(this._expression2tree(exp), parentId, inline);
-    },
+    };
 
-    addFunction: function (parentId, inline, callback) {
+    addFunction = (parentId, inline, callback) => {
         parentId = parentId || '#';
         parentId = parentId.hasOwnProperty('id') ? parentId.id : parentId;
 
@@ -532,7 +527,7 @@ const ExpressionTree = React.createClass({
             </Dialog>,
             $anchor[0]
         );
-    },
+    };
 
     /* DEPRECATED
     addMetric: function (parentId, inline, callback) {
@@ -568,7 +563,7 @@ const ExpressionTree = React.createClass({
     },
     */
 
-    addConstant: function (parentId, inline) {
+    addConstant = (parentId, inline) => {
         parentId = parentId || '#';
         parentId = parentId.hasOwnProperty('id') ? parentId.id : parentId;
 
@@ -577,9 +572,9 @@ const ExpressionTree = React.createClass({
             inline
         );
         this.editNode(nodeId);
-    },
+    };
 
-    wrapInFunction: function (nodeId, callback) {
+    wrapInFunction = (nodeId, callback) => {
         // Also accepts multiple nodes as an array
 
         var rThis = this;
@@ -598,9 +593,9 @@ const ExpressionTree = React.createClass({
             $tree.jstree(true).open_node(funcId);
             if (callback) callback(funcId);
         });
-    },
+    };
 
-    popOut: function (nodeId) {
+    popOut = (nodeId) => {
         var nodes = nodeId ? (Array.isArray(nodeId) ? nodeId : [nodeId]) : [];
         var nodeIds = nodes.map(function (n) {
             return n.hasOwnProperty('id') ? n.id : n;
@@ -611,9 +606,9 @@ const ExpressionTree = React.createClass({
             if (parentId == '#') return; // Already at top level
             $tree.jstree(true).move_node(n, parentId, 'before');
         });
-    },
+    };
 
-    editNode: function (nodeId) {
+    editNode = (nodeId) => {
         nodeId = nodeId.hasOwnProperty('id') ? nodeId.id : nodeId;
 
         var rThis = this;
@@ -678,9 +673,9 @@ const ExpressionTree = React.createClass({
                 }
                 break;
         }
-    },
+    };
 
-    cloneNode: function (nodeId) {
+    cloneNode = (nodeId) => {
         // Also accepts multiple nodes as an array
         var nodes = Array.isArray(nodeId) ? nodeId : [nodeId];
         var nodeToAppendAfter = nodes[nodes.length - 1]; // Last node in selection
@@ -696,17 +691,16 @@ const ExpressionTree = React.createClass({
                 true
             );
         });
-    },
+    };
 
-    removeNode: function (nodeId) {
+    removeNode = (nodeId) => {
         // Accepts multiple nodes as an array too
         var nodes = Array.isArray(nodeId) ? nodeId : [nodeId];
         nodes = nodes.map(function (n) {
             return n.hasOwnProperty('id') ? n.id : n;
         });
         this.$tree.jstree(true).delete_node(nodes);
-    }
-
-});
+    };
+}
 
 export default ExpressionTree;

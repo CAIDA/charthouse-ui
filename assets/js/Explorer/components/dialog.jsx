@@ -2,9 +2,8 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Modal } from 'react-bootstrap';
 
-const Dialog = React.createClass({
-
-    propTypes: {
+class Dialog extends React.Component {
+    static propTypes = {
         title: PropTypes.node,
         openOnInit: PropTypes.bool,
         backdrop: PropTypes.any,
@@ -12,25 +11,21 @@ const Dialog = React.createClass({
         showCloseButton: PropTypes.bool,
         onClose: PropTypes.func,
         dialogClassName: PropTypes.string
-    },
+    };
 
-    getDefaultProps: function () {
-        return {
-            title: '',
-            openOnInit: true,
-            showCloseButton: false,
-            onClose: function () {
-            }
-        };
-    },
+    static defaultProps = {
+        title: '',
+        openOnInit: true,
+        showCloseButton: false,
+        onClose: function () {
+        }
+    };
 
-    getInitialState: function () {
-        return {
-            isOpen: this.props.openOnInit
-        };
-    },
+    state = {
+        isOpen: this.props.openOnInit
+    };
 
-    render: function () {
+    render() {
         return (
             <Modal
                 dialogClassName={"charthouse-dialog " + (this.props.dialogClassName || "")}
@@ -53,15 +48,15 @@ const Dialog = React.createClass({
                 </Modal.Body>
             </Modal>
         );
-    },
+    }
 
     // Externally open
-    open: function () {
+    open = () => {
         this.setState({isOpen: true});
-    },
+    };
 
     // Externally close
-    close: function () {
+    close = () => {
         this.setState({isOpen: false});
 
         var rThis = this;
@@ -69,7 +64,7 @@ const Dialog = React.createClass({
             // Allow time for closing effect
             rThis.props.onClose();
         }, 500);
-    }
-});
+    };
+}
 
 export default Dialog;

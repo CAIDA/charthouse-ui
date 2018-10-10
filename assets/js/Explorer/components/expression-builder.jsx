@@ -7,24 +7,21 @@ import 'font-awesome/css/font-awesome.css';
 import ExpressionTree from './expression-tree';
 import ExpressionSet from "../expression/set";
 
-const ToolbarBtn = React.createClass({
-
-    propTypes: {
+class ToolbarBtn extends React.Component {
+    static propTypes = {
         enabled: PropTypes.bool,
         title: PropTypes.string,
         onClick: PropTypes.func
-    },
+    };
 
-    getDefaultProps: function () {
-        return {
-            enabled: true,
-            title: '',
-            onClick: function () {
-            }
-        };
-    },
+    static defaultProps = {
+        enabled: true,
+        title: '',
+        onClick: function () {
+        }
+    };
 
-    render: function () {
+    render() {
         return <Button
             bsStyle='primary'
             bsSize='xsmall'
@@ -35,7 +32,7 @@ const ToolbarBtn = React.createClass({
             {this.props.children}
         </Button>;
     }
-});
+}
 
 const BTN_STATES = [
     {
@@ -110,9 +107,8 @@ const BTN_STATES = [
     }
 ];
 
-const ExpressionToolbar = React.createClass({
-
-    propTypes: {
+class ExpressionToolbar extends React.Component {
+    static propTypes = {
         currentSelection: PropTypes.object,
         icons: PropTypes.object,
         onApplyFunction: PropTypes.func,
@@ -122,49 +118,43 @@ const ExpressionToolbar = React.createClass({
         onEditNode: PropTypes.func,
         onCloneNode: PropTypes.func,
         onRemoveNode: PropTypes.func
-    },
+    };
 
-    getDefaultProps: function () {
-        return {
-            currentSelection: {
-                nodeTypes: [],      // Type of nodes selected
-                multiNodes: false,  // Multiple nodes selected
-                rootLevel: true     // Selection is all at root level
-            },
-            icons: {
-                func: "glyphicon glyphicon-cog",
-                path: "fa fa-leaf",
-                constant: "charthousicon-constant"
-            },
-            onApplyFunction: function () {
-            },
-            onUnwrapFunction: function () {
-            },
-            onOutdentNode: function () {
-            },
-            onAddConstant: function () {
-            },
-            onEditNode: function () {
-            },
-            onCloneNode: function () {
-            },
-            onRemoveNode: function () {
-            }
-        };
-    },
+    static defaultProps = {
+        currentSelection: {
+            nodeTypes: [],      // Type of nodes selected
+            multiNodes: false,  // Multiple nodes selected
+            rootLevel: true     // Selection is all at root level
+        },
+        icons: {
+            func: "glyphicon glyphicon-cog",
+            path: "fa fa-leaf",
+            constant: "charthousicon-constant"
+        },
+        onApplyFunction: function () {
+        },
+        onUnwrapFunction: function () {
+        },
+        onOutdentNode: function () {
+        },
+        onAddConstant: function () {
+        },
+        onEditNode: function () {
+        },
+        onCloneNode: function () {
+        },
+        onRemoveNode: function () {
+        }
+    };
 
-    getInitialState: function () {
-        return this._calcBtnState();
-    },
-
-    componentDidUpdate: function (prevProps) {
+    componentDidUpdate(prevProps) {
         if (JSON.stringify(this.props.currentSelection) != JSON.stringify(prevProps.currentSelection)) {
             // If selection changed, update button state
             this.setState(this._calcBtnState());
         }
-    },
+    }
 
-    _calcBtnState: function () {
+    _calcBtnState = () => {
 
         var currentSelection = $.extend({
             nodeTypes: [],
@@ -210,9 +200,11 @@ const ExpressionToolbar = React.createClass({
         });
 
         return btnState;
-    },
+    };
 
-    render: function () {
+    state = this._calcBtnState();
+
+    render() {
         return <div className="expression-toolbar">
             <div
                 className="btn-group btn-group-xs"
@@ -276,21 +268,18 @@ const ExpressionToolbar = React.createClass({
             </div>
         </div>;
     }
-});
+}
 
-const ErrorLogger = React.createClass({
-
-    propTypes: {
+class ErrorLogger extends React.Component {
+    static propTypes = {
         errors: PropTypes.array
-    },
+    };
 
-    getDefaultProps: function () {
-        return {
-            errors: []
-        }
-    },
+    static defaultProps = {
+        errors: []
+    };
 
-    render: function () {
+    render() {
         return <div className="expression-errors">
             {this.props.errors.map(function (error, idx) {
                 return <div
@@ -303,7 +292,7 @@ const ErrorLogger = React.createClass({
             })}
         </div>;
     }
-});
+}
 
 ////
 
@@ -313,35 +302,30 @@ const ICONS = {
     constant: "charthousicon-constant"
 };
 
-const ExpressionBuilder = React.createClass({
-
-    propTypes: {
+class ExpressionBuilder extends React.Component {
+    static propTypes = {
         expressionSet: PropTypes.instanceOf(ExpressionSet),
         onChange: PropTypes.func,
         onValidStateChange: PropTypes.func
-    },
+    };
 
-    getDefaultProps: function () {
-        return {
-            expressionSet: new ExpressionSet(),
-            onChange: function (newExpression) {},
-            onValidStateChange: function (newState) {}
-        };
-    },
+    static defaultProps = {
+        expressionSet: new ExpressionSet(),
+        onChange: function (newExpression) {},
+        onValidStateChange: function (newState) {}
+    };
 
-    getInitialState: function () {
-        return {
-            currentSelected: {
-                nodeTypes: [],      // Type of nodes selected
-                multiNodes: false,  // Multiple nodes selected
-                rootLevel: true     // Selection is all at root level
-            },
-            isValid: true,
-            errors: []
-        }
-    },
+    state = {
+        currentSelected: {
+            nodeTypes: [],      // Type of nodes selected
+            multiNodes: false,  // Multiple nodes selected
+            rootLevel: true     // Selection is all at root level
+        },
+        isValid: true,
+        errors: []
+    };
 
-    componentDidMount: function () {
+    componentDidMount() {
         this._adjustToolbarState(this.refs.expressionTree.getSelected());
 
         // Log Errors
@@ -364,9 +348,9 @@ const ExpressionBuilder = React.createClass({
                 });
             }
         })();
-    },
+    }
 
-    componentDidUpdate: function (prevProps, prevState) {
+    componentDidUpdate(prevProps, prevState) {
         if (!prevProps.expressionSet.equals(this.props.expressionSet)) {
             this.componentDidMount();
         }
@@ -374,17 +358,17 @@ const ExpressionBuilder = React.createClass({
         if (prevState.isValid !== this.state.isValid) {
             this.props.onValidStateChange(this.state.isValid);
         }
-    },
+    }
 
-    shouldComponentUpdate: function (nextProps, nextState) {
+    shouldComponentUpdate(nextProps, nextState) {
         // Performance boost
         return (nextState.isValid !== this.state.isValid)
             || (JSON.stringify(nextState.errors) !== JSON.stringify(this.state.errors))
             || (JSON.stringify(nextState.currentSelected) !== JSON.stringify(this.state.currentSelected))
             || !nextProps.expressionSet.equals(this.props.expressionSet);
-    },
+    }
 
-    render: function () {
+    render() {
         return <div
             className="charthouse-expression-builder well well-sm"
             style={{borderColor: (!this.state.isValid ? 'red' : 'white')}}
@@ -427,10 +411,10 @@ const ExpressionBuilder = React.createClass({
             </p>
             <ErrorLogger errors={this.state.errors}/>
         </div>;
-    },
+    }
 
     // Private methods
-    _expChanged: function (exp) {
+    _expChanged = (exp) => {
         var errors = this.refs.expressionTree.getErrors();
         if (errors != null) {
             this.setState({
@@ -439,9 +423,9 @@ const ExpressionBuilder = React.createClass({
             });
         }
         this.props.onChange(exp);
-    },
+    };
 
-    _adjustToolbarState: function ($sel) {
+    _adjustToolbarState = ($sel) => {
         var selTypes = {};
         $sel.forEach(function (t) {
             selTypes[t.type] = true;
@@ -458,14 +442,14 @@ const ExpressionBuilder = React.createClass({
                 rootLevel: onlyRootLevel
             }
         });
-    },
+    };
 
-    _applyFunction: function () {
+    _applyFunction = () => {
         var rTree = this.refs.expressionTree;
         rTree.wrapInFunction(rTree.getSelected(true));
-    },
+    };
 
-    _unwrapFunction: function () {
+    _unwrapFunction = () => {
         var rTree = this.refs.expressionTree;
 
         // Remove function layers
@@ -475,14 +459,14 @@ const ExpressionBuilder = React.createClass({
             rTree.popOut(n.children);  // Pop out all function arguments
             rTree.removeNode(n);       // Remove function
         });
-    },
+    };
 
-    _outdentNode: function () {
+    _outdentNode = () => {
         var rTree = this.refs.expressionTree;
         rTree.popOut(rTree.getSelected());
-    },
+    };
 
-    _addConstant: function () {
+    _addConstant = () => {
         var rTree = this.refs.expressionTree;
         var $sel = rTree.getSelected();
         if ($sel.length > 1) return;
@@ -490,39 +474,39 @@ const ExpressionBuilder = React.createClass({
 
         // Add inside for functions, otherwise next to it
         rTree.addConstant($node, !($node && $node.type == 'function'));
-    },
+    };
 
-    _editNode: function () {
+    _editNode = () => {
         var rTree = this.refs.expressionTree;
         var $sel = rTree.getSelected();
         if ($sel.length != 1) return; // Can only edit one at a time
 
         rTree.editNode($sel[0]);
-    },
+    };
 
-    _cloneNode: function () {
+    _cloneNode = () => {
         var rTree = this.refs.expressionTree;
         rTree.cloneNode(rTree.getSelected(true)); // Use DFS to append in order
-    },
+    };
 
-    _removeNode: function () {
+    _removeNode = () => {
         var rTree = this.refs.expressionTree;
         rTree.removeNode(rTree.getSelected());
-    },
+    };
 
     // Public methods
-    isValid: function () {
+    isValid = () => {
         return this.state.isValid;
-    },
+    };
 
-    injectExpression: function (exp) {
+    injectExpression = (exp) => {
         var rTree = this.refs.expressionTree;
         var $sel = rTree.getSelected();
         var $node = $sel.length > 0 ? $sel[0] : null; // If multi selected, append to first
 
         // Add inside for functions, otherwise next to it
         rTree.addExpression(exp, $node, !($node && $node.type === 'function'));
-    }
-});
+    };
+}
 
 export default ExpressionBuilder;

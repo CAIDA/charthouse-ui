@@ -15,41 +15,36 @@ import PathExpression from "../expression/path";
 const EXPRESSION_VERTICAL_OFFSET = 170;
 const MIN_HEIGHT_TREE_EXPLORER = 250;
 
-const ExpressionComposer = React.createClass({
-
-    propTypes: {
+class ExpressionComposer extends React.Component {
+    static propTypes = {
         expressionSet: PropTypes.instanceOf(ExpressionSet),
         initExpandMetricTree: PropTypes.bool,
         maxHeight: PropTypes.number,
         onExpressionEntered: PropTypes.func
-    },
+    };
 
-    getDefaultProps: function () {
-        return {
-            expressionSet: new ExpressionSet(),
-            initExpandMetricTree: true,
-            maxHeight: 500,
-            onExpressionEntered: function (newExp) {}
-        };
-    },
+    static defaultProps = {
+        expressionSet: new ExpressionSet(),
+        initExpandMetricTree: true,
+        maxHeight: 500,
+        onExpressionEntered: function (newExp) {}
+    };
 
-    getInitialState: function () {
-        return {
-            txtMode: false,
-            isValid: true,
-            autoApply: true,
-            replaceMode: false,
-            editExpressionSet: this.props.expressionSet
-        }
-    },
+    state = {
+        txtMode: false,
+        isValid: true,
+        autoApply: true,
+        replaceMode: false,
+        editExpressionSet: this.props.expressionSet
+    };
 
-    componentDidMount: function () {
+    componentDidMount() {
         this.setState({
             isValid: this.refs[this.state.txtMode ? 'txtEditor' : 'uiEditor'].isValid()
         });
-    },
+    }
 
-    componentDidUpdate: function (prevProps, prevState) {
+    componentDidUpdate(prevProps, prevState) {
         if (!this.props.expressionSet.equals(prevProps.expressionSet)) {
             this.setState({editExpressionSet: this.props.expressionSet});
         }
@@ -66,9 +61,9 @@ const ExpressionComposer = React.createClass({
             // Apply current expression (if possible) if auto toggled on
             this._applyExpression();
         }
-    },
+    }
 
-    render: function () {
+    render() {
         return <div>
             <p className="text-right small" style={{margin: 1}}>
                 <a
@@ -157,10 +152,10 @@ const ExpressionComposer = React.createClass({
             </div>
 
         </div>;
-    },
+    }
 
     // Private methods
-    _switchEditMode: function () {
+    _switchEditMode = () => {
         if (this.state.txtMode && !this.refs.txtEditor.isValid()) {
             // Can't switch
             $(ReactDOM.findDOMNode(this.refs.editMode)).flash(160, 2);
@@ -179,30 +174,30 @@ const ExpressionComposer = React.createClass({
             $(ReactDOM.findDOMNode(inComp)).fadeIn(200);
         });
 
-    },
+    };
 
-    _expChanged: function (exp) {
+    _expChanged = (exp) => {
         this.setState({editExpressionSet: exp});
-    },
+    };
 
-    _validityChanged: function (newState) {
+    _validityChanged = (newState) => {
         this.setState({isValid: newState});
-    },
+    };
 
-    _applyExpression: function () {
+    _applyExpression = () => {
         if (this.state.isValid)
             this.props.onExpressionEntered(this.state.editExpressionSet);
-    },
+    };
 
-    _toggleReplaceMode: function (newState) {
+    _toggleReplaceMode = (newState) => {
         this.setState({replaceMode: newState});
-    },
+    };
 
-    _toggleAutoApply: function (newState) {
+    _toggleAutoApply = (newState) => {
         this.setState({autoApply: newState});
-    },
+    };
 
-    _metricSelected: function (id) {
+    _metricSelected = (id) => {
         const metricExp = new PathExpression(id);
         if (this.state.replaceMode) {
             const newSet = new ExpressionSet();
@@ -211,8 +206,7 @@ const ExpressionComposer = React.createClass({
         } else {
             this.refs[this.state.txtMode ? 'txtEditor' : 'uiEditor'].injectExpression(metricExp);
         }
-    }
-
-});
+    };
+}
 
 export default ExpressionComposer;

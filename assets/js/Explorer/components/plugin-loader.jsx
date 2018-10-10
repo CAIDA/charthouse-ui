@@ -15,51 +15,46 @@ import '../utils/jquery-plugins';
 
 // TODO: this component could probably be refactored into multiple modules
 
-const PluginContent = React.createClass({
-
-    propTypes: {
+class PluginContent extends React.Component {
+    static propTypes = {
         data: PropTypes.instanceOf(CharthouseDataSet.api).isRequired,
         markers: PropTypes.object,
         onTimeChange: PropTypes.func,
         configMan: PropTypes.object,
         pluginCfg: PropTypes.object.isRequired,
         maxHeight: PropTypes.number
-    },
+    };
 
-    getDefaultProps: function () {
-        return {
-            maxHeight: null
-        }
-    },
+    static defaultProps = {
+        maxHeight: null
+    };
 
-    getInitialState: function () {
-        return {
-            ReactPlugin: null  // AMD loaded
-        }
-    },
+    state = {
+        ReactPlugin: null  // AMD loaded
+    };
 
-    componentDidMount: function () {
+    componentDidMount() {
         this._loadPluginModule();
-    },
+    }
 
-    componentWillUnmount: function () {
+    componentWillUnmount() {
         this.isUnmounted = true;
-    },
+    }
 
-    componentWillReceiveProps: function (nextProps) {
+    componentWillReceiveProps(nextProps) {
         if (this.props.pluginCfg.jsFile != nextProps.pluginCfg.jsFile) {
             // Unload module
             this.setState({ReactPlugin: null});
         }
-    },
+    }
 
-    componentDidUpdate: function (prevProps) {
+    componentDidUpdate(prevProps) {
         if (this.props.pluginCfg.jsFile != prevProps.pluginCfg.jsFile) {
             this._loadPluginModule();
         }
-    },
+    }
 
-    render: function () {
+    render() {
         return <div className="viz-plugin-content"
                     style={{maxHeight: this.props.maxHeight || false}}>
             {this.state.ReactPlugin
@@ -73,34 +68,31 @@ const PluginContent = React.createClass({
                 : null
             }
         </div>;
-    },
+    }
 
     // Private methods
-    _loadPluginModule: function () {
+    _loadPluginModule = () => {
         const rThis = this;
         this.props.pluginCfg.import.then(function({default: Plugin}) {
             if (!rThis.isUnmounted) {
                 rThis.setState({ReactPlugin: Plugin});
             }
         });
-    }
-});
+    };
+}
 
-const DataInfo = React.createClass({
-
+class DataInfo extends React.Component {
     // TODO: why is vizTimeRange not updating when we get new data?
-    propTypes: {
+    static propTypes = {
         data: PropTypes.instanceOf(CharthouseDataSet.api).isRequired,
         vizTimeRange: PropTypes.array
-    },
+    };
 
-    getInitialState: function () {
-        return {
-            numPoints: this.props.data.cntNonNullPnts()
-        }
-    },
+    state = {
+        numPoints: this.props.data.cntNonNullPnts()
+    };
 
-    componentDidUpdate: function (prevProps, prevState) {
+    componentDidUpdate(prevProps, prevState) {
         var newNumPoints = this.props.data.cntNonNullPnts();
         if (newNumPoints != this.state.numPoints) {
             this.setState({numPoints: newNumPoints});
@@ -114,9 +106,9 @@ const DataInfo = React.createClass({
         if (this.state.numPoints != prevState.numPoints) {
             $(ReactDOM.findDOMNode(this.refs.numPoints)).flash(500, 2);
         }
-    },
+    }
 
-    render: function () {
+    render() {
         var dataRes = this.props.data.getResolution(
             function (dur) {
                 return '<em>' + dur.humanize().replace(/^an? /, "") + '</em>';
@@ -151,31 +143,28 @@ const DataInfo = React.createClass({
             </div>}
         </div>;
     }
-});
+}
 
-const PluginFooter = React.createClass({
-
-    propTypes: {
+class PluginFooter extends React.Component {
+    static propTypes = {
         data: PropTypes.instanceOf(CharthouseDataSet.api).isRequired
-    },
+    };
 
-    getInitialState: function () {
-        return {
-            fillRawData: false,   // Has the 'show data' container been populated yet
-            showingRawData: false
-        }
-    },
+    state = {
+        fillRawData: false,   // Has the 'show data' container been populated yet
+        showingRawData: false
+    };
 
-    componentDidUpdate: function (prevProps) {
+    componentDidUpdate(prevProps) {
         var data = this.props.data, prevData = prevProps.data;
 
         // Blink on data changes
         if (data.jsonSize() != prevData.jsonSize()) {
             $(ReactDOM.findDOMNode(this.refs.jsonSize)).flash(500, 2);
         }
-    },
+    }
 
-    render: function () {
+    render() {
         return <div>
             <button type="button" className="btn btn-info btn-xs"
                     title="Show data used in this visualization"
@@ -207,10 +196,10 @@ const PluginFooter = React.createClass({
             </small>
             </a>
         </div>;
-    },
+    }
 
     // Private methods
-    _toggleShowData: function () {
+    _toggleShowData = () => {
         if (!this.state.fillRawData) {  // Fill on demand
             this.setState({fillRawData: true});
         }
@@ -232,9 +221,9 @@ const PluginFooter = React.createClass({
             $anchor[0]
         );
         this.setState({showingRawData: !this.state.showingRawData});
-    },
+    };
 
-    _getPermalink: function () {
+    _getPermalink = () => {
 
         var $anchor = $('<span>');
         React.render(
@@ -251,12 +240,11 @@ const PluginFooter = React.createClass({
             </Dialog>,
             $anchor.get(0)
         );
-    }
-});
+    };
+}
 
-const AutoPoller = React.createClass({
-
-    propTypes: {
+class AutoPoller extends React.Component {
+    static propTypes = {
         on: PropTypes.bool,
         frequency: PropTypes.number,
         description: PropTypes.string,
@@ -266,32 +254,28 @@ const AutoPoller = React.createClass({
             onNewData: PropTypes.func
         }).isRequired).isRequired,
         onToggle: PropTypes.func,
-    },
+    };
 
-    getDefaultProps: function () {
-        return {
-            on: false,
-            frequency: 10000,   // ms
-            description: '',
-            showToggle: true,
-            onToggle: function () {
-            }
-        };
-    },
+    static defaultProps = {
+        on: false,
+        frequency: 10000,   // ms
+        description: '',
+        showToggle: true,
+        onToggle: function () {
+        }
+    };
 
-    getInitialState: function () {
-        return {
-            fetching: false,
-            delivering: false,
-            errors: []
-        };
-    },
+    state = {
+        fetching: false,
+        delivering: false,
+        errors: []
+    };
 
-    componentWillMount: function () {
+    componentWillMount() {
         this.pollers = [];
-    },
+    }
 
-    componentDidMount: function () {
+    componentDidMount() {
 
         var rThis = this;
 
@@ -362,9 +346,9 @@ const AutoPoller = React.createClass({
                 poller.timer.run();
             });
         }
-    },
+    }
 
-    componentDidUpdate: function (prevProps) {
+    componentDidUpdate(prevProps) {
         // Start/stop auto-polling
         if (this.props.on != prevProps.on) {
             var funcName = this.props.on ? 'run' : 'stop';
@@ -376,9 +360,9 @@ const AutoPoller = React.createClass({
                 poller.timer[funcName]();
             });
         }
-    },
+    }
 
-    componentWillUnmount: function () {
+    componentWillUnmount() {
         // Stop auto-polling if running
         this.pollers.forEach(function (poller) {
             if (poller.xhr) {
@@ -389,9 +373,9 @@ const AutoPoller = React.createClass({
             poller.timer = null;
         });
         this.pollers = null;
-    },
+    }
 
-    render: function () {
+    render() {
         return <span>
                 <span style={{
                     display: 'inline-block',
@@ -429,7 +413,7 @@ const AutoPoller = React.createClass({
                 </span>
             </span>
     }
-});
+}
 
 //// Main plugin-loader component
 
@@ -438,9 +422,8 @@ const HEADER_HEIGHT = 60;            // # vertical px used by panel header
 const FOOTER_HEIGHT = 60;            // # vertical px used by panel footer
 const MONITOR_UPD_FREQ = 20000; // ms
 
-const VizPlugin = React.createClass({
-
-    propTypes: {
+class VizPlugin extends React.Component {
+    static propTypes = {
         plugin: PropTypes.string,
         title: PropTypes.string,
         header: PropTypes.node,
@@ -450,9 +433,9 @@ const VizPlugin = React.createClass({
         configMan: PropTypes.object,
         hidePanel: PropTypes.bool,
         loadingTxt: PropTypes.node
-    },
+    };
 
-    getDefaultProps: function () {
+    static defaultProps = function () {
         return {
             plugin: 'rawText',
             title: '',
@@ -467,16 +450,17 @@ const VizPlugin = React.createClass({
             // Return pointer to ajax xhr object to allow on-demand aborting
             return new XMLHttpRequest();
         }
-    },
+    }();
 
-    getInitialState: function () {
+    constructor(props) {
+        super(props);
 
-        var showControls = this.props.configMan.getParam('showControls', true);
-        var showTimeLogger = this.props.configMan.getParam('showTimeLogger', true);
-        var monitorCfg = this.props.configMan.getParam('liveUpdate', false);
+        var showControls = props.configMan.getParam('showControls', true);
+        var showTimeLogger = props.configMan.getParam('showTimeLogger', true);
+        var monitorCfg = props.configMan.getParam('liveUpdate', false);
 
-        return {
-            maxHeight: this.props.configMan.getParam('pluginMaxHeight') || (window.innerHeight - VERTICAL_OUTER_OFFSET),
+        this.state = {
+            maxHeight: props.configMan.getParam('pluginMaxHeight') || (window.innerHeight - VERTICAL_OUTER_OFFSET),
             dataLoaded: false,
             parsing: false,
             monitoring: tools.fuzzyBoolean(monitorCfg),
@@ -485,10 +469,10 @@ const VizPlugin = React.createClass({
             data: null,
             dataRetrievalError: null,
             vizTimeRange: null
-        }
-    },
+        };
+    }
 
-    componentDidUpdate: function (prevProps) {
+    componentDidUpdate(prevProps) {
         if (this.props.plugin != prevProps.plugin && this.state.dataLoaded) {
             this.setState({
                 vizTimeRange: [
@@ -497,13 +481,13 @@ const VizPlugin = React.createClass({
                 ]
             });
         }
-    },
+    }
 
-    componentWillMount: function () {
+    componentWillMount() {
         this.currentXhrs = [];
-    },
+    }
 
-    componentDidMount: function () {
+    componentDidMount() {
 
         var rThis = this;
 
@@ -566,16 +550,16 @@ const VizPlugin = React.createClass({
         window.addEventListener('resize', this._setMaxHeight);
         this.props.configMan.onParamChange(this._setMaxHeight, 'pluginMaxHeight');
         this.props.configMan.onParamChange(this._setMonitoring, 'liveUpdate');
-    },
+    }
 
-    componentWillUnmount: function () {
+    componentWillUnmount() {
         window.removeEventListener('resize', this._setMaxHeight);
         this.props.configMan.unsubscribe(this._setMaxHeight, 'pluginMaxHeight');
         this.props.configMan.unsubscribe(this._setMonitoring, 'liveUpdate');
         this._abortAllXhrs();
-    },
+    }
 
-    render: function () {
+    render() {
 
         var pluginObj = CHARTHOUSE_PLUGIN_SPECS[this.props.plugin];
 
@@ -706,28 +690,28 @@ const VizPlugin = React.createClass({
                 </div>
                 {panelBody}
             </div>;
-    },
+    }
 
     // Private methods
-    _setMaxHeight: function () {
+    _setMaxHeight = () => {
         var newHeight = this.props.configMan.getParam('pluginMaxHeight') || (window.innerHeight - VERTICAL_OUTER_OFFSET);
         if (this.state.maxHeight != newHeight) {
             this.setState({maxHeight: newHeight});
         }
-    },
+    };
 
-    _setMonitoring: function (newVal) {
+    _setMonitoring = (newVal) => {
         newVal = tools.fuzzyBoolean(newVal);
         if (newVal != this.state.monitoring) {
             this.setState({monitoring: newVal});
         }
-    },
+    };
 
-    _selfUpdateToggle: function (isOn) {
+    _selfUpdateToggle = (isOn) => {
         this.props.configMan.setParams({liveUpdate: isOn});
-    },
+    };
 
-    _onDataUpdate: function (newData) {
+    _onDataUpdate = (newData) => {
         var newDataSet = new CharthouseDataSet.api(newData);
         if (this.state.data.diffData(newDataSet)) {
             // Update state if data has changed
@@ -739,20 +723,20 @@ const VizPlugin = React.createClass({
                 ]
             });
         }
-    },
+    };
 
-    _vizTimeChanged: function (newTimeRange) {
+    _vizTimeChanged = (newTimeRange) => {
         this.setState({vizTimeRange: newTimeRange})
-    },
+    };
 
-    _abortAllXhrs: function () {
+    _abortAllXhrs = () => {
         this.currentXhrs.forEach(function (xhr) {
             xhr.abort();
         });
         this.currentXhrs = [];
-    },
+    };
 
-    _onMarkersUpdate: function (apiData) {
+    _onMarkersUpdate = (apiData) => {
         // markers = {
         //     seriesExpressionText: [{
         //         time: ...,
@@ -763,10 +747,10 @@ const VizPlugin = React.createClass({
         // }
         this.setState({markers: apiData});
         //this.props.configMan.setParams({markers: apiData}, false);
-    },
+    };
 
     // Public methods
-    refresh: function () {
+    refresh = () => {
         // Reset to initial state and re-run constructor
         this.setState({
             dataLoaded: false,
@@ -776,8 +760,7 @@ const VizPlugin = React.createClass({
             dataRetrievalError: null
         });
         this.componentDidMount();
-    }
-
-});
+    };
+}
 
 export default VizPlugin;

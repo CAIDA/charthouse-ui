@@ -8,25 +8,23 @@ import 'font-awesome/css/font-awesome.css';
 
 import '../utils/proto-mods';
 
-const FunctionTree = React.createClass({
-    propTypes: {
+class FunctionTree extends React.Component {
+    static propTypes = {
         functionSpecs: PropTypes.object.isRequired,
         filterBy: PropTypes.string,
         onFunctionClick: PropTypes.func,
         onFunctionHover: PropTypes.func,
         onFunctionDehover: PropTypes.func
-    },
+    };
 
-    getDefaultProps: function () {
-        return {
-            filterBy: null,
-            onFunctionClick: function (funcId) {},
-            onFunctionHover: function (funcId) {},
-            onFunctionDehover: function (funcId) {}
-        };
-    },
+    static defaultProps = {
+        filterBy: null,
+        onFunctionClick: function (funcId) {},
+        onFunctionHover: function (funcId) {},
+        onFunctionDehover: function (funcId) {}
+    };
 
-    componentDidMount: function () {
+    componentDidMount() {
         const rThis = this;
 
         // Wrapped jQuery plugin
@@ -145,25 +143,25 @@ const FunctionTree = React.createClass({
 
             return byTag;
         }
-    },
+    }
 
-    componentDidUpdate: function (oldProps) {
+    componentDidUpdate(oldProps) {
         if (this.props.filterBy != oldProps.filterBy) {
             this.$tree.jstree(true).search(this.props.filterBy || '');
         }
-    },
+    }
 
-    componentWillUnmount: function () {
+    componentWillUnmount() {
         // Destroy jQuery plugin
         var $elem = $(ReactDOM.findDOMNode(this.refs.functionTree));
         $.removeData($elem.get(0));
-    },
+    }
 
-    render: function () {
+    render() {
         return <div ref="functionTree"/>;
-    },
+    }
 
-    getFirstVisibleFunction: function () {
+    getFirstVisibleFunction = () => {
         var $tree = this.$tree;
         var topLeaf;
         $tree.jstree('get_node', '#').children_d.some(function (c) {
@@ -174,22 +172,19 @@ const FunctionTree = React.createClass({
             }
         });
         return topLeaf;
-    }
-});
+    };
+}
 
-const FunctionInfo = React.createClass({
-
-    propTypes: {
+class FunctionInfo extends React.Component {
+    static propTypes = {
         funcProtos: PropTypes.object
-    },
+    };
 
-    getDefaultProps: function () {
-        return {
-            funcProtos: null
-        };
-    },
+    static defaultProps = {
+        funcProtos: null
+    };
 
-    render: function () {
+    render() {
         var func = this.props.funcProtos;
 
         // Empty
@@ -222,60 +217,59 @@ const FunctionInfo = React.createClass({
             })}
         </div>;
     }
-});
-
+}
 
 // Main component
-const FunctionBrowser = React.createClass({
-
-    propTypes: {
+class FunctionBrowser extends React.Component {
+    static propTypes = {
         functionSpecs: PropTypes.object.isRequired,
         initSearch: PropTypes.string,
         initHighlight: PropTypes.string,
         onFunctionSelected: PropTypes.func
-    },
+    };
 
-    getDefaultProps: function () {
-        return {
-            initSearch: '',
-            initHighlight: null,
-            onFunctionSelected: function (funcId) {
-            }
-        };
-    },
+    static defaultProps = {
+        initSearch: '',
+        initHighlight: null,
+        onFunctionSelected: function (funcId) {
+        }
+    };
 
-    getInitialState: function () {
-        return {
-            search: this.props.initSearch,
-            highlightFunction: this.props.initHighlight
-        };
-    },
+    state = {
+        search: this.props.initSearch,
+        highlightFunction: this.props.initHighlight
+    };
 
-    componentDidMount: function () {
+    componentDidMount() {
+        this._isMounted = true;
         // Allow time for dom to be built, say on an animated modal, before setting focus on the search bar
         var rThis = this;
         setTimeout(function () {
             ReactDOM.findDOMNode(rThis.refs.SearchBox).focus();
         }, 500);
-    },
+    }
 
-    _handleSearchChange: function (event) {
+    componentWillUnmount() {
+        this._isMounted = false;
+    }
+
+    _handleSearchChange = (event) => {
         this.setState({search: event.target.value});
-    },
+    };
 
-    _handleSearchKeyPress: function (event) {
+    _handleSearchKeyPress = (event) => {
         if (event.key == 'Enter' && this.state.search.length) {
             // Auto-select first match on enter
             var funcId = this.refs.FunctionTree.getFirstVisibleFunction();
             if (funcId) this.props.onFunctionSelected(funcId);
         }
-    },
+    };
 
-    render: function () {
+    render() {
         var rThis = this;
 
         function highlight(funcId) {
-            if (rThis.isMounted())
+            if (rThis._isMounted)
                 rThis.setState({highlightFunction: funcId});
         }
 
@@ -323,6 +317,6 @@ const FunctionBrowser = React.createClass({
             </div>
         </div>;
     }
-});
+}
 
 export default FunctionBrowser;
