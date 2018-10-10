@@ -9,9 +9,10 @@ import '../css/Explorer/viz-plugins.css';
 
 // external JS deps
 import React from 'react';
+import ReactDOM from 'react-dom';
 
 // internal JS deps
 import Explorer from './Explorer/components/explorer';
 
 
-React.render(<Explorer/>, document.getElementById('explorer-main'));
+ReactDOM.render(<Explorer/>, document.getElementById('explorer-main'));

@@ -46,8 +46,9 @@
         "karma-webpack": "3.0.0",
         "moment": "^2.22.2",
         "prop-types": "^15.6.2",
-        "react": "0.13",
-        "react-bootstrap": "0.23",
+        "react": "^16.5.2",
+        "react-bootstrap": "^0.32.4",
+        "react-dom": "^16.5.2",
         "underscore": "^1.9.1"
     }
 }
