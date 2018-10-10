@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import ReactDOMServer from 'react-dom/server';
 import $ from 'jquery';
 import 'jstree';
 import 'jstree/dist/themes/default/style.css';
@@ -235,9 +236,9 @@ class ExpressionTree extends React.Component {
                 + ')';
         }
 
-        return React.renderToStaticMarkup(<span title={specTxt}>{func}</span>)
+        return ReactDOMServer.renderToStaticMarkup(<span title={specTxt}>{func}</span>)
             + '('
-            + React.renderToStaticMarkup(<span
+            + ReactDOMServer.renderToStaticMarkup(<span
                 className="badge"
                 title={'Function has ' + nArgs + ' argument' + (nArgs == 1 ? '' : 's')}
             >{nArgs}</span>)
@@ -502,12 +503,12 @@ class ExpressionTree extends React.Component {
 
         var rThis = this;
         var $anchor = $('<span>');
-        var rModal = React.render(
+        var rModal = ReactDOM.render(
             <Dialog
                 title="Choose a function"
                 onClose={function () {
                     // GC rogue modal
-                    React.unmountComponentAtNode($anchor[0]);
+                    ReactDOM.unmountComponentAtNode($anchor[0]);
                 }}
             >
                 <FunctionBrowser
@@ -617,12 +618,12 @@ class ExpressionTree extends React.Component {
         switch ($node.type) {
             case "function":
                 var $anchor = $('<span>');
-                var rModal = React.render(
+                var rModal = ReactDOM.render(
                     <Dialog
                         title={'Change function: ' + $node.data.func}
                         onClose={function () {
                             // GC rogue modal
-                            React.unmountComponentAtNode($anchor[0]);
+                            ReactDOM.unmountComponentAtNode($anchor[0]);
                         }}
                     >
                         <FunctionBrowser
@@ -643,12 +644,12 @@ class ExpressionTree extends React.Component {
                 break;
             case "path":
                 var $anchor = $('<span>');
-                var rModal = React.render(
+                var rModal = ReactDOM.render(
                     <Dialog
                         title={'Edit metric: ' + $node.text}
                         onClose={function () {
                             // GC rogue modal
-                            React.unmountComponentAtNode($anchor[0]);
+                            ReactDOM.unmountComponentAtNode($anchor[0]);
                         }}
                     >
                         <HeirarchyExplorer

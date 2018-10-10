@@ -728,7 +728,7 @@ class CharthouseXYChart extends React.Component {
                 enabled: (this.props.showLegend && this.props.data.numSeries > 1 && this.props.data.numSeries <= MAX_SERIES_LEGEND),
                 maxHeight: this.props.height * 0.17,
                 itemStyle: {
-                    width: React.findDOMNode(this).offsetWidth * 0.9, // Prevent overflow for really large series names
+                    width: ReactDOM.findDOMNode(this).offsetWidth * 0.9, // Prevent overflow for really large series names
                     'text-decoration': 'initial'
                 },
                 itemHoverStyle: {

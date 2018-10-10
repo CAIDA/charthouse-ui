@@ -205,12 +205,12 @@ class PluginFooter extends React.Component {
         }
 
         var $anchor = $('<span>');
-        var rModal = React.render(
+        ReactDOM.render(
             <Dialog
                 title="Raw JSON Data"
                 onClose={function () {
                     // GC rogue modal
-                    React.unmountComponentAtNode($anchor[0]);
+                    ReactDOM.unmountComponentAtNode($anchor[0]);
                 }}
             >
                 <PluginContent
@@ -226,14 +226,14 @@ class PluginFooter extends React.Component {
     _getPermalink = () => {
 
         var $anchor = $('<span>');
-        React.render(
+        ReactDOM.render(
             <Dialog
 
                 ns={this.props.ns}
                 title="Get Charthouse Permalink"
                 onClose={function () {
                     // GC rogue modal
-                    React.unmountComponentAtNode($anchor[0]);
+                    ReactDOM.unmountComponentAtNode($anchor[0]);
                 }}
             >
                 <PermalinkForm/>
