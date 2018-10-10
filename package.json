@@ -29,6 +29,7 @@
     },
     "dependencies": {
         "babel-plugin-istanbul": "^5.0.1",
+        "babel-plugin-transform-object-rest-spread": "^6.26.0",
         "bootstrap": "3.3",
         "bootstrap-daterangepicker": "^3.0.3",
         "bootstrap-select": "1.6.3",

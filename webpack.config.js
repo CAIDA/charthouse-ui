@@ -71,6 +71,7 @@ Encore
     .configureBabel(function (babelConfig) {
         babelConfig.plugins.push('transform-class-properties');
         babelConfig.plugins.push('syntax-dynamic-import');
+        babelConfig.plugins.push('transform-object-rest-spread');
         babelConfig.plugins.push('istanbul');
     });
 ;
