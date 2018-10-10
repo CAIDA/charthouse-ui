@@ -6,16 +6,14 @@ import ControlPanel from './control-panel';
 import Visualizer from './visualizer';
 import ExpressionSet from "../expression/set";
 
-const Explorer = React.createClass({
+// TODO: remove these and force config in static.js
+const DEFAULT_QUERYTIME = [
+    new CharthouseTime('-1d'),
+    new CharthouseTime()    // Now
+];
+const DEFAULT_PLUGIN = 'xyGraph';
 
-    const: {
-        // Module Constants
-        DEFAULT_QUERYTIME: [
-            new CharthouseTime('-1d'),
-            new CharthouseTime()    // Now
-        ],
-        DEFAULT_PLUGIN: 'xyGraph'
-    },
+const Explorer = React.createClass({
 
     getInitialState: function () {
         const expressionSet = ExpressionSet.createFromJsonArray(config.getParam('expressions'));
@@ -23,11 +21,11 @@ const Explorer = React.createClass({
             expressionSet: expressionSet,
             from: config.getParam("from")
                 ? new CharthouseTime(config.getParam("from"))
-                : this.const.DEFAULT_QUERYTIME[0],
+                : DEFAULT_QUERYTIME[0],
             until: config.getParam("until")
                 ? new CharthouseTime(config.getParam("until"))
-                : this.const.DEFAULT_QUERYTIME[1],
-            plugin: config.getParam("plugin") || this.const.DEFAULT_PLUGIN,
+                : DEFAULT_QUERYTIME[1],
+            plugin: config.getParam("plugin") || DEFAULT_PLUGIN,
             showController: config.getParam('hideControl') == null,
 
             // used to be that we only expanded for non-default expression
@@ -54,17 +52,17 @@ const Explorer = React.createClass({
         if (newParams.hasOwnProperty('from')) {
             updQueryState.from = newParams.from
                 ? new CharthouseTime(newParams.from)
-                : this.const.DEFAULT_QUERYTIME[0];
+                : DEFAULT_QUERYTIME[0];
         }
 
         if (newParams.hasOwnProperty('until')) {
             updQueryState.until = newParams.until
                 ? new CharthouseTime(newParams.until)
-                : this.const.DEFAULT_QUERYTIME[1];
+                : DEFAULT_QUERYTIME[1];
         }
 
         if (newParams.hasOwnProperty('plugin')) {
-            updQueryState.plugin = newParams.plugin || this.const.DEFAULT_PLUGIN;
+            updQueryState.plugin = newParams.plugin || DEFAULT_PLUGIN;
         }
 
         if (newParams.hasOwnProperty('hideControl')) {

@@ -3,11 +3,9 @@ import React from 'react';
 import classNames from 'classnames';
 import ExpressionSet from "../expression/set";
 
-const ExpressionTxtEditor = React.createClass({
+const KEYPRESS_DAMPER_DELAY = 400; //ms. How long to wait for a typing gap before evaluating expression and propagate changes
 
-    const: {
-        KEYPRESS_DAMPER_DELAY: 400 //ms. How long to wait for a typing gap before evaluating expression and propagate changes
-    },
+const ExpressionTxtEditor = React.createClass({
 
     propTypes: {
         expressionSet: PropTypes.instanceOf(ExpressionSet),
@@ -83,7 +81,7 @@ const ExpressionTxtEditor = React.createClass({
 
         this.keyPressDamper = setTimeout(
             this._evalExpression,
-            this.const.KEYPRESS_DAMPER_DELAY
+            KEYPRESS_DAMPER_DELAY
         );
     },
 

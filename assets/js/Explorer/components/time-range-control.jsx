@@ -8,11 +8,9 @@ import 'bootstrap-daterangepicker/daterangepicker.css'
 
 import CharthouseTime from '../utils/time';
 
-const TimeRangeControl = React.createClass({
+const MOMENT_DATE_FORMAT = 'LL h:mma z';
 
-    const: {
-        MOMENT_DATE_FORMAT: 'LL h:mma z'
-    },
+const TimeRangeControl = React.createClass({
 
     propTypes: {
         from: PropTypes.instanceOf(CharthouseTime).isRequired,
@@ -92,7 +90,7 @@ const TimeRangeControl = React.createClass({
                     timePickerIncrement: 5,
                     showDropdowns: true,
                     showWeekNumbers: true,
-                    format: this.const.MOMENT_DATE_FORMAT,
+                    format: MOMENT_DATE_FORMAT,
                     applyClass: "btn-sm btn-primary",
                     cancelClass: "btn-sm btn-default"
                 },

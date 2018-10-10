@@ -9,17 +9,15 @@ import 'font-awesome/css/font-awesome.css';
 import '../utils/proto-mods';
 import DataApi from '../connectors/data-api';
 
+const MAX_BRANCHES = 100; // If a node has more than these it will be split into 'dummy' folders of this size
+const MAX_MANY_BRANCHES = 100000; // If a node has more than these, split into 10x larger dummy folders (MAX_BRANCHES*10)
+
+const PATHS_WITHOUT_WILDCARDS = [
+    'bgp.visibility.provider',
+    'darknet.ucsd-nt.non-erratic.routing.provider'
+];
+
 const HeirarchyExplorer = React.createClass({
-
-    const: {
-        MAX_BRANCHES: 100, // If a node has more than these it will be split into 'dummy' folders of this size
-        MAX_MANY_BRANCHES: 100000, // If a node has more than these, split into 10x larger dummy folders (MAX_BRANCHES*10)
-
-        PATHS_WITHOUT_WILDCARDS: [
-            'bgp.visibility.provider',
-            'darknet.ucsd-nt.non-erratic.routing.provider'
-        ]
-    },
 
     propTypes: {
         initExpandPath: PropTypes.array,
@@ -62,7 +60,7 @@ const HeirarchyExplorer = React.createClass({
                         function (apiData) {
                             callback(
                                 genChildrenNodes(target, apiData.data,
-                                    rThis.const.MAX_BRANCHES * (apiData.data.length < rThis.const.MAX_MANY_BRANCHES ? 1 : 10)
+                                    MAX_BRANCHES * (apiData.data.length < MAX_MANY_BRANCHES ? 1 : 10)
                                 )
                             );
                         },
@@ -155,7 +153,7 @@ const HeirarchyExplorer = React.createClass({
 
             var newNodes = [];
 
-            var includeWildcards = rThis.const.PATHS_WITHOUT_WILDCARDS.every(function (path) {
+            var includeWildcards = PATHS_WITHOUT_WILDCARDS.every(function (path) {
                 return target.indexOf(path) == -1;
             });
 

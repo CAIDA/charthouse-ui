@@ -19,9 +19,7 @@ import '../utils/proto-mods';
 import 'bootstrap-select/dist/js/bootstrap-select';
 import 'bootstrap-select/dist/css/bootstrap-select.css';
 
-const globalConstants = {
-    YAXIS_COLORS: ['teal', 'sienna']
-};
+const YAXIS_COLORS = ['teal', 'sienna'];
 
 // Sub-Controls
 // Row 1
@@ -63,7 +61,7 @@ const Y2Control = React.createClass({
             }}
         >
             <em className="small">
-                Move to <span style={{color: globalConstants.YAXIS_COLORS[1]}}>secondary Y</span> axis:
+                Move to <span style={{color: YAXIS_COLORS[1]}}>secondary Y</span> axis:
             </em>
             <br/>
             <select
@@ -476,17 +474,16 @@ const Controls = React.createClass({
 });
 
 // XY Chart
+
+const MAX_SERIES_LEGEND = 500;
+// TODO: check if these next two should still be set per-browser:
+const MAX_SERIES_POINT_MARKERS = 1000;
+const MAX_GRAPH_VERTICES = 100000;
+const MAX_SERIES_TO_ANIMATE = 20;
+const POINTS_PER_PIXEL = 2;
+
 // TODO: should extend React.PureComponent
 const CharthouseXYChart = React.createClass({
-
-    const: {
-        MAX_SERIES_LEGEND: 500,
-        // TODO: check if these next two should still be set per-browser:
-        MAX_SERIES_POINT_MARKERS: 1000,
-        MAX_GRAPH_VERTICES: 100000,
-        MAX_SERIES_TO_ANIMATE: 20,
-        POINTS_PER_PIXEL: 2
-    },
 
     propTypes: {
         data: PropTypes.instanceOf(CharthouseData.api).isRequired,
@@ -572,7 +569,7 @@ const CharthouseXYChart = React.createClass({
             // Tag series label with y axis (if there's a dual axis)
             var name = series.options.name ? series.options.name.split('<span')[0] : series.options.id;
             if (dualYAxis) {
-                name += '<span style="color: ' + globalConstants.YAXIS_COLORS[yAxis] + ';font-size: .7em;"> [y' + (yAxis + 1) + ']</span>';
+                name += '<span style="color: ' + YAXIS_COLORS[yAxis] + ';font-size: .7em;"> [y' + (yAxis + 1) + ']</span>';
             }
             if (series.options.name !== name) {
                 series.update({name: name}, false);
@@ -699,7 +696,7 @@ const CharthouseXYChart = React.createClass({
                     opposite: false, // Axis on left side
                     gridLineWidth: 0.6,
                     gridLineDashStyle: 'dash',
-                    lineColor: globalConstants.YAXIS_COLORS[0],
+                    lineColor: YAXIS_COLORS[0],
                     max: yRange[1] <= 0 ? 0 : null, // Include y=0 at init time
                     min: yRange[0] >= 0 ? 0 : null, // Include y=0 at init time
                     tickPositioner: function () {
@@ -723,7 +720,7 @@ const CharthouseXYChart = React.createClass({
                 $.extend({}, this._axisConf, {
                         title: null,
                         opposite: true, // Axis on right side
-                        lineColor: globalConstants.YAXIS_COLORS[1]
+                        lineColor: YAXIS_COLORS[1]
                     }
                 )
             ],
@@ -748,7 +745,7 @@ const CharthouseXYChart = React.createClass({
                 shared: false   // Include all series or just one
             },
             legend: {
-                enabled: (this.props.showLegend && this.props.data.numSeries > 1 && this.props.data.numSeries <= this.const.MAX_SERIES_LEGEND),
+                enabled: (this.props.showLegend && this.props.data.numSeries > 1 && this.props.data.numSeries <= MAX_SERIES_LEGEND),
                 maxHeight: this.props.height * 0.17,
                 itemStyle: {
                     width: React.findDOMNode(this).offsetWidth * 0.9, // Prevent overflow for really large series names
@@ -779,7 +776,7 @@ const CharthouseXYChart = React.createClass({
                     stickyTracking: false,
                     dataGrouping: {
                         approximation: this.props.aggrFunc,
-                        groupPixelWidth: this.const.POINTS_PER_PIXEL
+                        groupPixelWidth: POINTS_PER_PIXEL
                     },
                     events: {
                         click: function () { // Hide series on click / show-only on dbl-click
@@ -832,7 +829,7 @@ const CharthouseXYChart = React.createClass({
                 },
                 line: {
                     marker: {
-                        enabled: this.props.data.numSeries > this.const.MAX_SERIES_POINT_MARKERS ? false : null,
+                        enabled: this.props.data.numSeries > MAX_SERIES_POINT_MARKERS ? false : null,
                         radius: 1.3
                     }
                 },
@@ -840,7 +837,7 @@ const CharthouseXYChart = React.createClass({
                     stacking: 'normal',
                     fillOpacity: .6,
                     marker: {
-                        enabled: this.props.data.numSeries > this.const.MAX_SERIES_POINT_MARKERS ? false : null,
+                        enabled: this.props.data.numSeries > MAX_SERIES_POINT_MARKERS ? false : null,
                         radius: 1.3
                     }
                 },
@@ -867,7 +864,7 @@ const CharthouseXYChart = React.createClass({
         }, 0);
 
         // Make sure we're downsampling to a multiple of the original time
-        var downSampleRatio = Math.max(1, Math.ceil(numVertices / this.const.MAX_GRAPH_VERTICES));
+        var downSampleRatio = Math.max(1, Math.ceil(numVertices / MAX_GRAPH_VERTICES));
 
         this.props.onDownsampledStepChanged(
             downSampleRatio == 1 ?
@@ -913,7 +910,7 @@ const CharthouseXYChart = React.createClass({
             Object.keys(diff.changeSeries).length
             + Object.keys(diff.addSeries).length
             + diff.removeSeries.length
-        ) > this.const.MAX_SERIES_TO_ANIMATE;
+        ) > MAX_SERIES_TO_ANIMATE;
 
         var updAnimation = {duration: 800};
 
@@ -1138,7 +1135,7 @@ const CharthouseXYChart = React.createClass({
             (xRange[1] - xRange[0])                   // Data time range
             / smallestStep                          // Highest time granularity of data
             / highchart.plotWidth         // Chart plot area width in px
-            * this.const.POINTS_PER_PIXEL                      // # pxs per point group
+            * POINTS_PER_PIXEL                      // # pxs per point group
         );
 
         this.props.onAggregationRatioChanged(
@@ -1207,12 +1204,11 @@ const CharthouseXYChart = React.createClass({
 });
 
 // Main HighCharts viz component
-const HighchartsGraph = React.createClass({
 
-    const: {
-        VERTICAL_HEADROOM: 85,
-        VERTICAL_HEADROOM_NO_CONTROLS: 75
-    },
+const VERTICAL_HEADROOM = 85;
+const VERTICAL_HEADROOM_NO_CONTROLS = 75;
+
+const HighchartsGraph = React.createClass({
 
     propTypes: {
         data: PropTypes.instanceOf(CharthouseData.api).isRequired,
@@ -1302,7 +1298,7 @@ const HighchartsGraph = React.createClass({
                 ref="charthouseXY"
                 data={this.props.data}
                 markers={this.props.markers}
-                height={Math.max(this.props.maxHeight - (this.state.showControls ? this.const.VERTICAL_HEADROOM : this.const.VERTICAL_HEADROOM_NO_CONTROLS), 100)}
+                height={Math.max(this.props.maxHeight - (this.state.showControls ? VERTICAL_HEADROOM : VERTICAL_HEADROOM_NO_CONTROLS), 100)}
                 type={this.state.chartType}
                 y2Series={this.state.y2Series}
                 zoomMode={this.state.zoomMode}

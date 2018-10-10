@@ -8,10 +8,6 @@ import ExpressionSet from "../expression/set";
 
 const Visualizer = React.createClass({
 
-    const: {
-        PLACEHOLDER_TXT: '' //'Here be beautiful things...'
-    },
-
     propTypes: {
         expressionSet: PropTypes.instanceOf(ExpressionSet).isRequired,
         from: PropTypes.instanceOf(CharthouseTime).isRequired,
@@ -61,7 +57,7 @@ const Visualizer = React.createClass({
         const expCnt = this.props.expressionSet.getSize();
         return <div>
             {(expCnt === 0 || !this.props.from || !this.props.until || !this.props.plugin)
-                ? <p className="lead">{this.const.PLACEHOLDER_TXT}</p>
+                ? null
                 : <VizPlugin
                     ref="vizPlugin"
                     plugin={this.props.plugin}

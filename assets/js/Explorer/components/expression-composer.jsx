@@ -11,12 +11,10 @@ import '../utils/jquery-plugins';
 import ExpressionSet from "../expression/set";
 import PathExpression from "../expression/path";
 
-const ExpressionComposer = React.createClass({
+const EXPRESSION_VERTICAL_OFFSET = 170;
+const MIN_HEIGHT_TREE_EXPLORER = 250;
 
-    const: {
-        EXPRESSION_VERTICAL_OFFSET: 170,
-        MIN_HEIGHT_TREE_EXPLORER: 250
-    },
+const ExpressionComposer = React.createClass({
 
     propTypes: {
         expressionSet: PropTypes.instanceOf(ExpressionSet),
@@ -144,8 +142,8 @@ const ExpressionComposer = React.createClass({
             <div style={{
                 marginTop: 6,
                 maxHeight: Math.max(
-                    this.const.MIN_HEIGHT_TREE_EXPLORER,
-                    this.props.maxHeight - this.const.EXPRESSION_VERTICAL_OFFSET
+                    MIN_HEIGHT_TREE_EXPLORER,
+                    this.props.maxHeight - EXPRESSION_VERTICAL_OFFSET
                 ),
                 overflow: 'auto',
                 paddingBottom: 10 // Space for horizontal scroll-bar

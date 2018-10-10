@@ -37,82 +37,80 @@ const ToolbarBtn = React.createClass({
     }
 });
 
-const ExpressionToolbar = React.createClass({
-
-    const: {
-        BTN_STATES: [
-            {
-                btnState: 'enApplyFunction',
-                unselected: true,   // show if nothing selected
-                rootlevel: true,    // show if selection is all at root level
-                multinode: true,    // show if there's more than one node selected
-                multitype: true,    // show if there's more than one node type selected
-                function: true,     // show if there's a function selected
-                path: true,         // show if there's a path selected
-                constant: true      // show if there's a constant selected
-            },
-            {
-                btnState: 'enUnwrapFunction',
-                unselected: false,
-                rootlevel: true,
-                multinode: true,
-                multitype: false,
-                function: true,
-                path: false,
-                constant: false
-            },
-            {
-                btnState: 'enOutdentNode',
-                unselected: false,
-                rootlevel: false,
-                multinode: true,
-                multitype: true,
-                'function': true,
-                path: true,
-                constant: true
-            },
-            {
-                btnState: 'enAddConstant',
-                unselected: true,
-                rootlevel: true,
-                multinode: false,
-                multitype: false,
-                'function': true,
-                path: true,
-                constant: true
-            },
-            {
-                btnState: 'enEditNode',
-                unselected: false,
-                rootlevel: true,
-                multinode: false,
-                multitype: false,
-                'function': true,
-                path: true,
-                constant: true
-            },
-            {
-                btnState: 'enCloneNode',
-                unselected: false,
-                rootlevel: true,
-                multinode: true,
-                multitype: true,
-                'function': true,
-                path: true,
-                constant: true
-            },
-            {
-                btnState: 'enRemoveNode',
-                unselected: false,
-                rootlevel: true,
-                multinode: true,
-                multitype: true,
-                'function': true,
-                path: true,
-                constant: true
-            }
-        ]
+const BTN_STATES = [
+    {
+        btnState: 'enApplyFunction',
+        unselected: true,   // show if nothing selected
+        rootlevel: true,    // show if selection is all at root level
+        multinode: true,    // show if there's more than one node selected
+        multitype: true,    // show if there's more than one node type selected
+        function: true,     // show if there's a function selected
+        path: true,         // show if there's a path selected
+        constant: true      // show if there's a constant selected
     },
+    {
+        btnState: 'enUnwrapFunction',
+        unselected: false,
+        rootlevel: true,
+        multinode: true,
+        multitype: false,
+        function: true,
+        path: false,
+        constant: false
+    },
+    {
+        btnState: 'enOutdentNode',
+        unselected: false,
+        rootlevel: false,
+        multinode: true,
+        multitype: true,
+        'function': true,
+        path: true,
+        constant: true
+    },
+    {
+        btnState: 'enAddConstant',
+        unselected: true,
+        rootlevel: true,
+        multinode: false,
+        multitype: false,
+        'function': true,
+        path: true,
+        constant: true
+    },
+    {
+        btnState: 'enEditNode',
+        unselected: false,
+        rootlevel: true,
+        multinode: false,
+        multitype: false,
+        'function': true,
+        path: true,
+        constant: true
+    },
+    {
+        btnState: 'enCloneNode',
+        unselected: false,
+        rootlevel: true,
+        multinode: true,
+        multitype: true,
+        'function': true,
+        path: true,
+        constant: true
+    },
+    {
+        btnState: 'enRemoveNode',
+        unselected: false,
+        rootlevel: true,
+        multinode: true,
+        multitype: true,
+        'function': true,
+        path: true,
+        constant: true
+    }
+];
+
+const ExpressionToolbar = React.createClass({
 
     propTypes: {
         currentSelection: PropTypes.object,
@@ -178,7 +176,7 @@ const ExpressionToolbar = React.createClass({
         });
         if (!currentSelection.nodeTypes.length) currentSelection.nodeTypes.push('unselected');
 
-        var onBtns = this.const.BTN_STATES;
+        var onBtns = BTN_STATES;
 
         if (currentSelection.rootLevel)
             onBtns = onBtns.filter(function (btn) {
@@ -202,7 +200,7 @@ const ExpressionToolbar = React.createClass({
         var btnState = {};
 
         // Switch them all off
-        this.const.BTN_STATES.forEach(function (btn) {
+        BTN_STATES.forEach(function (btn) {
             btnState[btn.btnState] = false;
         });
 
@@ -309,15 +307,13 @@ const ErrorLogger = React.createClass({
 
 ////
 
-const ExpressionBuilder = React.createClass({
+const ICONS = {
+    func: "glyphicon glyphicon-cog",
+    path: "fa fa-leaf",
+    constant: "charthousicon-constant"
+};
 
-    const: {
-        ICONS: {
-            func: "glyphicon glyphicon-cog",
-            path: "fa fa-leaf",
-            constant: "charthousicon-constant"
-        }
-    },
+const ExpressionBuilder = React.createClass({
 
     propTypes: {
         expressionSet: PropTypes.instanceOf(ExpressionSet),
@@ -395,7 +391,7 @@ const ExpressionBuilder = React.createClass({
         >
             <div className="text-center" style={{marginBottom: 10}}>
                 <ExpressionToolbar
-                    icons={this.const.ICONS}
+                    icons={ICONS}
                     currentSelection={this.state.currentSelected}
                     onApplyFunction={this._applyFunction}
                     onUnwrapFunction={this._unwrapFunction}
@@ -412,7 +408,7 @@ const ExpressionBuilder = React.createClass({
                 expressionSet={this.props.expressionSet}
                 onChange={this._expChanged}
                 onSelectionChange={this._adjustToolbarState}
-                icons={this.const.ICONS}
+                icons={ICONS}
             />
             <p
                 className="small text-center text-muted"

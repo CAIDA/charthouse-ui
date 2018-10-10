@@ -432,14 +432,12 @@ const AutoPoller = React.createClass({
 
 //// Main plugin-loader component
 
-const VizPlugin = React.createClass({
+const VERTICAL_OUTER_OFFSET = 25;   // # vertical px already taken outside component (for auto height sizing related to window height)
+const HEADER_HEIGHT = 60;            // # vertical px used by panel header
+const FOOTER_HEIGHT = 60;            // # vertical px used by panel footer
+const MONITOR_UPD_FREQ = 20000; // ms
 
-    const: {
-        VERTICAL_OUTER_OFFSET: 25,   // # vertical px already taken outside component (for auto height sizing related to window height)
-        HEADER_HEIGHT: 60,            // # vertical px used by panel header
-        FOOTER_HEIGHT: 60,            // # vertical px used by panel footer
-        MONITOR_UPD_FREQ: 20000 // ms
-    },
+const VizPlugin = React.createClass({
 
     propTypes: {
         plugin: PropTypes.string,
@@ -477,7 +475,7 @@ const VizPlugin = React.createClass({
         var monitorCfg = this.props.configMan.getParam('liveUpdate', false);
 
         return {
-            maxHeight: this.props.configMan.getParam('pluginMaxHeight') || (window.innerHeight - this.const.VERTICAL_OUTER_OFFSET),
+            maxHeight: this.props.configMan.getParam('pluginMaxHeight') || (window.innerHeight - VERTICAL_OUTER_OFFSET),
             dataLoaded: false,
             parsing: false,
             monitoring: tools.fuzzyBoolean(monitorCfg),
@@ -600,7 +598,7 @@ const VizPlugin = React.createClass({
         var liveUpdPoller = pluginObj.dynamic  // Include self-update button, if plugin supports it
             ? <AutoPoller
                 on={this.state.monitoring}
-                frequency={this.const.MONITOR_UPD_FREQ}
+                frequency={MONITOR_UPD_FREQ}
                 showToggle={this.state.showControls}
                 onToggle={this._selfUpdateToggle}
                 targets={[{
@@ -655,8 +653,8 @@ const VizPlugin = React.createClass({
                                                 onTimeChange={this._vizTimeChanged}
                                                 configMan={this.props.configMan}
                                                 maxHeight={this.state.maxHeight
-                                                - this.const.HEADER_HEIGHT
-                                                - (this.state.showControls ? this.const.FOOTER_HEIGHT : 0)
+                                                - HEADER_HEIGHT
+                                                - (this.state.showControls ? FOOTER_HEIGHT : 0)
                                                 }
                                             />
                                         </div>
@@ -711,7 +709,7 @@ const VizPlugin = React.createClass({
 
     // Private methods
     _setMaxHeight: function () {
-        var newHeight = this.props.configMan.getParam('pluginMaxHeight') || (window.innerHeight - this.const.VERTICAL_OUTER_OFFSET);
+        var newHeight = this.props.configMan.getParam('pluginMaxHeight') || (window.innerHeight - VERTICAL_OUTER_OFFSET);
         if (this.state.maxHeight != newHeight) {
             this.setState({maxHeight: newHeight});
         }

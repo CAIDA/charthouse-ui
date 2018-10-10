@@ -17,11 +17,9 @@ import PathExpression from "../expression/path";
 
 // TODO: this tree still uses a lot of json hax instead of using Expression objects directly
 
-const ExpressionTree = React.createClass({
+const CHANGE_DAMPER_DELAY = 100; //ms. How long to wait for other chained events before triggering a global change
 
-    const: {
-        CHANGE_DAMPER_DELAY: 100 //ms. How long to wait for other chained events before triggering a global change
-    },
+const ExpressionTree = React.createClass({
 
     propTypes: {
         expressionSet: PropTypes.instanceOf(ExpressionSet),
@@ -138,7 +136,7 @@ const ExpressionTree = React.createClass({
                     rThis.props.onChange(rThis._getExpressionSet());
                     rThis._refreshArgsCounters();
                 },
-                rThis.const.CHANGE_DAMPER_DELAY
+                CHANGE_DAMPER_DELAY
             );
         });
 
