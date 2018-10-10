@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React from 'react/addons';
+import React from 'react';
 import $ from 'jquery';
 import 'font-awesome/css/font-awesome.css';
 
@@ -69,8 +69,6 @@ const ExpressionComposer = React.createClass({
         }
     },
 
-    mixins: [React.addons.LinkedStateMixin],
-
     render: function () {
         return <div>
             <p className="text-right small" style={{margin: 1}}>
@@ -128,7 +126,8 @@ const ExpressionComposer = React.createClass({
                         <span className="text-muted"
                               style={{fontSize: '.75em'}}>Auto </span>
                         <input type="checkbox"
-                               checkedLink={this.linkState('autoApply')}
+                               checked={this.autoApply}
+                               onChange={this._toggleAutoApply}
                         />
                     </label>
                     <button type="button"
@@ -198,6 +197,10 @@ const ExpressionComposer = React.createClass({
 
     _toggleReplaceMode: function (newState) {
         this.setState({replaceMode: newState});
+    },
+
+    _toggleAutoApply: function (newState) {
+        this.setState({autoApply: newState});
     },
 
     _metricSelected: function (id) {

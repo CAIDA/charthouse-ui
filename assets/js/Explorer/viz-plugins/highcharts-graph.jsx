@@ -476,6 +476,7 @@ const Controls = React.createClass({
 });
 
 // XY Chart
+// TODO: should extend React.PureComponent
 const CharthouseXYChart = React.createClass({
 
     const: {
@@ -609,8 +610,6 @@ const CharthouseXYChart = React.createClass({
             this.highchart.redraw();
         }
     },
-
-    mixins: [React.addons.PureRenderMixin],
 
     render: function () {
         return <div className="charthouse-highcharts-graph"

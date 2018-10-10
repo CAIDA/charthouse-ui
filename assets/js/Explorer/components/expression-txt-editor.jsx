@@ -52,8 +52,6 @@ const ExpressionTxtEditor = React.createClass({
             || !nextProps.expressionSet.equals(this.props.expressionSet);
     },
 
-    mixins: [React.addons.LinkedStateMixin],
-
     render: function () {
         return <div className="charthouse-expression-txt-editor">
             <samp
@@ -63,11 +61,16 @@ const ExpressionTxtEditor = React.createClass({
                         className="form-control"
                         rows="8"
                         placeholder={'Write an expression...\ne.g.: scale(my.favorite.target, 10)'}
-                        valueLink={this.linkState('expTxt')}
+                        value={this.state.expTxt}
+                        onChange={this._onExpTxtChange}
                         onKeyUp={this._onKeyUp}
                     />
             </samp>
         </div>
+    },
+
+    _onExpTxtChange: function(e) {
+        this.setState({expTxt: e.target.value});
     },
 
     // Private methods
