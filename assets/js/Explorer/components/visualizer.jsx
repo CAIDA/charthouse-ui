@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import config from '../config/config';
 import CharthouseTime from '../utils/time';
@@ -12,19 +13,19 @@ const Visualizer = React.createClass({
     },
 
     propTypes: {
-        expressionSet: React.PropTypes.instanceOf(ExpressionSet).isRequired,
-        from: React.PropTypes.instanceOf(CharthouseTime).isRequired,
-        until: React.PropTypes.instanceOf(CharthouseTime).isRequired,
-        plugin: React.PropTypes.string.isRequired,
-        title: React.PropTypes.string,
-        header: React.PropTypes.node,
-        configMan: React.PropTypes.object,
-        hidePanel: React.PropTypes.bool,
-        loadingTxt: React.PropTypes.node,
+        expressionSet: PropTypes.instanceOf(ExpressionSet).isRequired,
+        from: PropTypes.instanceOf(CharthouseTime).isRequired,
+        until: PropTypes.instanceOf(CharthouseTime).isRequired,
+        plugin: PropTypes.string.isRequired,
+        title: PropTypes.string,
+        header: PropTypes.node,
+        configMan: PropTypes.object,
+        hidePanel: PropTypes.bool,
+        loadingTxt: PropTypes.node,
 
-        markersDataCall: React.PropTypes.func,
-        markersDataCallParams: React.PropTypes.object,
-        postProcessMarkersData: React.PropTypes.func
+        markersDataCall: PropTypes.func,
+        markersDataCallParams: PropTypes.object,
+        postProcessMarkersData: PropTypes.func
     },
 
     getDefaultProps: function () {

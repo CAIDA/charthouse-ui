@@ -1,14 +1,15 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import RBootstrap from 'react-bootstrap';
 
 const RadioToolbar = React.createClass({
 
     propTypes: {
-        options: React.PropTypes.arrayOf(React.PropTypes.object),    // Each { val: [string], display: [React component] }
-        selected: React.PropTypes.string,
-        fontSize: React.PropTypes.string,
-        description: React.PropTypes.string,
-        onChange: React.PropTypes.func
+        options: PropTypes.arrayOf(PropTypes.object),    // Each { val: [string], display: [React component] }
+        selected: PropTypes.string,
+        fontSize: PropTypes.string,
+        description: PropTypes.string,
+        onChange: PropTypes.func
     },
 
     getDefaultProps: function () {

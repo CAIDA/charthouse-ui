@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react/addons';
 import $ from 'jquery';
 import 'font-awesome/css/font-awesome.css';
@@ -18,10 +19,10 @@ const ExpressionComposer = React.createClass({
     },
 
     propTypes: {
-        expressionSet: React.PropTypes.instanceOf(ExpressionSet),
-        initExpandMetricTree: React.PropTypes.bool,
-        maxHeight: React.PropTypes.number,
-        onExpressionEntered: React.PropTypes.func
+        expressionSet: PropTypes.instanceOf(ExpressionSet),
+        initExpandMetricTree: PropTypes.bool,
+        maxHeight: PropTypes.number,
+        onExpressionEntered: PropTypes.func
     },
 
     getDefaultProps: function () {

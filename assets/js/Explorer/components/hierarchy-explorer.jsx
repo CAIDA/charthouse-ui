@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import _ from 'underscore';
 import $ from 'jquery';
@@ -21,8 +22,8 @@ const HeirarchyExplorer = React.createClass({
     },
 
     propTypes: {
-        initExpandPath: React.PropTypes.array,
-        onLeafSelected: React.PropTypes.func
+        initExpandPath: PropTypes.array,
+        onLeafSelected: PropTypes.func
     },
 
     getDefaultProps: function () {

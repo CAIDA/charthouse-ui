@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import moment from 'moment';
 import $ from 'jquery';
@@ -14,9 +15,9 @@ const TimeRangeControl = React.createClass({
     },
 
     propTypes: {
-        from: React.PropTypes.instanceOf(CharthouseTime).isRequired,
-        until: React.PropTypes.instanceOf(CharthouseTime).isRequired,
-        onChange: React.PropTypes.func
+        from: PropTypes.instanceOf(CharthouseTime).isRequired,
+        until: PropTypes.instanceOf(CharthouseTime).isRequired,
+        onChange: PropTypes.func
     },
 
     getDefaultProps: function () {

@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import classNames from 'classnames';
 import ExpressionSet from "../expression/set";
@@ -9,9 +10,9 @@ const ExpressionTxtEditor = React.createClass({
     },
 
     propTypes: {
-        expressionSet: React.PropTypes.instanceOf(ExpressionSet),
-        onChange: React.PropTypes.func,
-        onValidStateChange: React.PropTypes.func
+        expressionSet: PropTypes.instanceOf(ExpressionSet),
+        onChange: PropTypes.func,
+        onValidStateChange: PropTypes.func
     },
 
     getDefaultProps: function () {

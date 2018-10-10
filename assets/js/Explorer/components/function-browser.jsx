@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import $ from 'jquery';
 import 'jstree';
@@ -8,11 +9,11 @@ import '../utils/proto-mods';
 
 const FunctionTree = React.createClass({
     propTypes: {
-        functionSpecs: React.PropTypes.object.isRequired,
-        filterBy: React.PropTypes.string,
-        onFunctionClick: React.PropTypes.func,
-        onFunctionHover: React.PropTypes.func,
-        onFunctionDehover: React.PropTypes.func
+        functionSpecs: PropTypes.object.isRequired,
+        filterBy: PropTypes.string,
+        onFunctionClick: PropTypes.func,
+        onFunctionHover: PropTypes.func,
+        onFunctionDehover: PropTypes.func
     },
 
     getDefaultProps: function () {
@@ -178,7 +179,7 @@ const FunctionTree = React.createClass({
 const FunctionInfo = React.createClass({
 
     propTypes: {
-        funcProtos: React.PropTypes.object
+        funcProtos: PropTypes.object
     },
 
     getDefaultProps: function () {
@@ -227,10 +228,10 @@ const FunctionInfo = React.createClass({
 const FunctionBrowser = React.createClass({
 
     propTypes: {
-        functionSpecs: React.PropTypes.object.isRequired,
-        initSearch: React.PropTypes.string,
-        initHighlight: React.PropTypes.string,
-        onFunctionSelected: React.PropTypes.func
+        functionSpecs: PropTypes.object.isRequired,
+        initSearch: PropTypes.string,
+        initHighlight: PropTypes.string,
+        onFunctionSelected: PropTypes.func
     },
 
     getDefaultProps: function () {

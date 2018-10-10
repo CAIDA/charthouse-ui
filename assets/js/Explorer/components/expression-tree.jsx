@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import $ from 'jquery';
 import 'jstree';
@@ -23,10 +24,10 @@ const ExpressionTree = React.createClass({
     },
 
     propTypes: {
-        expressionSet: React.PropTypes.instanceOf(ExpressionSet),
-        onChange: React.PropTypes.func,
-        onSelectionChange: React.PropTypes.func,
-        icons: React.PropTypes.object
+        expressionSet: PropTypes.instanceOf(ExpressionSet),
+        onChange: PropTypes.func,
+        onSelectionChange: PropTypes.func,
+        icons: PropTypes.object
     },
 
     getDefaultProps: function () {

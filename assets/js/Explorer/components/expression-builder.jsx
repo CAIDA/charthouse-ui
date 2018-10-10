@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import RBootstrap from 'react-bootstrap';
 import $ from 'jquery';
@@ -9,9 +10,9 @@ import ExpressionSet from "../expression/set";
 const ToolbarBtn = React.createClass({
 
     propTypes: {
-        enabled: React.PropTypes.bool,
-        title: React.PropTypes.string,
-        onClick: React.PropTypes.func
+        enabled: PropTypes.bool,
+        title: PropTypes.string,
+        onClick: PropTypes.func
     },
 
     getDefaultProps: function () {
@@ -114,15 +115,15 @@ const ExpressionToolbar = React.createClass({
     },
 
     propTypes: {
-        currentSelection: React.PropTypes.object,
-        icons: React.PropTypes.object,
-        onApplyFunction: React.PropTypes.func,
-        onUnwrapFunction: React.PropTypes.func,
-        onOutdentNode: React.PropTypes.func,
-        onAddConstant: React.PropTypes.func,
-        onEditNode: React.PropTypes.func,
-        onCloneNode: React.PropTypes.func,
-        onRemoveNode: React.PropTypes.func
+        currentSelection: PropTypes.object,
+        icons: PropTypes.object,
+        onApplyFunction: PropTypes.func,
+        onUnwrapFunction: PropTypes.func,
+        onOutdentNode: PropTypes.func,
+        onAddConstant: PropTypes.func,
+        onEditNode: PropTypes.func,
+        onCloneNode: PropTypes.func,
+        onRemoveNode: PropTypes.func
     },
 
     getDefaultProps: function () {
@@ -282,7 +283,7 @@ const ExpressionToolbar = React.createClass({
 const ErrorLogger = React.createClass({
 
     propTypes: {
-        errors: React.PropTypes.array
+        errors: PropTypes.array
     },
 
     getDefaultProps: function () {
@@ -319,9 +320,9 @@ const ExpressionBuilder = React.createClass({
     },
 
     propTypes: {
-        expressionSet: React.PropTypes.instanceOf(ExpressionSet),
-        onChange: React.PropTypes.func,
-        onValidStateChange: React.PropTypes.func
+        expressionSet: PropTypes.instanceOf(ExpressionSet),
+        onChange: PropTypes.func,
+        onValidStateChange: PropTypes.func
     },
 
     getDefaultProps: function () {

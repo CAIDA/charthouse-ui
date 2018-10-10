@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import $ from 'jquery';
 import moment from 'moment';
@@ -29,9 +30,9 @@ const globalConstants = {
 const Y2Control = React.createClass({
 
     propTypes: {
-        seriesList: React.PropTypes.object.isRequired, // id=>{series}
-        y2Series: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
-        onY2SeriesChanged: React.PropTypes.func.isRequired
+        seriesList: PropTypes.object.isRequired, // id=>{series}
+        y2Series: PropTypes.arrayOf(PropTypes.string).isRequired,
+        onY2SeriesChanged: PropTypes.func.isRequired
     },
 
     componentDidMount: function () {
@@ -103,11 +104,11 @@ const Y2Control = React.createClass({
 const PointAggControl = React.createClass({
 
     propTypes: {
-        interactive: React.PropTypes.bool.isRequired,
-        ptsPerPx: React.PropTypes.number,
-        timePerPx: React.PropTypes.string,
-        aggrFunc: React.PropTypes.string.isRequired,
-        onAggrFuncChanged: React.PropTypes.func.isRequired
+        interactive: PropTypes.bool.isRequired,
+        ptsPerPx: PropTypes.number,
+        timePerPx: PropTypes.string,
+        aggrFunc: PropTypes.string.isRequired,
+        onAggrFuncChanged: PropTypes.func.isRequired
     },
 
     render: function () {
@@ -179,10 +180,10 @@ const PointAggControl = React.createClass({
 const SortBy = React.createClass({
 
     propTypes: {
-        sortBy: React.PropTypes.string,
-        onSortByChanged: React.PropTypes.func,
-        sortAscending: React.PropTypes.bool,
-        onToggleSortAscending: React.PropTypes.func
+        sortBy: PropTypes.string,
+        onSortByChanged: PropTypes.func,
+        sortAscending: PropTypes.bool,
+        onToggleSortAscending: PropTypes.func
     },
 
     getDefaultProps: function () {
@@ -272,8 +273,8 @@ const SortBy = React.createClass({
 const YAxisZoomToggle = React.createClass({
 
     propTypes: {
-        zoomMode: React.PropTypes.string.isRequired,
-        onZoomModeChanged: React.PropTypes.func.isRequired
+        zoomMode: PropTypes.string.isRequired,
+        onZoomModeChanged: PropTypes.func.isRequired
     },
 
     render: function () {
@@ -312,7 +313,7 @@ const YAxisZoomToggle = React.createClass({
 const DownsampledNotice = React.createClass({
 
     propTypes: {
-        stepHuman: React.PropTypes.string
+        stepHuman: PropTypes.string
     },
 
     render: function () {
@@ -332,7 +333,7 @@ const DownsampledNotice = React.createClass({
 const AllSeriesToggle = React.createClass({
 
     propTypes: {
-        onToggleAllSeries: React.PropTypes.func.isRequired
+        onToggleAllSeries: PropTypes.func.isRequired
     },
 
     render: function () {
@@ -356,24 +357,24 @@ const AllSeriesToggle = React.createClass({
 const Controls = React.createClass({
 
     propTypes: {
-        seriesList: React.PropTypes.object.isRequired, // id=>{series}
-        chartType: React.PropTypes.string,
-        sortBy: React.PropTypes.string.isRequired,
-        sortAscending: React.PropTypes.bool.isRequired,
-        y2Series: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
-        zoomMode: React.PropTypes.string,
-        aggrPtsPerPx: React.PropTypes.number,
-        aggrTimePerPx: React.PropTypes.string,
-        aggrFunc: React.PropTypes.string.isRequired,
-        downsampledStepHuman: React.PropTypes.string,
-        interactive: React.PropTypes.bool,
-        onChartTypeChanged: React.PropTypes.func.isRequired,
-        onY2SeriesChanged: React.PropTypes.func.isRequired,
-        onZoomModeChanged: React.PropTypes.func.isRequired,
-        onAggrFuncChanged: React.PropTypes.func.isRequired,
-        onToggleAllSeries: React.PropTypes.func.isRequired,
-        onSortByChanged: React.PropTypes.func,
-        onToggleSortAscending: React.PropTypes.func
+        seriesList: PropTypes.object.isRequired, // id=>{series}
+        chartType: PropTypes.string,
+        sortBy: PropTypes.string.isRequired,
+        sortAscending: PropTypes.bool.isRequired,
+        y2Series: PropTypes.arrayOf(PropTypes.string).isRequired,
+        zoomMode: PropTypes.string,
+        aggrPtsPerPx: PropTypes.number,
+        aggrTimePerPx: PropTypes.string,
+        aggrFunc: PropTypes.string.isRequired,
+        downsampledStepHuman: PropTypes.string,
+        interactive: PropTypes.bool,
+        onChartTypeChanged: PropTypes.func.isRequired,
+        onY2SeriesChanged: PropTypes.func.isRequired,
+        onZoomModeChanged: PropTypes.func.isRequired,
+        onAggrFuncChanged: PropTypes.func.isRequired,
+        onToggleAllSeries: PropTypes.func.isRequired,
+        onSortByChanged: PropTypes.func,
+        onToggleSortAscending: PropTypes.func
     },
 
     getDefaultProps: function () {
@@ -487,19 +488,19 @@ const CharthouseXYChart = React.createClass({
     },
 
     propTypes: {
-        data: React.PropTypes.instanceOf(CharthouseData.api).isRequired,
-        height: React.PropTypes.number.isRequired,
-        type: React.PropTypes.string.isRequired,
-        sortBy: React.PropTypes.string,
-        sortAscending: React.PropTypes.bool,
-        y2Series: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
-        zoomMode: React.PropTypes.string.isRequired,
-        aggrFunc: React.PropTypes.string.isRequired,
-        onTimeRangeChanged: React.PropTypes.func.isRequired,
-        onAggregationRatioChanged: React.PropTypes.func.isRequired,
-        onDownsampledStepChanged: React.PropTypes.func.isRequired,
-        showLegend: React.PropTypes.bool.isRequired,
-        markers: React.PropTypes.object.isRequired
+        data: PropTypes.instanceOf(CharthouseData.api).isRequired,
+        height: PropTypes.number.isRequired,
+        type: PropTypes.string.isRequired,
+        sortBy: PropTypes.string,
+        sortAscending: PropTypes.bool,
+        y2Series: PropTypes.arrayOf(PropTypes.string).isRequired,
+        zoomMode: PropTypes.string.isRequired,
+        aggrFunc: PropTypes.string.isRequired,
+        onTimeRangeChanged: PropTypes.func.isRequired,
+        onAggregationRatioChanged: PropTypes.func.isRequired,
+        onDownsampledStepChanged: PropTypes.func.isRequired,
+        showLegend: PropTypes.bool.isRequired,
+        markers: PropTypes.object.isRequired
     },
 
     getDefaultProps: function () {
@@ -1215,10 +1216,10 @@ const HighchartsGraph = React.createClass({
     },
 
     propTypes: {
-        data: React.PropTypes.instanceOf(CharthouseData.api).isRequired,
-        markers: React.PropTypes.object,
-        configMan: React.PropTypes.object,
-        maxHeight: React.PropTypes.number
+        data: PropTypes.instanceOf(CharthouseData.api).isRequired,
+        markers: PropTypes.object,
+        configMan: PropTypes.object,
+        maxHeight: PropTypes.number
     },
 
     getDefaultProps: function () {

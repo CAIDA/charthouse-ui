@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import $ from 'jquery';
 
@@ -7,9 +8,9 @@ import '../utils/proto-mods';
 const PluginSelector = React.createClass({
 
     propTypes: {
-        selectedPlugin: React.PropTypes.string,
-        onPluginSelected: React.PropTypes.func,
-        height: React.PropTypes.string
+        selectedPlugin: PropTypes.string,
+        onPluginSelected: PropTypes.func,
+        height: PropTypes.string
     },
 
     getDefaultProps: function () {

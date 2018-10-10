@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import $ from 'jquery';
 import 'jquery-toggles';
@@ -7,13 +8,13 @@ import 'jquery-toggles/css/themes/toggles-modern.css';
 const ToggleSwitch = React.createClass({
 
     propTypes: {
-        width: React.PropTypes.number,
-        height: React.PropTypes.number,
-        on: React.PropTypes.bool,
-        textOn: React.PropTypes.string,
-        textOff: React.PropTypes.string,
-        description: React.PropTypes.string,
-        onToggle: React.PropTypes.func
+        width: PropTypes.number,
+        height: PropTypes.number,
+        on: PropTypes.bool,
+        textOn: PropTypes.string,
+        textOff: PropTypes.string,
+        description: PropTypes.string,
+        onToggle: PropTypes.func
     },
 
     getDefaultProps: function () {

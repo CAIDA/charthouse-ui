@@ -1,10 +1,11 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import CharthouseData from '../utils/dataset';
 
 const RawText = React.createClass({
 
     propTypes: {
-        data: React.PropTypes.instanceOf(CharthouseData.api).isRequired
+        data: PropTypes.instanceOf(CharthouseData.api).isRequired
     },
 
     render: function () {

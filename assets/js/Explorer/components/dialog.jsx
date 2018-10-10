@@ -1,16 +1,17 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import RBootstrap from 'react-bootstrap';
 
 const Dialog = React.createClass({
 
     propTypes: {
-        title: React.PropTypes.node,
-        openOnInit: React.PropTypes.bool,
-        backdrop: React.PropTypes.any,
-        keyboard: React.PropTypes.bool,
-        showCloseButton: React.PropTypes.bool,
-        onClose: React.PropTypes.func,
-        dialogClassName: React.PropTypes.string
+        title: PropTypes.node,
+        openOnInit: PropTypes.bool,
+        backdrop: PropTypes.any,
+        keyboard: PropTypes.bool,
+        showCloseButton: PropTypes.bool,
+        onClose: PropTypes.func,
+        dialogClassName: PropTypes.string
     },
 
     getDefaultProps: function () {

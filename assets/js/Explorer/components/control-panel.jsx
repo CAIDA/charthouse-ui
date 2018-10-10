@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 
 import config from '../config/config';
@@ -18,12 +19,12 @@ const ControlPanel = React.createClass({
     },
 
     propTypes: {
-        expressionSet: React.PropTypes.instanceOf(ExpressionSet).isRequired,
-        from: React.PropTypes.instanceOf(CharthouseTime).isRequired,
-        until: React.PropTypes.instanceOf(CharthouseTime).isRequired,
-        plugin: React.PropTypes.string.isRequired,
-        initExpandMetricTree: React.PropTypes.bool,
-        onChange: React.PropTypes.func
+        expressionSet: PropTypes.instanceOf(ExpressionSet).isRequired,
+        from: PropTypes.instanceOf(CharthouseTime).isRequired,
+        until: PropTypes.instanceOf(CharthouseTime).isRequired,
+        plugin: PropTypes.string.isRequired,
+        initExpandMetricTree: PropTypes.bool,
+        onChange: PropTypes.func
     },
 
     getDefaultProps: function () {

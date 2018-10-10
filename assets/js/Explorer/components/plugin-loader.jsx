@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import $ from 'jquery';
 import 'font-awesome/css/font-awesome.css';
@@ -16,12 +17,12 @@ import '../utils/jquery-plugins';
 const PluginContent = React.createClass({
 
     propTypes: {
-        data: React.PropTypes.instanceOf(CharthouseDataSet.api).isRequired,
-        markers: React.PropTypes.object,
-        onTimeChange: React.PropTypes.func,
-        configMan: React.PropTypes.object,
-        pluginCfg: React.PropTypes.object.isRequired,
-        maxHeight: React.PropTypes.number
+        data: PropTypes.instanceOf(CharthouseDataSet.api).isRequired,
+        markers: PropTypes.object,
+        onTimeChange: PropTypes.func,
+        configMan: PropTypes.object,
+        pluginCfg: PropTypes.object.isRequired,
+        maxHeight: PropTypes.number
     },
 
     getDefaultProps: function () {
@@ -88,8 +89,8 @@ const DataInfo = React.createClass({
 
     // TODO: why is vizTimeRange not updating when we get new data?
     propTypes: {
-        data: React.PropTypes.instanceOf(CharthouseDataSet.api).isRequired,
-        vizTimeRange: React.PropTypes.array
+        data: PropTypes.instanceOf(CharthouseDataSet.api).isRequired,
+        vizTimeRange: PropTypes.array
     },
 
     getInitialState: function () {
@@ -154,7 +155,7 @@ const DataInfo = React.createClass({
 const PluginFooter = React.createClass({
 
     propTypes: {
-        data: React.PropTypes.instanceOf(CharthouseDataSet.api).isRequired
+        data: PropTypes.instanceOf(CharthouseDataSet.api).isRequired
     },
 
     getInitialState: function () {
@@ -255,15 +256,15 @@ const PluginFooter = React.createClass({
 const AutoPoller = React.createClass({
 
     propTypes: {
-        on: React.PropTypes.bool,
-        frequency: React.PropTypes.number,
-        description: React.PropTypes.string,
-        showToggle: React.PropTypes.bool,
-        targets: React.PropTypes.arrayOf(React.PropTypes.shape({
-            dataCall: React.PropTypes.func.isRequired,
-            onNewData: React.PropTypes.func
+        on: PropTypes.bool,
+        frequency: PropTypes.number,
+        description: PropTypes.string,
+        showToggle: PropTypes.bool,
+        targets: PropTypes.arrayOf(PropTypes.shape({
+            dataCall: PropTypes.func.isRequired,
+            onNewData: PropTypes.func
         }).isRequired).isRequired,
-        onToggle: React.PropTypes.func,
+        onToggle: PropTypes.func,
     },
 
     getDefaultProps: function () {
@@ -441,15 +442,15 @@ const VizPlugin = React.createClass({
     },
 
     propTypes: {
-        plugin: React.PropTypes.string,
-        title: React.PropTypes.string,
-        header: React.PropTypes.node,
-        queryTxt: React.PropTypes.string,
-        dataCall: React.PropTypes.func,
-        markersDataCall: React.PropTypes.func,
-        configMan: React.PropTypes.object,
-        hidePanel: React.PropTypes.bool,
-        loadingTxt: React.PropTypes.node
+        plugin: PropTypes.string,
+        title: PropTypes.string,
+        header: PropTypes.node,
+        queryTxt: PropTypes.string,
+        dataCall: PropTypes.func,
+        markersDataCall: PropTypes.func,
+        configMan: PropTypes.object,
+        hidePanel: PropTypes.bool,
+        loadingTxt: PropTypes.node
     },
 
     getDefaultProps: function () {

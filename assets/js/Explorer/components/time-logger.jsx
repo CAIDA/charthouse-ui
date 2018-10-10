@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import moment from 'moment';
 
@@ -8,8 +9,8 @@ const TimeLogger = React.createClass({
     },
 
     propTypes: {
-        start: React.PropTypes.number,
-        end: React.PropTypes.number
+        start: PropTypes.number,
+        end: PropTypes.number
     },
 
     render: function () {
