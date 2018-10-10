@@ -9,15 +9,26 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
-import Explorer from "./Explorer/components/explorer";
+import Auth from './auth/auth';
+import AuthenticatedRoute from './auth/route';
+
+// "pages"
 import Login from './auth/login';
+import Explorer from "./Explorer/components/explorer";
+
+// Fake auth provider
+const auth = new Auth();
+// auth.authenticate(); // DEBUG
 
 ReactDOM.render((
     <BrowserRouter>
         <Switch>
-            <Route path="/">
-                <Explorer/>
+            <Route path='/login'>
+                <Login/>
             </Route>
+            <AuthenticatedRoute auth={auth} path='/'>
+                <Explorer/>
+            </AuthenticatedRoute>
         </Switch>
     </BrowserRouter>
 ), document.getElementById('root'));
