@@ -179,14 +179,18 @@ class PluginFooter extends React.Component {
                     {this.props.children}
                 </span>
 
+            {/* TODO: add permalink support */}
+            {/*
             <button type="button" className="btn btn-info btn-xs pull-right"
                     title="Get Charthouse Permalink for current view"
                     onClick={this._getPermalink}
             >
                 <span className="glyphicon glyphicon-link"/> Short URL
             </button>
+            */}
 
             {/* TODO: Generate a cURL link since our queries are POST-only now */}
+            {/*
             <a target='_blank' className="pull-right btn btn-info btn-xs"
                href="#"
                title="Download json data file"
@@ -195,6 +199,7 @@ class PluginFooter extends React.Component {
                 (<span ref="jsonSize">{this.props.data.jsonSizeHuman()}</span>)
             </small>
             </a>
+            */}
         </div>;
     }
 
