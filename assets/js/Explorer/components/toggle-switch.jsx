@@ -1,13 +1,13 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import ReactDOM from 'react-dom';
 import $ from 'jquery';
 import 'jquery-toggles';
 import 'jquery-toggles/css/toggles.css';
 import 'jquery-toggles/css/themes/toggles-modern.css';
 
-const ToggleSwitch = React.createClass({
-
-    propTypes: {
+class ToggleSwitch extends React.Component {
+    static propTypes = {
         width: PropTypes.number,
         height: PropTypes.number,
         on: PropTypes.bool,
@@ -15,23 +15,21 @@ const ToggleSwitch = React.createClass({
         textOff: PropTypes.string,
         description: PropTypes.string,
         onToggle: PropTypes.func
-    },
+    };
 
-    getDefaultProps: function () {
-        return {
-            width: 43,
-            height: 16,
-            on: false,
-            textOn: 'On',
-            textOff: 'Off',
-            description: '',
-            onToggle: function (isOn) {
-            }
+    static defaultProps = {
+        width: 43,
+        height: 16,
+        on: false,
+        textOn: 'On',
+        textOff: 'Off',
+        description: '',
+        onToggle: function (isOn) {
         }
-    },
+    };
 
-    componentDidMount: function () {
-        this.$toggle = $(this.refs.toggleBtn.getDOMNode()).toggles({
+    componentDidMount() {
+        this.$toggle = $(ReactDOM.findDOMNode(this.refs.toggleBtn)).toggles({
             width: this.props.width,
             height: this.props.height,
             on: this.props.on,
@@ -46,20 +44,20 @@ const ToggleSwitch = React.createClass({
         this.$toggle.on('toggle', function (e, active) {
             rThis.props.onToggle(active);
         });
-    },
+    }
 
-    componentDidUpdate: function (prevProps) {
+    componentDidUpdate(prevProps) {
         if (this.props.on != prevProps.on)
             this.$toggle.toggles(this.props.on);
-    },
+    }
 
-    componentWillUnmount: function () {
+    componentWillUnmount() {
         // Destroy plugin
-        var $elem = $(this.refs.toggleBtn.getDOMNode());
+        var $elem = $(ReactDOM.findDOMNode(this.refs.toggleBtn));
         $.removeData($elem.get(0));
-    },
+    }
 
-    render: function () {
+    render() {
         return <div
             className="toggle-modern text-center"
             ref="toggleBtn"
@@ -67,7 +65,6 @@ const ToggleSwitch = React.createClass({
             style={{WebkitFontSmoothing: 'antialiased'}}
         />
     }
-
-});
+}
 
 export default ToggleSwitch;
