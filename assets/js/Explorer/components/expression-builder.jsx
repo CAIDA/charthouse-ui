@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import RBootstrap from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import $ from 'jquery';
 import 'font-awesome/css/font-awesome.css';
 
@@ -25,7 +25,7 @@ const ToolbarBtn = React.createClass({
     },
 
     render: function () {
-        return <RBootstrap.Button
+        return <Button
             bsStyle='primary'
             bsSize='xsmall'
             title={this.props.title}
@@ -33,7 +33,7 @@ const ToolbarBtn = React.createClass({
             onClick={this.props.onClick}
         >
             {this.props.children}
-        </RBootstrap.Button>;
+        </Button>;
     }
 });
 

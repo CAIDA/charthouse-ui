@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import RBootstrap from 'react-bootstrap';
+import { ButtonGroup, Button } from 'react-bootstrap';
 
 const RadioToolbar = React.createClass({
 
@@ -25,13 +25,13 @@ const RadioToolbar = React.createClass({
     render: function () {
         const rThis = this;
 
-        return <RBootstrap.ButtonGroup
+        return <ButtonGroup
             bsSize="xsmall"
             style={{verticalAlign: 'middle'}}
             title={this.props.description}
         >
             {this.props.options.map(function (option) {
-                return <RBootstrap.Button
+                return <Button
                     key={option.val}
                     active={rThis.props.selected === option.val}
                     onClick={function () {
@@ -40,9 +40,9 @@ const RadioToolbar = React.createClass({
                     style={{fontSize: rThis.props.fontSize}}
                 >
                     {option.display}
-                </RBootstrap.Button>;
+                </Button>;
             })}
-        </RBootstrap.ButtonGroup>;
+        </ButtonGroup>;
     }
 });
 

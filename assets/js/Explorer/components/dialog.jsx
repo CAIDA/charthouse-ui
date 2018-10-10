@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import RBootstrap from 'react-bootstrap';
+import { Modal } from 'react-bootstrap';
 
 const Dialog = React.createClass({
 
@@ -32,7 +32,7 @@ const Dialog = React.createClass({
 
     render: function () {
         return (
-            <RBootstrap.Modal
+            <Modal
                 dialogClassName={"charthouse-dialog " + (this.props.dialogClassName || "")}
 
                 show={this.state.isOpen}
@@ -43,15 +43,15 @@ const Dialog = React.createClass({
                 animation={true}    // Rendering animation
                 closeButton={this.props.showCloseButton}  // cross button on top-right
             >
-                <RBootstrap.Modal.Header>
-                    <RBootstrap.Modal.Title>
+                <Modal.Header>
+                    <Modal.Title>
                         {this.props.title}
-                    </RBootstrap.Modal.Title>
-                </RBootstrap.Modal.Header>
-                <RBootstrap.Modal.Body>
+                    </Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
                     {this.props.children}
-                </RBootstrap.Modal.Body>
-            </RBootstrap.Modal>
+                </Modal.Body>
+            </Modal>
         );
     },
 
