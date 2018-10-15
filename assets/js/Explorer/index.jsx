@@ -1,6 +1,6 @@
 import React from 'react';
 
-import config from '../config/config';
+import config from 'Config';
 import CharthouseTime from './utils/time';
 import ControlPanel from './components/control-panel';
 import Visualizer from './components/visualizer';
