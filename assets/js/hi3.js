@@ -9,7 +9,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
-import Auth from 'Auth/auth';
+import auth from 'Auth';
 import AuthenticatedRoute from 'Auth/route';
 
 // "pages"
@@ -17,8 +17,7 @@ import Login from 'Auth/login';
 import Explorer from 'Explorer';
 
 // Fake auth provider
-const auth = new Auth();
-// auth.authenticate(); // DEBUG
+// auth.signout(); // DEBUG
 
 ReactDOM.render((
     <BrowserRouter>

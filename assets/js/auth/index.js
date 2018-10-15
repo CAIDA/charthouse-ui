@@ -1,7 +1,7 @@
 
 class Auth {
     constructor() {
-        this.isAuthenticated = false;
+        this.isAuthenticated = true; // DEBUG
     }
 
     authenticate(cb) {
@@ -15,4 +15,4 @@ class Auth {
     }
 }
 
-export default Auth;
+export default new Auth(); // export as singleton instance

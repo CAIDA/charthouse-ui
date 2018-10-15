@@ -6,6 +6,8 @@ import StaticCfg from './static';
 
 const NS_SEP = '.';
 
+// TODO: replace this config module with something like Redux
+
 // internal class for holding a name-spaced config
 class NsCfg {
 
