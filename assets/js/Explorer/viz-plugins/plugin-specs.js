@@ -1,6 +1,6 @@
 export default {
     rawText: {
-        import: import(/* webpackChunkName: "raw-text" */ '../viz-plugins/raw-text'),
+        import: import(/* webpackChunkName: "raw-text" */ './raw-text'),
         title: 'Raw Text',
         description: 'Shows a plain text representation of the data',
         dynamic: true,      // Whether it's able to receive new data after initialisation and self-update
@@ -14,7 +14,7 @@ export default {
         internal: false
     },
     xyGraph: {
-        import: import(/* webpackChunkName: "highcharts-graph" */ '../viz-plugins/highcharts-graph'),
+        import: import(/* webpackChunkName: "highcharts-graph" */ './highcharts-graph'),
         title: 'XY Graph',
         description: 'Shows a line/area/bar chart representation of the data',
         dynamic: true

@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import $ from 'jquery';
 
-import CHARTHOUSE_PLUGIN_SPECS from '../config/plugin-specs';
+import CHARTHOUSE_PLUGIN_SPECS from '../viz-plugins/plugin-specs';
 import '../utils/proto-mods';
 
 class PluginSelector extends React.Component {

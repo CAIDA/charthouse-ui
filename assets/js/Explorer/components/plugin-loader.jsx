@@ -9,7 +9,7 @@ import Dialog from './dialog';
 import TimeLogger from './time-logger';
 // TODO: PermalinkForm
 import CharthouseDataSet from '../utils/dataset';
-import CHARTHOUSE_PLUGIN_SPECS from '../config/plugin-specs';
+import CHARTHOUSE_PLUGIN_SPECS from '../viz-plugins/plugin-specs';
 import tools from '../utils/tools';
 import '../utils/jquery-plugins';
 
