@@ -1,7 +1,7 @@
 import $ from 'jquery';
 import bbq from 'jquery2-bbq';
 
-import tools from '../utils/tools';
+import tools from '../Explorer/utils/tools';
 import StaticCfg from './static';
 
 var NS_SEP = '.';

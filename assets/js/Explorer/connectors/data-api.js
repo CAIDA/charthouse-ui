@@ -1,7 +1,7 @@
 import $ from 'jquery';
 import moment from 'moment';
 
-import config from '../config/config';
+import config from '../../config/config';
 import ExpressionFactory from '../expression/factory';
 
 const CharthouseApiConnector = function () {

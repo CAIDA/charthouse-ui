@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import config from '../config/config';
+import config from '../../config/config';
 import CharthouseTime from '../utils/time';
 import DataApi from '../connectors/data-api';
 import VizPlugin from './plugin-loader';
