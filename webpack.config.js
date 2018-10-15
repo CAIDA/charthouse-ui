@@ -1,3 +1,4 @@
+var path = require('path');
 var Encore = require('@symfony/webpack-encore');
 
 Encore
@@ -78,9 +79,14 @@ Encore
 
 let webpackConfig = Encore.getWebpackConfig();
 
-// hax to get daterangepicker to work correctly
 webpackConfig.resolve.alias = {
-    'jquery': require.resolve('jquery')
+    // hax to get daterangepicker to work correctly
+    'jquery': require.resolve('jquery'),
+
+    // convenience for accessing our top-level modules
+    'Auth': path.resolve(__dirname, './assets/js/auth/'),
+    'Config': path.resolve(__dirname, './assets/js/config/'),
+    'Explorer': path.resolve(__dirname, './assets/js/Explorer/')
 };
 
 module.exports = webpackConfig;

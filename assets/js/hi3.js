@@ -9,12 +9,12 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
-import Auth from './auth/auth';
-import AuthenticatedRoute from './auth/route';
+import Auth from 'Auth/auth';
+import AuthenticatedRoute from 'Auth/route';
 
 // "pages"
-import Login from './auth/login';
-import Explorer from "./Explorer/components/explorer";
+import Login from 'Auth/login';
+import Explorer from 'Explorer/components/explorer';
 
 // Fake auth provider
 const auth = new Auth();
