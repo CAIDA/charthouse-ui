@@ -83,9 +83,13 @@ webpackConfig.resolve.alias = {
     // hax to get daterangepicker to work correctly
     'jquery': require.resolve('jquery'),
 
+    // convenience for accessing our local CSS files
+    'css': path.resolve(__dirname, './assets/css/'),
+
     // convenience for accessing our top-level modules
     'Auth': path.resolve(__dirname, './assets/js/auth/'),
     'Config': path.resolve(__dirname, './assets/js/config/'),
+    'Explorer/css': path.resolve(__dirname, './assets/css/Explorer/'),
     'Explorer': path.resolve(__dirname, './assets/js/Explorer/')
 };
 

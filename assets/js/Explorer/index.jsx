@@ -1,14 +1,14 @@
 import React from 'react';
 
-import config from '../../config/config';
-import CharthouseTime from '../utils/time';
-import ControlPanel from './control-panel';
-import Visualizer from './visualizer';
-import ExpressionSet from "../expression/set";
+import config from '../config/config';
+import CharthouseTime from './utils/time';
+import ControlPanel from './components/control-panel';
+import Visualizer from './components/visualizer';
+import ExpressionSet from "./expression/set";
 
 // TODO: break these styles up and move them to the actual components that use them
-import '../../../css/Explorer/explorer.css';
-import '../../../css/Explorer/viz-plugins.css';
+import 'Explorer/css/explorer.css';
+import 'Explorer/css/viz-plugins.css';
 
 // TODO: remove these and force config in static.js
 const DEFAULT_QUERYTIME = [

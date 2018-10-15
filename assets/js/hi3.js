@@ -1,9 +1,9 @@
 // external CSS deps
-import '../css/theme/css/bootstrap-flatly.css';
+import 'css/theme/css/bootstrap-flatly.css';
 
 // global CSS styles
 // TODO: there are probably some explorer-specific styles in here
-import '../css/base.css';
+import 'css/base.css';
 
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -14,7 +14,7 @@ import AuthenticatedRoute from 'Auth/route';
 
 // "pages"
 import Login from 'Auth/login';
-import Explorer from 'Explorer/components/explorer';
+import Explorer from 'Explorer';
 
 // Fake auth provider
 const auth = new Auth();
