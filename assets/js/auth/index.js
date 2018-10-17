@@ -1,7 +1,8 @@
+export {default as AuthenticatedRoute} from './route';
 
 class Auth {
     constructor() {
-        this.isAuthenticated = true; // DEBUG
+        this.isAuthenticated = false;
     }
 
     authenticate(cb) {
@@ -15,4 +16,4 @@ class Auth {
     }
 }
 
-export default new Auth(); // export as singleton instance
+export const auth = new Auth();

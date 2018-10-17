@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import { Link } from 'react-router-dom';
 
-import config from 'Config';
 import CharthouseTime from '../utils/time';
 import TimeRangeControl from './time-range-control';
 import PluginSelector from './plugin-selector';
@@ -82,12 +82,12 @@ class ControlPanel extends React.Component {
                             Logged in as <a
                             href="#"><i>anonymous</i></a>
                         </span>
-                    <a className="btn btn-default btn-xs pull-right"
-                       title="Log out" href={config.getParam('logoutRoute')}
+                    <Link className="btn btn-default btn-xs pull-right"
+                       title="Log out" to='/logout'
                     >
                         <span className="glyphicon glyphicon-log-out"/>
                         &nbsp;&nbsp;Log out
-                    </a>
+                    </Link>
                 </div>
             </div>
             <div className="panel panel-default controller-panel">

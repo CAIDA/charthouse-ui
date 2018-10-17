@@ -9,7 +9,6 @@ class AuthenticatedRoute extends React.Component {
 
     render() {
         const { auth, children, ...props } = this.props;
-        console.log("auth: " + auth.isAuthenticated);
         return <Route {...props}>
             {auth.isAuthenticated ? children : <Redirect to='/login'/>}
         </Route>

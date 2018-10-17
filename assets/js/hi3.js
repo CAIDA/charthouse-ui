@@ -5,19 +5,18 @@ import 'css/theme/css/bootstrap-flatly.css';
 // TODO: there are probably some explorer-specific styles in here
 import 'css/base.css';
 
+// library imports
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Link, Route, Switch } from 'react-router-dom';
 
-import auth from 'Auth';
-import AuthenticatedRoute from 'Auth/route';
+// auth
+import { auth, AuthenticatedRoute } from 'Auth';
 
 // "pages"
 import Login from 'Auth/login';
+import Logout from 'Auth/logout';
 import Explorer from 'Explorer';
-
-// Fake auth provider
-// auth.signout(); // DEBUG
 
 ReactDOM.render((
     <BrowserRouter>
@@ -25,9 +24,20 @@ ReactDOM.render((
             <Route path='/login'>
                 <Login/>
             </Route>
-            <AuthenticatedRoute auth={auth} path='/'>
+            <Route path='/logout'>
+                <Logout/>
+            </Route>
+            <AuthenticatedRoute auth={auth} path='/explorer'>
                 <Explorer/>
             </AuthenticatedRoute>
+            <Route path='/'>
+                <div>
+                    <p>Welcome to Hi3</p>
+                    <Link to='/explorer'>Explorer</Link>
+                    <br/>
+                    <Link to='/logout'>Log out</Link>
+                </div>
+            </Route>
         </Switch>
     </BrowserRouter>
 ), document.getElementById('root'));
