@@ -14,7 +14,6 @@ class LoginPage extends React.Component {
         this._login = this._login.bind(this);
     }
 
-
     render() {
         // no need to log in if we already are
         if (this.state.isAuthenticated) {
