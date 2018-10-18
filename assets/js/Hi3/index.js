@@ -1,4 +1,5 @@
 // external CSS deps
+// TODO: fix green color on success button hover
 import 'css/theme/css/bootstrap-flatly.css';
 
 // global CSS styles

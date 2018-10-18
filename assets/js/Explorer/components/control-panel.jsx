@@ -8,8 +8,8 @@ import PluginSelector from './plugin-selector';
 import ExpressionComposer from './expression-composer';
 import ExpressionSet from "../expression/set";
 
-import hicubeLogo from '../../../images/logos/hicube-full.png';
-import caidaLogo from '../../../images/logos/caida_logo_small.png';
+import hicubeLogo from 'images/logos/hicube-full.png';
+import caidaLogo from 'images/logos/caida_logo_small.png';
 
 // Module constants
 const HIERARCHY_EXPLORER_VERTICAL_OFFSET = 430; // # vertical px already in use by headers, other controls, etc

@@ -1,0 +1,42 @@
+.jumbotron {
+    text-align: center;
+    background-color: transparent;
+    margin-bottom: 0;
+    padding-bottom: 30px;
+}
+
+.jumbotron img {
+    height: 180px;
+}
+
+.jumbotron img + img {
+    padding-left: 30px;
+}
+
+h3 {
+    margin-top: 40px;
+}
+
+.jumbotron + h3 {
+    margin-top: 0;
+}
+
+.btn-lg + .btn-lg {
+    margin-left: 20px;
+}
+
+.funding .thumbnail {
+    border: hidden;
+}
+
+.thumbnail {
+    width: 100%;
+    height: 150px;
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.thumbnail img {
+    max-height: 150px;
+    max-width: 200px;
+}
