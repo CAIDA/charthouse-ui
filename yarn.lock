@@ -1004,7 +1004,7 @@ babel-plugin-transform-strict-mode@^6.24.1:
     babel-runtime "^6.22.0"
     babel-types "^6.24.1"
 
-babel-polyfill@^6.26.0:
+babel-polyfill@>=6.9.1, babel-polyfill@^6.26.0:
   version "6.26.0"
   resolved "https://registry.yarnpkg.com/babel-polyfill/-/babel-polyfill-6.26.0.tgz#379937abc67d7895970adc621f284cd966cf2153"
   integrity sha1-N5k3q8Z9eJWXCtxiHyhM2WbPIVM=
@@ -4129,6 +4129,11 @@ jsprim@^1.2.2:
     json-schema "0.2.3"
     verror "1.10.0"
 
+jsrsasign@^8.0.12:
+  version "8.0.12"
+  resolved "https://registry.yarnpkg.com/jsrsasign/-/jsrsasign-8.0.12.tgz#22abb9656d34a30b9530436720835e89c2e5c316"
+  integrity sha1-Iqu5ZW00owuVMENnIINeicLlwxY=
+
 jstree@3.0.9:
   version "3.0.9"
   resolved "https://registry.yarnpkg.com/jstree/-/jstree-3.0.9.tgz#d562ce3510325d4680e72140649cd255d377c7b7"
@@ -5076,6 +5081,15 @@ obuf@^1.0.0, obuf@^1.1.1:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/obuf/-/obuf-1.1.2.tgz#09bea3343d41859ebd446292d11c9d4db619084e"
   integrity sha512-PX1wu0AmAdPqOL1mWhqmlOd8kOIZQwGZw6rh7uby9fTc5lhaOWFLX3I6R1hrF9k3zUY40e6igsLGkDXK92LJNg==
+
+oidc-client@^1.5.3:
+  version "1.5.3"
+  resolved "https://registry.yarnpkg.com/oidc-client/-/oidc-client-1.5.3.tgz#a1d62716719c61a2a8d588743f0d2eb9d978a1ff"
+  integrity sha512-TvONI7d9ZxlpRNrqkUiFfEhu9dyX7UoN/9mbaoa96r10a8SaekDOJev3ZieHCGsGRvTBFYuIEFefH1D/Zzljxg==
+  dependencies:
+    jsrsasign "^8.0.12"
+  optionalDependencies:
+    babel-polyfill ">=6.9.1"
 
 on-finished@~2.3.0:
   version "2.3.0"
