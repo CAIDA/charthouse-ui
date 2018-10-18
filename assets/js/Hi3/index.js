@@ -11,11 +11,12 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter, Link, Route, Switch } from 'react-router-dom';
 
 // auth
-import { auth, AuthenticatedRoute } from 'Auth';
+import { AuthenticatedRoute } from 'Auth';
 
 // "pages"
-import Login from 'Auth/login';
-import Logout from 'Auth/logout';
+import Home from './home';
+import Login from './login';
+import Logout from './logout';
 import Explorer from 'Explorer';
 
 ReactDOM.render((
@@ -27,16 +28,11 @@ ReactDOM.render((
             <Route path='/logout'>
                 <Logout/>
             </Route>
-            <AuthenticatedRoute auth={auth} path='/explorer'>
+            <AuthenticatedRoute path='/explorer'>
                 <Explorer/>
             </AuthenticatedRoute>
             <Route path='/'>
-                <div>
-                    <p>Welcome to Hi3</p>
-                    <Link to='/explorer'>Explorer</Link>
-                    <br/>
-                    <Link to='/logout'>Log out</Link>
-                </div>
+                <Home/>
             </Route>
         </Switch>
     </BrowserRouter>

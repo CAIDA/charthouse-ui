@@ -18,7 +18,7 @@ Encore
      * Add 1 entry for each "page" of your app
      * (including one that's included on every page - e.g. "app")
      */
-    .addEntry('hi3', ['babel-polyfill', './assets/js/hi3.js'])
+    .addEntry('hi3', ['babel-polyfill', './assets/js/Hi3/index.js'])
 
     // shim to webpackify the horribly old jquery BBQ plugin
     .addLoader({
@@ -90,7 +90,7 @@ webpackConfig.resolve.alias = {
     'Auth': path.resolve(__dirname, './assets/js/auth/'),
     'Config': path.resolve(__dirname, './assets/js/config/'),
     'Explorer/css': path.resolve(__dirname, './assets/css/Explorer/'),
-    'Explorer': path.resolve(__dirname, './assets/js/Explorer/')
+    'Explorer': path.resolve(__dirname, './assets/js/Explorer/'),
 };
 
 module.exports = webpackConfig;
