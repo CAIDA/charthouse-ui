@@ -12,8 +12,11 @@ class LoginPage extends React.Component {
         // TODO: here
         // 1. is this an auth callback?
         //    yes: handle it and redirect (handle errors)
-        // 2. call the signin method, then render a "logging in..." message (will redirect us somewhere else)
-        return <p>TODO</p>
+        // 2. call the signin method, then render a "logging in..." message
+        // ... need to figure out how to detect redirect back from auth (either login or renew)
+        auth.login();
+
+        return <p>Redirecting to authentication provider...</p>
     }
 }
 
