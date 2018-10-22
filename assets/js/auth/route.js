@@ -11,6 +11,7 @@ class AuthenticatedRoute extends React.Component {
 
     render() {
         const { component, ...props } = this.props;
+        // TODO: how do we handle redirecting back to this component after login
         if (!auth.isAuthenticated()) {
             return <Route {...props}>
                 <Redirect to='/login'/>

@@ -5,13 +5,16 @@ export { default as AuthenticatedRoute } from './route';
 import config from 'Config';
 
 class Auth {
+
+    userProfile;
+
     constructor() {
         this.auth0 = new auth0.WebAuth({
             domain: 'hicube.auth0.com',
             clientID: '72l1lVLW9T71MRebhnU1c264YnnjOrtY',
             redirectUri: `${config.getParam('baseUri')}/auth/callback`,
             responseType: 'token id_token',
-            scope: 'openid'
+            scope: 'openid profile email'
         });
     }
 
@@ -50,6 +53,28 @@ class Auth {
         // Access Token's expiry time
         const expiresAt = JSON.parse(localStorage.getItem('expires_at'));
         return new Date().getTime() < expiresAt;
+    }
+
+    getAccessToken() {
+        const accessToken = localStorage.getItem('access_token');
+        if (!accessToken) {
+            throw new Error('No Access Token found');
+        }
+        return accessToken;
+    }
+
+    getProfile(cb) {
+        if (this.userProfile) {
+            cb(this.userProfile);
+            return;
+        }
+        const accessToken = this.getAccessToken();
+        this.auth0.client.userInfo(accessToken, (err, profile) => {
+            if (profile) {
+                this.userProfile = profile;
+            }
+            cb(profile, err);
+        });
     }
 }
 

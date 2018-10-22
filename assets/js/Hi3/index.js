@@ -19,6 +19,7 @@ import Home from './home';
 import Login from './login';
 import LoginCallback from './login-callback';
 import Logout from './logout';
+import Profile from './profile';
 import Explorer from 'Explorer';
 
 ReactDOM.render((
@@ -28,6 +29,7 @@ ReactDOM.render((
             <Route path='/logout' component={Logout}/>
             <Route path='/auth/callback' component={LoginCallback}/>
             <AuthenticatedRoute path='/explorer' component={Explorer}/>
+            <AuthenticatedRoute path='/user/profile' component={Profile}/>
             <Route path='/' component={Home}/>
         </Switch>
     </BrowserRouter>
