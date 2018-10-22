@@ -5,7 +5,7 @@ import { auth } from 'Auth';
 
 class LogoutPage extends React.Component {
     render() {
-        auth.signout();
+        auth.logout();
         return <Redirect to='/'/>
     }
 }

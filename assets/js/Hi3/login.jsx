@@ -1,4 +1,5 @@
 import React from 'react';
+import { Redirect } from 'react-router-dom';
 
 import { auth } from 'Auth';
 
@@ -9,14 +10,17 @@ class LoginPage extends React.Component {
     }
 
     render() {
-        // TODO: here
-        // 1. is this an auth callback?
-        //    yes: handle it and redirect (handle errors)
-        // 2. call the signin method, then render a "logging in..." message
-        // ... need to figure out how to detect redirect back from auth (either login or renew)
-        auth.login();
+        // 1. if we are already logged in, just redirect
+        // TODO: allow redirect location to be set by caller (passed to us from AuthenticatedRoute or directly)
+        if (auth.isAuthenticated()) {
+            return <Redirect to='/explorer'/>;
+        }
 
-        return <p>Redirecting to authentication provider...</p>
+        // 2. otherwise, ask the auth service to log in
+        auth.login();
+        // even though the login is async, it's a better experience if we
+        // render nothing
+        return null;
     }
 }
 

@@ -17,24 +17,18 @@ import { AuthenticatedRoute } from 'Auth';
 // "pages"
 import Home from './home';
 import Login from './login';
+import LoginCallback from './login-callback';
 import Logout from './logout';
 import Explorer from 'Explorer';
 
 ReactDOM.render((
     <BrowserRouter>
         <Switch>
-            <Route path='/login'>
-                <Login/>
-            </Route>
-            <Route path='/logout'>
-                <Logout/>
-            </Route>
-            <AuthenticatedRoute path='/explorer'>
-                <Explorer/>
-            </AuthenticatedRoute>
-            <Route path='/'>
-                <Home/>
-            </Route>
+            <Route path='/login' component={Login}/>
+            <Route path='/logout' component={Logout}/>
+            <Route path='/auth/callback' component={LoginCallback}/>
+            <AuthenticatedRoute path='/explorer' component={Explorer}/>
+            <Route path='/' component={Home}/>
         </Switch>
     </BrowserRouter>
 ), document.getElementById('root'));

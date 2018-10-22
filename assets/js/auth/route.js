@@ -10,10 +10,13 @@ class AuthenticatedRoute extends React.Component {
     }
 
     render() {
-        const { children, ...props } = this.props;
-        return <Route {...props}>
-            {auth.isAuthenticated ? children : <Redirect to='/login'/>}
-        </Route>
+        const { component, ...props } = this.props;
+        if (!auth.isAuthenticated()) {
+            return <Route {...props}>
+                <Redirect to='/login'/>
+            </Route>;
+        }
+        return <Route component={component} {...props}/>
     }
 }
 
