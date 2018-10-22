@@ -11,7 +11,8 @@ use Symfony\Component\Routing\Annotation\Route;
 class Hi3Controller extends AbstractController
 {
     /**
-     * @Route("/{reactRouting}", defaults={"reactRouting": null}, methods={"GET"}, name="hi3")
+     * @Route("/{reactRouting}", defaults={"reactRouting": null},
+     *     requirements={"reactRouting"=".+"}, methods={"GET"}, name="hi3")
      *
      * @return Response
      */
