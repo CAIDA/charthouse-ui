@@ -1,5 +1,6 @@
-var path = require('path');
-var Encore = require('@symfony/webpack-encore');
+const path = require('path');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const Encore = require('@symfony/webpack-encore');
 
 Encore
     // directory where compiled assets will be stored
@@ -95,5 +96,11 @@ webpackConfig.resolve.alias = {
     'Explorer': path.resolve(__dirname, './assets/js/Explorer/'),
     'Hi3/css': path.resolve(__dirname, './assets/css/Hi3/'),
 };
+
+webpackConfig.plugins.push(
+    new CopyWebpackPlugin([
+        { from: './assets/images/logos/', to: 'images/'}
+    ])
+);
 
 module.exports = webpackConfig;
