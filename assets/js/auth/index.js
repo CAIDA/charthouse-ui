@@ -6,6 +6,8 @@ import config from 'Config';
 
 class Auth {
 
+    idToken;
+
     userProfile;
 
     constructor() {
@@ -38,6 +40,7 @@ class Auth {
         const expiresAt = JSON.stringify((authResult.expiresIn * 1000) + new Date().getTime());
         localStorage.setItem('access_token', authResult.accessToken);
         localStorage.setItem('id_token', authResult.idToken);
+        localStorage.setItem('id_token_payload', JSON.stringify(authResult.idTokenPayload));
         localStorage.setItem('expires_at', expiresAt);
     }
 
@@ -45,6 +48,7 @@ class Auth {
         // Clear Access Token and ID Token from local storage
         localStorage.removeItem('access_token');
         localStorage.removeItem('id_token');
+        localStorage.removeItem('id_token_payload');
         localStorage.removeItem('expires_at');
     }
 
@@ -61,6 +65,24 @@ class Auth {
             throw new Error('No Access Token found');
         }
         return accessToken;
+    }
+
+    getIdToken() {
+        if (!this.idToken) {
+            this.idToken = JSON.parse(localStorage.getItem('id_token_payload'));
+            if (!this.idToken) {
+                throw new Error('No ID token found');
+            }
+        }
+        return this.idToken;
+    }
+
+    getNickname() {
+        return this.getIdToken().nickname;
+    }
+
+    getUserId() {
+        return this.getIdToken().sub;
     }
 
     getProfile(cb) {

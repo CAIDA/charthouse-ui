@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+import { auth } from 'Auth';
 import CharthouseTime from '../utils/time';
 import TimeRangeControl from './time-range-control';
 import PluginSelector from './plugin-selector';
@@ -77,11 +78,9 @@ class ControlPanel extends React.Component {
                     />
                 </div>
                 <div className="panel-body">
-                    {/* TODO: fixme when we have auth integrated */}
-                        <span>
-                            Logged in as <a
-                            href="#"><i>anonymous</i></a>
-                        </span>
+                    <span>
+                        Logged in as <a href="#"><i>{auth.getNickname()}</i></a>
+                    </span>
                     <Link className="btn btn-default btn-xs pull-right"
                        title="Log out" to='/logout'
                     >
