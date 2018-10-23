@@ -30,7 +30,8 @@ class LoginCallbackPage extends React.Component {
 
         // 1. if we are processing a callback
         if (this.state.handlingCallback) {
-            return <p>TODO: loading user information</p>;
+            // TODO: make this a nicer message
+            return <p>Please wait..</p>;
         }
 
         // 2. did we get an error when logging in?
@@ -40,7 +41,8 @@ class LoginCallbackPage extends React.Component {
 
         // 3. not authenticated, no callback, no error message, so this is an error
         // TODO: what to do in this case?
-        return <p>Invalid callback state (TODO: consider redirecting to home)</p>;
+        // consider redirecting to home
+        return <p>Invalid authentication state. Please retry</p>;
     }
 
     _loginSuccess() {
