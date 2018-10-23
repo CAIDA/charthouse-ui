@@ -1,6 +1,7 @@
 import $ from 'jquery';
 import moment from 'moment';
 
+import { auth } from 'Auth';
 import config from 'Config';
 import ExpressionFactory from '../expression/factory';
 
@@ -18,6 +19,7 @@ const CharthouseApiConnector = function () {
 
 CharthouseApiConnector.prototype._getJson = function (httpMethod, url, params, headerParams, success, error) {
     headerParams = headerParams || {};
+    headerParams['Authorization'] = 'Bearer ' + auth.getAccessToken();
 
     error = error || function () {}; // Error function optional
 
