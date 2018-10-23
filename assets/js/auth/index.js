@@ -16,23 +16,33 @@ class Auth {
             clientID: '72l1lVLW9T71MRebhnU1c264YnnjOrtY',
             redirectUri: `${config.getParam('baseUri')}/auth/callback`,
             responseType: 'token id_token',
-            scope: 'openid profile email'
+            scope: 'openid profile email',
+            audience: 'https://api.hicube.caida.org/test'
         });
     }
 
     login() {
+        // TODO: figure out how to use checkSession to avoid token expiry
+        if (this.isAuthenticated()) {
+            // no need to authorize
+            return;
+        }
         this.auth0.authorize();
     }
 
     handleAuthentication(onSuccess, onErr) {
         this.auth0.parseHash((err, authResult) => {
-            if (authResult && authResult.accessToken && authResult.idToken) {
-                this.setSession(authResult);
-                onSuccess(authResult);
-            } else if (err) {
-                onErr(err);
-            }
+            this.handleAuthResult(err, authResult, onSuccess, onErr);
         });
+    }
+
+    handleAuthResult(err, authResult, onErr, onSuccess) {
+        if (authResult && authResult.accessToken && authResult.idToken) {
+            this.setSession(authResult);
+            onSuccess && onSuccess(authResult);
+        } else if (err) {
+            onErr && onErr(err);
+        }
     }
 
     setSession(authResult) {
@@ -52,27 +62,22 @@ class Auth {
         localStorage.removeItem('expires_at');
     }
 
+    getExpiryTime() {
+        return JSON.parse(localStorage.getItem('expires_at'));
+    }
+
     isAuthenticated() {
-        // Check whether the current time is past the
-        // Access Token's expiry time
-        const expiresAt = JSON.parse(localStorage.getItem('expires_at'));
-        return new Date().getTime() < expiresAt;
+        // Check whether the current time is past the Access Token's expiry time
+        return new Date().getTime() < this.getExpiryTime();
     }
 
     getAccessToken() {
-        const accessToken = localStorage.getItem('access_token');
-        if (!accessToken) {
-            throw new Error('No Access Token found');
-        }
-        return accessToken;
+        return localStorage.getItem('access_token');
     }
 
     getIdToken() {
         if (!this.idToken) {
             this.idToken = JSON.parse(localStorage.getItem('id_token_payload'));
-            if (!this.idToken) {
-                throw new Error('No ID token found');
-            }
         }
         return this.idToken;
     }
@@ -81,7 +86,7 @@ class Auth {
         return this.getIdToken().nickname;
     }
 
-    getUserId() {
+    getSubject() {
         return this.getIdToken().sub;
     }
 
