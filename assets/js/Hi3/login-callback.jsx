@@ -14,9 +14,11 @@ class LoginCallbackPage extends React.Component {
         super(props);
         this._loginSuccess = this._loginSuccess.bind(this);
         this._loginError = this._loginError.bind(this);
+    }
 
+    componentDidMount() {
         // this page should only be triggered by auth0
-        if (/access_token|id_token|error/.test(props.location.hash)) {
+        if (/access_token|id_token|error/.test(this.props.location.hash)) {
             this.state.handlingCallback = true;
             auth.handleAuthentication(this._loginSuccess, this._loginError);
         }
