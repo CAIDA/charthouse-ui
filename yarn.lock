@@ -1286,10 +1286,10 @@ boolbase@~1.0.0:
   resolved "https://registry.yarnpkg.com/boolbase/-/boolbase-1.0.0.tgz#68dff5fbe60c51eb37725ea9e3ed310dcc1e776e"
   integrity sha1-aN/1++YMUes3cl6p4+0xDcwed24=
 
-bootstrap-select@1.6.3:
-  version "1.6.3"
-  resolved "https://registry.yarnpkg.com/bootstrap-select/-/bootstrap-select-1.6.3.tgz#a9d2ac2673b52975ae7aaff3ec658c1f3c763c02"
-  integrity sha1-qdKsJnO1KXWueq/z7GWMHzx2PAI=
+bootstrap-select@^1.9.4:
+  version "1.9.4"
+  resolved "https://registry.yarnpkg.com/bootstrap-select/-/bootstrap-select-1.9.4.tgz#40bc4dfbc1f2e5463dc18748d9902512dee9ae18"
+  integrity sha1-QLxN+8Hy5UY9wYdI2ZAlEt7prhg=
   dependencies:
     jquery ">=1.8"
 

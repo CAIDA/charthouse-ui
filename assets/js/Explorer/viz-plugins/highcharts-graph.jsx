@@ -15,10 +15,8 @@ import RadioToolbar from '../components/radio-toolbar';
 import tools from '../utils/tools';
 import CharthouseData from '../utils/dataset.js';
 import Toggle from '../components/toggle-switch';
+import SelectPicker from '../components/select-picker';
 import '../utils/proto-mods';
-// TODO: can we use react-bootstrap Select for this:
-import 'bootstrap-select/dist/js/bootstrap-select';
-import 'bootstrap-select/dist/css/bootstrap-select.css';
 
 const YAXIS_COLORS = ['teal', 'sienna'];
 
@@ -32,22 +30,6 @@ class Y2Control extends React.Component {
         y2Series: PropTypes.arrayOf(PropTypes.string).isRequired,
         onY2SeriesChanged: PropTypes.func.isRequired
     };
-
-    componentDidMount() {
-        this.$select = $(ReactDOM.findDOMNode(this.refs.selectPicker));
-        this.$select.selectpicker({
-            style: 'btn-default btn-xs',
-            size: 14,
-            showIcon: false,
-            countSelectedText: '{0} series selected'
-        }).change(this._seriesSelectionChanged);
-    }
-
-    componentDidUpdate() {
-        if (this.props.y2Series.length && Object.keys(this.props.seriesList).length > 1) {
-            this.$select.selectpicker('val', this.props.y2Series);
-        }
-    }
 
     render() {
         const sList = this.props.seriesList;
@@ -64,11 +46,17 @@ class Y2Control extends React.Component {
                 Move to <span style={{color: YAXIS_COLORS[1]}}>secondary Y</span> axis:
             </em>
             <br/>
-            <select
-                ref="selectPicker"
-                multiple="multiple"
+            <SelectPicker
                 style={{verticalAlign: 'middle'}}
+                options={{
+                    style: 'btn-default btn-xs',
+                    size: 14,
+                    showIcon: false,
+                    countSelectedText: '{0} series selected'
+                }}
+                multiple
                 disabled={this.props.seriesList.length < 2}
+                onChange={this._seriesSelectionChanged}
                 title='Select series'
                 data-width='250px'
                 data-live-search={true}
@@ -88,12 +76,12 @@ class Y2Control extends React.Component {
                             }
                         )
                 }
-            </select>
+            </SelectPicker>
         </div>
     }
 
-    _seriesSelectionChanged = () => {
-        this.props.onY2SeriesChanged(this.$select.selectpicker('val') || []);
+    _seriesSelectionChanged = (newVal) => {
+        this.props.onY2SeriesChanged(newVal || []);
     };
 }
 
@@ -1318,9 +1306,7 @@ class HighchartsGraph extends React.Component {
             }
         });
 
-        if (updState.hasOwnProperty('y2Series')) {
-            updState.y2Series = this._filterExistingSeries(updState.y2Series);
-        }
+        updState.y2Series = this._filterExistingSeries(updState.y2Series || []);
 
         if (Object.keys(updState).length) {
             this.setState(updState);

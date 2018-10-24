@@ -41,7 +41,7 @@ Encore
 
     // bootstrap
     .addLoader({
-        test: /bootstrap\/js\//,
+        test: require.resolve('bootstrap/dist/js/bootstrap'),
         loader: 'imports-loader?jQuery=jquery'
     })
 
