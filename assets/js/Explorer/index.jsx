@@ -1,6 +1,7 @@
 import React from 'react';
 
 import config from 'Config';
+import staticCfg from 'Config/static';
 import CharthouseTime from './utils/time';
 import ControlPanel from './components/control-panel';
 import Visualizer from './components/visualizer';
@@ -10,13 +11,6 @@ import ExpressionSet from "./expression/set";
 import 'Explorer/css/explorer.css';
 import 'Explorer/css/viz-plugins.css';
 
-// TODO: remove these and force config in static.js
-const DEFAULT_QUERYTIME = [
-    new CharthouseTime('-1d'),
-    new CharthouseTime()    // Now
-];
-const DEFAULT_PLUGIN = 'xyGraph';
-
 class Explorer extends React.Component {
     constructor(props) {
         super(props);
@@ -24,13 +18,9 @@ class Explorer extends React.Component {
 
         this.state = {
             expressionSet: expressionSet,
-            from: config.getParam("from")
-                ? new CharthouseTime(config.getParam("from"))
-                : DEFAULT_QUERYTIME[0],
-            until: config.getParam("until")
-                ? new CharthouseTime(config.getParam("until"))
-                : DEFAULT_QUERYTIME[1],
-            plugin: config.getParam("plugin") || DEFAULT_PLUGIN,
+            from: new CharthouseTime(config.getParam("from") || staticCfg.from),
+            until: new CharthouseTime(config.getParam("until") || staticCfg.until),
+            plugin: config.getParam("plugin") || staticCfg.plugin,
             showController: config.getParam('hideControl') == null,
 
             // used to be that we only expanded for non-default expression
@@ -55,19 +45,15 @@ class Explorer extends React.Component {
         }
 
         if (newParams.hasOwnProperty('from')) {
-            updQueryState.from = newParams.from
-                ? new CharthouseTime(newParams.from)
-                : DEFAULT_QUERYTIME[0];
+            updQueryState.from = new CharthouseTime(newParams.from || staticCfg.from);
         }
 
         if (newParams.hasOwnProperty('until')) {
-            updQueryState.until = newParams.until
-                ? new CharthouseTime(newParams.until)
-                : DEFAULT_QUERYTIME[1];
+            updQueryState.until = new CharthouseTime(newParams.until || staticCfg.until);
         }
 
         if (newParams.hasOwnProperty('plugin')) {
-            updQueryState.plugin = newParams.plugin || DEFAULT_PLUGIN;
+            updQueryState.plugin = newParams.plugin || staticCfg.plugin;
         }
 
         if (newParams.hasOwnProperty('hideControl')) {
