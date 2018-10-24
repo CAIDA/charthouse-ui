@@ -566,7 +566,7 @@ class CharthouseXYChart extends React.PureComponent {
         // change the zoom mode
         if (prevProps.zoomMode !== this.props.zoomMode) {
             this.highchart.options.chart.zoomType = this.props.zoomMode === "auto" ? "x" : "xy";
-            fullRedraw = true;
+            redraw = true;
         }
 
         // change the aggregation function
@@ -579,8 +579,7 @@ class CharthouseXYChart extends React.PureComponent {
         if (fullRedraw) {
             // Force re-render (w/out animation): no way to update this property dynamically
             this.highchart.options.plotOptions.series.animation = false;
-            this.$chart.highcharts(this.highchart.options);
-            this.highchart = this.$chart.highcharts(); // is this needed?
+            this.highchart = HighStock.stockChart(this.node, this.highchart.options);
             this.highchart.options.plotOptions.series.animation = null;
         } else if (redraw) {
             this.highchart.redraw();
@@ -1088,7 +1087,7 @@ class CharthouseXYChart extends React.PureComponent {
 
     _chartChanged = () => {
         const highchart = this.highchart;
-        if (!highchart) {
+        if (!highchart || !highchart.axes) {
             // race condition while chart is being built
             return;
         }
@@ -1211,12 +1210,15 @@ class HighchartsGraph extends React.Component {
 
     constructor(props, context) {
         super(props, context);
+        this.state = this._getInitialState()
+    }
 
+    _getInitialState() {
+        const props = this.props;
         const showControls = props.configMan.getParam('showControls', true);
         const ascending = props.configMan.getParam('sortAscending', true);
         const showLegend = props.configMan.getParam('showLegend', true);
-
-        this.state = {
+        return {
             visibleFrom: props.data.summary().earliest_from * 1000,
             visibleUntil: props.data.summary().last_until * 1000,
             chartType: props.configMan.getParam('chartType') || 'line',
@@ -1308,7 +1310,7 @@ class HighchartsGraph extends React.Component {
             if (keepProps.indexOf(k) !== -1) {
 
                 if (newParams[k] == null && defaults == null)
-                    defaults = rThis.getInitialState();  // Populate defaults
+                    defaults = rThis._getInitialState();  // Populate defaults
 
                 updState[k] = (newParams[k] != null
                         ? parse(newParams[k])
