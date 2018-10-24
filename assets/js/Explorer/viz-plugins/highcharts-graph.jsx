@@ -99,6 +99,7 @@ class Y2Control extends React.Component {
 
 // Point Aggregation control
 class PointAggControl extends React.Component {
+
     static propTypes = {
         interactive: PropTypes.bool.isRequired,
         ptsPerPx: PropTypes.number,
@@ -305,7 +306,6 @@ class DownsampledNotice extends React.Component {
     };
 
     render() {
-
         if (!this.props.stepHuman) return null;
 
         return <span title='For improved rendering performance'>
@@ -578,9 +578,12 @@ class CharthouseXYChart extends React.PureComponent {
 
         if (fullRedraw) {
             // Force re-render (w/out animation): no way to update this property dynamically
-            this.highchart.options.plotOptions.series.animation = false;
-            this.highchart = HighStock.stockChart(this.node, this.highchart.options);
+            const opts = this.highchart.options;
+            opts.plotOptions.series.animation = false;
+            this.highchart = null;
+            this.highchart = HighStock.stockChart(this.node, opts);
             this.highchart.options.plotOptions.series.animation = null;
+            this._chartChanged();
         } else if (redraw) {
             this.highchart.redraw();
         }
@@ -642,12 +645,8 @@ class CharthouseXYChart extends React.PureComponent {
                             thisChart.chartJustClicked = false;
                         }, dblClickTime);
                     },
-                    load: function () {
-                        rThis._chartChanged();
-                    },
-                    redraw: function () {
-                        rThis._chartChanged();
-                    }
+                    load: rThis._chartChanged,
+                    redraw: rThis._chartChanged,
                 }
             },
             credits: {
@@ -825,6 +824,7 @@ class CharthouseXYChart extends React.PureComponent {
             series: this._parseData(this.props.data.series())
 
         });
+        //this._chartChanged();
     };
 
     _getCommonSuffix = () => {
@@ -1087,8 +1087,7 @@ class CharthouseXYChart extends React.PureComponent {
 
     _chartChanged = () => {
         const highchart = this.highchart;
-        if (!highchart || !highchart.axes) {
-            // race condition while chart is being built
+        if (!highchart) {
             return;
         }
         const xRange = [
