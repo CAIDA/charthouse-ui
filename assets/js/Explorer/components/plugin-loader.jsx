@@ -9,6 +9,8 @@ import Dialog from './dialog';
 import TimeLogger from './time-logger';
 // TODO: PermalinkForm
 import CharthouseDataSet from '../utils/dataset';
+
+// TODO: look into webpack code splitting to avoid loading deps several times
 import CHARTHOUSE_PLUGIN_SPECS from '../viz-plugins/plugin-specs';
 import tools from '../utils/tools';
 import '../utils/jquery-plugins';
