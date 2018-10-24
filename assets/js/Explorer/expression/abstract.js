@@ -2,11 +2,6 @@ import has from 'has';
 
 class AbstractExpression {
 
-    // TODO: pretty-printed canonical
-// TODO: handle creation from pretty-printed canonical
-// TODO: handle appendExpression at a higher level
-// TODO: expA.equals(expB)
-
     constructor(type) {
         if (new.target === AbstractExpression) {
             throw new TypeError("Cannot directly create AbstractExpression objects. Use ExpressionFactory instead");
