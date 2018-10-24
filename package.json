@@ -32,7 +32,6 @@
         "babel-plugin-istanbul": "^5.0.1",
         "babel-plugin-transform-object-rest-spread": "^6.26.0",
         "bootstrap": "3.3",
-        "bootstrap-daterangepicker": "^3.0.3",
         "bootstrap-select": "1.6.3",
         "classnames": "^2.2.6",
         "copy-webpack-plugin": "^4.5.4",

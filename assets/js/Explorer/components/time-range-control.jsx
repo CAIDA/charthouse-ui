@@ -3,9 +3,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import moment from 'moment';
 import $ from 'jquery';
-import 'bootstrap-daterangepicker';
-import 'bootstrap-daterangepicker/daterangepicker.css'
-// TODO: figure out how to re-apply vasco's custom mods
+
+// TODO: find a new/updated picker so we don't have to use our custom version
+import '../libs/daterangepicker.custom'
+import 'Explorer/css/daterangepicker.custom.css';
 
 import CharthouseTime from '../utils/time';
 

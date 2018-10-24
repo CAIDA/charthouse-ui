@@ -1286,14 +1286,6 @@ boolbase@~1.0.0:
   resolved "https://registry.yarnpkg.com/boolbase/-/boolbase-1.0.0.tgz#68dff5fbe60c51eb37725ea9e3ed310dcc1e776e"
   integrity sha1-aN/1++YMUes3cl6p4+0xDcwed24=
 
-bootstrap-daterangepicker@^3.0.3:
-  version "3.0.3"
-  resolved "https://registry.yarnpkg.com/bootstrap-daterangepicker/-/bootstrap-daterangepicker-3.0.3.tgz#670c638dc124a15a95ddf0440af34d1acee7cffc"
-  integrity sha512-RJ0iOpVornF/6bf+L1jzPr95MoPM7zp3MILtNZ7ADu5RZFoMznHD4GbPu3URkPhcPABA2RqMnhk/CvO7iyNBtw==
-  dependencies:
-    jquery ">=1.10"
-    moment "^2.9.0"
-
 bootstrap-select@1.6.3:
   version "1.6.3"
   resolved "https://registry.yarnpkg.com/bootstrap-select/-/bootstrap-select-1.6.3.tgz#a9d2ac2673b52975ae7aaff3ec658c1f3c763c02"
@@ -4195,7 +4187,7 @@ jquery@2.1.0:
   resolved "https://registry.yarnpkg.com/jquery/-/jquery-2.1.0.tgz#1c9a8c971d2b53dae10d72e16cbb5a1df16a4ace"
   integrity sha1-HJqMlx0rU9rhDXLhbLtaHfFqSs4=
 
-jquery@>=1.10, jquery@>=1.8, jquery@>=1.9.1:
+jquery@>=1.8, jquery@>=1.9.1:
   version "3.3.1"
   resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.3.1.tgz#958ce29e81c9790f31be7792df5d4d95fc57fbca"
   integrity sha512-Ubldcmxp5np52/ENotGxlLe6aGMvmF4R8S6tZjsP6Knsaxd/xp3Zrh50cG93lR6nPXyUFwzN3ZSOQI0wRJNdGg==
@@ -4967,7 +4959,7 @@ mocha@^5.2.0:
     mkdirp "0.5.1"
     supports-color "5.4.0"
 
-moment@^2.22.2, moment@^2.9.0:
+moment@^2.22.2:
   version "2.22.2"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.22.2.tgz#3c257f9839fc0e93ff53149632239eb90783ff66"
   integrity sha1-PCV/mDn8DpP/UxSWMiOeuQeD/2Y=
