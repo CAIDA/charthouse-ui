@@ -5,12 +5,16 @@
     padding-bottom: 30px;
 }
 
-.jumbotron img {
+.jumbotron #hi3-logo {
     height: 180px;
 }
 
+.jumbotron #caida-logo {
+    height: 100px;
+}
+
 .jumbotron img + img {
-    padding-left: 30px;
+    padding-left: 50px;
 }
 
 h3 {

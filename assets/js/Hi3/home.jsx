@@ -12,8 +12,8 @@ class Home extends React.Component {
         return <div className='container'>
             <div className="jumbotron">
                 <h1>
-                    <img src={ caidaLogo }/>
-                    <img src={ hi3Logo }/>
+                    <img id="hi3-logo" src={ hi3Logo }/>
+                    <img id="caida-logo" src={caidaLogo}/>
                 </h1>
                 <p className="lead">
                     <i>
