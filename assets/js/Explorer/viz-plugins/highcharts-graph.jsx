@@ -50,7 +50,7 @@ class Y2Control extends React.Component {
     }
 
     render() {
-        var sList = this.props.seriesList;
+        const sList = this.props.seriesList;
         return <div
             className='text-left'
             style={{
@@ -108,7 +108,7 @@ class PointAggControl extends React.Component {
     };
 
     render() {
-        var aggrFuncs = [
+        const aggrFuncs = [
             ["average", "Avg"],
             ["sum", "Sum"],
             ["high", "Max"],
@@ -117,10 +117,10 @@ class PointAggControl extends React.Component {
             ["close", "Close"]
         ];
 
-        var aggrFunc = this.props.aggrFunc;
-        var aggrFuncName = '';
+        const aggrFunc = this.props.aggrFunc;
+        let aggrFuncName = '';
         aggrFuncs.forEach(function (kv) {
-            if (kv[0] == aggrFunc) aggrFuncName = kv[1];
+            if (kv[0] === aggrFunc) aggrFuncName = kv[1];
         });
 
         return <div
@@ -190,7 +190,7 @@ class SortBy extends React.Component {
 
     render() {
 
-        var sortByOptions = [
+        const sortByOptions = [
             ['alpha', 'Name'],
             ['max', 'Max val'],
             ['avg', 'Avg val'],
@@ -256,7 +256,7 @@ class SortBy extends React.Component {
     };
 
     _toggleSortAscending = (newVal) => {
-        this.props.onToggleSortAscending(newVal == 't');
+        this.props.onToggleSortAscending(newVal === 't');
     };
 }
 
@@ -370,7 +370,7 @@ class Controls extends React.Component {
     };
 
     render() {
-        var showAllSeriesToggle = this.props.interactive && Object.keys(this.props.seriesList).length > 1;
+        const showAllSeriesToggle = this.props.interactive && Object.keys(this.props.seriesList).length > 1;
 
         return <div>
             <div
@@ -452,7 +452,7 @@ class Controls extends React.Component {
     };
 
     _toggleSortAscending = (newVal) => {
-        this.props.onToggleSortAscending(newVal == 't');
+        this.props.onToggleSortAscending(newVal === 't');
     };
 }
 
@@ -493,30 +493,30 @@ class CharthouseXYChart extends React.PureComponent {
     }
 
     componentDidUpdate(prevProps) {
-        var redraw = false;
-        var fullRedraw = false;
+        let redraw = false;
+        let fullRedraw = false;
 
         // has the data changed?
-        if (prevProps.data != this.props.data) {
-            var diff = prevProps.data.diffData(this.props.data);
+        if (prevProps.data !== this.props.data) {
+            const diff = prevProps.data.diffData(this.props.data);
             if (diff) {
                 this._updateData(diff);
             }
         }
 
         // have the markers changed?
-        if (prevProps.markers != this.props.markers) {
+        if (prevProps.markers !== this.props.markers) {
             this._updateMarkers();
         }
 
         // Has the chart height changed?
-        if (prevProps.height != this.props.height) {
+        if (prevProps.height !== this.props.height) {
             fullRedraw = true;
         }
 
         // has the chart type changed?
         if (prevProps.type !== this.props.type) {
-            var chartType = this.props.type;
+            const chartType = this.props.type;
             this.highchart.series.forEach(function (series) {
                 series.update({type: chartType}, false);
                 // Keep track of it in global chart options too (for global rerender)
@@ -526,19 +526,19 @@ class CharthouseXYChart extends React.PureComponent {
         }
 
         // has the sorting method changed
-        if (prevProps.sortBy !== this.props.sortBy || prevProps.sortAscending != this.props.sortAscending) {
+        if (prevProps.sortBy !== this.props.sortBy || prevProps.sortAscending !== this.props.sortAscending) {
             // Recalculate series order
             this.highchart.options.series = this._parseData(this.props.data.series());
             fullRedraw = true;
         }
 
         // update the y2 axis if necessary
-        var y2Series = this.props.y2Series;
-        var dualYAxis = (y2Series.length && y2Series.length < this.highchart.series.length);
+        const y2Series = this.props.y2Series;
+        const dualYAxis = (y2Series.length && y2Series.length < this.highchart.series.length);
 
         this.highchart.series.forEach(function (series) {
-            var yAxis = 1 * (y2Series.indexOf(series.options.id) != -1);
-            if (yAxis != series.options.yAxis) {
+            const yAxis = 1 * (y2Series.indexOf(series.options.id) !== -1);
+            if (yAxis !== series.options.yAxis) {
                 series.update({yAxis: yAxis}, false);
                 // Keep track of it in global chart options too (for global rerender)
                 series.chart.options.series[series.index].yAxis = yAxis;
@@ -546,7 +546,7 @@ class CharthouseXYChart extends React.PureComponent {
             }
 
             // Tag series label with y axis (if there's a dual axis)
-            var name = series.options.name ? series.options.name.split('<span')[0] : series.options.id;
+            let name = series.options.name ? series.options.name.split('<span')[0] : series.options.id;
             if (dualYAxis) {
                 name += '<span style="color: ' + YAXIS_COLORS[yAxis] + ';font-size: .7em;"> [y' + (yAxis + 1) + ']</span>';
             }
@@ -565,7 +565,7 @@ class CharthouseXYChart extends React.PureComponent {
 
         // change the zoom mode
         if (prevProps.zoomMode !== this.props.zoomMode) {
-            this.highchart.options.chart.zoomType = this.props.zoomMode == "auto" ? "x" : "xy";
+            this.highchart.options.chart.zoomType = this.props.zoomMode === "auto" ? "x" : "xy";
             fullRedraw = true;
         }
 
@@ -682,15 +682,15 @@ class CharthouseXYChart extends React.PureComponent {
                         // Force yMin=0 for only positive vals
                         if (this.dataMin != null) {
                             // Force yMin=0 for only positive vals
-                            var minOpt = (this.dataMin >= 0) ? 0 : null;
-                            if (this.options.min != minOpt)
+                            const minOpt = (this.dataMin >= 0) ? 0 : null;
+                            if (this.options.min !== minOpt)
                                 this.update({min: minOpt});
                         }
 
                         // Force yMax=0 for only negative vals
                         if (this.dataMax != null) {
-                            var maxOpt = (this.dataMax <= 0) ? 0 : null;
-                            if (this.options.max != maxOpt)
+                            const maxOpt = (this.dataMax <= 0) ? 0 : null;
+                            if (this.options.max !== maxOpt)
                                 this.update({max: maxOpt});
                         }
                         return null;
@@ -760,7 +760,7 @@ class CharthouseXYChart extends React.PureComponent {
                     events: {
                         click: function () { // Hide series on click / show-only on dbl-click
                             // TODO: can these click handlers be refactored into common funcs?
-                            var dblClickTime = 300; //ms
+                            const dblClickTime = 300; //ms
 
                             if (this.hasOwnProperty('seriesJustClicked') && this.seriesJustClicked === true) {
                                 // Double-click
@@ -774,7 +774,7 @@ class CharthouseXYChart extends React.PureComponent {
                             }
 
                             // Normal click - postpone hide action
-                            var series = this;
+                            const series = this;
                             series.seriesJustClicked = true;
                             this.toggleTimeout = setTimeout(function () {
                                 series.seriesJustClicked = false;
@@ -782,7 +782,7 @@ class CharthouseXYChart extends React.PureComponent {
                             }, dblClickTime);
                         },
                         legendItemClick: function () {  // On dbl-click show only series
-                            var dblClickTime = 300; //ms
+                            const dblClickTime = 300; //ms
 
                             if (this.hasOwnProperty('legendJustClicked') && this.legendJustClicked === true) {
                                 // Double-click
@@ -795,7 +795,7 @@ class CharthouseXYChart extends React.PureComponent {
                             }
 
                             // Normal click - attach 'just-clicked' flag and postpone redraw
-                            var series = this;
+                            const series = this;
                             series.legendJustClicked = true;
                             setTimeout(function () {
                                 series.legendJustClicked = false;
@@ -834,33 +834,33 @@ class CharthouseXYChart extends React.PureComponent {
     };
 
     _parseData = (seriesData) => {
-        var seriesNames = Object.keys(seriesData);
+        let seriesNames = Object.keys(seriesData);
 
-        var numVertices = seriesNames.map(function (serName) {
+        const numVertices = seriesNames.map(function (serName) {
             return seriesData[serName].values.cntVertices();
         }).reduce(function (a, b) {
             return a + b;
         }, 0);
 
         // Make sure we're downsampling to a multiple of the original time
-        var downSampleRatio = Math.max(1, Math.ceil(numVertices / MAX_GRAPH_VERTICES));
+        const downSampleRatio = Math.max(1, Math.ceil(numVertices / MAX_GRAPH_VERTICES));
 
         this.props.onDownsampledStepChanged(
-            downSampleRatio == 1 ?
+            downSampleRatio === 1 ?
                 null :
                 moment.duration(seriesData[seriesNames[0]].step * 1000 * downSampleRatio).humanize());
 
-        var chartType = this.props.type;
+        const chartType = this.props.type;
 
         seriesNames = seriesNames.sort(this._getSortMethod());
 
         return seriesNames.map(function (series) {
-            var vals = seriesData[series];
+            const vals = seriesData[series];
 
-            var numPoints = Math.ceil(vals.values.length / downSampleRatio);
-            var step = vals.step * 1000 * downSampleRatio;
+            const numPoints = Math.ceil(vals.values.length / downSampleRatio);
+            const step = vals.step * 1000 * downSampleRatio;
 
-            var data = downSampleRatio == 1 ? vals.values : vals.values.crossSample(numPoints);
+            const data = downSampleRatio === 1 ? vals.values : vals.values.crossSample(numPoints);
 
             return {
                 lineWidth: 1,
@@ -880,36 +880,36 @@ class CharthouseXYChart extends React.PureComponent {
     };
 
     _updateData = (diff) => {
-        var chart = this.highchart;
+        const chart = this.highchart;
 
-        var newData = this.props.data;
+        const newData = this.props.data;
 
         // If there's many series to change, redraw in bulk
-        var bulkRedraw = (
+        let bulkRedraw = (
             Object.keys(diff.changeSeries).length
             + Object.keys(diff.addSeries).length
             + diff.removeSeries.length
         ) > MAX_SERIES_TO_ANIMATE;
 
-        var updAnimation = {duration: 800};
+        const updAnimation = {duration: 800};
 
-        var parsedData = this._parseData(newData.series());
+        const parsedData = this._parseData(newData.series());
 
         chart.series.slice().forEach(function (ser) {
-            var serId = ser.options.id;
+            const serId = ser.options.id;
 
-            if (diff.removeSeries.indexOf(serId) != -1) {
+            if (diff.removeSeries.indexOf(serId) !== -1) {
                 // Remove series
                 ser.remove(!bulkRedraw);
             }
 
             if (diff.changeSeries.hasOwnProperty(serId)) {
                 // Modify series
-                var diffSer = diff.changeSeries[serId];
+                const diffSer = diff.changeSeries[serId];
 
-                if (ser.options.pointInterval != newData.series()[serId].step * 1000
+                if (ser.options.pointInterval !== newData.series()[serId].step * 1000
                     || diffSer.prependPts.length
-                    || (diffSer.shiftPts && diffSer.shiftPts != diffSer.appendPts.length)
+                    || (diffSer.shiftPts && diffSer.shiftPts !== diffSer.appendPts.length)
                     || diffSer.changePts) {
                     // If step is different, need to prepend or shift points (change series start),
                     // no choice but to replace all options
@@ -939,7 +939,7 @@ class CharthouseXYChart extends React.PureComponent {
                         });
 
                         // Pop points
-                        for (var i = ser.yData.length - diffSer.popPts; i < ser.yData.length; i++) {
+                        for (let i = ser.yData.length - diffSer.popPts; i < ser.yData.length; i++) {
                             ser.removePoint(i, false);
                         }
 
@@ -949,7 +949,7 @@ class CharthouseXYChart extends React.PureComponent {
                     }
 
                     // Append points (optionally sliding window)
-                    var slideWindow = (diffSer.shiftPts == diffSer.appendPts.length);
+                    const slideWindow = (diffSer.shiftPts === diffSer.appendPts.length);
                     diffSer.appendPts.forEach(function (pt) {
                         ser.addPoint(pt, !bulkRedraw, slideWindow, updAnimation);
                     });
@@ -958,9 +958,9 @@ class CharthouseXYChart extends React.PureComponent {
         });
 
         // Add series
-        var seriesToAdd = Object.keys(diff.addSeries);
+        const seriesToAdd = Object.keys(diff.addSeries);
         parsedData.filter(function (serData) {
-            return seriesToAdd.indexOf(serData.id) != -1;
+            return seriesToAdd.indexOf(serData.id) !== -1;
         }).forEach(function (serData) {
             chart.addSeries(serData, !bulkRedraw);
         });
@@ -971,7 +971,7 @@ class CharthouseXYChart extends React.PureComponent {
 
     _updateMarkers = () => {
         // remove all the markers
-        var xAxis = this.highchart.axes[0];
+        const xAxis = this.highchart.axes[0];
         xAxis.plotLinesAndBands.forEach(function (pl) {
             xAxis.removePlotBandOrLine(pl.id);
         });
@@ -983,10 +983,10 @@ class CharthouseXYChart extends React.PureComponent {
     };
 
     _createPlotLines = () => {
-        var rThis = this;
+        const rThis = this;
         return [].concat.apply([], Object.keys(this.props.markers).map(function (s) {
             return rThis.props.markers[s].map(function (marker) {
-                var removeLabel = function (pl) {
+                const removeLabel = function (pl) {
                     if (pl.options.label) {
                         delete pl.options.label;
                         pl.options.dashStyle = 'Solid';
@@ -998,7 +998,7 @@ class CharthouseXYChart extends React.PureComponent {
                     }
                 };
 
-                var addLabel = function (pl) {
+                const addLabel = function (pl) {
                     pl.options.label = {
                         text: '<strong>' + marker.label + '</strong>',
                         rotation: 0,
@@ -1013,7 +1013,7 @@ class CharthouseXYChart extends React.PureComponent {
                     }
                 };
 
-                var timeCfg = marker.time ? {
+                const timeCfg = marker.time ? {
                     value: marker.time * 1000,
                     milliTime: marker.time * 1000,
                 } : {
@@ -1040,14 +1040,14 @@ class CharthouseXYChart extends React.PureComponent {
                             }
 
                             // if the marker is attached to a series, trigger the tooltip for that
-                            var series = rThis.highchart.get(s);
+                            const series = rThis.highchart.get(s);
                             if (series) {
                                 // Choose the point closest to milliTime to display tooltip on.
                                 // When there are so many points that the graph cannot display all of them,
                                 // the default value in the tooltip may be different from the y value of this point
-                                var index = indexOfSeries(series.points, timeCfg.milliTime, 'x');
-                                if (index % 1 != 0) {
-                                    var floor = Math.floor(index),
+                                let index = indexOfSeries(series.points, timeCfg.milliTime, 'x');
+                                if (index % 1 !== 0) {
+                                    const floor = Math.floor(index),
                                         ceil = Math.ceil(index);
                                     index = (Math.abs(timeCfg.milliTime - series.points[ceil].x) <
                                         Math.abs(timeCfg.milliTime - series.points[floor].x))
@@ -1074,10 +1074,10 @@ class CharthouseXYChart extends React.PureComponent {
         // Series: sorted, and difference between each pair of adjacent numbers is almost the same
         // TODO: put this func in the correct place
         function indexOfSeries(arr, val, property) {
-            var key = function (d) {
+            const key = function (d) {
                 return (property == null) ? d : d[property];
             };
-            var start = key(arr[0]),
+            const start = key(arr[0]),
                 end = key(arr[arr.length - 1]),
                 step = (end - start) / (arr.length - 1);
             return (start <= val && val <= end)
@@ -1092,7 +1092,7 @@ class CharthouseXYChart extends React.PureComponent {
             // race condition while chart is being built
             return;
         }
-        var xRange = [
+        const xRange = [
             highchart.axes[0].getExtremes().userMin
             || highchart.axes[0].getExtremes().dataMin
             || null,
@@ -1105,12 +1105,12 @@ class CharthouseXYChart extends React.PureComponent {
         this.props.onTimeRangeChanged(xRange[0], xRange[1]);
 
         // update time point aggregation info
-        var smallestStep = Math.min.apply(Math,
+        const smallestStep = Math.min.apply(Math,
             highchart.options.series.map(function (s) {
                 return s.pointInterval;
             })
         );
-        var numAggrPoints = Math.ceil(
+        const numAggrPoints = Math.ceil(
             (xRange[1] - xRange[0])                   // Data time range
             / smallestStep                          // Highest time granularity of data
             / highchart.plotWidth         // Chart plot area width in px
@@ -1125,19 +1125,19 @@ class CharthouseXYChart extends React.PureComponent {
 
     _getSortMethod = () => {
 
-        var props = this.props;
-        var ascending = this.props.sortAscending;
+        const props = this.props;
+        const ascending = this.props.sortAscending;
 
         // Alphabetically or default
-        if (props.sortBy === 'alpha' || ['alpha', 'max', 'avg', 'latest', 'recent'].indexOf(props.sortBy) == -1) {
+        if (props.sortBy === 'alpha' || ['alpha', 'max', 'avg', 'latest', 'recent'].indexOf(props.sortBy) === -1) {
             return function (a, b) {
                 return (ascending ? 1 : -1) * ((a > b) ? 1 : -1);
             };
         }
 
         // For the remaining methods, we must pre-process data for sorting performance
-        var seriesData = this.props.data.data().series;
-        var preProcessData = {};
+        const seriesData = this.props.data.data().series;
+        const preProcessData = {};
 
         Object.keys(seriesData).forEach(function (s) {
             switch (props.sortBy) {
@@ -1145,7 +1145,7 @@ class CharthouseXYChart extends React.PureComponent {
                     preProcessData[s] = Math.max.apply(Math, seriesData[s].values);
                     break;
                 case 'avg':
-                    var sum = 0, cnt = 0;
+                    let sum = 0, cnt = 0;
                     seriesData[s].values.filter(function (val) {
                         return val != null;
                     }).forEach(function (val) {
@@ -1212,9 +1212,9 @@ class HighchartsGraph extends React.Component {
     constructor(props, context) {
         super(props, context);
 
-        var showControls = props.configMan.getParam('showControls', true);
-        var ascending = props.configMan.getParam('sortAscending', true);
-        var showLegend = props.configMan.getParam('showLegend', true);
+        const showControls = props.configMan.getParam('showControls', true);
+        const ascending = props.configMan.getParam('sortAscending', true);
+        const showLegend = props.configMan.getParam('showLegend', true);
 
         this.state = {
             visibleFrom: props.data.summary().earliest_from * 1000,
@@ -1242,7 +1242,7 @@ class HighchartsGraph extends React.Component {
     }
 
     componentWillUpdate(nextProps) {
-        if (nextProps.data != this.props.data) {
+        if (nextProps.data !== this.props.data) {
             this._onY2SeriesChanged(this._filterExistingSeries(this.props.configMan.getParam('y2Series') || []));
         }
     }
@@ -1292,9 +1292,9 @@ class HighchartsGraph extends React.Component {
 
     // Private methods
     _configChanged = (newParams) => {
-        var rThis = this;
+        const rThis = this;
 
-        var keepProps = [
+        const keepProps = [
             'chartType',
             'y2Series',
             'pntAggregation',
@@ -1302,10 +1302,10 @@ class HighchartsGraph extends React.Component {
             'sortAscending'
         ];
 
-        var updState = {};
-        var defaults;
+        const updState = {};
+        let defaults;
         Object.keys(newParams).forEach(function (k) {
-            if (keepProps.indexOf(k) != -1) {
+            if (keepProps.indexOf(k) !== -1) {
 
                 if (newParams[k] == null && defaults == null)
                     defaults = rThis.getInitialState();  // Populate defaults
@@ -1326,10 +1326,10 @@ class HighchartsGraph extends React.Component {
         }
 
         function parse(val) {
-            if (typeof val == 'string' && val.length) {
-                var valLc = val.toLowerCase();
-                if (valLc == 'false' || valLc == 'true')
-                    return (valLc != 'false');  // Boolean
+            if (typeof val === 'string' && val.length) {
+                const valLc = val.toLowerCase();
+                if (valLc === 'false' || valLc === 'true')
+                    return (valLc !== 'false');  // Boolean
 
                 if (!isNaN(val))
                     return +val;        // Number
@@ -1341,7 +1341,7 @@ class HighchartsGraph extends React.Component {
 
     _filterExistingSeries = (seriesToFilter) => {
         seriesToFilter = Array.isArray(seriesToFilter) ? seriesToFilter : [seriesToFilter];
-        var series = this.props.data.series();
+        const series = this.props.data.series();
         return seriesToFilter.filter(function (s) {
             return series.hasOwnProperty(s);
         });
