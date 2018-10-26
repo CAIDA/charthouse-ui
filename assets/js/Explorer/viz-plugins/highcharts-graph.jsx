@@ -13,7 +13,7 @@ import HighStock from 'highcharts/highstock.src';
 
 import RadioToolbar from '../components/radio-toolbar';
 import tools from '../utils/tools';
-import CharthouseData from '../utils/dataset.js';
+import { CharthouseDataSet } from '../utils/dataset.js';
 import Toggle from '../components/toggle-switch';
 import SelectPicker from '../components/select-picker';
 import '../utils/proto-mods';
@@ -455,7 +455,7 @@ const POINTS_PER_PIXEL = 2;
 
 class CharthouseXYChart extends React.PureComponent {
     static propTypes = {
-        data: PropTypes.instanceOf(CharthouseData.api).isRequired,
+        data: PropTypes.instanceOf(CharthouseDataSet).isRequired,
         height: PropTypes.number.isRequired,
         type: PropTypes.string.isRequired,
         sortBy: PropTypes.string,
@@ -1174,7 +1174,7 @@ const VERTICAL_HEADROOM_NO_CONTROLS = 75;
 
 class HighchartsGraph extends React.Component {
     static propTypes = {
-        data: PropTypes.instanceOf(CharthouseData.api).isRequired,
+        data: PropTypes.instanceOf(CharthouseDataSet).isRequired,
         markers: PropTypes.object,
         configMan: PropTypes.object,
         maxHeight: PropTypes.number

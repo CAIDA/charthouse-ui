@@ -8,7 +8,7 @@ import Toggle from './toggle-switch';
 import Dialog from './dialog';
 import TimeLogger from './time-logger';
 // TODO: PermalinkForm
-import CharthouseDataSet from '../utils/dataset';
+import { CharthouseDataSet } from '../utils/dataset';
 
 // TODO: look into webpack code splitting to avoid loading deps several times
 import CHARTHOUSE_PLUGIN_SPECS from '../viz-plugins/plugin-specs';
@@ -19,7 +19,7 @@ import '../utils/jquery-plugins';
 
 class PluginContent extends React.Component {
     static propTypes = {
-        data: PropTypes.instanceOf(CharthouseDataSet.api).isRequired,
+        data: PropTypes.instanceOf(CharthouseDataSet).isRequired,
         markers: PropTypes.object,
         onTimeChange: PropTypes.func,
         configMan: PropTypes.object,
@@ -86,7 +86,7 @@ class PluginContent extends React.Component {
 class DataInfo extends React.Component {
     // TODO: why is vizTimeRange not updating when we get new data?
     static propTypes = {
-        data: PropTypes.instanceOf(CharthouseDataSet.api).isRequired,
+        data: PropTypes.instanceOf(CharthouseDataSet).isRequired,
         vizTimeRange: PropTypes.array
     };
 
@@ -149,7 +149,7 @@ class DataInfo extends React.Component {
 
 class PluginFooter extends React.Component {
     static propTypes = {
-        data: PropTypes.instanceOf(CharthouseDataSet.api).isRequired
+        data: PropTypes.instanceOf(CharthouseDataSet).isRequired
     };
 
     state = {
@@ -508,7 +508,7 @@ class VizPlugin extends React.Component {
 
                 rThis.setState({parsing: true});
 
-                var chData = new CharthouseDataSet.api(apiData);
+                var chData = new CharthouseDataSet(apiData);
 
                 rThis.setState({
                     dataLoaded: --dataLoading <= 0,
@@ -719,7 +719,7 @@ class VizPlugin extends React.Component {
     };
 
     _onDataUpdate = (newData) => {
-        var newDataSet = new CharthouseDataSet.api(newData);
+        var newDataSet = new CharthouseDataSet(newData);
         if (this.state.data.diffData(newDataSet)) {
             // Update state if data has changed
             this.setState({
