@@ -6,7 +6,7 @@ import { auth } from 'Auth';
 class LoginCallbackPage extends React.Component {
 
     state = {
-        handlingCallback: false,
+        handlingCallback: true,
         error: null
     };
 
