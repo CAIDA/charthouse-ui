@@ -76,7 +76,7 @@ export class CharthouseDataSet {
     }
 
     getResolution(durationFormatter) {
-        var self = this;
+        const self = this;
 
         durationFormatter = durationFormatter || function (m) {
             return m;
@@ -94,7 +94,7 @@ export class CharthouseDataSet {
                     nativeSteps[nativeStep]
                     // Remove redundant cases that have aggregation equal only to native step
                         .filter(function (realStep) {
-                            return realStep != nativeStep || nativeSteps[nativeStep].length > 1;
+                            return realStep !== nativeStep || nativeSteps[nativeStep].length > 1;
                         })
                         .sort(function (a, b) {
                             return parseInt(a) - parseInt(b)
@@ -107,8 +107,8 @@ export class CharthouseDataSet {
     }
 
     getValRange() {
-        var series = this.series();
-        var minVal = Infinity, maxVal = -Infinity;
+        const series = this.series();
+        let minVal = Infinity, maxVal = -Infinity;
         Object.keys(series).forEach(function (s) {
             series[s].values.forEach(function (val) {
                 if (val != null) {
@@ -122,12 +122,12 @@ export class CharthouseDataSet {
 
     getLatestDataTime() {
         // Returns latest time when values for all series were observed
-        var series = this.series();
+        const series = this.series();
 
         return Math.min.apply(Math, Object.keys(series).map(function (serName) {
             // Get time of last non-null data point
-            var ts = series[serName];
-            for (var i = ts.values.length - 1; i >= 0; i--) {
+            const ts = series[serName];
+            for (let i = ts.values.length - 1; i >= 0; i--) {
                 if (ts.values[i] != null) {
                     // Found a non-null
                     return i * ts.step + ts.from;
@@ -139,15 +139,15 @@ export class CharthouseDataSet {
 
     toCrossfilter() {
         // Flatten data to be ready to feed to crossfilter
-        var self = this;
-        var cfData = [];
+        const self = this;
+        const cfData = [];
 
         Object.keys(self.series()).forEach(function (seriesId) {
-            var series = self.series()[seriesId];
+            const series = self.series()[seriesId];
 
             if (!series.values) return; // No points to add
 
-            var meta = {
+            const meta = {
                 series: seriesId,
                 name: series.name
             };
@@ -155,7 +155,7 @@ export class CharthouseDataSet {
             if (series.annotations)
                 series.annotations
                     .filter(function (a) {
-                        return a.type == 'join'
+                        return a.type === 'join'
                     })
                     .forEach(function (a) {
                         meta[[a.attributes.type, a.attributes.db, a.attributes.table, a.attributes.column].join('.')] = a.attributes.id;
@@ -163,7 +163,7 @@ export class CharthouseDataSet {
                         meta.dimensionName = a.attributes.dimension.name;
                     });
 
-            var runTime = series.from;
+            let runTime = series.from;
             series.values.forEach(function (val) {
                 cfData.push(
                     $.extend(
@@ -184,7 +184,7 @@ export class CharthouseDataSet {
 
     diffData(that) {
         // TODO clean up and improve performance of this func
-        var diff = {
+        const diff = {
             removeSeries: [],
             addSeries: {},
             changeSeries: {}
@@ -197,19 +197,19 @@ export class CharthouseDataSet {
             }
         );
 
-        for (var serId in that.series()) {
+        for (const serId in that.series()) {
             // New series
             if (!this.series().hasOwnProperty(serId)) {
                 diff.addSeries[serId] = that.series()[serId];
                 continue;
             }
 
-            var thisSer = this.series()[serId];
-            var thatSer = that.series()[serId];
-            var step = thisSer.step;
+            const thisSer = this.series()[serId];
+            const thatSer = that.series()[serId];
+            const step = thisSer.step;
 
             // Series with discrepant step, misaligned grid
-            if (thisSer.step != thatSer.step || (thisSer.from - thatSer.from) % step) {
+            if (thisSer.step !== thatSer.step || (thisSer.from - thatSer.from) % step) {
                 // Remove and add complete series
                 diff.removeSeries.push(serId);
                 diff.addSeries[serId] = thatSer[serId];
@@ -217,7 +217,7 @@ export class CharthouseDataSet {
             }
 
             // Changed series
-            var diffSer = {
+            const diffSer = {
                 shiftPts: 0,
                 popPts: 0,
                 appendPts: [],
@@ -235,10 +235,10 @@ export class CharthouseDataSet {
             diffSer.appendPts = thatSer.values.slice(-Math.max(0, thatSer.until - thisSer.until) / step || Infinity);
 
             // Flag changed vals
-            var offset = (thatSer.from - thisSer.from) / step;
-            var idx = Math.max(0, offset);
+            const offset = (thatSer.from - thisSer.from) / step;
+            let idx = Math.max(0, offset);
             while (idx < thisSer.values.length && idx - offset < thatSer.values.length) {
-                if (thisSer.values[idx] != thatSer.values[idx - offset]) {
+                if (thisSer.values[idx] !== thatSer.values[idx - offset]) {
                     diffSer.changePts.push([idx, thatSer.values[idx - offset]]);
                 }
                 idx++;
@@ -278,14 +278,14 @@ export class CharthouseCfData {
     }
 
     getValRange() {
-        var byVal = this.cfObj.dimension(function (d) {
+        const byVal = this.cfObj.dimension(function (d) {
             return d.value;
         });
         byVal.filter(function (val) {
             return val != null;
         });
 
-        var valRange = byVal.top(1).length
+        const valRange = byVal.top(1).length
             ? [byVal.bottom(1)[0].value, byVal.top(1)[0].value]
             : null;  // No non-null values
 
@@ -297,21 +297,21 @@ export class CharthouseCfData {
 
     // Only use for very small diffs, otherwise the setData method performs much better
     applyDataDiff(origData, diff) {
-        var cf = this.cfObj;
-        var perTime = cf.dimension(function (d) {
+        const cf = this.cfObj;
+        const perTime = cf.dimension(function (d) {
             return d.time;
         });
-        var perSeries = cf.dimension(function (d) {
+        const perSeries = cf.dimension(function (d) {
             return d.series;
         });
 
         // Change series
-        var addPts = [];
+        let addPts = [];
         Object.keys(diff.changeSeries).forEach(function (serId) {
 
-            var curData = origData.series()[serId];
-            var diffData = diff.changeSeries[serId];
-            var addSeriesPts = [];
+            const curData = origData.series()[serId];
+            const diffData = diff.changeSeries[serId];
+            const addSeriesPts = [];
 
             perSeries.filterExact(serId);
 
@@ -334,7 +334,7 @@ export class CharthouseCfData {
             }
 
             // Append
-            var time = +curData.until;
+            let time = +curData.until;
             diffData.appendPts.forEach(function (val) {
                 addSeriesPts.push({time: new Date(time * 1000), value: val});
                 time += curData.step;
@@ -349,12 +349,12 @@ export class CharthouseCfData {
 
             // Change points (remove+add because changing pts is not possible in crossfilter)
             diffData.changePts.forEach(function (pt) {
-                var time = new Date((curData.from + pt[0] * curData.step) * 1000);
+                const time = new Date((curData.from + pt[0] * curData.step) * 1000);
                 addSeriesPts.push({time: time, value: pt[1]});
             });
 
             // Bundle pts to remove into intervals to improve filter+remove performance cycle
-            var removeIntervals = toIntervals(diffData.changePts.map(function (pt) {
+            const removeIntervals = toIntervals(diffData.changePts.map(function (pt) {
                 return pt[0];
             }));
             removeIntervals.forEach(function (interval) {
@@ -369,7 +369,7 @@ export class CharthouseCfData {
                 cf.remove();
             });
 
-            var seriesMeta = getSeriesMeta(serId, curData);
+            const seriesMeta = getSeriesMeta(serId, curData);
             addPts = addPts.concat(addSeriesPts.map(function (pt) {
                 return $.extend(pt, seriesMeta);
             }));
@@ -388,7 +388,7 @@ export class CharthouseCfData {
 
         // Add series
         if (Object.keys(diff.addSeries).length) {
-            var addData = $.extend(true, {}, origData);
+            const addData = $.extend(true, {}, origData);
             addData.data.series = diff.addSeries;
             cf.add((new CharthouseDataSet(addData)).toCrossfilter());
         }
@@ -399,7 +399,7 @@ export class CharthouseCfData {
         //
 
         function getSeriesMeta(seriesId, seriesData) {
-            var meta = {
+            const meta = {
                 series: seriesId,
                 name: seriesData.human_name
             };
@@ -408,7 +408,7 @@ export class CharthouseCfData {
             if (seriesData.annotations)
                 seriesData.annotations
                     .filter(function (a) {
-                        return a.type == 'join'
+                        return a.type === 'join'
                     })
                     .forEach(function (a) {
                         meta[[a.attributes.type, a.attributes.db, a.attributes.table, a.attributes.column].join('.')] = a.attributes.id;
@@ -420,16 +420,16 @@ export class CharthouseCfData {
         }
 
         function toIntervals(nums) {
-            var result = [];
-            var prevNum = null;
+            const result = [];
+            let prevNum = null;
             nums
                 .sort(function (a, b) {
                     return a - b;
                 })
                 .forEach(function (num) {
-                    var elem = num;
-                    if (num - 1 == prevNum) { // Sequential
-                        var elem = result.pop();
+                    let elem = num;
+                    if (num - 1 === prevNum) { // Sequential
+                        elem = result.pop();
                         if (elem.constructor === Array) {
                             elem.pop(); // Replace interval end
                         } else {
