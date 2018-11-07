@@ -900,6 +900,9 @@ class CharthouseXYChart extends React.PureComponent {
                     || diffSer.changePts) {
                     // If step is different, need to prepend or shift points (change series start),
                     // no choice but to replace all options
+                    // TODO: there seems to be some bug with how highcharts updates series start/end times
+                    // in this case when the series data changes, the timestamps don't seem to change correctly
+                    // this is especially noticeable in the time range logger which is updated by our chartChanged method
                     ser.setData(parsedData[
                             parsedData
                                 .map(function (d) {
