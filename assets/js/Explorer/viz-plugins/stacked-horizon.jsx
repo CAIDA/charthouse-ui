@@ -1,0 +1,851 @@
+import React from 'react';
+import d3 from 'd3';
+import cubism from '../libs/cubism';
+
+import tools from '../utils/tools';
+import Toggle from '../components/toggle-switch';
+// TODO: import Slider from '../components/slider';
+import RadioToolbar from '../components/radio-toolbar';
+import { CharthouseDataSet } from '../utils/dataset';
+
+// Sort by method
+const SortBy = React.createClass({
+
+    propTypes: {
+        sortBy: React.PropTypes.string,
+        onSortByChanged: React.PropTypes.func,
+        sortAscending: React.PropTypes.bool,
+        onToggleSortAscending: React.PropTypes.func
+    },
+
+    getDefaultProps: function () {
+        return {
+            sortBy: 'alpha',
+            sortAscending: true,
+            onSortByChanged: function (newVal) {
+            },
+            onToggleSortAscending: function (newVal) {
+            }
+        }
+    },
+
+    render: function () {
+
+        var sortByOptions = [
+            ['alpha', 'Name'],
+            ['max', 'Max val'],
+            ['avg', 'Avg val'],
+            ['latest', 'Latest val'],
+            ['recent', 'Most recent'],
+            ['euclideanDistance', 'Euclidean distance']
+        ];
+
+        return <div
+            className='text-left'
+            style={{display: 'inline-block', margin: '0 5px'}}
+        >
+            <em className="small" style={{margin: '0 3px'}}>Sort by:</em>
+            <br/>
+            <span className="form-inline">
+                <select className="form-control input-sm"
+                        value={this.props.sortBy}
+                        title='Select method to sort the series by.'
+                        style={{
+                            height: 18,
+                            padding: '0 2px',
+                            fontSize: '.65em',
+                            cursor: 'pointer'
+                        }}
+                        onChange={this._changedSortBy}
+                >
+                        {sortByOptions.map(function (opt) {
+                            return <option key={opt[0]} value={opt[0]}>
+                                {opt[1]}
+                            </option>;
+                        })}
+                </select>
+            </span>
+
+            <span style={{margin: '0 3px'}}>
+                <RadioToolbar
+                    key="sortOrder"
+                    selected={this.props.sortAscending ? 't' : 'f'}
+                    description='Sort series in a descending (arrow down) or ascending (arrow up) order'
+                    fontSize="9px"
+                    options={[
+                        {
+                            val: 'f',
+                            display: <small>
+                                <i className="fa fa-arrow-down"/>
+                            </small>
+                        },
+                        {
+                            val: 't',
+                            display: <small>
+                                <i className="fa fa-arrow-up"/>
+                            </small>
+                        }
+                    ]}
+                    onChange={this._toggleSortAscending}
+                />
+            </span>
+        </div>
+    },
+
+    // Private methods
+    _changedSortBy: function (e) {
+        this.props.onSortByChanged(e.target.value);
+    },
+
+    _toggleSortAscending: function (newVal) {
+        this.props.onToggleSortAscending(newVal == 't');
+    }
+});
+
+var Controller = React.createClass({
+
+    propTypes: {
+        seriesHeight: React.PropTypes.number,
+        autoYScale: React.PropTypes.bool,
+        sortBy: React.PropTypes.string,
+        sortAscending: React.PropTypes.bool,
+        yScalePower: React.PropTypes.number,
+        onChangeSeriesHeight: React.PropTypes.func,
+        onToggleAutoYScale: React.PropTypes.func,
+        onChangeYScalePower: React.PropTypes.func,
+        onSortByChanged: React.PropTypes.func,
+        onToggleSortAscending: React.PropTypes.func
+    },
+
+    getDefaultProps: function () {
+        return {
+            seriesHeight: 0,
+            autoYScale: false,
+            yScalePower: 1,
+            sortBy: 'alpha',
+            sortAscending: true,
+            onChangeSeriesHeight: function (newHeight) {
+            },
+            onToggleAutoYScale: function (newState) {
+            },
+            onChangeYScalePower: function (newState) {
+            },
+            onSortByChanged: function (newVal) {
+            },
+            onToggleSortAscending: function (newVal) {
+            }
+        }
+    },
+
+    render: function () {
+
+        var rThis = this;
+
+        var seriesHeightOptions = [
+            [0, 'auto'],
+            [1, 'micro'],
+            [3, 'small'],
+            [10, 'medium'],
+            [40, 'medium-large'],
+            [80, 'large'],
+            [250, 'huge']
+        ];
+
+        return <div className="text-right">
+            <div className='text-left' style={{display: 'inline-block'}}>
+                <em className="small" style={{margin: '0 3px'}}>Series
+                    Height:</em>
+                <br/>
+                <span className="form-inline">
+                    <select className="form-control input-sm"
+                            value={this.props.seriesHeight}
+                            title='Height of each stacked series. Choose "auto" to fit whole graph to screen.'
+                            style={{
+                                height: 18,
+                                padding: '0 2px',
+                                fontSize: '.65em',
+                                cursor: 'pointer'
+                            }}
+                            onChange={this._changedSeriesHeight}
+                    >
+                        {seriesHeightOptions.map(function (opt) {
+                            return <option key={opt[0]} value={opt[0]}>
+                                {opt[1]}
+                            </option>;
+                        })}
+                    </select>
+                </span>
+            </div>
+
+            <SortBy
+                sortBy={this.props.sortBy}
+                sortAscending={this.props.sortAscending}
+                onSortByChanged={this.props.onSortByChanged}
+                onToggleSortAscending={this.props.onToggleSortAscending}
+            />
+
+            <div className='text-left'
+                 style={{display: 'inline-block', margin: '0 10px'}}>
+                <small><em>Auto Y Scale:</em></small>
+                &nbsp;&nbsp;
+                <br/>
+                <div style={{
+                    display: 'inline-block',
+                    verticalAlign: 'middle'
+                }}>
+                    <Toggle
+                        on={this.props.autoYScale}
+                        width={55}
+                        textOn="Global"
+                        textOff="Local"
+                        description="Switch between using same Y scale range for all series (Global) or individual Y scale range based on series max (Local)"
+                        onToggle={this.props.onToggleAutoYScale}
+                    />
+                </div>
+            </div>
+
+            <Slider
+                width={110}
+                min={-9}
+                max={9}
+                step={1}
+                value={this._base2slider(this.props.yScalePower)}
+                tooltipFormatter={function (val) {
+                    val = rThis._slider2base(val);
+                    return val == 1
+                        ? 'Linear'
+                        : (val > 1
+                                ? 'Exp base ' + val
+                                : 'Log base ' + Math.round(1 / val)
+                        );
+                }}
+                description="Change Y scale base type, from Linear (center) to logarithmic (right) or exponential (left)"
+                onChange={this._changedYScaleSlider}
+            />
+
+        </div>;
+    },
+
+    // Private methods
+    _slider2base: function (val) {
+        val = -val; // Convert to number
+        return val >= 0 ? 1 + val : 1 / (1 - val);
+    },
+
+    _base2slider: function (base) {
+        base = +base;
+        return -Math.round((base >= 1 ? base - 1 : 1 - 1 / base));
+    },
+
+    _changedYScaleSlider: function (newVal) {
+        this.props.onChangeYScalePower(this._slider2base(newVal));
+    },
+
+    _changedSeriesHeight: function (e) {
+        this.props.onChangeSeriesHeight(e.target.value);
+    }
+
+});
+
+var StackedHorizonsGraph = React.createClass({
+
+    const: {
+        MIN_FONT_SIZE: 6,
+        MIN_HEIGHT_WITH_BORDER: 4,     // Min horizon chart height to include chart border (unclutter thin graphs)
+        TIME_FORMATTER: d3.time.format.utc("%a, %b %-d %Y %-I:%M%p UTC"),
+
+        HORIZONTAL_MARGIN: 10   // To accommodate for eventual scrollbar
+    },
+
+    propTypes: {
+        data: React.PropTypes.instanceOf(CharthouseData.api).isRequired,
+        width: React.PropTypes.number.isRequired,
+        seriesHeight: React.PropTypes.number,
+        sortBy: React.PropTypes.string,
+        sortAscending: React.PropTypes.bool,
+        globalYScale: React.PropTypes.bool,
+        yScalePower: React.PropTypes.number
+    },
+
+    getDefaultProps: function () {
+        return {
+            seriesHeight: 10,
+            globalYScale: false,
+            yScalePower: 1,
+            sortBy: 'alpha',
+            sortAscending: true
+        }
+    },
+
+    getInitialState: function () {
+        return {
+            context: cubism.context()           // Establish Cubism Context
+                .size(this.props.width - this.const.HORIZONTAL_MARGIN)    // # of points (each point=1px)
+                .stop()
+        }
+    },
+
+    componentDidMount: function () {
+        this._configCubismContext();
+        this._plotChart();
+    },
+
+    componentDidUpdate: function (nextProps) {
+        if (nextProps.width != this.props.width) {
+            this.state.context.size(this.props.width - this.const.HORIZONTAL_MARGIN);
+        }
+
+        if (nextProps.width != this.props.width || nextProps.data != this.props.data) {
+            this._configCubismContext();
+        }
+
+        this._plotChart();
+    },
+
+    // Only update if there's any change in props
+    mixins: [React.addons.PureRenderMixin],
+
+    render: function () {
+        return <div className="stacked-series-graph"
+                    style={{
+                        width: this.props.width - this.const.HORIZONTAL_MARGIN
+                    }}
+        />;
+    },
+
+    // Private methods
+    _configCubismContext: function () {
+        var data = this.props.data;
+
+        var nativeNumPoints = (data.summary().lastUntil - data.summary().earliestFrom) / data.summary().steps[0];
+        var nativeStep = data.summary().steps[0] * 1000;
+        var numPoints = this.state.context.size();
+
+        this.state.context.step(Math.round(nativeStep * nativeNumPoints / numPoints));           // time unit (msecs)
+        this.state.context.serverDelay(Date.now() - new Date(data.summary().lastUntil * 1000));    // Last data available
+    },
+
+    _padData: function () {
+        var parsed = $.extend(true, {}, this.props.data.data());
+        Object.keys(parsed.series).forEach(function (serId) {
+            padData(parsed.series[serId], parsed.summary.earliestFrom, parsed.summary.lastUntil);
+        });
+
+        function padData(seriesData, earliestFrom, lastUntil) {
+            // Pad the series data to obey earliestFrom and lastUntil
+            var missingTime = seriesData.from - earliestFrom;
+            while (missingTime > 0) {
+                seriesData.values.unshift(null);
+                missingTime -= seriesData.step;
+            }
+
+            missingTime = lastUntil - seriesData.until;
+            while (missingTime > 0) {
+                seriesData.values.push(null);
+                missingTime -= seriesData.step;
+            }
+        }
+
+        return parsed;
+    },
+
+    _plotChart: function () {
+
+        var rThis = this;
+        var data = this._padData();
+        var valRange = this.props.data.getValRange();
+        var node = React.findDOMNode(this);
+
+        ////
+
+        $(node).empty();
+
+        // Top/bottom axis
+        d3.select(node)
+            .selectAll(".axis")
+            .data(["top", "bottom"])
+            .enter().append("div")
+            .attr("class", function (d) {
+                return d + " axis";
+            }).each(function (d) {
+            d3.select(this)
+                .call(rThis.state.context.axis()
+                    .ticks(Math.ceil(rThis.props.width / 200))  // One tick every ~200px)
+                    .orient(d)
+                    .tickFormat(d3.time.format.utc.multi([
+                        [".%L", function (d) {
+                            return d.getUTCMilliseconds();
+                        }],
+                        [":%S", function (d) {
+                            return d.getUTCSeconds();
+                        }],
+                        ["%-I:%M%p", function (d) {
+                            return d.getUTCMinutes();
+                        }],
+                        ["%-I%p", function (d) {
+                            return d.getUTCHours();
+                        }],
+                        ["%a %-d", function (d) {
+                            return d.getUTCDay() && d.getUTCDate() != 1;
+                        }],
+                        ["%b %-d", function (d) {
+                            return d.getUTCDate() != 1;
+                        }],
+                        ["%b", function (d) {
+                            return d.getUTCMonth();
+                        }],
+                        ["%Y", function () {
+                            return true;
+                        }]
+                    ]))
+                    .focusFormat(rThis.const.TIME_FORMATTER)
+                );
+        });
+
+        // Horizon series graphs
+        var $horizons = $('<div>').insertBefore($(node).find('.bottom'))
+            .css('position', 'relative');
+
+        d3.select($horizons[0])
+            .selectAll(".horizon")
+            .data(Object.keys(data.series)
+                .sort(this._getSortMethod())
+                .map(stock)
+            ).enter()
+            .append("div")
+            .attr("class", "horizon").call(rThis.state.context.horizon()
+            .format(function (d) {
+                return d == null ? 'n/a' : d3.format(".3s")(d);
+            })
+            .height(rThis.props.seriesHeight)
+            .extent(rThis.props.globalYScale ? [valRange[0], valRange[1]] : null)
+            .scale(d3.scale.pow().exponent(rThis.props.yScalePower))
+        );
+
+        // Resize/hide series text
+        var fontSize = Math.min(rThis.props.seriesHeight * 0.55, 14);
+        $("span.title, span.value", $horizons).css(
+            fontSize > rThis.const.MIN_FONT_SIZE
+                ? {'font-size': fontSize}
+                : {display: 'none'}
+        );
+
+        // Remove border for very thin horizon lines
+        if (this.props.seriesHeight < this.const.MIN_HEIGHT_WITH_BORDER) {
+            $(".horizon", $horizons).css('border', 'none');
+        }
+
+        // Mouse hover vertical rule
+        d3.select($horizons[0]).append("div")
+            .attr("class", "rule")
+            .call(this.state.context.rule());
+
+        var $hoverLogger = $('<span class="floating-legend small">')
+            .appendTo($(node));
+
+        this.state.context.on("focus", function (x) {
+
+            // Make the rule text follow the cursor horizontally
+            d3.selectAll(".value").style(
+                "right",
+                x == null ? null : rThis.state.context.size() - x + 6 + "px"
+            );
+
+            // Update the logger value
+            var $hoverHorizon = $('.horizon:hover', $horizons);
+            var ptTime = rThis.const.TIME_FORMATTER(rThis.state.context.scale.invert(x));
+            $hoverLogger
+                .html($('.title', $hoverHorizon).text().length
+                    ? '<em>' + $('.title', $hoverHorizon).text() + '</em>: '
+                    + '<b>' + $('.value', $hoverHorizon).text() + '</b> '
+                    + (data.summary.commonSuffix || '') // Units
+                    + '<br><small><em>(' + ptTime + ')</em></small>'
+                    : ''
+                );
+        });
+
+        // Make the logger follow the cursor
+        $horizons.on("mousemove", function (e) {
+            var swapToLeft = ((rThis.props.width - e.clientX) < $hoverLogger.width());
+            $hoverLogger.css({
+                'left': e.clientX + (swapToLeft ? (-$hoverLogger.width() - 13) : 13),
+                'top': e.clientY + 5
+            });
+        }).on("mouseout", function () {
+            $hoverLogger.html('');
+        });
+
+        ///
+
+        function stock(expression) {
+            return rThis.state.context.metric(
+                function (start, stop, step, callback) {
+                    callback(null, data.series[expression].values.crossSample(rThis.state.context.size()));
+                },
+                data.series[expression].name ? data.series[expression].name.abbrFit(100) : ''
+            );
+        }
+    },
+
+    _getSortMethod: function () {
+
+        var props = this.props;
+        var ascending = this.props.sortAscending;
+
+        // Alphabetically or default
+        var options = ['alpha', 'max', 'avg', 'latest', 'recent', 'euclideanDistance'];
+        if (props.sortBy === 'alpha' || options.indexOf(props.sortBy) == -1) {
+            return function (a, b) {
+                return (ascending ? 1 : -1) * ((a > b) ? 1 : -1);
+            };
+        }
+
+        // For the remaining methods, we must pre-process data for sorting performance
+        var seriesData = this.props.data.data().series;
+        var preProcessData = {};
+
+        Object.keys(seriesData).forEach(function (s) {
+            switch (props.sortBy) {
+                case 'max':
+                    preProcessData[s] = Math.max.apply(Math, seriesData[s].values);
+                    break;
+                case 'avg':
+                    var sum = 0, cnt = 0;
+                    seriesData[s].values.filter(function (val) {
+                        return val != null;
+                    }).forEach(function (val) {
+                        sum += val;
+                        cnt++;
+                    });
+                    preProcessData[s] = cnt ? sum / cnt : null;
+                    break;
+                case 'latest':
+                    preProcessData[s] = null;
+                    seriesData[s].values.slice().reverse().some(function (val) {
+                        if (val != null) {
+                            preProcessData[s] = val;
+                            return true;    // Break out of loop
+                        }
+                    });
+                    break;
+                case 'recent':
+                    preProcessData[s] = seriesData[s].until + seriesData[s].step;
+                    seriesData[s].values.slice().reverse().some(function (val) {
+                        preProcessData[s] -= seriesData[s].step;
+                        return val != null;   // Break out of loop
+                    });
+                    break;
+                default:
+                    break;
+            }
+        });
+
+        if (this.props.sortBy == 'euclideanDistance') {
+            // If the threshold is too large, the border of clusters is blurry
+            // If the threshold is too small, the greedy algorithm archives local optimum but ignores larger patterns
+            var DISTANCE_THRESHOLD = 1;
+
+            // Normalize values to the range [1, 0]
+            var seriesValues = Object.keys(seriesData).reduce(function (seriesValues, s) {
+                var values = seriesData[s].values.map(function (d) {
+                    return d || 0;
+                });
+                var maxVal = Math.max.apply(Math, values);
+                seriesValues[s] = (maxVal == 0)
+                    ? Array.apply(null, Array(values.length)).map(Number.prototype.valueOf, 0)
+                    : values.map(function (d) {
+                        return d / maxVal;
+                    });
+                return seriesValues;
+            }, {});
+
+            var summary = this.props.data.summary();
+            var numPoints;
+            if (summary.steps.length == 1 && uniqueBy(seriesData, 'from') &&
+                uniqueBy(seriesData, 'until')) {
+                // Span and step are unique and thus array length is unique. No need to align
+                numPoints = (summary.lastUntil - summary.earliestFrom) / summary.steps[0]
+            }
+            else {
+                // Pad series to the same length and sample to the same step as the graph is
+                // Series are regarded as discrete points, not intervals
+                numPoints = this.state.context.size();
+                var lastUntilWithoutStep = Math.max.apply(Math,
+                    Object.keys(seriesData).map(function (s) {
+                        return seriesData[s].until - seriesData[s].step;
+                    }));
+                var timeStep = (lastUntilWithoutStep - summary.earliestFrom) / (numPoints - 1);
+                Object.keys(seriesValues).forEach(function (s) {
+                    var values = seriesValues[s], series = seriesData[s];
+                    var crossSampledValues = seriesValues[s] = [];
+                    for (var i = 0; i < numPoints; i++) {
+                        var time = summary.earliestFrom + timeStep * i;
+                        var idx = (time - series.from) / series.step;
+                        var leftIdx = Math.floor(idx),
+                            rightIdx = Math.ceil(idx);
+                        var val = (rightIdx == leftIdx)
+                            ? values[idx]
+                            : values[leftIdx] * (rightIdx - idx) + values[rightIdx] * (idx - leftIdx);
+                        crossSampledValues.push(val || 0);
+                    }
+                }.bind(this));
+            }
+
+            var cntr = 0;
+            var threshold = Math.pow(DISTANCE_THRESHOLD / 8, 2) * numPoints / 100; // by intuition
+            // Choose the time series with minimum events as the initial value
+            var pivot = Object.keys(seriesData).reduce(function (last, s) {
+                var events = seriesData[s].values.reduce(function (a, b) {
+                    return a + (b || 0);
+                }, 0);
+                return last[0] < events ? last : [events, s];
+            }, [Number.MAX_VALUE])[1];
+
+            while (Object.keys(seriesValues).length) {
+                preProcessData[pivot] = cntr++;
+                var pivotValues = seriesValues[pivot];
+                delete seriesValues[pivot];
+
+                var minSimilarity = Number.MAX_VALUE;
+                Object.keys(seriesValues).map(function (s) {
+                    var similarity = distance(pivotValues, seriesValues[s], minSimilarity);
+
+                    // Find all time series similar to pivot (smaller than threshold)
+                    if (similarity < threshold) {
+                        return [s, similarity];
+                    }
+
+                    // Set pivot to the next ts most similar to pivot (not smaller than threshold)
+                    else if (similarity < minSimilarity) {
+                        pivot = s;
+                        minSimilarity = similarity;
+                    }
+                })
+                    .filter(Boolean)
+                    .sort(function (a, b) {
+                        // Sort by similarity to the pivot
+                        var diff = a[1] - b[1];
+                        if (diff) {
+                            return diff;
+                        }
+
+                        // Sort by visual discrepancy
+                        var vs1 = seriesValues[a[0]],
+                            vs2 = seriesValues[b[0]];
+                        for (var i = 0; i < vs1.length; i++) {
+                            if (Boolean(vs1[i]) ^ Boolean(vs2[i])) {
+                                return vs1[i] ? -1 : 1;
+                            }
+                        }
+                        return 0;
+                    })
+                    .forEach(function (sTuple) {
+                        preProcessData[sTuple[0]] = cntr++;
+                        delete seriesValues[sTuple[0]];
+                    });
+            }
+
+            function uniqueBy(obj, property) {
+                var seen = [];
+                return Object.keys(obj).every(function (s) {
+                    var prop = obj[s][property];
+                    if (seen.indexOf(prop) == -1) {
+                        if (seen.length == 0) {
+                            seen.push(prop);
+                        }
+                        else {
+                            return false;
+                        }
+                    }
+                    return true;
+                });
+            }
+
+            function distance(vs1, vs2, max) { // Euclidean distance
+                var sum = 0;
+                for (var i = 0; i < vs1.length; i++) {
+                    sum += Math.pow(vs1[i] - vs2[i], 2);
+                    if (sum >= max) {
+                        return max;
+                    }
+                }
+                return sum; // does not sqrt for performance
+            }
+        }
+
+        return function (a, b) {
+            return (ascending ? 1 : -1) * (preProcessData[a] - preProcessData[b]);
+        };
+    }
+});
+
+// Main viz component
+return React.createClass({
+
+    const: {
+        VERTICAL_HEADROOM: 140,  // Graph header and footer vertical margin space
+        VERTICAL_HEADROOM_NO_CONTROLS: 90
+        //MAX_SERIES_HEIGHT: 250   // px
+    },
+
+    propTypes: {
+        data: React.PropTypes.instanceOf(CharthouseData.api).isRequired,
+        configMan: React.PropTypes.object,
+        maxHeight: React.PropTypes.number
+    },
+
+    getDefaultProps: function () {
+        return {
+            configMan: {
+                getParam: function (key) {
+                },
+                setParams: function (keVals) {
+                },
+                onParamChange: function (cb, key) {
+                },
+                unsubscribe: function (cb, key) {
+                }
+            },
+            maxHeight: window.innerHeight * .7
+        }
+    },
+
+    getInitialState: function () {
+
+        var showControls = this.props.configMan.getParam('showControls', true);
+        var ascending = this.props.configMan.getParam('sortAscending', true);
+
+        return {
+            width: null,
+            showControls: tools.fuzzyBoolean(showControls),
+
+            sortBy: this.props.configMan.getParam('sortBy') || '',
+            sortAscending: tools.fuzzyBoolean(ascending),
+            horizonSeriesHeight: this.props.configMan.getParam('horizonSeriesHeight') || 0,   // 0 = auto derived
+            autoYScale: false,
+            yScalePower: this.props.configMan.getParam('yScalePower') || 1
+        }
+    },
+
+    componentDidMount: function () {
+        this._setWidth();
+        window.addEventListener('resize', this._setWidth);
+        this.props.configMan.onParamChange(this._configChanged);
+    },
+
+    componentWillUnmount: function () {
+        window.removeEventListener('resize', this._setWidth);
+        this.props.configMan.unsubscribe(this._configChanged);
+    },
+
+    render: function () {
+
+        return <div className="charthouse-stacked-series">
+            {this.state.showControls &&
+            <div style={{marginBottom: 5, marginRight: 12}}>
+                <Controller
+                    seriesHeight={+this.state.horizonSeriesHeight}
+                    autoYScale={this.state.autoYScale}
+                    yScalePower={this.state.yScalePower}
+                    sortBy={this.state.sortBy}
+                    sortAscending={this.state.sortAscending}
+                    onChangeSeriesHeight={this._onChangeSeriesHeight}
+                    onToggleAutoYScale={this._onToggleAutoYScale}
+                    onChangeYScalePower={this._onChangeYScalePower}
+                    onSortByChanged={this._changeSortBy}
+                    onToggleSortAscending={this._toggleSortAscending}
+                />
+            </div>
+            }
+
+            {this.state.width && <StackedHorizonsGraph
+                data={this.props.data}
+                width={this.state.width}
+                seriesHeight={+this.state.horizonSeriesHeight || this._getAutoSeriesHeight()}
+                globalYScale={this.state.autoYScale}
+                yScalePower={this.state.yScalePower}
+                sortBy={this.state.sortBy}
+                sortAscending={this.state.sortAscending}
+            />
+            }
+        </div>;
+    },
+
+    // Private methods
+    _setWidth: function () {
+        this.setState({width: this.getDOMNode().offsetWidth});
+    },
+
+    _configChanged: function (newParams) {
+        var rThis = this;
+
+        var keepProps = ['horizonSeriesHeight', 'sortBy', 'sortAscending'];
+
+        var updState = {};
+        var defaults;
+        Object.keys(newParams).forEach(function (k) {
+            if (keepProps.indexOf(k) != -1) {
+
+                if (newParams[k] == null && defaults == null)
+                    defaults = rThis.getInitialState();  // Populate defaults
+
+                updState[k] = (newParams[k] != null
+                        ? parse(newParams[k])
+                        : defaults[k]
+                );
+            }
+        });
+
+        if (Object.keys(updState).length) {
+            this.setState(updState);
+        }
+
+        function parse(val) {
+            if (typeof val == 'string' && val.length) {
+                var valLc = val.toLowerCase();
+                if (valLc == 'false' || valLc == 'true')
+                    return (valLc != 'false');  // Boolean
+
+                if (!isNaN(val))
+                    return +val;        // Number
+            }
+
+            return val;
+        }
+    },
+
+    _onChangeSeriesHeight: function (newHeight) {
+        this.props.configMan.setParams({'horizonSeriesHeight': newHeight});
+    },
+
+    _onToggleAutoYScale: function (newState) {
+        this.setState({autoYScale: newState});
+    },
+
+    _onChangeYScalePower: function (newVal) {
+        this.setState({yScalePower: newVal});
+    },
+
+    _getAutoSeriesHeight: function () {
+        // Auto-derive based on graph-height
+        var graphHeight = this.props.maxHeight - (this.state.showControls ? this.const.VERTICAL_HEADROOM : this.const.VERTICAL_HEADROOM_NO_CONTROLS);
+
+        // AK disables max series height. always use all available vspace.
+        //return Math.min(this.const.MAX_SERIES_HEIGHT, Math.max(1,
+        //    Math.floor(graphHeight / this.props.data.cntSeries())
+        //));
+
+        return Math.max(1,
+            Math.ceil(graphHeight / this.props.data.cntSeries())
+        );
+    },
+
+    _changeSortBy: function (newMethod) {
+        this.props.configMan.setParams({sortBy: newMethod});
+    },
+
+    _toggleSortAscending: function (newVal) {
+        this.props.configMan.setParams({sortAscending: newVal});
+    }
+
+});
