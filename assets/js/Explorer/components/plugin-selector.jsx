@@ -37,7 +37,10 @@ class PluginSelector extends React.Component {
         >
             {
                 Object.keys(CHARTHOUSE_PLUGIN_SPECS).filter(function (p) {
-                    return !CHARTHOUSE_PLUGIN_SPECS[p].hasOwnProperty('internal') || !CHARTHOUSE_PLUGIN_SPECS[p].internal;
+                    // TODO: remove this .import check once all plugins have been migrated
+                    return (!CHARTHOUSE_PLUGIN_SPECS[p].hasOwnProperty('internal')
+                        || !CHARTHOUSE_PLUGIN_SPECS[p].internal)
+                        && CHARTHOUSE_PLUGIN_SPECS[p].import;
                 }).sort(function (a, b) {
                     return CHARTHOUSE_PLUGIN_SPECS[a].title.alphanumCompare(CHARTHOUSE_PLUGIN_SPECS[b].title)
                 }).map(function (pluginId) {
