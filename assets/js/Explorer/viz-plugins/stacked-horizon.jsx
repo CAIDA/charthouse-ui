@@ -247,15 +247,12 @@ var Controller = React.createClass({
 
 });
 
+const MIN_FONT_SIZE = 6;
+const MIN_HEIGHT_WITH_BORDER = 4;     // Min horizon chart height to include chart border (unclutter thin graphs)
+const TIME_FORMATTER = d3.time.format.utc("%a, %b %-d %Y %-I:%M%p UTC");
+const HORIZONTAL_MARGIN = 10;   // To accommodate for eventual scrollbar
+
 var StackedHorizonsGraph = React.createClass({
-
-    const: {
-        MIN_FONT_SIZE: 6,
-        MIN_HEIGHT_WITH_BORDER: 4,     // Min horizon chart height to include chart border (unclutter thin graphs)
-        TIME_FORMATTER: d3.time.format.utc("%a, %b %-d %Y %-I:%M%p UTC"),
-
-        HORIZONTAL_MARGIN: 10   // To accommodate for eventual scrollbar
-    },
 
     propTypes: {
         data: React.PropTypes.instanceOf(CharthouseData.api).isRequired,
@@ -280,7 +277,7 @@ var StackedHorizonsGraph = React.createClass({
     getInitialState: function () {
         return {
             context: cubism.context()           // Establish Cubism Context
-                .size(this.props.width - this.const.HORIZONTAL_MARGIN)    // # of points (each point=1px)
+                .size(this.props.width - HORIZONTAL_MARGIN)    // # of points (each point=1px)
                 .stop()
         }
     },
@@ -292,7 +289,7 @@ var StackedHorizonsGraph = React.createClass({
 
     componentDidUpdate: function (nextProps) {
         if (nextProps.width != this.props.width) {
-            this.state.context.size(this.props.width - this.const.HORIZONTAL_MARGIN);
+            this.state.context.size(this.props.width - HORIZONTAL_MARGIN);
         }
 
         if (nextProps.width != this.props.width || nextProps.data != this.props.data) {
@@ -308,7 +305,7 @@ var StackedHorizonsGraph = React.createClass({
     render: function () {
         return <div className="stacked-series-graph"
                     style={{
-                        width: this.props.width - this.const.HORIZONTAL_MARGIN
+                        width: this.props.width - HORIZONTAL_MARGIN
                     }}
         />;
     },
@@ -398,7 +395,7 @@ var StackedHorizonsGraph = React.createClass({
                             return true;
                         }]
                     ]))
-                    .focusFormat(rThis.const.TIME_FORMATTER)
+                    .focusFormat(TIME_FORMATTER)
                 );
         });
 
@@ -425,13 +422,13 @@ var StackedHorizonsGraph = React.createClass({
         // Resize/hide series text
         var fontSize = Math.min(rThis.props.seriesHeight * 0.55, 14);
         $("span.title, span.value", $horizons).css(
-            fontSize > rThis.const.MIN_FONT_SIZE
+            fontSize > MIN_FONT_SIZE
                 ? {'font-size': fontSize}
                 : {display: 'none'}
         );
 
         // Remove border for very thin horizon lines
-        if (this.props.seriesHeight < this.const.MIN_HEIGHT_WITH_BORDER) {
+        if (this.props.seriesHeight < MIN_HEIGHT_WITH_BORDER) {
             $(".horizon", $horizons).css('border', 'none');
         }
 
@@ -453,7 +450,7 @@ var StackedHorizonsGraph = React.createClass({
 
             // Update the logger value
             var $hoverHorizon = $('.horizon:hover', $horizons);
-            var ptTime = rThis.const.TIME_FORMATTER(rThis.state.context.scale.invert(x));
+            var ptTime = TIME_FORMATTER(rThis.state.context.scale.invert(x));
             $hoverLogger
                 .html($('.title', $hoverHorizon).text().length
                     ? '<em>' + $('.title', $hoverHorizon).text() + '</em>: '
@@ -679,14 +676,12 @@ var StackedHorizonsGraph = React.createClass({
     }
 });
 
+const VERTICAL_HEADROOM = 140;  // Graph header and footer vertical margin space
+const VERTICAL_HEADROOM_NO_CONTROLS = 90;
+//const MAX_SERIES_HEIGHT = 250;   // px
+
 // Main viz component
 return React.createClass({
-
-    const: {
-        VERTICAL_HEADROOM: 140,  // Graph header and footer vertical margin space
-        VERTICAL_HEADROOM_NO_CONTROLS: 90
-        //MAX_SERIES_HEIGHT: 250   // px
-    },
 
     propTypes: {
         data: React.PropTypes.instanceOf(CharthouseData.api).isRequired,
@@ -828,10 +823,10 @@ return React.createClass({
 
     _getAutoSeriesHeight: function () {
         // Auto-derive based on graph-height
-        var graphHeight = this.props.maxHeight - (this.state.showControls ? this.const.VERTICAL_HEADROOM : this.const.VERTICAL_HEADROOM_NO_CONTROLS);
+        var graphHeight = this.props.maxHeight - (this.state.showControls ? VERTICAL_HEADROOM : VERTICAL_HEADROOM_NO_CONTROLS);
 
         // AK disables max series height. always use all available vspace.
-        //return Math.min(this.const.MAX_SERIES_HEIGHT, Math.max(1,
+        //return Math.min(MAX_SERIES_HEIGHT, Math.max(1,
         //    Math.floor(graphHeight / this.props.data.cntSeries())
         //));
 
