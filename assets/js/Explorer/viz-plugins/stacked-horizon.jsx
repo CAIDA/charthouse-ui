@@ -31,7 +31,7 @@ class SortBy extends React.Component {
 
     render() {
 
-        var sortByOptions = [
+        const sortByOptions = [
             ['alpha', 'Name'],
             ['max', 'Max val'],
             ['avg', 'Avg val'],
@@ -136,9 +136,9 @@ class Controller extends React.Component {
 
     render() {
 
-        var rThis = this;
+        const rThis = this;
 
-        var seriesHeightOptions = [
+        const seriesHeightOptions = [
             [0, 'auto'],
             [1, 'micro'],
             [3, 'small'],
@@ -300,25 +300,25 @@ class StackedHorizonsGraph extends React.Component {
 
     // Private methods
     _configCubismContext = () => {
-        var data = this.props.data;
+        const data = this.props.data;
 
-        var nativeNumPoints = (data.summary().lastUntil - data.summary().earliestFrom) / data.summary().steps[0];
-        var nativeStep = data.summary().steps[0] * 1000;
-        var numPoints = this.state.context.size();
+        const nativeNumPoints = (data.summary().lastUntil - data.summary().earliestFrom) / data.summary().steps[0];
+        const nativeStep = data.summary().steps[0] * 1000;
+        const numPoints = this.state.context.size();
 
         this.state.context.step(Math.round(nativeStep * nativeNumPoints / numPoints));           // time unit (msecs)
         this.state.context.serverDelay(Date.now() - new Date(data.summary().lastUntil * 1000));    // Last data available
     };
 
     _padData = () => {
-        var parsed = $.extend(true, {}, this.props.data.data());
+        const parsed = $.extend(true, {}, this.props.data.data());
         Object.keys(parsed.series).forEach(function (serId) {
             padData(parsed.series[serId], parsed.summary.earliestFrom, parsed.summary.lastUntil);
         });
 
         function padData(seriesData, earliestFrom, lastUntil) {
             // Pad the series data to obey earliestFrom and lastUntil
-            var missingTime = seriesData.from - earliestFrom;
+            let missingTime = seriesData.from - earliestFrom;
             while (missingTime > 0) {
                 seriesData.values.unshift(null);
                 missingTime -= seriesData.step;
@@ -336,10 +336,10 @@ class StackedHorizonsGraph extends React.Component {
 
     _plotChart = () => {
 
-        var rThis = this;
-        var data = this._padData();
-        var valRange = this.props.data.getValRange();
-        var node = React.findDOMNode(this);
+        const rThis = this;
+        const data = this._padData();
+        const valRange = this.props.data.getValRange();
+        const node = React.findDOMNode(this);
 
         ////
 
@@ -388,7 +388,7 @@ class StackedHorizonsGraph extends React.Component {
         });
 
         // Horizon series graphs
-        var $horizons = $('<div>').insertBefore($(node).find('.bottom'))
+        const $horizons = $('<div>').insertBefore($(node).find('.bottom'))
             .css('position', 'relative');
 
         d3.select($horizons[0])
@@ -408,7 +408,7 @@ class StackedHorizonsGraph extends React.Component {
         );
 
         // Resize/hide series text
-        var fontSize = Math.min(rThis.props.seriesHeight * 0.55, 14);
+        const fontSize = Math.min(rThis.props.seriesHeight * 0.55, 14);
         $("span.title, span.value", $horizons).css(
             fontSize > MIN_FONT_SIZE
                 ? {'font-size': fontSize}
@@ -425,7 +425,7 @@ class StackedHorizonsGraph extends React.Component {
             .attr("class", "rule")
             .call(this.state.context.rule());
 
-        var $hoverLogger = $('<span class="floating-legend small">')
+        const $hoverLogger = $('<span class="floating-legend small">')
             .appendTo($(node));
 
         this.state.context.on("focus", function (x) {
@@ -437,8 +437,8 @@ class StackedHorizonsGraph extends React.Component {
             );
 
             // Update the logger value
-            var $hoverHorizon = $('.horizon:hover', $horizons);
-            var ptTime = TIME_FORMATTER(rThis.state.context.scale.invert(x));
+            const $hoverHorizon = $('.horizon:hover', $horizons);
+            const ptTime = TIME_FORMATTER(rThis.state.context.scale.invert(x));
             $hoverLogger
                 .html($('.title', $hoverHorizon).text().length
                     ? '<em>' + $('.title', $hoverHorizon).text() + '</em>: '
@@ -451,7 +451,7 @@ class StackedHorizonsGraph extends React.Component {
 
         // Make the logger follow the cursor
         $horizons.on("mousemove", function (e) {
-            var swapToLeft = ((rThis.props.width - e.clientX) < $hoverLogger.width());
+            const swapToLeft = ((rThis.props.width - e.clientX) < $hoverLogger.width());
             $hoverLogger.css({
                 'left': e.clientX + (swapToLeft ? (-$hoverLogger.width() - 13) : 13),
                 'top': e.clientY + 5
@@ -474,11 +474,11 @@ class StackedHorizonsGraph extends React.Component {
 
     _getSortMethod = () => {
 
-        var props = this.props;
-        var ascending = this.props.sortAscending;
+        const props = this.props;
+        const ascending = this.props.sortAscending;
 
         // Alphabetically or default
-        var options = ['alpha', 'max', 'avg', 'latest', 'recent', 'euclideanDistance'];
+        const options = ['alpha', 'max', 'avg', 'latest', 'recent', 'euclideanDistance'];
         if (props.sortBy === 'alpha' || options.indexOf(props.sortBy) == -1) {
             return function (a, b) {
                 return (ascending ? 1 : -1) * ((a > b) ? 1 : -1);
@@ -486,8 +486,8 @@ class StackedHorizonsGraph extends React.Component {
         }
 
         // For the remaining methods, we must pre-process data for sorting performance
-        var seriesData = this.props.data.data().series;
-        var preProcessData = {};
+        const seriesData = this.props.data.data().series;
+        const preProcessData = {};
 
         Object.keys(seriesData).forEach(function (s) {
             switch (props.sortBy) {
@@ -495,7 +495,7 @@ class StackedHorizonsGraph extends React.Component {
                     preProcessData[s] = Math.max.apply(Math, seriesData[s].values);
                     break;
                 case 'avg':
-                    var sum = 0, cnt = 0;
+                    let sum = 0, cnt = 0;
                     seriesData[s].values.filter(function (val) {
                         return val != null;
                     }).forEach(function (val) {
@@ -528,14 +528,14 @@ class StackedHorizonsGraph extends React.Component {
         if (this.props.sortBy == 'euclideanDistance') {
             // If the threshold is too large, the border of clusters is blurry
             // If the threshold is too small, the greedy algorithm archives local optimum but ignores larger patterns
-            var DISTANCE_THRESHOLD = 1;
+            const DISTANCE_THRESHOLD = 1;
 
             // Normalize values to the range [1, 0]
-            var seriesValues = Object.keys(seriesData).reduce(function (seriesValues, s) {
-                var values = seriesData[s].values.map(function (d) {
+            const seriesValues = Object.keys(seriesData).reduce(function (seriesValues, s) {
+                const values = seriesData[s].values.map(function (d) {
                     return d || 0;
                 });
-                var maxVal = Math.max.apply(Math, values);
+                const maxVal = Math.max.apply(Math, values);
                 seriesValues[s] = (maxVal == 0)
                     ? Array.apply(null, Array(values.length)).map(Number.prototype.valueOf, 0)
                     : values.map(function (d) {
@@ -544,8 +544,8 @@ class StackedHorizonsGraph extends React.Component {
                 return seriesValues;
             }, {});
 
-            var summary = this.props.data.summary();
-            var numPoints;
+            const summary = this.props.data.summary();
+            let numPoints;
             if (summary.steps.length == 1 && uniqueBy(seriesData, 'from') &&
                 uniqueBy(seriesData, 'until')) {
                 // Span and step are unique and thus array length is unique. No need to align
@@ -555,20 +555,20 @@ class StackedHorizonsGraph extends React.Component {
                 // Pad series to the same length and sample to the same step as the graph is
                 // Series are regarded as discrete points, not intervals
                 numPoints = this.state.context.size();
-                var lastUntilWithoutStep = Math.max.apply(Math,
+                const lastUntilWithoutStep = Math.max.apply(Math,
                     Object.keys(seriesData).map(function (s) {
                         return seriesData[s].until - seriesData[s].step;
                     }));
-                var timeStep = (lastUntilWithoutStep - summary.earliestFrom) / (numPoints - 1);
+                const timeStep = (lastUntilWithoutStep - summary.earliestFrom) / (numPoints - 1);
                 Object.keys(seriesValues).forEach(function (s) {
-                    var values = seriesValues[s], series = seriesData[s];
-                    var crossSampledValues = seriesValues[s] = [];
-                    for (var i = 0; i < numPoints; i++) {
-                        var time = summary.earliestFrom + timeStep * i;
-                        var idx = (time - series.from) / series.step;
-                        var leftIdx = Math.floor(idx),
+                    const values = seriesValues[s], series = seriesData[s];
+                    const crossSampledValues = seriesValues[s] = [];
+                    for (let i = 0; i < numPoints; i++) {
+                        const time = summary.earliestFrom + timeStep * i;
+                        const idx = (time - series.from) / series.step;
+                        const leftIdx = Math.floor(idx),
                             rightIdx = Math.ceil(idx);
-                        var val = (rightIdx == leftIdx)
+                        const val = (rightIdx == leftIdx)
                             ? values[idx]
                             : values[leftIdx] * (rightIdx - idx) + values[rightIdx] * (idx - leftIdx);
                         crossSampledValues.push(val || 0);
@@ -576,11 +576,11 @@ class StackedHorizonsGraph extends React.Component {
                 }.bind(this));
             }
 
-            var cntr = 0;
-            var threshold = Math.pow(DISTANCE_THRESHOLD / 8, 2) * numPoints / 100; // by intuition
+            let cntr = 0;
+            const threshold = Math.pow(DISTANCE_THRESHOLD / 8, 2) * numPoints / 100; // by intuition
             // Choose the time series with minimum events as the initial value
-            var pivot = Object.keys(seriesData).reduce(function (last, s) {
-                var events = seriesData[s].values.reduce(function (a, b) {
+            let pivot = Object.keys(seriesData).reduce(function (last, s) {
+                const events = seriesData[s].values.reduce(function (a, b) {
                     return a + (b || 0);
                 }, 0);
                 return last[0] < events ? last : [events, s];
@@ -588,12 +588,12 @@ class StackedHorizonsGraph extends React.Component {
 
             while (Object.keys(seriesValues).length) {
                 preProcessData[pivot] = cntr++;
-                var pivotValues = seriesValues[pivot];
+                const pivotValues = seriesValues[pivot];
                 delete seriesValues[pivot];
 
-                var minSimilarity = Number.MAX_VALUE;
+                let minSimilarity = Number.MAX_VALUE;
                 Object.keys(seriesValues).map(function (s) {
-                    var similarity = distance(pivotValues, seriesValues[s], minSimilarity);
+                    const similarity = distance(pivotValues, seriesValues[s], minSimilarity);
 
                     // Find all time series similar to pivot (smaller than threshold)
                     if (similarity < threshold) {
@@ -609,15 +609,15 @@ class StackedHorizonsGraph extends React.Component {
                     .filter(Boolean)
                     .sort(function (a, b) {
                         // Sort by similarity to the pivot
-                        var diff = a[1] - b[1];
+                        const diff = a[1] - b[1];
                         if (diff) {
                             return diff;
                         }
 
                         // Sort by visual discrepancy
-                        var vs1 = seriesValues[a[0]],
+                        const vs1 = seriesValues[a[0]],
                             vs2 = seriesValues[b[0]];
-                        for (var i = 0; i < vs1.length; i++) {
+                        for (let i = 0; i < vs1.length; i++) {
                             if (Boolean(vs1[i]) ^ Boolean(vs2[i])) {
                                 return vs1[i] ? -1 : 1;
                             }
@@ -631,9 +631,9 @@ class StackedHorizonsGraph extends React.Component {
             }
 
             function uniqueBy(obj, property) {
-                var seen = [];
+                const seen = [];
                 return Object.keys(obj).every(function (s) {
-                    var prop = obj[s][property];
+                    const prop = obj[s][property];
                     if (seen.indexOf(prop) == -1) {
                         if (seen.length == 0) {
                             seen.push(prop);
@@ -647,8 +647,8 @@ class StackedHorizonsGraph extends React.Component {
             }
 
             function distance(vs1, vs2, max) { // Euclidean distance
-                var sum = 0;
-                for (var i = 0; i < vs1.length; i++) {
+                let sum = 0;
+                for (let i = 0; i < vs1.length; i++) {
                     sum += Math.pow(vs1[i] - vs2[i], 2);
                     if (sum >= max) {
                         return max;
@@ -693,8 +693,8 @@ return class extends React.Component {
     constructor(props) {
         super(props);
 
-        var showControls = props.configMan.getParam('showControls', true);
-        var ascending = props.configMan.getParam('sortAscending', true);
+        const showControls = props.configMan.getParam('showControls', true);
+        const ascending = props.configMan.getParam('sortAscending', true);
 
         this.state = {
             width: null,
@@ -758,12 +758,12 @@ return class extends React.Component {
     };
 
     _configChanged = (newParams) => {
-        var rThis = this;
+        const rThis = this;
 
-        var keepProps = ['horizonSeriesHeight', 'sortBy', 'sortAscending'];
+        const keepProps = ['horizonSeriesHeight', 'sortBy', 'sortAscending'];
 
-        var updState = {};
-        var defaults;
+        const updState = {};
+        let defaults;
         Object.keys(newParams).forEach(function (k) {
             if (keepProps.indexOf(k) != -1) {
 
@@ -783,7 +783,7 @@ return class extends React.Component {
 
         function parse(val) {
             if (typeof val == 'string' && val.length) {
-                var valLc = val.toLowerCase();
+                const valLc = val.toLowerCase();
                 if (valLc == 'false' || valLc == 'true')
                     return (valLc != 'false');  // Boolean
 
@@ -809,7 +809,7 @@ return class extends React.Component {
 
     _getAutoSeriesHeight = () => {
         // Auto-derive based on graph-height
-        var graphHeight = this.props.maxHeight - (this.state.showControls ? VERTICAL_HEADROOM : VERTICAL_HEADROOM_NO_CONTROLS);
+        const graphHeight = this.props.maxHeight - (this.state.showControls ? VERTICAL_HEADROOM : VERTICAL_HEADROOM_NO_CONTROLS);
 
         // AK disables max series height. always use all available vspace.
         //return Math.min(MAX_SERIES_HEIGHT, Math.max(1,
