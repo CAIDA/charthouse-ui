@@ -98,7 +98,7 @@ class SortBy extends React.Component {
     };
 
     _toggleSortAscending = (newVal) => {
-        this.props.onToggleSortAscending(newVal == 't');
+        this.props.onToggleSortAscending(newVal === 't');
     };
 }
 
@@ -209,7 +209,7 @@ class Controller extends React.Component {
                 value={this._base2slider(this.props.yScalePower)}
                 tooltipFormatter={function (val) {
                     val = rThis._slider2base(val);
-                    return val == 1
+                    return val === 1
                         ? 'Linear'
                         : (val > 1
                                 ? 'Exp base ' + val
@@ -279,11 +279,11 @@ class StackedHorizonsGraph extends React.Component {
     }
 
     componentDidUpdate(nextProps) {
-        if (nextProps.width != this.props.width) {
+        if (nextProps.width !== this.props.width) {
             this.state.context.size(this.props.width - HORIZONTAL_MARGIN);
         }
 
-        if (nextProps.width != this.props.width || nextProps.data != this.props.data) {
+        if (nextProps.width !== this.props.width || nextProps.data !== this.props.data) {
             this._configCubismContext();
         }
 
@@ -371,10 +371,10 @@ class StackedHorizonsGraph extends React.Component {
                             return d.getUTCHours();
                         }],
                         ["%a %-d", function (d) {
-                            return d.getUTCDay() && d.getUTCDate() != 1;
+                            return d.getUTCDay() && d.getUTCDate() !== 1;
                         }],
                         ["%b %-d", function (d) {
-                            return d.getUTCDate() != 1;
+                            return d.getUTCDate() !== 1;
                         }],
                         ["%b", function (d) {
                             return d.getUTCMonth();
@@ -479,7 +479,7 @@ class StackedHorizonsGraph extends React.Component {
 
         // Alphabetically or default
         const options = ['alpha', 'max', 'avg', 'latest', 'recent', 'euclideanDistance'];
-        if (props.sortBy === 'alpha' || options.indexOf(props.sortBy) == -1) {
+        if (props.sortBy === 'alpha' || options.indexOf(props.sortBy) === -1) {
             return function (a, b) {
                 return (ascending ? 1 : -1) * ((a > b) ? 1 : -1);
             };
@@ -525,7 +525,7 @@ class StackedHorizonsGraph extends React.Component {
             }
         });
 
-        if (this.props.sortBy == 'euclideanDistance') {
+        if (this.props.sortBy === 'euclideanDistance') {
             // If the threshold is too large, the border of clusters is blurry
             // If the threshold is too small, the greedy algorithm archives local optimum but ignores larger patterns
             const DISTANCE_THRESHOLD = 1;
@@ -536,7 +536,7 @@ class StackedHorizonsGraph extends React.Component {
                     return d || 0;
                 });
                 const maxVal = Math.max.apply(Math, values);
-                seriesValues[s] = (maxVal == 0)
+                seriesValues[s] = (maxVal === 0)
                     ? Array.apply(null, Array(values.length)).map(Number.prototype.valueOf, 0)
                     : values.map(function (d) {
                         return d / maxVal;
@@ -546,7 +546,7 @@ class StackedHorizonsGraph extends React.Component {
 
             const summary = this.props.data.summary();
             let numPoints;
-            if (summary.steps.length == 1 && uniqueBy(seriesData, 'from') &&
+            if (summary.steps.length === 1 && uniqueBy(seriesData, 'from') &&
                 uniqueBy(seriesData, 'until')) {
                 // Span and step are unique and thus array length is unique. No need to align
                 numPoints = (summary.lastUntil - summary.earliestFrom) / summary.steps[0]
@@ -568,7 +568,7 @@ class StackedHorizonsGraph extends React.Component {
                         const idx = (time - series.from) / series.step;
                         const leftIdx = Math.floor(idx),
                             rightIdx = Math.ceil(idx);
-                        const val = (rightIdx == leftIdx)
+                        const val = (rightIdx === leftIdx)
                             ? values[idx]
                             : values[leftIdx] * (rightIdx - idx) + values[rightIdx] * (idx - leftIdx);
                         crossSampledValues.push(val || 0);
@@ -634,8 +634,8 @@ class StackedHorizonsGraph extends React.Component {
                 const seen = [];
                 return Object.keys(obj).every(function (s) {
                     const prop = obj[s][property];
-                    if (seen.indexOf(prop) == -1) {
-                        if (seen.length == 0) {
+                    if (seen.indexOf(prop) === -1) {
+                        if (seen.length === 0) {
                             seen.push(prop);
                         }
                         else {
@@ -765,7 +765,7 @@ return class extends React.Component {
         const updState = {};
         let defaults;
         Object.keys(newParams).forEach(function (k) {
-            if (keepProps.indexOf(k) != -1) {
+            if (keepProps.indexOf(k) !== -1) {
 
                 if (newParams[k] == null && defaults == null)
                     defaults = rThis.getInitialState();  // Populate defaults
@@ -782,10 +782,10 @@ return class extends React.Component {
         }
 
         function parse(val) {
-            if (typeof val == 'string' && val.length) {
+            if (typeof val === 'string' && val.length) {
                 const valLc = val.toLowerCase();
-                if (valLc == 'false' || valLc == 'true')
-                    return (valLc != 'false');  // Boolean
+                if (valLc === 'false' || valLc === 'true')
+                    return (valLc !== 'false');  // Boolean
 
                 if (!isNaN(val))
                     return +val;        // Number
