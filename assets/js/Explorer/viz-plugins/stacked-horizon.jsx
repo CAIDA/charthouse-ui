@@ -1,4 +1,6 @@
+import PropTypes from 'prop-types';
 import React from 'react';
+import ReactDOM from 'react-dom';
 import d3 from 'd3';
 import cubism from '../libs/cubism';
 
@@ -9,27 +11,25 @@ import RadioToolbar from '../components/radio-toolbar';
 import { CharthouseDataSet } from '../utils/dataset';
 
 // Sort by method
-const SortBy = React.createClass({
+class SortBy extends React.Component {
 
-    propTypes: {
-        sortBy: React.PropTypes.string,
-        onSortByChanged: React.PropTypes.func,
-        sortAscending: React.PropTypes.bool,
-        onToggleSortAscending: React.PropTypes.func
-    },
+    static propTypes = {
+        sortBy: PropTypes.string,
+        onSortByChanged: PropTypes.func,
+        sortAscending: PropTypes.bool,
+        onToggleSortAscending: PropTypes.func
+    };
 
-    getDefaultProps: function () {
-        return {
-            sortBy: 'alpha',
-            sortAscending: true,
-            onSortByChanged: function (newVal) {
-            },
-            onToggleSortAscending: function (newVal) {
-            }
+    static defaultProps = {
+        sortBy: 'alpha',
+        sortAscending: true,
+        onSortByChanged: function (newVal) {
+        },
+        onToggleSortAscending: function (newVal) {
         }
-    },
+    };
 
-    render: function () {
+    render() {
 
         var sortByOptions = [
             ['alpha', 'Name'],
@@ -90,54 +90,51 @@ const SortBy = React.createClass({
                 />
             </span>
         </div>
-    },
+    }
 
     // Private methods
-    _changedSortBy: function (e) {
+    _changedSortBy = (e) => {
         this.props.onSortByChanged(e.target.value);
-    },
+    };
 
-    _toggleSortAscending: function (newVal) {
+    _toggleSortAscending = (newVal) => {
         this.props.onToggleSortAscending(newVal == 't');
-    }
-});
+    };
+}
 
-var Controller = React.createClass({
+class Controller extends React.Component {
+    static propTypes = {
+        seriesHeight: PropTypes.number,
+        autoYScale: PropTypes.bool,
+        sortBy: PropTypes.string,
+        sortAscending: PropTypes.bool,
+        yScalePower: PropTypes.number,
+        onChangeSeriesHeight: PropTypes.func,
+        onToggleAutoYScale: PropTypes.func,
+        onChangeYScalePower: PropTypes.func,
+        onSortByChanged: PropTypes.func,
+        onToggleSortAscending: PropTypes.func
+    };
 
-    propTypes: {
-        seriesHeight: React.PropTypes.number,
-        autoYScale: React.PropTypes.bool,
-        sortBy: React.PropTypes.string,
-        sortAscending: React.PropTypes.bool,
-        yScalePower: React.PropTypes.number,
-        onChangeSeriesHeight: React.PropTypes.func,
-        onToggleAutoYScale: React.PropTypes.func,
-        onChangeYScalePower: React.PropTypes.func,
-        onSortByChanged: React.PropTypes.func,
-        onToggleSortAscending: React.PropTypes.func
-    },
-
-    getDefaultProps: function () {
-        return {
-            seriesHeight: 0,
-            autoYScale: false,
-            yScalePower: 1,
-            sortBy: 'alpha',
-            sortAscending: true,
-            onChangeSeriesHeight: function (newHeight) {
-            },
-            onToggleAutoYScale: function (newState) {
-            },
-            onChangeYScalePower: function (newState) {
-            },
-            onSortByChanged: function (newVal) {
-            },
-            onToggleSortAscending: function (newVal) {
-            }
+    static defaultProps = {
+        seriesHeight: 0,
+        autoYScale: false,
+        yScalePower: 1,
+        sortBy: 'alpha',
+        sortAscending: true,
+        onChangeSeriesHeight: function (newHeight) {
+        },
+        onToggleAutoYScale: function (newState) {
+        },
+        onChangeYScalePower: function (newState) {
+        },
+        onSortByChanged: function (newVal) {
+        },
+        onToggleSortAscending: function (newVal) {
         }
-    },
+    };
 
-    render: function () {
+    render() {
 
         var rThis = this;
 
@@ -224,70 +221,64 @@ var Controller = React.createClass({
             />
 
         </div>;
-    },
-
-    // Private methods
-    _slider2base: function (val) {
-        val = -val; // Convert to number
-        return val >= 0 ? 1 + val : 1 / (1 - val);
-    },
-
-    _base2slider: function (base) {
-        base = +base;
-        return -Math.round((base >= 1 ? base - 1 : 1 - 1 / base));
-    },
-
-    _changedYScaleSlider: function (newVal) {
-        this.props.onChangeYScalePower(this._slider2base(newVal));
-    },
-
-    _changedSeriesHeight: function (e) {
-        this.props.onChangeSeriesHeight(e.target.value);
     }
 
-});
+    // Private methods
+    _slider2base = (val) => {
+        val = -val; // Convert to number
+        return val >= 0 ? 1 + val : 1 / (1 - val);
+    };
+
+    _base2slider = (base) => {
+        base = +base;
+        return -Math.round((base >= 1 ? base - 1 : 1 - 1 / base));
+    };
+
+    _changedYScaleSlider = (newVal) => {
+        this.props.onChangeYScalePower(this._slider2base(newVal));
+    };
+
+    _changedSeriesHeight = (e) => {
+        this.props.onChangeSeriesHeight(e.target.value);
+    };
+}
 
 const MIN_FONT_SIZE = 6;
 const MIN_HEIGHT_WITH_BORDER = 4;     // Min horizon chart height to include chart border (unclutter thin graphs)
 const TIME_FORMATTER = d3.time.format.utc("%a, %b %-d %Y %-I:%M%p UTC");
 const HORIZONTAL_MARGIN = 10;   // To accommodate for eventual scrollbar
 
-var StackedHorizonsGraph = React.createClass({
+class StackedHorizonsGraph extends React.Component {
+    static propTypes = {
+        data: PropTypes.instanceOf(CharthouseDataSet).isRequired,
+        width: PropTypes.number.isRequired,
+        seriesHeight: PropTypes.number,
+        sortBy: PropTypes.string,
+        sortAscending: PropTypes.bool,
+        globalYScale: PropTypes.bool,
+        yScalePower: PropTypes.number
+    };
 
-    propTypes: {
-        data: React.PropTypes.instanceOf(CharthouseData.api).isRequired,
-        width: React.PropTypes.number.isRequired,
-        seriesHeight: React.PropTypes.number,
-        sortBy: React.PropTypes.string,
-        sortAscending: React.PropTypes.bool,
-        globalYScale: React.PropTypes.bool,
-        yScalePower: React.PropTypes.number
-    },
+    static defaultProps = {
+        seriesHeight: 10,
+        globalYScale: false,
+        yScalePower: 1,
+        sortBy: 'alpha',
+        sortAscending: true
+    };
 
-    getDefaultProps: function () {
-        return {
-            seriesHeight: 10,
-            globalYScale: false,
-            yScalePower: 1,
-            sortBy: 'alpha',
-            sortAscending: true
-        }
-    },
+    state = {
+        context: cubism.context()           // Establish Cubism Context
+            .size(this.props.width - HORIZONTAL_MARGIN)    // # of points (each point=1px)
+            .stop()
+    };
 
-    getInitialState: function () {
-        return {
-            context: cubism.context()           // Establish Cubism Context
-                .size(this.props.width - HORIZONTAL_MARGIN)    // # of points (each point=1px)
-                .stop()
-        }
-    },
-
-    componentDidMount: function () {
+    componentDidMount() {
         this._configCubismContext();
         this._plotChart();
-    },
+    }
 
-    componentDidUpdate: function (nextProps) {
+    componentDidUpdate(nextProps) {
         if (nextProps.width != this.props.width) {
             this.state.context.size(this.props.width - HORIZONTAL_MARGIN);
         }
@@ -297,21 +288,18 @@ var StackedHorizonsGraph = React.createClass({
         }
 
         this._plotChart();
-    },
+    }
 
-    // Only update if there's any change in props
-    mixins: [React.addons.PureRenderMixin],
-
-    render: function () {
+    render() {
         return <div className="stacked-series-graph"
                     style={{
                         width: this.props.width - HORIZONTAL_MARGIN
                     }}
         />;
-    },
+    }
 
     // Private methods
-    _configCubismContext: function () {
+    _configCubismContext = () => {
         var data = this.props.data;
 
         var nativeNumPoints = (data.summary().lastUntil - data.summary().earliestFrom) / data.summary().steps[0];
@@ -320,9 +308,9 @@ var StackedHorizonsGraph = React.createClass({
 
         this.state.context.step(Math.round(nativeStep * nativeNumPoints / numPoints));           // time unit (msecs)
         this.state.context.serverDelay(Date.now() - new Date(data.summary().lastUntil * 1000));    // Last data available
-    },
+    };
 
-    _padData: function () {
+    _padData = () => {
         var parsed = $.extend(true, {}, this.props.data.data());
         Object.keys(parsed.series).forEach(function (serId) {
             padData(parsed.series[serId], parsed.summary.earliestFrom, parsed.summary.lastUntil);
@@ -344,9 +332,9 @@ var StackedHorizonsGraph = React.createClass({
         }
 
         return parsed;
-    },
+    };
 
-    _plotChart: function () {
+    _plotChart = () => {
 
         var rThis = this;
         var data = this._padData();
@@ -482,9 +470,9 @@ var StackedHorizonsGraph = React.createClass({
                 data.series[expression].name ? data.series[expression].name.abbrFit(100) : ''
             );
         }
-    },
+    };
 
-    _getSortMethod: function () {
+    _getSortMethod = () => {
 
         var props = this.props;
         var ascending = this.props.sortAscending;
@@ -673,67 +661,65 @@ var StackedHorizonsGraph = React.createClass({
         return function (a, b) {
             return (ascending ? 1 : -1) * (preProcessData[a] - preProcessData[b]);
         };
-    }
-});
+    };
+}
 
 const VERTICAL_HEADROOM = 140;  // Graph header and footer vertical margin space
 const VERTICAL_HEADROOM_NO_CONTROLS = 90;
 //const MAX_SERIES_HEIGHT = 250;   // px
 
 // Main viz component
-return React.createClass({
+return class extends React.Component {
+    static propTypes = {
+        data: PropTypes.instanceOf(CharthouseDataSet).isRequired,
+        configMan: PropTypes.object,
+        maxHeight: PropTypes.number
+    };
 
-    propTypes: {
-        data: React.PropTypes.instanceOf(CharthouseData.api).isRequired,
-        configMan: React.PropTypes.object,
-        maxHeight: React.PropTypes.number
-    },
-
-    getDefaultProps: function () {
-        return {
-            configMan: {
-                getParam: function (key) {
-                },
-                setParams: function (keVals) {
-                },
-                onParamChange: function (cb, key) {
-                },
-                unsubscribe: function (cb, key) {
-                }
+    static defaultProps = {
+        configMan: {
+            getParam: function (key) {
             },
-            maxHeight: window.innerHeight * .7
-        }
-    },
+            setParams: function (keVals) {
+            },
+            onParamChange: function (cb, key) {
+            },
+            unsubscribe: function (cb, key) {
+            }
+        },
+        maxHeight: window.innerHeight * .7
+    };
 
-    getInitialState: function () {
+    constructor(props) {
+        super(props);
 
-        var showControls = this.props.configMan.getParam('showControls', true);
-        var ascending = this.props.configMan.getParam('sortAscending', true);
+        var showControls = props.configMan.getParam('showControls', true);
+        var ascending = props.configMan.getParam('sortAscending', true);
 
-        return {
+        this.state = {
             width: null,
             showControls: tools.fuzzyBoolean(showControls),
 
-            sortBy: this.props.configMan.getParam('sortBy') || '',
+            sortBy: props.configMan.getParam('sortBy') || '',
             sortAscending: tools.fuzzyBoolean(ascending),
-            horizonSeriesHeight: this.props.configMan.getParam('horizonSeriesHeight') || 0,   // 0 = auto derived
+            horizonSeriesHeight: props.configMan.getParam('horizonSeriesHeight') || 0,   // 0 = auto derived
             autoYScale: false,
-            yScalePower: this.props.configMan.getParam('yScalePower') || 1
-        }
-    },
+            yScalePower: props.configMan.getParam('yScalePower') || 1
+        };
+    }
 
-    componentDidMount: function () {
+    componentDidMount() {
         this._setWidth();
         window.addEventListener('resize', this._setWidth);
         this.props.configMan.onParamChange(this._configChanged);
-    },
+    }
 
-    componentWillUnmount: function () {
+    componentWillUnmount() {
         window.removeEventListener('resize', this._setWidth);
         this.props.configMan.unsubscribe(this._configChanged);
-    },
+    }
 
-    render: function () {
+    render() {
 
         return <div className="charthouse-stacked-series">
             {this.state.showControls &&
@@ -764,14 +750,14 @@ return React.createClass({
             />
             }
         </div>;
-    },
+    }
 
     // Private methods
-    _setWidth: function () {
-        this.setState({width: this.getDOMNode().offsetWidth});
-    },
+    _setWidth = () => {
+        this.setState({width: ReactDOM.findDOMNode(this).offsetWidth});
+    };
 
-    _configChanged: function (newParams) {
+    _configChanged = (newParams) => {
         var rThis = this;
 
         var keepProps = ['horizonSeriesHeight', 'sortBy', 'sortAscending'];
@@ -807,21 +793,21 @@ return React.createClass({
 
             return val;
         }
-    },
+    };
 
-    _onChangeSeriesHeight: function (newHeight) {
+    _onChangeSeriesHeight = (newHeight) => {
         this.props.configMan.setParams({'horizonSeriesHeight': newHeight});
-    },
+    };
 
-    _onToggleAutoYScale: function (newState) {
+    _onToggleAutoYScale = (newState) => {
         this.setState({autoYScale: newState});
-    },
+    };
 
-    _onChangeYScalePower: function (newVal) {
+    _onChangeYScalePower = (newVal) => {
         this.setState({yScalePower: newVal});
-    },
+    };
 
-    _getAutoSeriesHeight: function () {
+    _getAutoSeriesHeight = () => {
         // Auto-derive based on graph-height
         var graphHeight = this.props.maxHeight - (this.state.showControls ? VERTICAL_HEADROOM : VERTICAL_HEADROOM_NO_CONTROLS);
 
@@ -833,14 +819,13 @@ return React.createClass({
         return Math.max(1,
             Math.ceil(graphHeight / this.props.data.cntSeries())
         );
-    },
+    };
 
-    _changeSortBy: function (newMethod) {
+    _changeSortBy = (newMethod) => {
         this.props.configMan.setParams({sortBy: newMethod});
-    },
+    };
 
-    _toggleSortAscending: function (newVal) {
+    _toggleSortAscending = (newVal) => {
         this.props.configMan.setParams({sortAscending: newVal});
-    }
-
-});
+    };
+};

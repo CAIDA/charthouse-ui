@@ -20,7 +20,7 @@ export default {
         dynamic: true
     },
     horizonStackedSeries: {
-        jsFile: 'plugin-horizon-graphs',
+        import: import(/* webpackChunkName: "stacked-horizon" */ './stacked-horizon'),
         title: 'Stacked Horizon Graphs',
         description: 'Shows a vertically stacked representation of the data in Horizon layout, with one line per series',
         dynamic: true
