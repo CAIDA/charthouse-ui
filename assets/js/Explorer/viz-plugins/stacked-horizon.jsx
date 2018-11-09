@@ -1,12 +1,13 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import Slider from 'react-bootstrap-slider';
 import d3 from 'd3';
 import cubism from '../libs/cubism';
+import $ from 'jquery';
 
 import tools from '../utils/tools';
 import Toggle from '../components/toggle-switch';
-// TODO: import Slider from '../components/slider';
 import RadioToolbar from '../components/radio-toolbar';
 import { CharthouseDataSet } from '../utils/dataset';
 
@@ -217,7 +218,7 @@ class Controller extends React.Component {
                         );
                 }}
                 description="Change Y scale base type, from Linear (center) to logarithmic (right) or exponential (left)"
-                onChange={this._changedYScaleSlider}
+                change={this._changedYScaleSlider}
             />
 
         </div>;
@@ -248,7 +249,7 @@ const MIN_HEIGHT_WITH_BORDER = 4;     // Min horizon chart height to include cha
 const TIME_FORMATTER = d3.time.format.utc("%a, %b %-d %Y %-I:%M%p UTC");
 const HORIZONTAL_MARGIN = 10;   // To accommodate for eventual scrollbar
 
-class StackedHorizonsGraph extends React.Component {
+class StackedHorizonsGraph extends React.PureComponent {
     static propTypes = {
         data: PropTypes.instanceOf(CharthouseDataSet).isRequired,
         width: PropTypes.number.isRequired,
@@ -339,7 +340,7 @@ class StackedHorizonsGraph extends React.Component {
         const rThis = this;
         const data = this._padData();
         const valRange = this.props.data.getValRange();
-        const node = React.findDOMNode(this);
+        const node = ReactDOM.findDOMNode(this);
 
         ////
 
@@ -669,7 +670,7 @@ const VERTICAL_HEADROOM_NO_CONTROLS = 90;
 //const MAX_SERIES_HEIGHT = 250;   // px
 
 // Main viz component
-return class extends React.Component {
+class StackedHorizonViz extends React.Component {
     static propTypes = {
         data: PropTypes.instanceOf(CharthouseDataSet).isRequired,
         configMan: PropTypes.object,
@@ -828,4 +829,6 @@ return class extends React.Component {
     _toggleSortAscending = (newVal) => {
         this.props.configMan.setParams({sortAscending: newVal});
     };
-};
+}
+
+export default StackedHorizonViz;
