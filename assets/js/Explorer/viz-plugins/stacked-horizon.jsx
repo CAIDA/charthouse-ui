@@ -303,18 +303,18 @@ class StackedHorizonsGraph extends React.PureComponent {
     _configCubismContext = () => {
         const data = this.props.data;
 
-        const nativeNumPoints = (data.summary().lastUntil - data.summary().earliestFrom) / data.summary().steps[0];
+        const nativeNumPoints = (data.summary().last_until - data.summary().earliest_from) / data.summary().steps[0];
         const nativeStep = data.summary().steps[0] * 1000;
         const numPoints = this.state.context.size();
 
         this.state.context.step(Math.round(nativeStep * nativeNumPoints / numPoints));           // time unit (msecs)
-        this.state.context.serverDelay(Date.now() - new Date(data.summary().lastUntil * 1000));    // Last data available
+        this.state.context.serverDelay(Date.now() - new Date(data.summary().last_until * 1000));    // Last data available
     };
 
     _padData = () => {
         const parsed = $.extend(true, {}, this.props.data.data());
         Object.keys(parsed.series).forEach(function (serId) {
-            padData(parsed.series[serId], parsed.summary.earliestFrom, parsed.summary.lastUntil);
+            padData(parsed.series[serId], parsed.summary.earliest_from, parsed.summary.last_until);
         });
 
         function padData(seriesData, earliestFrom, lastUntil) {
@@ -444,7 +444,7 @@ class StackedHorizonsGraph extends React.PureComponent {
                 .html($('.title', $hoverHorizon).text().length
                     ? '<em>' + $('.title', $hoverHorizon).text() + '</em>: '
                     + '<b>' + $('.value', $hoverHorizon).text() + '</b> '
-                    + (data.summary.commonSuffix || '') // Units
+                    + (data.summary.common_suffix || '') // Units
                     + '<br><small><em>(' + ptTime + ')</em></small>'
                     : ''
                 );
@@ -550,7 +550,7 @@ class StackedHorizonsGraph extends React.PureComponent {
             if (summary.steps.length === 1 && uniqueBy(seriesData, 'from') &&
                 uniqueBy(seriesData, 'until')) {
                 // Span and step are unique and thus array length is unique. No need to align
-                numPoints = (summary.lastUntil - summary.earliestFrom) / summary.steps[0]
+                numPoints = (summary.last_until - summary.earliest_from) / summary.steps[0]
             }
             else {
                 // Pad series to the same length and sample to the same step as the graph is
@@ -560,12 +560,12 @@ class StackedHorizonsGraph extends React.PureComponent {
                     Object.keys(seriesData).map(function (s) {
                         return seriesData[s].until - seriesData[s].step;
                     }));
-                const timeStep = (lastUntilWithoutStep - summary.earliestFrom) / (numPoints - 1);
+                const timeStep = (lastUntilWithoutStep - summary.earliest_from) / (numPoints - 1);
                 Object.keys(seriesValues).forEach(function (s) {
                     const values = seriesValues[s], series = seriesData[s];
                     const crossSampledValues = seriesValues[s] = [];
                     for (let i = 0; i < numPoints; i++) {
-                        const time = summary.earliestFrom + timeStep * i;
+                        const time = summary.earliest_from + timeStep * i;
                         const idx = (time - series.from) / series.step;
                         const leftIdx = Math.floor(idx),
                             rightIdx = Math.ceil(idx);
