@@ -28,18 +28,7 @@ var PlayBtn = React.createClass({
 });
 
 // TODO PureComponent
-var PlayControls = React.createClass({
-
-    propTypes: {
-        onStop: React.PropTypes.func,
-        onPlayFwd: React.PropTypes.func,
-        onPauseFwd: React.PropTypes.func,
-        onPlayRev: React.PropTypes.func,
-        onPauseRev: React.PropTypes.func,
-        onStepFwd: React.PropTypes.func,
-        onStepBck: React.PropTypes.func
-    },
-
+/*
     getDefaultProps: function () {
         return {
             onStop: function () {
@@ -69,6 +58,18 @@ var PlayControls = React.createClass({
             stepFwd: true,
             stepBck: true
         }
+    },
+ */
+var PlayControls = React.createClass({
+
+    propTypes: {
+        onStop: React.PropTypes.func,
+        onPlayFwd: React.PropTypes.func,
+        onPauseFwd: React.PropTypes.func,
+        onPlayRev: React.PropTypes.func,
+        onPauseRev: React.PropTypes.func,
+        onStepFwd: React.PropTypes.func,
+        onStepBck: React.PropTypes.func
     },
 
     render: function () {
@@ -186,25 +187,14 @@ var PlayControls = React.createClass({
 
     // Public methods
     resetState: function () {
-        this.setState(this.getInitialState());
+        // TODO
+        //this.setState(this.getInitialState());
     }
 
 });
 
 // TODO PureComponent
-var DcLineChart = React.createClass({
-
-    propTypes: {
-        cfData: React.PropTypes.object.isRequired,
-        timeCol: React.PropTypes.string.isRequired,
-        idCol: React.PropTypes.string.isRequired,
-        nameCol: React.PropTypes.string.isRequired,
-        width: React.PropTypes.number.isRequired,
-        height: React.PropTypes.number.isRequired,
-        maxSeries: React.PropTypes.number,
-        onFiltered: React.PropTypes.func
-    },
-
+/*
     getDefaultProps: function () {
         return {
             timeCol: 'time',
@@ -216,13 +206,26 @@ var DcLineChart = React.createClass({
         }
     },
 
-    getInitialState: function () {
+   getInitialState: function () {
         var timeCol = this.props.timeCol;
         return {
             byTime: this.props.cfData.dimension(function (d) {
                 return d[timeCol];
             })
         }
+    },
+ */
+var DcLineChart = React.createClass({
+
+    propTypes: {
+        cfData: React.PropTypes.object.isRequired,
+        timeCol: React.PropTypes.string.isRequired,
+        idCol: React.PropTypes.string.isRequired,
+        nameCol: React.PropTypes.string.isRequired,
+        width: React.PropTypes.number.isRequired,
+        height: React.PropTypes.number.isRequired,
+        maxSeries: React.PropTypes.number,
+        onFiltered: React.PropTypes.func
     },
 
     componentDidMount: function () {
@@ -406,22 +409,7 @@ var DcLineChart = React.createClass({
 const FILTER_DAMPER_DELAY = 50; // ms
 
 // TODO: LinkedState
-const Player = React.createClass({
-
-    propTypes: {
-        cfData: React.PropTypes.object.isRequired,
-        idCol: React.PropTypes.string,       // Related to cf data
-        nameCol: React.PropTypes.string,
-        width: React.PropTypes.number,
-        height: React.PropTypes.number,
-        maxFps: React.PropTypes.number,
-        fps: React.PropTypes.number,
-        showPlayControls: React.PropTypes.bool,
-        onFilterChange: React.PropTypes.func,
-        onTimeChange: React.PropTypes.func,
-        onFpsChange: React.PropTypes.func
-    },
-
+/*
     getDefaultProps: function () {
         return {
             width: 640,
@@ -449,6 +437,22 @@ const Player = React.createClass({
             frameSize: null,
             playerWidth: null
         }
+    },
+ */
+const Player = React.createClass({
+
+    propTypes: {
+        cfData: React.PropTypes.object.isRequired,
+        idCol: React.PropTypes.string,       // Related to cf data
+        nameCol: React.PropTypes.string,
+        width: React.PropTypes.number,
+        height: React.PropTypes.number,
+        maxFps: React.PropTypes.number,
+        fps: React.PropTypes.number,
+        showPlayControls: React.PropTypes.bool,
+        onFilterChange: React.PropTypes.func,
+        onTimeChange: React.PropTypes.func,
+        onFpsChange: React.PropTypes.func
     },
 
     componentWillMount: function () {
