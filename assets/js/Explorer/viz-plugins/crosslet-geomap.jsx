@@ -4,13 +4,12 @@ import ReactDOM from 'react-dom';
 import Slider from 'react-bootstrap-slider';
 import d3 from 'd3';
 import topojson from 'topojson';
-import CrossFilter from 'crossfilter';
 import $ from 'jquery';
 import _ from 'underscore';
 
 import Toggle from '../components/toggle-switch';
 import tools from '../utils/tools';
-import {CharthouseDataSet} from '../utils/dataset.js';
+import {CharthouseDataSet, CharthouseCfData} from '../utils/dataset.js';
 
 // TODO: time-filter (player)
 // TODO: topo-api-connector
@@ -105,8 +104,7 @@ const COLOR_SET = ['rgb(254,204,92)', 'rgb(253,141,60)', 'rgb(227,26,28)'];
 // ['rgb(254,204,92)','rgb(253,141,60)','rgb(227,26,28)']; // Yellow - Reds
 // ['#fec44f', '#ec7014', '#662506']; // Browns
 
-// TODO: pure render
-class CrossletMap extends React.Component {
+class CrossletMap extends React.PureComponent {
     static propTypes = {
         data: PropTypes.arrayOf(PropTypes.object).isRequired,
         dimensions: PropTypes.arrayOf(PropTypes.object).isRequired, // List of dimensions to show in separate tabs each with {id, name, valRange} (first in list will be activated)
@@ -323,7 +321,7 @@ class CharthouseGeoChart extends React.Component {
         width: PropTypes.number,
         height: PropTypes.number,
 
-        cfData: PropTypes.instanceOf(CharthouseData.crossfilter).isRequired,
+        cfData: PropTypes.instanceOf(CharthouseCfData).isRequired,
         dataSummary: PropTypes.object.isRequired,
         tableCfg: PropTypes.object.isRequired,
 
@@ -531,7 +529,7 @@ const VERTICAL_HEADROOM = 80;  // Vertical margin space
 
 class CrossletGeomap extends React.Component {
     static propTypes = {
-        data: PropTypes.instanceOf(CharthouseData.api).isRequired,
+        data: PropTypes.instanceOf(CharthouseDataSet).isRequired,
         onTimeChange: PropTypes.func,
         configMan: PropTypes.object,
         maxHeight: PropTypes.number
@@ -564,7 +562,7 @@ class CrossletGeomap extends React.Component {
             : colors;
 
         this.state = {
-            cfData: new CharthouseData.crossfilter(props.data),
+            cfData: new CharthouseCfData(props.data),
             tableCfg: null,
 
             relColorScale: false,

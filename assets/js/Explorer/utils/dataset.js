@@ -1,5 +1,6 @@
 import $ from 'jquery';
 import moment from 'moment';
+import crossfilter from 'crossfilter';
 
 export class CharthouseDataSet {
 
