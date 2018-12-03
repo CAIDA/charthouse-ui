@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Slider from 'react-bootstrap-slider';
@@ -17,11 +18,11 @@ import {CharthouseDataSet} from '../utils/dataset.js';
 
 class Controller extends React.Component {
     static propTypes = {
-        relColorScale: React.PropTypes.bool,
-        onChangeRelColorScale: React.PropTypes.func,
+        relColorScale: PropTypes.bool,
+        onChangeRelColorScale: PropTypes.func,
 
-        colorScaleBase: React.PropTypes.number,
-        onChangeColorScaleBase: React.PropTypes.func
+        colorScaleBase: PropTypes.number,
+        onChangeColorScaleBase: PropTypes.func
     };
 
     static defaultProps = {
@@ -107,16 +108,16 @@ const COLOR_SET = ['rgb(254,204,92)', 'rgb(253,141,60)', 'rgb(227,26,28)'];
 // TODO: pure render
 class CrossletMap extends React.Component {
     static propTypes = {
-        data: React.PropTypes.arrayOf(React.PropTypes.object).isRequired,
-        dimensions: React.PropTypes.arrayOf(React.PropTypes.object).isRequired, // List of dimensions to show in separate tabs each with {id, name, valRange} (first in list will be activated)
-        topoJsonUrl: React.PropTypes.string.isRequired,
-        geoObjProp: React.PropTypes.string.isRequired,              // Which topojson object property to use
-        geoIdProp: React.PropTypes.string.isRequired,               // Which property in the topojson represents the id of the series
-        geoNameProp: React.PropTypes.string.isRequired,             // Which property in the topojson represents the name of the series
-        dataIdProp: React.PropTypes.string.isRequired,              // Which attribute in the data object to use for linking against the topojson geo id
-        colorScaleBase: React.PropTypes.number,
-        colors: React.PropTypes.array,
-        unitsTxt: React.PropTypes.string
+        data: PropTypes.arrayOf(PropTypes.object).isRequired,
+        dimensions: PropTypes.arrayOf(PropTypes.object).isRequired, // List of dimensions to show in separate tabs each with {id, name, valRange} (first in list will be activated)
+        topoJsonUrl: PropTypes.string.isRequired,
+        geoObjProp: PropTypes.string.isRequired,              // Which topojson object property to use
+        geoIdProp: PropTypes.string.isRequired,               // Which property in the topojson represents the id of the series
+        geoNameProp: PropTypes.string.isRequired,             // Which property in the topojson represents the name of the series
+        dataIdProp: PropTypes.string.isRequired,              // Which attribute in the data object to use for linking against the topojson geo id
+        colorScaleBase: PropTypes.number,
+        colors: PropTypes.array,
+        unitsTxt: PropTypes.string
     };
 
     static defaultProps = {
@@ -319,19 +320,19 @@ const AGGR_FUNC_NAMES = {
 
 class CharthouseGeoChart extends React.Component {
     static propTypes = {
-        width: React.PropTypes.number,
-        height: React.PropTypes.number,
+        width: PropTypes.number,
+        height: PropTypes.number,
 
-        cfData: React.PropTypes.instanceOf(CharthouseData.crossfilter).isRequired,
-        dataSummary: React.PropTypes.object.isRequired,
-        tableCfg: React.PropTypes.object.isRequired,
+        cfData: PropTypes.instanceOf(CharthouseData.crossfilter).isRequired,
+        dataSummary: PropTypes.object.isRequired,
+        tableCfg: PropTypes.object.isRequired,
 
-        relColorScale: React.PropTypes.bool.isRequired,
-        colorScaleBase: React.PropTypes.number.isRequired,
+        relColorScale: PropTypes.bool.isRequired,
+        colorScaleBase: PropTypes.number.isRequired,
 
-        colors: React.PropTypes.array,
+        colors: PropTypes.array,
 
-        aggrFunc: React.PropTypes.string
+        aggrFunc: PropTypes.string
     };
 
     static defaultProps = {
@@ -530,10 +531,10 @@ const VERTICAL_HEADROOM = 80;  // Vertical margin space
 
 class CrossletGeomap extends React.Component {
     static propTypes = {
-        data: React.PropTypes.instanceOf(CharthouseData.api).isRequired,
-        onTimeChange: React.PropTypes.func,
-        configMan: React.PropTypes.object,
-        maxHeight: React.PropTypes.number
+        data: PropTypes.instanceOf(CharthouseData.api).isRequired,
+        onTimeChange: PropTypes.func,
+        configMan: PropTypes.object,
+        maxHeight: PropTypes.number
     };
 
     static defaultProps = {
