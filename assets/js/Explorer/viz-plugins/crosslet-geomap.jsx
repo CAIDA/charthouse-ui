@@ -13,8 +13,8 @@ import 'Explorer/css/crosslet.css'
 import Toggle from '../components/toggle-switch';
 import tools from '../utils/tools';
 import {CharthouseDataSet, CharthouseCfData} from '../utils/dataset.js';
+import Player from '../components/player';
 
-// TODO: time-filter (player)
 // TODO: topo-api-connector
 
 class Controller extends React.Component {
@@ -673,7 +673,7 @@ class CrossletGeomap extends React.Component {
             </div>
 
             <div style={{marginTop: 5}}>
-                <CfTimeFilter
+                <Player
                     ref='timeFilter'
                     cfData={this.state.cfData.get()}
                     width={this.state.width}
