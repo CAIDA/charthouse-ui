@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import Slider from 'react-bootstrap-slider';
 import d3 from 'd3';
 import topojson from 'topojson';
@@ -766,7 +767,7 @@ const CrossletGeomap = React.createClass({
     },
 
     _setWidth: function () {
-        this.setState({width: this.getDOMNode().offsetWidth});
+        this.setState({width: ReactDOM.findDOMNode(this).offsetWidth});
     },
 
     _toggleRelColorScale: function (newState) {
