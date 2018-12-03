@@ -36,7 +36,7 @@ class Controller extends React.Component {
     };
 
     render() {
-        var rThis = this;
+        const rThis = this;
 
         return <div className="text-right">
             <small><em>Color scale:</em></small>
@@ -63,7 +63,7 @@ class Controller extends React.Component {
                 value={this._base2slider(this.props.colorScaleBase)}
                 tooltipFormatter={function (val) {
                     val = rThis._slider2base(val);
-                    return val == 1
+                    return val === 1
                         ? 'Linear'
                         : (val > 1
                                 ? 'Exp base ' + val
@@ -127,9 +127,9 @@ class CrossletMap extends React.Component {
 
     componentDidMount() {
         // Initialise map
-        var crosslet = crossletInit(); // (Re-)Initialize crosslet
+        const crosslet = crossletInit(); // (Re-)Initialize crosslet
         this.map = new crosslet.MapView(
-            $(React.findDOMNode(this.refs.crossletMap)),
+            $(ReactDOM.findDOMNode(this.refs.crossletMap)),
             this._genCrossletCfg()
         );
 
@@ -138,10 +138,10 @@ class CrossletMap extends React.Component {
 
     componentDidUpdate(prevProps) {
 
-        if (this.props.data != prevProps.data || this.props.colorScaleBase != prevProps.colorScaleBase) {
+        if (this.props.data !== prevProps.data || this.props.colorScaleBase !== prevProps.colorScaleBase) {
 
             this.map.ds.data = {}; // Reset datastore memory
-            for (var d in this.map.panel.boxes) {
+            for (let d in this.map.panel.boxes) {
                 this.map.panel.boxes[d].config.data.dataSet = this.props.data;
                 this.map.panel.boxes[d].config.data.interval = null;
                 this.map.panel.boxes[d].config.data.exponent = this.props.colorScaleBase;
@@ -149,7 +149,7 @@ class CrossletMap extends React.Component {
             }
 
             // Not necessary for re-render, but good-practice to keep state
-            for (d in this.map.config.dimensions) {
+            for (let d in this.map.config.dimensions) {
                 this.map.config.dimensions[d].data.dataSet = this.props.data;
                 this.map.config.dimensions[d].data.exponent = this.props.colorScaleBase;
             }
@@ -162,17 +162,17 @@ class CrossletMap extends React.Component {
 
     // Private methods
     _genCrossletCfg = () => {
-        var rThis = this;
+        const rThis = this;
 
-        var colScaleLinear = d3.scale.linear()
+        const colScaleLinear = d3.scale.linear()
             .domain([1, 10, 20])
             .range(this.props.colors || COLOR_SET)
             .interpolate(d3.cie.interpolateLab);
 
-        var numFormat = tools.halfSINumFormatter(3);
+        const numFormat = tools.halfSINumFormatter(3);
 
         // Activate first dimension in list
-        var activeDimension = this.props.dimensions[0].id;
+        const activeDimension = this.props.dimensions[0].id;
 
         return {
             map: {
@@ -220,7 +220,7 @@ class CrossletMap extends React.Component {
                         },
                         render: {
                             hideGraph: false,
-                            hideTitle: rThis.props.dimensions.length == 1
+                            hideTitle: rThis.props.dimensions.length === 1
                         }
                     }
                 })
@@ -243,18 +243,18 @@ class CrossletMap extends React.Component {
     _fitToDataBbox = () => {
 
         // Latitude range of the relevant world (from Patagonia to Iceland)
-        var LAT_RANGE = [-50, 70];
+        const LAT_RANGE = [-50, 70];
 
-        var RETRY_TIME = 200; // ms
-        var N_RETRIES = 100;
+        const RETRY_TIME = 200; // ms
+        let N_RETRIES = 100;
 
-        var crossletObj = this.map;
+        const crossletObj = this.map;
 
-        var polygonIds = this.props.data.map(function (d) {
+        const polygonIds = this.props.data.map(function (d) {
             return d.topoId;
         });
 
-        var _fitAttempt = null;
+        let _fitAttempt = null;
         (_fitAttempt = function () {
             if (!crossletObj.ds.isGeoLoaded) {
                 if (N_RETRIES-- >= 0)
@@ -262,7 +262,7 @@ class CrossletMap extends React.Component {
                 return;
             }
 
-            var bbox = getBbox(
+            let bbox = getBbox(
                 crossletObj.ds.l.cache[crossletObj.ds.geoURL + crossletObj.ds.l.version],
                 crossletObj.config.map.geo.topo_object,
                 crossletObj.ds.geoIdField,
@@ -288,8 +288,8 @@ class CrossletMap extends React.Component {
 
         // Calculate bounding box given topojson data and a set of polygon IDs
         function getBbox(topoData, topoObj, idField, polyIds) {
-            var features = topojson.feature(topoData, topoData.objects[topoObj]).features.filter(function (d) {
-                return polyIds.indexOf(d.properties[idField] + '') != -1;
+            const features = topojson.feature(topoData, topoData.objects[topoObj]).features.filter(function (d) {
+                return polyIds.indexOf(d.properties[idField] + '') !== -1;
             });
 
             if (!features.length) return null;
@@ -345,22 +345,22 @@ class CharthouseGeoChart extends React.Component {
     constructor(props, context) {
         super(props, context);
 
-        var cfMetaField = ['geo', props.tableCfg.db, props.tableCfg.table, props.tableCfg.column].join('.');
+        const cfMetaField = ['geo', props.tableCfg.db, props.tableCfg.table, props.tableCfg.column].join('.');
 
-        var dimensionInfo = this._getDimensions();
+        const dimensionInfo = this._getDimensions();
 
         // Bogus max, min, zero points for all dimensions
-        var mockupMaxVals = {topoId: -Math.random()};
+        const mockupMaxVals = {topoId: -Math.random()};
         dimensionInfo.forEach(function (dim) {
             mockupMaxVals[dim.id] = dim.valRange[1];
         });
 
-        var mockupMinVals = {topoId: -Math.random()};
+        const mockupMinVals = {topoId: -Math.random()};
         dimensionInfo.forEach(function (dim) {
             mockupMinVals[dim.id] = dim.valRange[0];
         });
 
-        var mockupZeroVals = {topoId: -Math.random()};
+        const mockupZeroVals = {topoId: -Math.random()};
         dimensionInfo.forEach(function (dim) {
             mockupZeroVals[dim.id] = 0;
         });
@@ -386,7 +386,7 @@ class CharthouseGeoChart extends React.Component {
     }
 
     componentDidUpdate(prevProps) {
-        if (this.props.cfData != prevProps.cfData) {
+        if (this.props.cfData !== prevProps.cfData) {
             this.setState({
                 groupBySeries: this.props.cfData.get().dimension(function (d) {
                     return d.series;
@@ -397,7 +397,7 @@ class CharthouseGeoChart extends React.Component {
             this.onCfDataChange();
         }
 
-        if (this.props.relColorScale != prevProps.relColorScale) {
+        if (this.props.relColorScale !== prevProps.relColorScale) {
             this.setState({mapData: this._aggrTsData()});
         }
     }
@@ -423,11 +423,11 @@ class CharthouseGeoChart extends React.Component {
 
     // Returns set of unique geo dimension id > {name, value range}
     _getDimensions = () => {
-        var byDimensionId = this.props.cfData.get().dimension(function (d) {
+        const byDimensionId = this.props.cfData.get().dimension(function (d) {
             return d.dimensionId;
         });
 
-        var dimensionLst = byDimensionId.group()
+        const dimensionLst = byDimensionId.group()
             .reduce(
                 function reduceAdd(p, v) {
                     return {
@@ -465,8 +465,8 @@ class CharthouseGeoChart extends React.Component {
 
     // Aggregate data over time (avg or sum) per geographic polygon
     _aggrTsData = () => {
-        var rThis = this;
-        var mapData = this.state.groupByTopo
+        const rThis = this;
+        const mapData = this.state.groupByTopo
             .reduce(    // Average all time values per dimension into one
                 function add(p, v) {
                     if (v.value != null) {
@@ -498,11 +498,11 @@ class CharthouseGeoChart extends React.Component {
                 return Object.keys(d.value).length;
             })
             .map(function (d) {
-                var res = {
+                const res = {
                     topoId: d.key
                 };
                 _.each(d.value, function (avgReduce, dimId) {
-                    res[dimId] = rThis.props.aggrFunc == 'avg' ? avgReduce.sum / avgReduce.cnt : avgReduce.sum;
+                    res[dimId] = (rThis.props.aggrFunc === 'avg') ? avgReduce.sum / avgReduce.cnt : avgReduce.sum;
                 });
                 return res;
             });
@@ -554,11 +554,11 @@ class CrossletGeomap extends React.Component {
     constructor(props) {
         super(props);
 
-        var showControls = props.configMan.getParam('showControls', true);
-        var colorScaleBase = props.configMan.getParam('colorScaleBase');
+        const showControls = props.configMan.getParam('showControls', true);
+        let colorScaleBase = props.configMan.getParam('colorScaleBase');
 
         // allow colors to be received from the URL as a JSON-encoded string
-        var colors = props.configMan.getParam('colors');
+        let colors = props.configMan.getParam('colors');
         colors = (typeof colors === 'string') ?
             (colors.startsWith("[") ? JSON.parse(colors) : colors.split(","))
             : colors;
@@ -595,7 +595,7 @@ class CrossletGeomap extends React.Component {
     }
 
     componentDidUpdate(prevProps) {
-        if (this.props.data != prevProps.data) {
+        if (this.props.data !== prevProps.data) {
             this.refs.timeFilter && this.refs.timeFilter.stop();    // Stop to clear all data filters
             this.state.cfData.setData(this.props.data);
             this.setState({tableCfg: this._getBestAnnotationLevel()});
@@ -608,7 +608,7 @@ class CrossletGeomap extends React.Component {
         // Don't render if width is not yet set
         if (!this.state.width) return <div/>;
 
-        var mapHeight = Math.max(
+        const mapHeight = Math.max(
             this.props.maxHeight - TIME_FILTER_HEIGHT - (this.state.showControls ? VERTICAL_HEADROOM : 10),
             100
         );
@@ -623,7 +623,7 @@ class CrossletGeomap extends React.Component {
             </div>;
 
         // Check if all data is geo-relevant at the same level
-        var nSeries = this.props.data.cntSeries();
+        const nSeries = this.props.data.cntSeries();
         if (this.state.tableCfg.nSeries < nSeries)
             return <div className="alert alert-warning">
                 Refusing to plot. Best geography annotation found in data is
@@ -694,21 +694,21 @@ class CrossletGeomap extends React.Component {
     // Private methods
     _getBestAnnotationLevel = () => {
         // Build structure of geo annotations
-        var matches = {};
+        const matches = {};
 
-        var dataSeries = this.props.data.series();
+        const dataSeries = this.props.data.series();
         Object.keys(dataSeries).map(function (ser) {
             return dataSeries[ser].annotations;
         }).filter(function (annList) {
             return annList != null;
         }).forEach(function (annList) {
             annList.filter(function (ann) {
-                return ann.type == 'join' && ann.attributes.type == 'geo';
+                return ann.type === 'join' && ann.attributes.type === 'geo';
             }).forEach(function (ann) {
-                var att = ann.attributes;
-                var db = att.hasOwnProperty('db') ? att.db : '';
-                var table = att.table;
-                var column = att.column;
+                const att = ann.attributes;
+                const db = att.hasOwnProperty('db') ? att.db : '';
+                const table = att.table;
+                const column = att.column;
                 if (!matches.hasOwnProperty(db)) matches[db] = {};
                 if (!matches[db].hasOwnProperty(table)) matches[db][table] = {};
                 if (!matches[db][table].hasOwnProperty(column)) matches[db][table][column] = {
@@ -723,15 +723,15 @@ class CrossletGeomap extends React.Component {
         });
 
         // Pick best column
-        var bestPick = {
+        const bestPick = {
             total: null,
             totalCnt: 0,
             default: null,
             defaultCnt: 0
         };
-        for (var db in matches) {
-            for (var table in matches[db]) {
-                for (var column in matches[db][table]) {
+        for (let db in matches) {
+            for (let table in matches[db]) {
+                for (let column in matches[db][table]) {
                     if (matches[db][table][column].total >= bestPick.totalCnt) {
                         bestPick.total = {
                             db: db,
