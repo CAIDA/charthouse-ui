@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import d3 from 'd3';
@@ -8,9 +9,9 @@ import '../utils/proto-mods';
 
 class PlayBtn extends React.Component {
     static propTypes = {
-        title: React.PropTypes.string,
-        faIcon: React.PropTypes.string.isRequired,
-        onClick: React.PropTypes.func
+        title: PropTypes.string,
+        faIcon: PropTypes.string.isRequired,
+        onClick: PropTypes.func
     };
 
     render() {
@@ -43,13 +44,13 @@ class PlayControls extends React.PureComponent {
     }
 
     static propTypes = {
-        onStop: React.PropTypes.func,
-        onPlayFwd: React.PropTypes.func,
-        onPauseFwd: React.PropTypes.func,
-        onPlayRev: React.PropTypes.func,
-        onPauseRev: React.PropTypes.func,
-        onStepFwd: React.PropTypes.func,
-        onStepBck: React.PropTypes.func
+        onStop: PropTypes.func,
+        onPlayFwd: PropTypes.func,
+        onPauseFwd: PropTypes.func,
+        onPlayRev: PropTypes.func,
+        onPauseRev: PropTypes.func,
+        onStepFwd: PropTypes.func,
+        onStepBck: PropTypes.func
     };
 
     static defaultProps = {
@@ -195,14 +196,14 @@ class DcLineChart extends React.PureComponent {
     }
 
     static propTypes = {
-        cfData: React.PropTypes.object.isRequired,
-        timeCol: React.PropTypes.string.isRequired,
-        idCol: React.PropTypes.string.isRequired,
-        nameCol: React.PropTypes.string.isRequired,
-        width: React.PropTypes.number.isRequired,
-        height: React.PropTypes.number.isRequired,
-        maxSeries: React.PropTypes.number,
-        onFiltered: React.PropTypes.func
+        cfData: PropTypes.object.isRequired,
+        timeCol: PropTypes.string.isRequired,
+        idCol: PropTypes.string.isRequired,
+        nameCol: PropTypes.string.isRequired,
+        width: PropTypes.number.isRequired,
+        height: PropTypes.number.isRequired,
+        maxSeries: PropTypes.number,
+        onFiltered: PropTypes.func
     };
 
     static defaultProps = {
@@ -411,17 +412,17 @@ class Player extends React.Component {
     }
 
     static propTypes = {
-        cfData: React.PropTypes.object.isRequired,
-        idCol: React.PropTypes.string,       // Related to cf data
-        nameCol: React.PropTypes.string,
-        width: React.PropTypes.number,
-        height: React.PropTypes.number,
-        maxFps: React.PropTypes.number,
-        fps: React.PropTypes.number,
-        showPlayControls: React.PropTypes.bool,
-        onFilterChange: React.PropTypes.func,
-        onTimeChange: React.PropTypes.func,
-        onFpsChange: React.PropTypes.func
+        cfData: PropTypes.object.isRequired,
+        idCol: PropTypes.string,       // Related to cf data
+        nameCol: PropTypes.string,
+        width: PropTypes.number,
+        height: PropTypes.number,
+        maxFps: PropTypes.number,
+        fps: PropTypes.number,
+        showPlayControls: PropTypes.bool,
+        onFilterChange: PropTypes.func,
+        onTimeChange: PropTypes.func,
+        onFpsChange: PropTypes.func
     };
 
     static defaultProps = {
