@@ -44,14 +44,14 @@ class PluginContent extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (this.props.pluginCfg.jsFile != nextProps.pluginCfg.jsFile) {
+        if (this.props.pluginCfg.title !== nextProps.pluginCfg.title) {
             // Unload module
             this.setState({ReactPlugin: null});
         }
     }
 
     componentDidUpdate(prevProps) {
-        if (this.props.pluginCfg.jsFile != prevProps.pluginCfg.jsFile) {
+        if (this.props.pluginCfg.title !== prevProps.pluginCfg.title) {
             this._loadPluginModule();
         }
     }
