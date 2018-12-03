@@ -6,15 +6,14 @@ import moment from 'moment';
 
 import '../utils/proto-mods';
 
-var PlayBtn = React.createClass({
-
-    propTypes: {
+class PlayBtn extends React.Component {
+    static propTypes = {
         title: React.PropTypes.string,
         faIcon: React.PropTypes.string.isRequired,
         onClick: React.PropTypes.func
-    },
+    };
 
-    render: function () {
+    render() {
 
         return <button type="button"
                        className="btn btn-primary"
@@ -25,7 +24,7 @@ var PlayBtn = React.createClass({
             <i className={"fa " + this.props.faIcon}/>
         </button>
     }
-});
+}
 
 // TODO PureComponent
 /*
@@ -60,9 +59,8 @@ var PlayBtn = React.createClass({
         }
     },
  */
-var PlayControls = React.createClass({
-
-    propTypes: {
+class PlayControls extends React.Component {
+    static propTypes = {
         onStop: React.PropTypes.func,
         onPlayFwd: React.PropTypes.func,
         onPauseFwd: React.PropTypes.func,
@@ -70,9 +68,9 @@ var PlayControls = React.createClass({
         onPauseRev: React.PropTypes.func,
         onStepFwd: React.PropTypes.func,
         onStepBck: React.PropTypes.func
-    },
+    };
 
-    render: function () {
+    render() {
 
         return <React.addons.CSSTransitionGroup
             transitionName="fade"
@@ -137,10 +135,10 @@ var PlayControls = React.createClass({
                 /> : null
             }
         </React.addons.CSSTransitionGroup>;
-    },
+    }
 
     // Private methods
-    _playFwd: function () {
+    _playFwd = () => {
         this.setState({
             playFwd: false,
             pauseFwd: true,
@@ -148,9 +146,9 @@ var PlayControls = React.createClass({
             pauseRev: false
         });
         this.props.onPlayFwd();
-    },
+    };
 
-    _pauseFwd: function () {
+    _pauseFwd = () => {
         this.setState({
             playFwd: true,
             pauseFwd: false,
@@ -158,9 +156,9 @@ var PlayControls = React.createClass({
             pauseRev: false
         });
         this.props.onPauseFwd();
-    },
+    };
 
-    _playRev: function () {
+    _playRev = () => {
         this.setState({
             playFwd: true,
             pauseFwd: false,
@@ -168,9 +166,9 @@ var PlayControls = React.createClass({
             pauseRev: true
         });
         this.props.onPlayRev();
-    },
+    };
 
-    _pauseRev: function () {
+    _pauseRev = () => {
         this.setState({
             playFwd: true,
             pauseFwd: false,
@@ -178,20 +176,19 @@ var PlayControls = React.createClass({
             pauseRev: false
         });
         this.props.onPauseRev();
-    },
+    };
 
-    _stop: function () {
+    _stop = () => {
         this.resetState();
         this.props.onStop();
-    },
+    };
 
     // Public methods
-    resetState: function () {
+    resetState = () => {
         // TODO
         //this.setState(this.getInitialState());
-    }
-
-});
+    };
+}
 
 // TODO PureComponent
 /*
@@ -215,9 +212,8 @@ var PlayControls = React.createClass({
         }
     },
  */
-var DcLineChart = React.createClass({
-
-    propTypes: {
+class DcLineChart extends React.Component {
+    static propTypes = {
         cfData: React.PropTypes.object.isRequired,
         timeCol: React.PropTypes.string.isRequired,
         idCol: React.PropTypes.string.isRequired,
@@ -226,9 +222,9 @@ var DcLineChart = React.createClass({
         height: React.PropTypes.number.isRequired,
         maxSeries: React.PropTypes.number,
         onFiltered: React.PropTypes.func
-    },
+    };
 
-    componentDidMount: function () {
+    componentDidMount() {
         var rThis = this;
 
         this.chart = dc.lineChart(ReactDOM.findDOMNode(this.refs.chartElem))
@@ -303,23 +299,23 @@ var DcLineChart = React.createClass({
         }
 
         this.chart.render();
-    },
+    }
 
-    componentDidUpdate: function (prevProps) {
+    componentDidUpdate(prevProps) {
         if (this.props.width != prevProps.width || this.props.height != prevProps.height) {
             this.chart.width(this.props.width);
             this.chart.height(this.props.height);
             this.chart.xAxis().ticks(Math.ceil(this.props.width / 100));  // One tick every ~100px
             this.chart.render();
         }
-    },
+    }
 
-    render: function () {
+    render() {
         return <div ref="chartElem"/>;
-    },
+    }
 
     // Private methods
-    _getTimeRange: function () {
+    _getTimeRange = () => {
         if (!this.state.byTime.top(1).length) {
             // No data points (post-filter)
             return null;
@@ -329,10 +325,10 @@ var DcLineChart = React.createClass({
             +(this.state.byTime.bottom(1)[0].time),
             +(this.state.byTime.top(1)[0].time)
         ];
-    },
+    };
 
     // Returns set of unique dimension id > name pairs
-    _getDimensions: function () {
+    _getDimensions = () => {
         var rThis = this;
 
         var byDimensionId = this.props.cfData.dimension(function (d) {
@@ -364,24 +360,24 @@ var DcLineChart = React.createClass({
         if (byDimensionId.hasOwnProperty('dispose')) byDimensionId.dispose();
 
         return dimensionLst;
-    },
+    };
 
     // Public methods
-    onCfDataChange: function () {
+    onCfDataChange = () => {
         this.chart.x(d3.time.scale.utc().domain(this._getTimeRange()));
         this.chart.render();
-    },
+    };
 
-    getCurrentSelection: function () {
+    getCurrentSelection = () => {
         var curFilter = this.chart.filter();
         if (!curFilter) return curFilter;   // No selection
 
         return curFilter.map(function (d) {
             return +d;  // Convert date to unix tstamp
         });
-    },
+    };
 
-    selectRange: function (range) {
+    selectRange = (range) => {
         this.chart.filterAll(); // Always reset selection first
 
         if (range && range[0] && range[1]) {
@@ -401,9 +397,8 @@ var DcLineChart = React.createClass({
         this.chart.redraw();                                // Redraw graph
 
         return true;
-    }
-
-});
+    };
+}
 
 // Main time player/filter component
 const FILTER_DAMPER_DELAY = 50; // ms
@@ -439,9 +434,8 @@ const FILTER_DAMPER_DELAY = 50; // ms
         }
     },
  */
-const Player = React.createClass({
-
-    propTypes: {
+class Player extends React.Component {
+    static propTypes = {
         cfData: React.PropTypes.object.isRequired,
         idCol: React.PropTypes.string,       // Related to cf data
         nameCol: React.PropTypes.string,
@@ -453,9 +447,9 @@ const Player = React.createClass({
         onFilterChange: React.PropTypes.func,
         onTimeChange: React.PropTypes.func,
         onFpsChange: React.PropTypes.func
-    },
+    };
 
-    componentWillMount: function () {
+    componentWillMount() {
         this._setTimeRange();
 
         var dataStep = this._getDataStep();
@@ -463,9 +457,9 @@ const Player = React.createClass({
             dataStep: dataStep,
             frameSize: dataStep
         });
-    },
+    }
 
-    componentDidMount: function () {
+    componentDidMount() {
         this.setState({
             playerWidth: (this.props.showPlayControls
                 ? ReactDOM.findDOMNode(this.refs.controlPanel).offsetWidth
@@ -473,13 +467,13 @@ const Player = React.createClass({
         });
 
         this.curPlayTimeout = null;
-    },
+    }
 
-    componentWillUnmount: function () {
+    componentWillUnmount() {
         clearTimeout(this.curPlayTimeout);  // Cancel timeout if currently playing
-    },
+    }
 
-    render: function () {
+    render() {
 
         var frameSizes = this._getFrameSizeOptions();
 
@@ -564,10 +558,10 @@ const Player = React.createClass({
                 }
             </div>
         </div>;
-    },
+    }
 
     // Private methods
-    _getDataStep: function () {
+    _getDataStep = () => {
         var grByTime = this.state.byTime.group();
 
         var step = grByTime.size() < 2 ? 1 : (
@@ -578,9 +572,9 @@ const Player = React.createClass({
 
         if (grByTime.hasOwnProperty('dispose')) grByTime.dispose();
         return step;
-    },
+    };
 
-    _setTimeRange: function () {
+    _setTimeRange = () => {
         var tr = [
             +(this.state.byTime.bottom(1)[0].time),
             +(this.state.byTime.top(1)[0].time)
@@ -591,9 +585,9 @@ const Player = React.createClass({
         if (this.props.onTimeChange) {
             this.props.onTimeChange(tr);
         }
-    },
+    };
 
-    _getFrameSizeOptions: function () {
+    _getFrameSizeOptions = () => {
         var INCREASE_RATE = 2;
 
         var minVal = this.state.dataStep;
@@ -605,9 +599,9 @@ const Player = React.createClass({
         }
 
         return opts;
-    },
+    };
 
-    _getFpsOptions: function () {
+    _getFpsOptions = () => {
         var MIN_VAL = 1;
         var INCREASE_STEP = 1;
 
@@ -616,13 +610,13 @@ const Player = React.createClass({
             opts.push(i);
         }
         return opts;
-    },
+    };
 
-    _fpsChanged: function (e) {
+    _fpsChanged = (e) => {
         this.props.onFpsChange(+e.target.value);
-    },
+    };
 
-    _chartFiltered: function (range) {
+    _chartFiltered = (range) => {
         var curRange = this.state.filterRange;
         if (range !== curRange
             && (!range || range[0] !== curRange[0] || range[1] !== curRange[1])) {
@@ -640,9 +634,9 @@ const Player = React.createClass({
                 FILTER_DAMPER_DELAY
             );
         }
-    },
+    };
 
-    _playIt: function (rev) {
+    _playIt = (rev) => {
         rev = rev || false;
 
         var rThis = this;
@@ -665,23 +659,24 @@ const Player = React.createClass({
                 rThis.refs.dcLineChart.selectRange(null);
             }
         })(); //Run at once first time
-    },
+    };
 
-    _playFwd: function () {
+    _playFwd = () => {
         this._playIt(false);
-    },
-    _playRev: function () {
-        this._playIt(true);
-    },
+    };
 
-    _pauseIt: function () {
+    _playRev = () => {
+        this._playIt(true);
+    };
+
+    _pauseIt = () => {
         if (this.curPlayTimeout) {
             clearTimeout(this.curPlayTimeout);
             this.curPlayTimeout = null;
         }
-    },
+    };
 
-    _playOneFrame: function (rev) {
+    _playOneFrame = (rev) => {
         var STEPS_BY_FRAME_SIZE = 1; // How many steps to play through a frame length
 
         rev = rev || false;
@@ -695,32 +690,32 @@ const Player = React.createClass({
         }
 
         return this.refs.dcLineChart.selectRange([timeHead, timeHead + (this.state.frameSize - 1) * (rev ? -1 : 1)]);
-    },
+    };
 
-    _stepFwd: function () {
+    _stepFwd = () => {
         this._playOneFrame(false);
-    },
-    _stepBck: function () {
-        this._playOneFrame(true);
-    },
+    };
 
-    _stopIt: function () {
+    _stepBck = () => {
+        this._playOneFrame(true);
+    };
+
+    _stopIt = () => {
         this._pauseIt();
         this.refs.dcLineChart.selectRange(null);   // Clear selection
-    },
+    };
 
     // Public methods
-    stop: function () {
+    stop = () => {
         this._stopIt();
         if (this.props.showPlayControls)
             this.refs.playControls.resetState();
-    },
+    };
 
-    onCfDataChange: function () {
+    onCfDataChange = () => {
         this._setTimeRange();
         this.refs.dcLineChart.onCfDataChange();
-    }
-
-});
+    };
+}
 
 export default Player;
