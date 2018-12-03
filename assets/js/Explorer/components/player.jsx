@@ -187,7 +187,7 @@ class DcLineChart extends React.PureComponent {
 
     constructor(props) {
         super(props);
-        var timeCol = this.props.timeCol;
+        const timeCol = this.props.timeCol;
         this.state = {
             byTime: this.props.cfData.dimension(function (d) {
                 return d[timeCol];
@@ -215,7 +215,7 @@ class DcLineChart extends React.PureComponent {
     };
 
     componentDidMount() {
-        var rThis = this;
+        const rThis = this;
 
         this.chart = dc.lineChart(ReactDOM.findDOMNode(this.refs.chartElem))
             .renderArea(true)
@@ -248,10 +248,10 @@ class DcLineChart extends React.PureComponent {
                     return d.getUTCHours();
                 }],
                 ["%a %-d", function (d) {
-                    return d.getUTCDay() && d.getUTCDate() != 1;
+                    return d.getUTCDay() && d.getUTCDate() !== 1;
                 }],
                 ["%b %-d", function (d) {
-                    return d.getUTCDate() != 1;
+                    return d.getUTCDate() !== 1;
                 }],
                 ["%b", function (d) {
                     return d.getUTCMonth();
@@ -261,16 +261,16 @@ class DcLineChart extends React.PureComponent {
                 }]
             ]));
 
-        var dimensionLst = this._getDimensions();
+        const dimensionLst = this._getDimensions();
 
         // Attach all dimensions
-        var first = true;
-        var seriesLeft = this.props.maxSeries;
+        let first = true;
+        let seriesLeft = this.props.maxSeries;
         dimensionLst.some(function (dim) {
             if (!seriesLeft--) return true; // Only plot up to MAXSERIES (for performance)
             rThis.chart[first ? 'group' : 'stack'](
                 rThis.state.byTime.group().reduceSum(function (row) {
-                    return (row[rThis.props.idCol] == dim.id ? row.value : 0);
+                    return (row[rThis.props.idCol] === dim.id ? row.value : 0);
                 }),
                 dim.name.abbrFit(15, 0.3, '..')
             );
@@ -292,7 +292,7 @@ class DcLineChart extends React.PureComponent {
     }
 
     componentDidUpdate(prevProps) {
-        if (this.props.width != prevProps.width || this.props.height != prevProps.height) {
+        if (this.props.width !== prevProps.width || this.props.height !== prevProps.height) {
             this.chart.width(this.props.width);
             this.chart.height(this.props.height);
             this.chart.xAxis().ticks(Math.ceil(this.props.width / 100));  // One tick every ~100px
@@ -319,13 +319,13 @@ class DcLineChart extends React.PureComponent {
 
     // Returns set of unique dimension id > name pairs
     _getDimensions = () => {
-        var rThis = this;
+        const rThis = this;
 
-        var byDimensionId = this.props.cfData.dimension(function (d) {
+        const byDimensionId = this.props.cfData.dimension(function (d) {
             return d[rThis.props.idCol];
         });
 
-        var dimensionLst = byDimensionId.group()
+        const dimensionLst = byDimensionId.group()
             .reduce(
                 function reduceAdd(p, v) {
                     return p || v[rThis.props.nameCol];
@@ -359,7 +359,7 @@ class DcLineChart extends React.PureComponent {
     };
 
     getCurrentSelection = () => {
-        var curFilter = this.chart.filter();
+        let curFilter = this.chart.filter();
         if (!curFilter) return curFilter;   // No selection
 
         return curFilter.map(function (d) {
@@ -372,9 +372,9 @@ class DcLineChart extends React.PureComponent {
 
         if (range && range[0] && range[1]) {
 
-            var timeRange = this._getTimeRange();
+            const timeRange = this._getTimeRange();
 
-            var filter = range.sort();                      // Make sure it's ordered
+            const filter = range.sort();                      // Make sure it's ordered
 
             if (filter[1] < timeRange[0] || filter[0] > timeRange[1])
                 return false;   // Out of time range
@@ -440,7 +440,7 @@ class Player extends React.Component {
     componentWillMount() {
         this._setTimeRange();
 
-        var dataStep = this._getDataStep();
+        const dataStep = this._getDataStep();
         this.setState({
             dataStep: dataStep,
             frameSize: dataStep
@@ -463,7 +463,7 @@ class Player extends React.Component {
 
     render() {
 
-        var frameSizes = this._getFrameSizeOptions();
+        const frameSizes = this._getFrameSizeOptions();
 
         return <div style={{
             height: this.props.height,
@@ -550,9 +550,9 @@ class Player extends React.Component {
 
     // Private methods
     _getDataStep = () => {
-        var grByTime = this.state.byTime.group();
+        const grByTime = this.state.byTime.group();
 
-        var step = grByTime.size() < 2 ? 1 : (
+        const step = grByTime.size() < 2 ? 1 : (
             grByTime.all().slice(0, 2).reduce(function (first, second) {
                 return second.key - first.key;
             })
@@ -563,7 +563,7 @@ class Player extends React.Component {
     };
 
     _setTimeRange = () => {
-        var tr = [
+        const tr = [
             +(this.state.byTime.bottom(1)[0].time),
             +(this.state.byTime.top(1)[0].time)
         ];
@@ -576,13 +576,13 @@ class Player extends React.Component {
     };
 
     _getFrameSizeOptions = () => {
-        var INCREASE_RATE = 2;
+        const INCREASE_RATE = 2;
 
-        var minVal = this.state.dataStep;
-        var maxVal = (this.state.timeRange[1] - this.state.timeRange[0]) / 2;
+        const minVal = this.state.dataStep;
+        const maxVal = (this.state.timeRange[1] - this.state.timeRange[0]) / 2;
 
-        var opts = [];
-        for (var i = minVal; i <= maxVal; i *= INCREASE_RATE) {
+        const opts = [];
+        for (let i = minVal; i <= maxVal; i *= INCREASE_RATE) {
             opts.push(i);
         }
 
@@ -590,11 +590,11 @@ class Player extends React.Component {
     };
 
     _getFpsOptions = () => {
-        var MIN_VAL = 1;
-        var INCREASE_STEP = 1;
+        const MIN_VAL = 1;
+        const INCREASE_STEP = 1;
 
-        var opts = [];
-        for (var i = MIN_VAL; i <= this.props.maxFps; i += INCREASE_STEP) {
+        const opts = [];
+        for (let i = MIN_VAL; i <= this.props.maxFps; i += INCREASE_STEP) {
             opts.push(i);
         }
         return opts;
@@ -605,7 +605,7 @@ class Player extends React.Component {
     };
 
     _chartFiltered = (range) => {
-        var curRange = this.state.filterRange;
+        const curRange = this.state.filterRange;
         if (range !== curRange
             && (!range || range[0] !== curRange[0] || range[1] !== curRange[1])) {
             this.setState({filterRange: range || [null, null]});
@@ -627,7 +627,7 @@ class Player extends React.Component {
     _playIt = (rev) => {
         rev = rev || false;
 
-        var rThis = this;
+        const rThis = this;
 
         if (this.curPlayTimeout) {
             // Cancel current play
@@ -635,7 +635,7 @@ class Player extends React.Component {
         }
 
         (function playFrame() {
-            var enterTime = new Date();
+            const enterTime = new Date();
             if (rThis._playOneFrame(rev)) {
                 rThis.curPlayTimeout = setTimeout(
                     playFrame,
@@ -665,14 +665,14 @@ class Player extends React.Component {
     };
 
     _playOneFrame = (rev) => {
-        var STEPS_BY_FRAME_SIZE = 1; // How many steps to play through a frame length
+        const STEPS_BY_FRAME_SIZE = 1; // How many steps to play through a frame length
 
         rev = rev || false;
 
-        var step = this.state.frameSize / STEPS_BY_FRAME_SIZE;
+        const step = this.state.frameSize / STEPS_BY_FRAME_SIZE;
 
-        var curPos = this.refs.dcLineChart.getCurrentSelection();
-        var timeHead = +(curPos || this.state.timeRange)[rev ? 1 : 0];
+        const curPos = this.refs.dcLineChart.getCurrentSelection();
+        let timeHead = +(curPos || this.state.timeRange)[rev ? 1 : 0];
         if (curPos) {
             timeHead += step * (rev ? -1 : 1); // Move time head if some interval already selected
         }
