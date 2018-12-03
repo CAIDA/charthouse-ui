@@ -10,33 +10,31 @@ import _ from 'underscore';
 import Toggle from '../components/toggle-switch';
 import tools from '../utils/tools';
 import {CharthouseDataSet} from '../utils/dataset.js';
+
 // TODO: time-filter (player)
 // TODO: topo-api-connector
 // TODO: crosslet
 
-var Controller = React.createClass({
-
-    propTypes: {
+class Controller extends React.Component {
+    static propTypes = {
         relColorScale: React.PropTypes.bool,
         onChangeRelColorScale: React.PropTypes.func,
 
         colorScaleBase: React.PropTypes.number,
         onChangeColorScaleBase: React.PropTypes.func
-    },
+    };
 
-    getDefaultProps: function () {
-        return {
-            relColorScale: false,
-            onChangeRelColorScale: function (newState) {
-            },
+    static defaultProps = {
+        relColorScale: false,
+        onChangeRelColorScale: function (newState) {
+        },
 
-            colorScaleBase: 1,
-            onChangeColorScaleBase: function (newBase) {
-            }
-        };
-    },
+        colorScaleBase: 1,
+        onChangeColorScaleBase: function (newBase) {
+        }
+    };
 
-    render: function () {
+    render() {
         var rThis = this;
 
         return <div className="text-right">
@@ -75,24 +73,23 @@ var Controller = React.createClass({
                 onChange={this._changeColorSlider}
             />
         </div>;
-    },
-
-    // Private methods
-    _slider2base: function (val) {
-        val = -val; // Convert to number
-        return val >= 0 ? 1 + val : 1 / (1 - val);
-    },
-
-    _base2slider: function (base) {
-        base = +base;
-        return -(base >= 1 ? base - 1 : 1 - 1 / base);
-    },
-
-    _changeColorSlider: function (newVal) {
-        this.props.onChangeColorScaleBase(this._slider2base(newVal));
     }
 
-});
+    // Private methods
+    _slider2base = (val) => {
+        val = -val; // Convert to number
+        return val >= 0 ? 1 + val : 1 / (1 - val);
+    };
+
+    _base2slider = (base) => {
+        base = +base;
+        return -(base >= 1 ? base - 1 : 1 - 1 / base);
+    };
+
+    _changeColorSlider = (newVal) => {
+        this.props.onChangeColorScaleBase(this._slider2base(newVal));
+    };
+}
 
 const MAPBOX_MAP_ID = 'alistairkingcaida/ciwzes1vk001t2qnub72ug0ib';
 const DEFAULT_MAPVIEW = {
@@ -100,6 +97,7 @@ const DEFAULT_MAPVIEW = {
     zoom: 2
 };
 const COLOR_SET = ['rgb(254,204,92)', 'rgb(253,141,60)', 'rgb(227,26,28)'];
+
 // ['#bcbddc','#807dba','#4a1486'];   // Purples
 // ['#C7F774', '#60A859', '#007148']; // Greens
 // ['#fed976', '#fd8d3c', '#bd0026']; // Orange-Dark reds
@@ -107,9 +105,8 @@ const COLOR_SET = ['rgb(254,204,92)', 'rgb(253,141,60)', 'rgb(227,26,28)'];
 // ['#fec44f', '#ec7014', '#662506']; // Browns
 
 // TODO: pure render
-var CrossletMap = React.createClass({
-
-    propTypes: {
+class CrossletMap extends React.Component {
+    static propTypes = {
         data: React.PropTypes.arrayOf(React.PropTypes.object).isRequired,
         dimensions: React.PropTypes.arrayOf(React.PropTypes.object).isRequired, // List of dimensions to show in separate tabs each with {id, name, valRange} (first in list will be activated)
         topoJsonUrl: React.PropTypes.string.isRequired,
@@ -120,16 +117,14 @@ var CrossletMap = React.createClass({
         colorScaleBase: React.PropTypes.number,
         colors: React.PropTypes.array,
         unitsTxt: React.PropTypes.string
-    },
+    };
 
-    getDefaultProps: function () {
-        return {
-            colorScaleBase: 1,
-            unitsTxt: ''
-        }
-    },
+    static defaultProps = {
+        colorScaleBase: 1,
+        unitsTxt: ''
+    };
 
-    componentDidMount: function () {
+    componentDidMount() {
         // Initialise map
         var crosslet = crossletInit(); // (Re-)Initialize crosslet
         this.map = new crosslet.MapView(
@@ -138,9 +133,9 @@ var CrossletMap = React.createClass({
         );
 
         this._fitToDataBbox();
-    },
+    }
 
-    componentDidUpdate: function (prevProps) {
+    componentDidUpdate(prevProps) {
 
         if (this.props.data != prevProps.data || this.props.colorScaleBase != prevProps.colorScaleBase) {
 
@@ -158,14 +153,14 @@ var CrossletMap = React.createClass({
                 this.map.config.dimensions[d].data.exponent = this.props.colorScaleBase;
             }
         }
-    },
+    }
 
-    render: function () {
+    render() {
         return <div ref="crossletMap" style={{height: 'inherit'}}/>;
-    },
+    }
 
     // Private methods
-    _genCrossletCfg: function () {
+    _genCrossletCfg = () => {
         var rThis = this;
 
         var colScaleLinear = d3.scale.linear()
@@ -241,10 +236,10 @@ var CrossletMap = React.createClass({
                 active: activeDimension
             }
         };
-    },
+    };
 
     // Fits crosslet map to data bounding box
-    _fitToDataBbox: function () {
+    _fitToDataBbox = () => {
 
         // Latitude range of the relevant world (from Patagonia to Iceland)
         var LAT_RANGE = [-50, 70];
@@ -314,18 +309,16 @@ var CrossletMap = React.createClass({
             }); // Invert lat long coords
         }
 
-    }
-
-});
+    };
+}
 
 const AGGR_FUNC_NAMES = {
     avg: 'Average',
     sum: 'Total'
 };
 
-var CharthouseGeoChart = React.createClass({
-
-    propTypes: {
+class CharthouseGeoChart extends React.Component {
+    static propTypes = {
         width: React.PropTypes.number,
         height: React.PropTypes.number,
 
@@ -339,20 +332,19 @@ var CharthouseGeoChart = React.createClass({
         colors: React.PropTypes.array,
 
         aggrFunc: React.PropTypes.string
-    },
+    };
 
-    getDefaultProps: function () {
-        return {
-            width: 640,
-            height: 480,
+    static defaultProps = {
+        width: 640,
+        height: 480,
 
-            aggrFunc: 'avg'
-        }
-    },
+        aggrFunc: 'avg'
+    };
 
-    getInitialState: function () {
+    constructor(props, context) {
+        super(props, context);
 
-        var cfMetaField = ['geo', this.props.tableCfg.db, this.props.tableCfg.table, this.props.tableCfg.column].join('.');
+        var cfMetaField = ['geo', props.tableCfg.db, props.tableCfg.table, props.tableCfg.column].join('.');
 
         var dimensionInfo = this._getDimensions();
 
@@ -372,10 +364,10 @@ var CharthouseGeoChart = React.createClass({
             mockupZeroVals[dim.id] = 0;
         });
 
-        return {
+        this.state = {
             topoApi: new TopoConnector(),
 
-            groupByTopo: this.props.cfData.get().dimension(function (d) {
+            groupByTopo: props.cfData.get().dimension(function (d) {
                 return d[cfMetaField];
             }).group(),
 
@@ -386,13 +378,13 @@ var CharthouseGeoChart = React.createClass({
 
             mapData: null
         };
-    },
+    }
 
-    componentWillMount: function () {
+    componentWillMount() {
         this.setState({mapData: this._aggrTsData()});
-    },
+    }
 
-    componentDidUpdate: function (prevProps) {
+    componentDidUpdate(prevProps) {
         if (this.props.cfData != prevProps.cfData) {
             this.setState({
                 groupBySeries: this.props.cfData.get().dimension(function (d) {
@@ -407,9 +399,9 @@ var CharthouseGeoChart = React.createClass({
         if (this.props.relColorScale != prevProps.relColorScale) {
             this.setState({mapData: this._aggrTsData()});
         }
-    },
+    }
 
-    render: function () {
+    render() {
 
         return <div className="charthouse-crosslet-map"
                     style={{height: this.props.height}}>
@@ -426,10 +418,10 @@ var CharthouseGeoChart = React.createClass({
                 unitsTxt={(this.props.dataSummary.commonSuffix ? AGGR_FUNC_NAMES[this.props.aggrFunc] + ' ' + this.props.dataSummary.commonSuffix : '')}
             />
         </div>;
-    },
+    }
 
     // Returns set of unique geo dimension id > {name, value range}
-    _getDimensions: function () {
+    _getDimensions = () => {
         var byDimensionId = this.props.cfData.get().dimension(function (d) {
             return d.dimensionId;
         });
@@ -468,10 +460,10 @@ var CharthouseGeoChart = React.createClass({
         if (byDimensionId.hasOwnProperty('dispose')) byDimensionId.dispose();
 
         return dimensionLst;
-    },
+    };
 
     // Aggregate data over time (avg or sum) per geographic polygon
-    _aggrTsData: function () {
+    _aggrTsData = () => {
         var rThis = this;
         var mapData = this.state.groupByTopo
             .reduce(    // Average all time values per dimension into one
@@ -522,58 +514,56 @@ var CharthouseGeoChart = React.createClass({
         }
 
         return mapData;
-    },
+    };
 
     // Public methods
-    onCfDataChange: function () {
+    onCfDataChange = () => {
         // Gen new map data
         this.setState({mapData: this._aggrTsData()});
-    }
-});
+    };
+}
 
 
 // Main geo viz component
 const TIME_FILTER_HEIGHT = 75; //px
 const VERTICAL_HEADROOM = 80;  // Vertical margin space
 
-const CrossletGeomap = React.createClass({
-
-    propTypes: {
+class CrossletGeomap extends React.Component {
+    static propTypes = {
         data: React.PropTypes.instanceOf(CharthouseData.api).isRequired,
         onTimeChange: React.PropTypes.func,
         configMan: React.PropTypes.object,
         maxHeight: React.PropTypes.number
-    },
+    };
 
-    getDefaultProps: function () {
-        return {
-            configMan: {
-                getParam: function (key) {
-                },
-                setParams: function (keVals) {
-                },
-                onParamChange: function (cb, key) {
-                },
-                unsubscribe: function (cb, key) {
-                }
+    static defaultProps = {
+        configMan: {
+            getParam: function (key) {
             },
-            maxHeight: window.innerHeight * .7
-        }
-    },
+            setParams: function (keVals) {
+            },
+            onParamChange: function (cb, key) {
+            },
+            unsubscribe: function (cb, key) {
+            }
+        },
+        maxHeight: window.innerHeight * .7
+    };
 
-    getInitialState: function () {
+    constructor(props) {
+        super(props);
 
-        var showControls = this.props.configMan.getParam('showControls', true);
-        var colorScaleBase = this.props.configMan.getParam('colorScaleBase');
+        var showControls = props.configMan.getParam('showControls', true);
+        var colorScaleBase = props.configMan.getParam('colorScaleBase');
 
         // allow colors to be received from the URL as a JSON-encoded string
-        var colors = this.props.configMan.getParam('colors');
+        var colors = props.configMan.getParam('colors');
         colors = (typeof colors === 'string') ?
             (colors.startsWith("[") ? JSON.parse(colors) : colors.split(","))
             : colors;
 
-        return {
-            cfData: new CharthouseData.crossfilter(this.props.data),
+        this.state = {
+            cfData: new CharthouseData.crossfilter(props.data),
             tableCfg: null,
 
             relColorScale: false,
@@ -586,33 +576,33 @@ const CrossletGeomap = React.createClass({
 
             showControls: tools.fuzzyBoolean(showControls),
 
-            aggrFunc: this.props.configMan.getParam('aggrFunc') || 'avg'
-        }
-    },
+            aggrFunc: props.configMan.getParam('aggrFunc') || 'avg'
+        };
+    }
 
-    componentWillMount: function () {
+    componentWillMount() {
         this.setState({tableCfg: this._getBestAnnotationLevel()});
-    },
+    }
 
-    componentDidMount: function () {
+    componentDidMount() {
         this._setWidth();
         window.addEventListener('resize', this._setWidth);
-    },
+    }
 
-    componentWillUnmount: function () {
+    componentWillUnmount() {
         window.removeEventListener('resize', this._setWidth);
-    },
+    }
 
-    componentDidUpdate: function (prevProps) {
+    componentDidUpdate(prevProps) {
         if (this.props.data != prevProps.data) {
             this.refs.timeFilter && this.refs.timeFilter.stop();    // Stop to clear all data filters
             this.state.cfData.setData(this.props.data);
             this.setState({tableCfg: this._getBestAnnotationLevel()});
             this.refs.timeFilter && this.refs.timeFilter.onCfDataChange();
         }
-    },
+    }
 
-    render: function () {
+    render() {
 
         // Don't render if width is not yet set
         if (!this.state.width) return <div/>;
@@ -698,10 +688,10 @@ const CrossletGeomap = React.createClass({
                 />
             </div>
         </div>;
-    },
+    }
 
     // Private methods
-    _getBestAnnotationLevel: function () {
+    _getBestAnnotationLevel = () => {
         // Build structure of geo annotations
         var matches = {};
 
@@ -764,27 +754,27 @@ const CrossletGeomap = React.createClass({
         }
 
         return bestPick['default'] || bestPick['total'];
-    },
+    };
 
-    _setWidth: function () {
+    _setWidth = () => {
         this.setState({width: ReactDOM.findDOMNode(this).offsetWidth});
-    },
+    };
 
-    _toggleRelColorScale: function (newState) {
+    _toggleRelColorScale = (newState) => {
         this.setState({relColorScale: newState});
-    },
+    };
 
-    _changeColorScaleBase: function (newBase) {
+    _changeColorScaleBase = (newBase) => {
         this.setState({colorScaleBase: newBase});
-    },
+    };
 
-    _fpsChange: function (newFps) {
+    _fpsChange = (newFps) => {
         this.setState({fps: newFps});
-    },
+    };
 
-    _timeFiltered: function () {
+    _timeFiltered = () => {
         this.refs.geoChart.onCfDataChange();
-    }
-});
+    };
+}
 
 export default CrossletGeomap;
