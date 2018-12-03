@@ -26,7 +26,7 @@ export default {
         dynamic: true
     },
     geoDistribution: {
-        jsFile: 'plugin-crosslet-geo-distribution',
+        import: import(/* webpackChunkName: "crosslet-geomap" */ './crosslet-geomap'),
         title: 'Geographical Distribution',
         description: 'Shows a geographical spread in which the series represent different world regions',
         dynamic: true,
