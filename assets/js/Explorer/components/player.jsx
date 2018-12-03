@@ -26,29 +26,12 @@ class PlayBtn extends React.Component {
     }
 }
 
-// TODO PureComponent
-/*
-    getDefaultProps: function () {
-        return {
-            onStop: function () {
-            },
-            onPlayFwd: function () {
-            },
-            onPauseFwd: function () {
-            },
-            onPlayRev: function () {
-            },
-            onPauseRev: function () {
-            },
-            onStepFwd: function () {
-            },
-            onStepBck: function () {
-            }
-        };
-    },
+class PlayControls extends React.PureComponent {
 
-    getInitialState: function () {
-        return {
+    constructor(props) {
+        super(props);
+
+        this.state = {
             stop: true,
             playFwd: true,
             playRev: true,
@@ -56,10 +39,9 @@ class PlayBtn extends React.Component {
             pauseRev: false,
             stepFwd: true,
             stepBck: true
-        }
-    },
- */
-class PlayControls extends React.Component {
+        };
+    }
+
     static propTypes = {
         onStop: React.PropTypes.func,
         onPlayFwd: React.PropTypes.func,
@@ -68,6 +50,16 @@ class PlayControls extends React.Component {
         onPauseRev: React.PropTypes.func,
         onStepFwd: React.PropTypes.func,
         onStepBck: React.PropTypes.func
+    };
+
+    static defaultProps = {
+        onStop: function () {},
+        onPlayFwd: function () {},
+        onPauseFwd: function () {},
+        onPlayRev: function () {},
+        onPauseRev: function () {},
+        onStepFwd: function () {},
+        onStepBck: function () {}
     };
 
     render() {
@@ -190,29 +182,18 @@ class PlayControls extends React.Component {
     };
 }
 
-// TODO PureComponent
-/*
-    getDefaultProps: function () {
-        return {
-            timeCol: 'time',
-            idCol: 'series',
-            nameCol: 'name',
-            maxSeries: 5,
-            onFiltered: function () {
-            }
-        }
-    },
+class DcLineChart extends React.PureComponent {
 
-   getInitialState: function () {
+    constructor(props) {
+        super(props);
         var timeCol = this.props.timeCol;
-        return {
+        this.state = {
             byTime: this.props.cfData.dimension(function (d) {
                 return d[timeCol];
             })
         }
-    },
- */
-class DcLineChart extends React.Component {
+    }
+
     static propTypes = {
         cfData: React.PropTypes.object.isRequired,
         timeCol: React.PropTypes.string.isRequired,
@@ -222,6 +203,14 @@ class DcLineChart extends React.Component {
         height: React.PropTypes.number.isRequired,
         maxSeries: React.PropTypes.number,
         onFiltered: React.PropTypes.func
+    };
+
+    static defaultProps = {
+        timeCol: 'time',
+        idCol: 'series',
+        nameCol: 'name',
+        maxSeries: 5,
+        onFiltered: function () {}
     };
 
     componentDidMount() {
@@ -404,25 +393,12 @@ class DcLineChart extends React.Component {
 const FILTER_DAMPER_DELAY = 50; // ms
 
 // TODO: LinkedState
-/*
-    getDefaultProps: function () {
-        return {
-            width: 640,
-            height: 120,
-            idCol: 'dimensionId',
-            nameCol: 'dimensionName',
-            maxFps: 25,
-            fps: 2,
-            showPlayControls: true,
-            onFilterChange: function () {
-            },
-            onFpsChange: function (newFps) {
-            }
-        };
-    },
+class Player extends React.Component {
 
-    getInitialState: function () {
-        return {
+    constructor(props) {
+        super(props);
+
+        this.state = {
             byTime: this.props.cfData.dimension(function (d) {
                 return d.time;
             }),
@@ -431,10 +407,9 @@ const FILTER_DAMPER_DELAY = 50; // ms
             filterRange: [null, null],
             frameSize: null,
             playerWidth: null
-        }
-    },
- */
-class Player extends React.Component {
+        };
+    }
+
     static propTypes = {
         cfData: React.PropTypes.object.isRequired,
         idCol: React.PropTypes.string,       // Related to cf data
@@ -447,6 +422,18 @@ class Player extends React.Component {
         onFilterChange: React.PropTypes.func,
         onTimeChange: React.PropTypes.func,
         onFpsChange: React.PropTypes.func
+    };
+
+    static defaultProps = {
+        width: 640,
+        height: 120,
+        idCol: 'dimensionId',
+        nameCol: 'dimensionName',
+        maxFps: 25,
+        fps: 2,
+        showPlayControls: true,
+        onFilterChange: function () {},
+        onFpsChange: function (newFps) {}
     };
 
     componentWillMount() {
