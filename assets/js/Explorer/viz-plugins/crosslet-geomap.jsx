@@ -7,13 +7,15 @@ import topojson from 'topojson';
 import $ from 'jquery';
 import _ from 'underscore';
 
+import crossletInit from '../libs/crosslet/crosslet.custom';
+import 'Explorer/css/crosslet.css'
+
 import Toggle from '../components/toggle-switch';
 import tools from '../utils/tools';
 import {CharthouseDataSet, CharthouseCfData} from '../utils/dataset.js';
 
 // TODO: time-filter (player)
 // TODO: topo-api-connector
-// TODO: crosslet
 
 class Controller extends React.Component {
     static propTypes = {

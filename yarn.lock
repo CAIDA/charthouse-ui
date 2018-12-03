@@ -1143,6 +1143,13 @@ babylon@^6.18.0:
   resolved "https://registry.yarnpkg.com/babylon/-/babylon-6.18.0.tgz#af2f3b88fa6f5c1e4c634d1a0f8eac4f55b395e3"
   integrity sha512-q/UEjfGJ2Cm3oKV71DJz9d25TPnq5rhBVL2Q4fA5wcC3jcrdn7+SssEybFIxwAvvP+YCsCYNKughoF33GxgycQ==
 
+backbone@1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/backbone/-/backbone-1.1.2.tgz#c2c04c66bf87268fb82c177acebeff7d37ba6f2d"
+  integrity sha1-wsBMZr+HJo+4LBd6zr7/fTe6by0=
+  dependencies:
+    underscore ">=1.5.0"
+
 backo2@1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/backo2/-/backo2-1.0.2.tgz#31ab1ac8b129363463e35b3ebb69f4dfcfba7947"
@@ -4549,6 +4556,16 @@ lcid@^1.0.0:
   dependencies:
     invert-kv "^1.0.0"
 
+leaflet-sleep@^0.5.1:
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/leaflet-sleep/-/leaflet-sleep-0.5.1.tgz#91f8433f38edbb6b8a9b78d3d04ec7396e9f60f6"
+  integrity sha1-kfhDPzjtu2uKm3jT0E7HOW6fYPY=
+
+leaflet@0.7.3:
+  version "0.7.3"
+  resolved "https://registry.yarnpkg.com/leaflet/-/leaflet-0.7.3.tgz#c80439e4ebcaae9ee02700960b61c4f9cdb93ac5"
+  integrity sha1-yAQ55OvKrp7gJwCWC2HE+c25OsU=
+
 levn@~0.3.0:
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/levn/-/levn-0.3.0.tgz#3b09924edf9f083c0490fdd4c0bc4421e04764ee"
@@ -7710,7 +7727,7 @@ uncontrollable@^5.0.0:
   dependencies:
     invariant "^2.2.4"
 
-underscore@^1.9.1:
+underscore@>=1.5.0, underscore@^1.9.1:
   version "1.9.1"
   resolved "https://registry.yarnpkg.com/underscore/-/underscore-1.9.1.tgz#06dce34a0e68a7babc29b365b8e74b8925203961"
   integrity sha512-5/4etnCkd9c8gwgowi5/om/mYO5ajCaOgdzj/oW+0eQV9WxKBDZw5+ycmKmeaTXjInS/W0BzpGLo2xR2aBwZdg==
