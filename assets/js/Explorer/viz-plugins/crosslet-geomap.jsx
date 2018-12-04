@@ -14,8 +14,7 @@ import Toggle from '../components/toggle-switch';
 import tools from '../utils/tools';
 import {CharthouseDataSet, CharthouseCfData} from '../utils/dataset.js';
 import Player from '../components/player';
-
-// TODO: topo-api-connector
+import TopoApi from '../connectors/topo-api';
 
 class Controller extends React.Component {
     static propTypes = {
@@ -366,7 +365,7 @@ class CharthouseGeoChart extends React.Component {
         });
 
         this.state = {
-            topoApi: new TopoConnector(),
+            topoApi: new TopoApi(),
 
             groupByTopo: props.cfData.get().dimension(function (d) {
                 return d[cfMetaField];
