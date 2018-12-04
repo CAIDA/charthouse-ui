@@ -496,7 +496,7 @@ class Player extends React.Component {
                 </div>
                 <div className="form-inline">
                     <select className="form-control input-sm"
-                            valueLink={this.linkState('frameSize')}
+                            onChange={this._frameSizeChange}
                             style={{
                                 margin: 1,
                                 height: 15,
@@ -547,6 +547,10 @@ class Player extends React.Component {
             </div>
         </div>;
     }
+
+    _frameSizeChange = (frameSize) => {
+        this.setState({frameSize});
+    };
 
     // Private methods
     _getDataStep = () => {
