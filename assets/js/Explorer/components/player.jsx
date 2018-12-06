@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {CSSTransitionGroup} from 'react-transition-group'
 import d3 from 'd3';
 import dc from '../libs/dc/dc.custom';
 import moment from 'moment';
@@ -32,15 +33,7 @@ class PlayControls extends React.PureComponent {
     constructor(props) {
         super(props);
 
-        this.state = {
-            stop: true,
-            playFwd: true,
-            playRev: true,
-            pauseFwd: false,
-            pauseRev: false,
-            stepFwd: true,
-            stepBck: true
-        };
+        this.state = this._getInitialState();
     }
 
     static propTypes = {
@@ -63,11 +56,25 @@ class PlayControls extends React.PureComponent {
         onStepBck: function () {}
     };
 
+    _getInitialState() {
+        return {
+            stop: true,
+            playFwd: true,
+            playRev: true,
+            pauseFwd: false,
+            pauseRev: false,
+            stepFwd: true,
+            stepBck: true
+        };
+    }
+
     render() {
 
-        return <React.addons.CSSTransitionGroup
+        return <CSSTransitionGroup
             transitionName="fade"
             transitionLeave={false}
+            transitionEnterTimeout={300}
+            transitionLeaveTimeout={300}
             component="div"
             className="btn-group btn-group-xs"
         >
@@ -127,7 +134,7 @@ class PlayControls extends React.PureComponent {
                     onClick={this.props.onStepFwd}
                 /> : null
             }
-        </React.addons.CSSTransitionGroup>;
+        </CSSTransitionGroup>;
     }
 
     // Private methods
@@ -178,8 +185,7 @@ class PlayControls extends React.PureComponent {
 
     // Public methods
     resetState = () => {
-        // TODO
-        //this.setState(this.getInitialState());
+        this.setState(this._getInitialState());
     };
 }
 
@@ -393,7 +399,6 @@ class DcLineChart extends React.PureComponent {
 // Main time player/filter component
 const FILTER_DAMPER_DELAY = 50; // ms
 
-// TODO: LinkedState
 class Player extends React.Component {
 
     constructor(props) {
