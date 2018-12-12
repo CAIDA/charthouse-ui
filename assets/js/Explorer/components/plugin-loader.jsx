@@ -7,7 +7,7 @@ import 'font-awesome/css/font-awesome.css';
 import Toggle from './toggle-switch';
 import Dialog from './dialog';
 import TimeLogger from './time-logger';
-// TODO: PermalinkForm
+import PermalinkForm from './permalink';
 import { CharthouseDataSet } from '../utils/dataset';
 
 // TODO: look into webpack code splitting to avoid loading deps several times
@@ -181,15 +181,12 @@ class PluginFooter extends React.Component {
                     {this.props.children}
                 </span>
 
-            {/* TODO: add permalink support */}
-            {/*
             <button type="button" className="btn btn-info btn-xs pull-right"
-                    title="Get Charthouse Permalink for current view"
+                    title="Get Permalink for current view"
                     onClick={this._getPermalink}
             >
                 <span className="glyphicon glyphicon-link"/> Short URL
             </button>
-            */}
 
             {/* TODO: Generate a cURL link since our queries are POST-only now */}
             {/*
@@ -231,13 +228,12 @@ class PluginFooter extends React.Component {
     };
 
     _getPermalink = () => {
-
-        var $anchor = $('<span>');
+        const $anchor = $('<span>');
         ReactDOM.render(
             <Dialog
 
                 ns={this.props.ns}
-                title="Get Charthouse Permalink"
+                title="Get Permalink"
                 onClose={function () {
                     // GC rogue modal
                     ReactDOM.unmountComponentAtNode($anchor[0]);

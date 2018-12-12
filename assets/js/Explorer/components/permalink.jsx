@@ -1,11 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import classNames from 'classnames';
+import $ from 'jquery';
 
 import '../utils/jquery-plugins';
 import DataApi from '../connectors/data-api';
 
-return class extends React.Component {
+class PermalinkForm extends React.Component {
     state = {
         shortUrl: '',
         customName: '',
@@ -22,6 +23,7 @@ return class extends React.Component {
         this.setState({fetching: true});
         this._shortenUrl(
             this._getCurrentUrl(),
+            null, // generate a short tag for us
             function (shortUrl) {
                 rThis.setState({
                     fetching: false,
@@ -143,6 +145,7 @@ return class extends React.Component {
 
         this._shortenUrl(
             this._getCurrentUrl(),
+            rThis.state.customName,
             function (shortUrl) {
                 rThis.setState({
                     fetching: false,
@@ -158,7 +161,6 @@ return class extends React.Component {
                     connectionError: 'Server connection timeout. Please try again...'
                 });
             },
-            rThis.state.customName,
             function () {    // Name is already in use
                 rThis.setState({
                     fetching: false,
@@ -188,4 +190,6 @@ return class extends React.Component {
     _getCurrentUrl = () => {
         return window.location.href;
     };
-};
+}
+
+export default PermalinkForm;
