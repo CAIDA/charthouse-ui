@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import classNames from 'classnames';
 
 import '../utils/jquery-plugins';
@@ -152,7 +153,7 @@ return React.createClass({
                     shortUrl: shortUrl
                 });
 
-                $(rThis.refs.shortUrl.getDOMNode()).flash(400);
+                $(ReactDOM.findDOMNode(rThis.refs.shortUrl)).flash(400);
             },
             function () {    // API connection error
                 rThis.setState({
