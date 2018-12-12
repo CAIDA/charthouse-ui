@@ -16,7 +16,7 @@ return class extends React.Component {
     };
 
     componentDidMount() {
-        var rThis = this;
+        const rThis = this;
 
         // Fetch anonymous short URL
         this.setState({fetching: true});
@@ -129,13 +129,13 @@ return class extends React.Component {
     };
 
     _nameKeyPress = (e) => {
-        if (e.keyCode == 13) {   // Submit on enter
+        if (e.keyCode === 13) {   // Submit on enter
             this._submitName();
         }
     };
 
     _submitName = () => {
-        var rThis = this;
+        const rThis = this;
 
         if (!this.state.customName || this.state.namingSucceeded || this.state.nameCollision) return;
 
