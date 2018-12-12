@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom';
 import {CSSTransitionGroup} from 'react-transition-group'
 import d3 from 'd3';
 import dc from '../libs/dc/dc.custom';
+import '../libs/dc/dc.css';
 import moment from 'moment';
 
 import '../utils/proto-mods';

@@ -167,6 +167,23 @@ class CharthouseApiConnector {
             success(json);
         }
     }
+
+    getTopoTable(table, db) {
+        const that = this;
+        const url = `${this.apiUrl}/topo/databases/${db}/tables/${table}/`;
+        return {
+            url,
+            get: function(success) {
+                return that._getJson(
+                    'GET',
+                    url,
+                    {},
+                    {},
+                    success
+                );
+            }
+        };
+    }
 }
 
 export default CharthouseApiConnector;

@@ -14,7 +14,7 @@ import Toggle from '../components/toggle-switch';
 import tools from '../utils/tools';
 import {CharthouseDataSet, CharthouseCfData} from '../utils/dataset.js';
 import Player from '../components/player';
-import TopoApi from '../connectors/topo-api';
+import DataApi from '../connectors/data-api';
 
 class Controller extends React.Component {
     static propTypes = {
@@ -106,10 +106,11 @@ const COLOR_SET = ['rgb(254,204,92)', 'rgb(253,141,60)', 'rgb(227,26,28)'];
 // ['#fec44f', '#ec7014', '#662506']; // Browns
 
 class CrossletMap extends React.PureComponent {
+
     static propTypes = {
         data: PropTypes.arrayOf(PropTypes.object).isRequired,
         dimensions: PropTypes.arrayOf(PropTypes.object).isRequired, // List of dimensions to show in separate tabs each with {id, name, valRange} (first in list will be activated)
-        topoJsonUrl: PropTypes.string.isRequired,
+        topoJsonMethod: PropTypes.object.isRequired,
         geoObjProp: PropTypes.string.isRequired,              // Which topojson object property to use
         geoIdProp: PropTypes.string.isRequired,               // Which property in the topojson represents the id of the series
         geoNameProp: PropTypes.string.isRequired,             // Which property in the topojson represents the name of the series
@@ -180,15 +181,17 @@ class CrossletMap extends React.PureComponent {
                     //url: "https://{s}.tiles.mapbox.com/v3/{mapId}/{z}/{x}/{y}.png",
                     mapId: MAPBOX_MAP_ID,
                     attribution: /*'&copy; The Regents of the University of California. All Rights Reserved. */
-                        'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
+                        'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors',
+                    sleepNote: false
                 },
                 geo: {
-                    url: this.props.topoJsonUrl,
+                    topoJsonMethod: this.props.topoJsonMethod,
                     name_field: this.props.geoNameProp,
                     id_field: this.props.geoIdProp,
                     topo_object: this.props.geoObjProp
                 },
-                view: DEFAULT_MAPVIEW
+                view: DEFAULT_MAPVIEW,
+                sleep: false
             },
             data: {
                 id_field: this.props.dataIdProp
@@ -262,7 +265,7 @@ class CrossletMap extends React.PureComponent {
             }
 
             let bbox = getBbox(
-                crossletObj.ds.l.cache[crossletObj.ds.geoURL + crossletObj.ds.l.version],
+                crossletObj.ds.l.cache[crossletObj.ds.geoCall.url + crossletObj.ds.l.version],
                 crossletObj.config.map.geo.topo_object,
                 crossletObj.ds.geoIdField,
                 polygonIds
@@ -365,7 +368,7 @@ class CharthouseGeoChart extends React.Component {
         });
 
         this.state = {
-            topoApi: new TopoApi(),
+            dataApi: new DataApi(),
 
             groupByTopo: props.cfData.get().dimension(function (d) {
                 return d[cfMetaField];
@@ -408,7 +411,7 @@ class CharthouseGeoChart extends React.Component {
             <CrossletMap
                 data={this.state.mapData}
                 dimensions={this.state.dimensionInfo}
-                topoJsonUrl={this.state.topoApi.getTopoJsonUrl(this.props.tableCfg.table, this.props.tableCfg.db)}
+                topoJsonMethod={this.state.dataApi.getTopoTable(this.props.tableCfg.table, this.props.tableCfg.db)}
                 geoObjProp={this.props.tableCfg.table}
                 geoIdProp={this.props.tableCfg.column}
                 geoNameProp="name"
