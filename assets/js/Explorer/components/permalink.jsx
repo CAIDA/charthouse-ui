@@ -5,20 +5,17 @@ import classNames from 'classnames';
 import '../utils/jquery-plugins';
 import DataApi from '../connectors/data-api';
 
-return React.createClass({
+return class extends React.Component {
+    state = {
+        shortUrl: '',
+        customName: '',
+        fetching: false,
+        namingSucceeded: false,
+        nameCollision: false,
+        connectionError: null
+    };
 
-    getInitialState: function () {
-        return {
-            shortUrl: '',
-            customName: '',
-            fetching: false,
-            namingSucceeded: false,
-            nameCollision: false,
-            connectionError: null
-        }
-    },
-
-    componentDidMount: function () {
+    componentDidMount() {
         var rThis = this;
 
         // Fetch anonymous short URL
@@ -38,9 +35,9 @@ return React.createClass({
                 });
             }
         );
-    },
+    }
 
-    render: function () {
+    render() {
         return <div className="text-center">
             <div>
                 Your short URL:&nbsp;
@@ -118,10 +115,10 @@ return React.createClass({
                 {this.state.connectionError || null}
                 </span>
         </div>
-    },
+    }
 
     // Private methods
-    _nameChange: function (e) {
+    _nameChange = (e) => {
         // Reset api call results
         this.setState({
             customName: e.target.value,
@@ -129,15 +126,15 @@ return React.createClass({
             nameCollision: false,
             connectionError: false
         });
-    },
+    };
 
-    _nameKeyPress: function (e) {
+    _nameKeyPress = (e) => {
         if (e.keyCode == 13) {   // Submit on enter
             this._submitName();
         }
-    },
+    };
 
-    _submitName: function () {
+    _submitName = () => {
         var rThis = this;
 
         if (!this.state.customName || this.state.namingSucceeded || this.state.nameCollision) return;
@@ -170,9 +167,9 @@ return React.createClass({
             }
         );
 
-    },
+    };
 
-    _shortenUrl: function (longUrl, shortTag, callback, error, nameInUseCb) {
+    _shortenUrl = (longUrl, shortTag, callback, error, nameInUseCb) => {
         const conn = new DataApi();
         conn.createShortUrl(
             function (data) {
@@ -186,10 +183,9 @@ return React.createClass({
             longUrl,
             shortTag || null
         );
-    },
+    };
 
-    _getCurrentUrl: function () {
+    _getCurrentUrl = () => {
         return window.location.href;
-    }
-
-});
+    };
+};
