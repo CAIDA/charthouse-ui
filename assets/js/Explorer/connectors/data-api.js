@@ -8,6 +8,7 @@ import ExpressionFactory from '../expression/factory';
 const METRICS_QUERY_LIST = '/ts/list/';
 const FUNCTIONS_QUERY = '/expression/functions/';
 const DATA_QUERY = '/ts/query/';
+const SYM_URL = '/sym/';
 
 class CharthouseApiConnector {
 
@@ -183,6 +184,20 @@ class CharthouseApiConnector {
                 );
             }
         };
+    }
+
+    createShortUrl(success, error, longUrl, shortTag) {
+        return this._getJson(
+            'POST',
+            this.apiUrl + SYM_URL,
+            {
+                long_url: longUrl,
+                short_tag: shortTag
+            },
+            {},
+            success,
+            error
+        );
     }
 }
 
