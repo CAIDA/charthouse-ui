@@ -199,6 +199,17 @@ class CharthouseApiConnector {
             error
         );
     }
+
+    lookupShortUrl(success, error, shortTag) {
+        return this._getJson(
+            'GET',
+            this.apiUrl + SYM_URL + shortTag + '/',
+            {},
+            {},
+            success,
+            error
+        );
+    }
 }
 
 export default CharthouseApiConnector;

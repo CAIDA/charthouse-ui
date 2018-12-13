@@ -16,6 +16,7 @@ import { AuthenticatedRoute } from 'Auth';
 
 // "pages"
 import Home from './home';
+import SymRedirect from './sym-redirect';
 import Login from './login';
 import LoginCallback from './login-callback';
 import Logout from './logout';
@@ -25,6 +26,7 @@ import Explorer from 'Explorer';
 ReactDOM.render((
     <BrowserRouter>
         <Switch>
+            <Route path='/@:tag' component={SymRedirect}/>
             <Route path='/login' component={Login}/>
             <Route path='/logout' component={Logout}/>
             <Route path='/auth/callback' component={LoginCallback}/>
