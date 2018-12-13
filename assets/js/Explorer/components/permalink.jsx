@@ -5,6 +5,7 @@ import $ from 'jquery';
 
 import '../utils/jquery-plugins';
 import DataApi from '../connectors/data-api';
+import config from 'Config';
 
 class PermalinkForm extends React.Component {
     state = {
@@ -27,7 +28,7 @@ class PermalinkForm extends React.Component {
             function (shortUrl) {
                 rThis.setState({
                     fetching: false,
-                    shortUrl: shortUrl
+                    shortUrl
                 });
             },
             function () {    // API connection error
@@ -40,6 +41,8 @@ class PermalinkForm extends React.Component {
     }
 
     render() {
+        const absUrl = this.state.shortUrl ? config.getParam('baseUri') + '/@' + this.state.shortUrl : null;
+
         return <div className="text-center">
             <div>
                 Your short URL:&nbsp;
@@ -49,14 +52,14 @@ class PermalinkForm extends React.Component {
                     <input type="text" className="lead" readOnly
                            ref="shortUrl"
                            style={{
-                               width: $().textWidth(this.state.shortUrl, '23px arial'),
-                               display: this.state.shortUrl ? false : 'none',
+                               width: $().textWidth(absUrl, '23px arial'),
+                               display: absUrl ? false : 'none',
                                border: 'none',
                                backgroundColor: 'inherit',
                                padding: 0,
                                textAlign: 'center'
                            }}
-                           value={this.state.shortUrl}
+                           value={absUrl}
                            onFocus={function (e) {
                                // Select text on focus
                                e.target.select();
@@ -150,7 +153,7 @@ class PermalinkForm extends React.Component {
                 rThis.setState({
                     fetching: false,
                     namingSucceeded: true,
-                    shortUrl: shortUrl
+                    shortUrl
                 });
 
                 $(ReactDOM.findDOMNode(rThis.refs.shortUrl)).flash(400);
