@@ -8,80 +8,15 @@ import Toggle from './toggle-switch';
 import Dialog from './dialog';
 import TimeLogger from './time-logger';
 import PermalinkForm from './permalink';
+import RawData from './raw-data.jsx';
 import { CharthouseDataSet } from '../utils/dataset';
-
+import PluginContent from './plugin-content';
 // TODO: look into webpack code splitting to avoid loading deps several times
 import CHARTHOUSE_PLUGIN_SPECS from '../viz-plugins/plugin-specs';
 import tools from '../utils/tools';
 import '../utils/jquery-plugins';
 
 // TODO: this component could probably be refactored into multiple modules
-
-class PluginContent extends React.Component {
-    static propTypes = {
-        data: PropTypes.instanceOf(CharthouseDataSet).isRequired,
-        markers: PropTypes.object,
-        onTimeChange: PropTypes.func,
-        configMan: PropTypes.object,
-        pluginCfg: PropTypes.object.isRequired,
-        maxHeight: PropTypes.number
-    };
-
-    static defaultProps = {
-        maxHeight: null
-    };
-
-    state = {
-        ReactPlugin: null  // AMD loaded
-    };
-
-    componentDidMount() {
-        this._loadPluginModule();
-    }
-
-    componentWillUnmount() {
-        this.isUnmounted = true;
-    }
-
-    componentWillReceiveProps(nextProps) {
-        if (this.props.pluginCfg.title !== nextProps.pluginCfg.title) {
-            // Unload module
-            this.setState({ReactPlugin: null});
-        }
-    }
-
-    componentDidUpdate(prevProps) {
-        if (this.props.pluginCfg.title !== prevProps.pluginCfg.title) {
-            this._loadPluginModule();
-        }
-    }
-
-    render() {
-        return <div className="viz-plugin-content"
-                    style={{maxHeight: this.props.maxHeight || false}}>
-            {this.state.ReactPlugin
-                ? <this.state.ReactPlugin
-                    data={this.props.data}
-                    markers={this.props.markers}
-                    configMan={this.props.configMan}
-                    maxHeight={this.props.maxHeight || false}
-                    onTimeChange={this.props.onTimeChange}
-                />
-                : null
-            }
-        </div>;
-    }
-
-    // Private methods
-    _loadPluginModule = () => {
-        const rThis = this;
-        this.props.pluginCfg.import.then(function({default: Plugin}) {
-            if (!rThis.isUnmounted) {
-                rThis.setState({ReactPlugin: Plugin});
-            }
-        });
-    };
-}
 
 class DataInfo extends React.Component {
     // TODO: why is vizTimeRange not updating when we get new data?
@@ -152,30 +87,22 @@ class PluginFooter extends React.Component {
         data: PropTypes.instanceOf(CharthouseDataSet).isRequired
     };
 
-    state = {
-        fillRawData: false,   // Has the 'show data' container been populated yet
-        showingRawData: false
-    };
-
     componentDidUpdate(prevProps) {
-        var data = this.props.data, prevData = prevProps.data;
-
-        // Blink on data changes
-        if (data.jsonSize() != prevData.jsonSize()) {
-            $(ReactDOM.findDOMNode(this.refs.jsonSize)).flash(500, 2);
-        }
+        /*
+// TODO
+var data = this.props.data, prevData = prevProps.data;
+// Blink on data changes
+if (data.jsonSize() != prevData.jsonSize()) {
+    $(ReactDOM.findDOMNode(this.refs.jsonSize)).flash(500, 2);
+}
+*/
     }
 
     render() {
         return <div>
-            <button type="button" className="btn btn-info btn-xs"
-                    title="Show data used in this visualization"
-                    onClick={this._toggleShowData}
-            >
-                <span className="glyphicon glyphicon-align-left"/>
-                &nbsp;&nbsp;
-                {('View JSON')}
-            </button>
+            <RawData
+                data={this.props.data}
+            />
 
             <span style={{margin: '0px 10px'}}>
                     {this.props.children}
@@ -203,30 +130,6 @@ class PluginFooter extends React.Component {
     }
 
     // Private methods
-    _toggleShowData = () => {
-        if (!this.state.fillRawData) {  // Fill on demand
-            this.setState({fillRawData: true});
-        }
-
-        var $anchor = $('<span>');
-        ReactDOM.render(
-            <Dialog
-                title="Raw JSON Data"
-                onClose={function () {
-                    // GC rogue modal
-                    ReactDOM.unmountComponentAtNode($anchor[0]);
-                }}
-            >
-                <PluginContent
-                    data={this.props.data}
-                    pluginCfg={CHARTHOUSE_PLUGIN_SPECS.rawText}
-                />
-            </Dialog>,
-            $anchor[0]
-        );
-        this.setState({showingRawData: !this.state.showingRawData});
-    };
-
     _getPermalink = () => {
         const $anchor = $('<span>');
         ReactDOM.render(
