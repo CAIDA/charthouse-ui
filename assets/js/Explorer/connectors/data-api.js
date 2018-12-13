@@ -20,8 +20,7 @@ class CharthouseApiConnector {
     };
 
     _getJson(httpMethod, url, params, headerParams, success, error) {
-        headerParams = headerParams || {};
-        headerParams['Authorization'] = 'Bearer ' + auth.getAccessToken();
+        headerParams = $.extend(headerParams || {}, this._getAuthHeader());
 
         error = error || function () {
         }; // Error function optional
@@ -54,6 +53,10 @@ class CharthouseApiConnector {
                 error((errorThrown ? errorThrown + ': ' : '') +
                     (rJson && rJson.error ? rJson.error : 'An unknown error occurred'));
             });
+    }
+
+    _getAuthHeader() {
+        return {'Authorization': 'Bearer ' + auth.getAccessToken()};
     }
 
     getHierarchicalMetaData(path, success, error) {
@@ -94,25 +97,29 @@ class CharthouseApiConnector {
         // Quadruple escape backslashes to suit backend needs. This should be fixed server-side eventually!
         //target = target.replace(/\\/g, "\\\\\\\\");
 
+        const url = this.apiUrl + DATA_QUERY;
         const disableCache = config.getParam('noCache') != null;
         const unlimit = config.getParam('unlimit') != null;
+        const requestPayload = $.extend(
+            {
+                from: params.from,
+                until: params.until,
+                annotate: true
+            },
+            params.expression ? {expression: params.expression} : {},
+            params.expressions ? {expressions: params.expressions} : {},
+            disableCache ? {noCache: true} : {},
+            unlimit ? {unlimit: true} : {},
+            params.downSampleFunc ? {downSampleFunc: params.downSampleFunc} : {}
+        );
+        const headers = disableCache ? {'Cache-Control': 'no-cache'} : {};
+        const fullHeaders = $.extend(headers, this._getAuthHeader());
 
         return this._getJson(
             'POST',
-            this.apiUrl + DATA_QUERY,
-            $.extend(
-                {
-                    from: params.from,
-                    until: params.until,
-                    annotate: true
-                },
-                params.expression ? {expression: params.expression} : {},
-                params.expressions ? {expressions: params.expressions} : {},
-                disableCache ? {noCache: true} : {},
-                unlimit ? {unlimit: true} : {},
-                params.downSampleFunc ? {downSampleFunc: params.downSampleFunc} : {}
-            ),
-            disableCache ? {'Cache-Control': 'no-cache'} : {},
+            url,
+            requestPayload,
+            headers,
             parseResponse,
             error
         );
@@ -164,6 +171,13 @@ class CharthouseApiConnector {
             // convert the common prefix/suffix json into expression objects
             summary.common_prefix = ExpressionFactory.createFromJson(summary.common_prefix);
             summary.common_suffix = ExpressionFactory.createFromJson(summary.common_suffix);
+
+            // populate a request object to allow a curl command to be built
+            json.request = {
+                url,
+                headers: fullHeaders,
+                payload: requestPayload
+            };
 
             success(json);
         }

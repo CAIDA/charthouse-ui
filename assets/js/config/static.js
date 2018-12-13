@@ -3,7 +3,7 @@ export default {
     baseUri: 'https://test.hicube.caida.org',
 
     api: {
-        url: '//api.hicube.caida.org/test',
+        url: 'https://api.hicube.caida.org/test',
         timeout: 1000
     },
 

@@ -38,6 +38,19 @@ export class CharthouseDataSet {
         ) + 'B';
     }
 
+    getRequest() {
+        return this.apiData.request;
+    }
+
+    getRequestAsCurl() {
+        const req = this.getRequest();
+        const payload = JSON.stringify(req.payload);
+        const hdrs = Object.keys(req.headers).map((h) => {
+            return `-H '${h}: ${req.headers[h]}'`;
+        }).join(' ');
+        return `curl '${req.url}' --data '${payload}' -H 'Content-Type: application/json' ${hdrs}`;
+    }
+
     data() {
         return this.apiData.data;
     }
