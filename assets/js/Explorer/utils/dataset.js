@@ -55,6 +55,10 @@ export class CharthouseDataSet {
         return this.apiData.data;
     }
 
+    dataAsJSON() {
+        return JSON.stringify(this.data());
+    }
+
     summary() {
         return this.data().summary;
     }
