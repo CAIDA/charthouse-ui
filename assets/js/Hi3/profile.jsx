@@ -23,7 +23,10 @@ class ProfilePage extends React.Component {
         if (!profile) {
             return <p>loading user info</p>;
         }
-        return <pre>{JSON.stringify(profile, null, 2)}</pre>;
+        return <div>
+            <pre>{JSON.stringify(profile, null, 2)}</pre>
+            <pre>{JSON.stringify(auth.getIdToken(), null, 2)}</pre>
+        </div>;
     }
 
     _parseProfile(profile, err) {
