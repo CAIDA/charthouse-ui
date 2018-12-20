@@ -96,11 +96,19 @@ class Auth {
     }
 
     getAuthorization() {
-        return this.getNSClaim('authorization');
+        return this.getNSClaim('auth');
     }
 
-    isAuthorized(permission) {
+    hasPermission(permission) {
         return this.getAuthorization()['permissions'].includes(permission);
+    }
+
+    hasRole(role) {
+        return this.getAuthorization()['roles'].includes(role);
+    }
+
+    inGroup(group) {
+        return this.getAuthorization()['groups'].includes(group);
     }
 
     getProfile(cb) {
