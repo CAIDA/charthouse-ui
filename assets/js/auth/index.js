@@ -82,12 +82,25 @@ class Auth {
         return this.idToken;
     }
 
+    getNSClaim(claim) {
+        const ns = 'https://hicube.caida.org/';
+        return this.getIdToken()[ns + claim];
+    }
+
     getNickname() {
         return this.getIdToken().nickname;
     }
 
     getSubject() {
         return this.getIdToken().sub;
+    }
+
+    getAuthorization() {
+        return this.getNSClaim('authorization');
+    }
+
+    isAuthorized(permission) {
+        return this.getAuthorization()['permissions'].includes(permission);
     }
 
     getProfile(cb) {
