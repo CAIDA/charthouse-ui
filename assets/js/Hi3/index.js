@@ -12,7 +12,8 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 // auth
-import { AuthenticatedRoute } from 'Auth';
+import AuthenticatedRoute from 'Auth/authenticated-route';
+import AuthorizedRoute from 'Auth/authorized-route';
 
 // "pages"
 import Home from './home';
@@ -20,8 +21,9 @@ import SymRedirect from './sym-redirect';
 import Login from './login';
 import LoginCallback from './login-callback';
 import Logout from './logout';
-import Profile from './profile';
+import Profile from './user/profile';
 import Explorer from 'Explorer';
+import Pending from './user/pending';
 
 ReactDOM.render((
     <BrowserRouter>
@@ -30,8 +32,9 @@ ReactDOM.render((
             <Route path='/login' component={Login}/>
             <Route path='/logout' component={Logout}/>
             <Route path='/auth/callback' component={LoginCallback}/>
-            <AuthenticatedRoute path='/explorer' component={Explorer}/>
+            <AuthorizedRoute path='/explorer' permission='ui:explorer' component={Explorer}/>
             <AuthenticatedRoute path='/user/profile' component={Profile}/>
+            <Route path='/user/pending' component={Pending}/>
             <Route path='/' component={Home}/>
         </Switch>
     </BrowserRouter>

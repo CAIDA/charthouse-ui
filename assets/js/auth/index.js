@@ -1,7 +1,5 @@
 import auth0 from 'auth0-js';
 
-export { default as AuthenticatedRoute } from './route';
-
 import config from 'Config';
 
 class Auth {
