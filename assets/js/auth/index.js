@@ -89,6 +89,10 @@ class Auth {
         return this.getIdToken().nickname;
     }
 
+    getName() {
+        return this.getIdToken().name;
+    }
+
     getSubject() {
         return this.getIdToken().sub;
     }
