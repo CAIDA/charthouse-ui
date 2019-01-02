@@ -1,4 +1,5 @@
 import React from 'react';
+import { Redirect } from 'react-router-dom';
 
 import { auth } from 'Auth';
 import hi3Logo from 'images/logos/hicube-full.png';
@@ -9,7 +10,14 @@ class PendingPage extends React.Component {
         super(props);
     }
 
+    state = {
+        relogin: false
+    };
+
     render() {
+        if (this.state.relogin) {
+            return <Redirect to='/login'/>;
+        }
         return <div className='container'>
             <div className="jumbotron">
                 <h1>
@@ -29,9 +37,19 @@ class PendingPage extends React.Component {
                     contact <a href='mailto:hicube-info@caida.org'>
                     hicube-info.caida.org</a>.
                 </p>
+                <p className='lead'>
+                    If you think your account has been approved recently,
+                    you can <a href="javascript:void(0);" onClick={this._relogin}>log in</a> again.
+                </p>
             </div>
         </div>;
     }
+
+
+    _relogin = () => {
+        auth.logout();
+        this.setState({relogin: true});
+    };
 
 }
 
