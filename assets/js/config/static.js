@@ -1,10 +1,14 @@
+const IS_PRODUCTION = process.env.CH_VERSION === 'prod';
+
 export default {
 
     // the various process.env variables are defined in .env.local
 
     charthouseVersion: process.env.CH_VERSION,
 
-    baseUri: 'https://' + process.env.CH_VERSION + '.hicube.caida.org',
+    baseUri: IS_PRODUCTION ?
+        'https://hicube.caida.org' :
+        'https://' + process.env.CH_VERSION + '.hicube.caida.org',
 
     api: {
         url: 'https://api.hicube.caida.org/' + process.env.CH_API_VERSION,
