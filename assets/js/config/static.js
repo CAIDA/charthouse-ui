@@ -1,9 +1,13 @@
 export default {
 
-    baseUri: 'https://test.hicube.caida.org',
+    // the various process.env variables are defined in .env.local
+
+    charthouseVersion: process.env.CH_VERSION,
+
+    baseUri: 'https://' + process.env.CH_VERSION + '.hicube.caida.org',
 
     api: {
-        url: 'https://api.hicube.caida.org/test',
+        url: 'https://api.hicube.caida.org/' + process.env.CH_API_VERSION,
         timeout: 1000
     },
 
