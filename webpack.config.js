@@ -1,5 +1,6 @@
 const path = require('path');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const Dotenv = require('dotenv-webpack');
 const Encore = require('@symfony/webpack-encore');
 
 Encore
@@ -75,7 +76,7 @@ Encore
         babelConfig.plugins.push('syntax-dynamic-import');
         babelConfig.plugins.push('transform-object-rest-spread');
         babelConfig.plugins.push('istanbul');
-    });
+    })
 ;
 
 let webpackConfig = Encore.getWebpackConfig();
@@ -101,6 +102,13 @@ webpackConfig.plugins.push(
     new CopyWebpackPlugin([
         { from: './assets/images/logos/', to: 'images/'}
     ])
+);
+
+
+webpackConfig.plugins.push(
+    new Dotenv({
+        path: './.env.local',
+    })
 );
 
 module.exports = webpackConfig;
