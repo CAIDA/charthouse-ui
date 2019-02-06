@@ -71,6 +71,9 @@
             "ref": "e3868d2f4a5104f19f844fe551099a00c6562527"
         }
     },
+    "symfony/contracts": {
+        "version": "v1.0.2"
+    },
     "symfony/debug": {
         "version": "v4.1.4"
     },
@@ -136,6 +139,9 @@
             "version": "3.3",
             "ref": "369b5b29dc52b2c190002825ae7ec24ab6f962dd"
         }
+    },
+    "symfony/var-exporter": {
+        "version": "v4.2.3"
     },
     "symfony/webpack-encore-pack": {
         "version": "1.0",
