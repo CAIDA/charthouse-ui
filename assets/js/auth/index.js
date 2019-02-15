@@ -101,16 +101,21 @@ class Auth {
         return this.getNSClaim('auth');
     }
 
+    getAuthField(field) {
+        const auth = this.getNSClaim('auth');
+        return (auth && auth[field]) || [];
+    }
+
     hasPermission(permission) {
-        return this.getAuthorization()['permissions'].includes(permission);
+        return this.getAuthField('permissions').includes(permission);
     }
 
     hasRole(role) {
-        return this.getAuthorization()['roles'].includes(role);
+        return this.getAuthField('roles').includes(role);
     }
 
     inGroup(group) {
-        return this.getAuthorization()['groups'].includes(group);
+        return this.getAuthField('groups').includes(group);
     }
 
     getProfile(cb) {
