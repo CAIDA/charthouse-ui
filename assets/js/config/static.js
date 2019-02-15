@@ -6,6 +6,8 @@ export default {
 
     charthouseVersion: process.env.CH_VERSION,
 
+    authClientId: process.env.AUTH0_CLIENTID,
+
     baseUri: IS_PRODUCTION ?
         'https://hicube.caida.org' :
         'https://' + process.env.CH_VERSION + '.hicube.caida.org',

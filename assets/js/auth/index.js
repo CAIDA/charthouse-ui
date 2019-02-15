@@ -11,11 +11,11 @@ class Auth {
     constructor() {
         this.auth0 = new auth0.WebAuth({
             domain: 'hicube.auth0.com',
-            clientID: '72l1lVLW9T71MRebhnU1c264YnnjOrtY',
+            clientID: config.getParam('authClientId'),
             redirectUri: `${config.getParam('baseUri')}/auth/callback`,
             responseType: 'token id_token',
             scope: 'openid profile email',
-            audience: 'https://api.hicube.caida.org/test'
+            audience: config.getParam('api').url
         });
     }
 
