@@ -38,7 +38,9 @@ class LoginCallbackPage extends React.Component {
 
         // 2. did we get an error when logging in?
         if (this.state.error) {
-            return <p>Authentication failed: {this.state.error} (TODO: FIXME)</p>;
+            // TODO: better error page and message
+            // can this be caused by user error?
+            return <p>Authentication failed: {this.state.error.error} {this.state.error.errorDescription} (TODO: FIXME)</p>;
         }
 
         // 3. not authenticated, no callback, no error message, so this is an error
@@ -53,10 +55,10 @@ class LoginCallbackPage extends React.Component {
         });
     }
 
-    _loginError(errMsg) {
+    _loginError(err) {
         this.setState({
             handlingCallback: false,
-            error: errMsg
+            error: err
         });
     }
 }

@@ -34,7 +34,7 @@ class Auth {
         });
     }
 
-    handleAuthResult(err, authResult, onErr, onSuccess) {
+    handleAuthResult(err, authResult, onSuccess, onErr) {
         if (authResult && authResult.accessToken && authResult.idToken) {
             this.setSession(authResult);
             onSuccess && onSuccess(authResult);
