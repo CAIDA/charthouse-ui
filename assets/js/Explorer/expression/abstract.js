@@ -3,9 +3,12 @@ import has from 'has';
 class AbstractExpression {
 
     constructor(type) {
+        /*
+        AK comments 2019-02-15 because currently Uglify.js doesn't support this
         if (new.target === AbstractExpression) {
             throw new TypeError("Cannot directly create AbstractExpression objects. Use ExpressionFactory instead");
         }
+        */
         this.type = type;
     }
 
