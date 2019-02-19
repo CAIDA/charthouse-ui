@@ -87,17 +87,6 @@ class PluginFooter extends React.Component {
         data: PropTypes.instanceOf(CharthouseDataSet).isRequired
     };
 
-    componentDidUpdate(prevProps) {
-        /*
-// TODO
-var data = this.props.data, prevData = prevProps.data;
-// Blink on data changes
-if (data.jsonSize() != prevData.jsonSize()) {
-    $(ReactDOM.findDOMNode(this.refs.jsonSize)).flash(500, 2);
-}
-*/
-    }
-
     render() {
         return <div>
             <RawData
@@ -114,18 +103,6 @@ if (data.jsonSize() != prevData.jsonSize()) {
             >
                 <span className="glyphicon glyphicon-link"/> Short URL
             </button>
-
-            {/* TODO: Generate a cURL link since our queries are POST-only now */}
-            {/*
-            <a target='_blank' className="pull-right btn btn-info btn-xs"
-               href="#"
-               title="Download json data file"
-            >
-                <span className="glyphicon glyphicon-save"/> json <small>
-                (<span ref="jsonSize">{this.props.data.jsonSizeHuman()}</span>)
-            </small>
-            </a>
-            */}
         </div>;
     }
 
