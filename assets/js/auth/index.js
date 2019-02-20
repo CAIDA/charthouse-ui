@@ -22,7 +22,6 @@ class Auth {
     }
 
     login() {
-        // TODO: figure out how to use checkSession to avoid token expiry
         if (this.isAuthenticated()) {
             // no need to authorize
             return;
@@ -52,7 +51,9 @@ class Auth {
 
     renewSession() {
         this.auth0.checkSession({}, (err, authResult) => {
+            console.log(`Renewing auth token`); // DEBUG
             if (authResult && authResult.accessToken && authResult.idToken) {
+                console.log(`Token renewal successful`); // DEBUG
                 this.setSession(authResult);
             } else if (err) {
                 this.forceLogin();
@@ -61,11 +62,18 @@ class Auth {
     }
 
     scheduleRenewal() {
+        // if there is already a renewal scheduled, don't bother
+        if (this.tokenRenewalTimer) {
+            console.log('Renewal timer already running');
+            return;
+        }
         let expiresAt = this.getExpiryTime();
         const timeout = expiresAt - Date.now();
         if (timeout > 0) {
+            console.log(`Scheduling token renewal for ${expiresAt} (in ${timeout} ms)`); // DEBUG
             this.tokenRenewalTimer = setTimeout(() => {
                 this.renewSession();
+                this.tokenRenewalTimer = null;
             }, timeout);
         }
     }
@@ -88,7 +96,9 @@ class Auth {
         localStorage.removeItem('id_token_payload');
         localStorage.removeItem('expires_at');
         // Clear token renewal
-        clearTimeout(this.tokenRenewalTimer);
+        if (this.tokenRenewalTimer) {
+            clearTimeout(this.tokenRenewalTimer);
+        }
     }
 
     getExpiryTime() {
@@ -97,7 +107,12 @@ class Auth {
 
     isAuthenticated() {
         // Check whether the current time is past the Access Token's expiry time
-        return new Date().getTime() < this.getExpiryTime();
+        let isAuth = new Date().getTime() < this.getExpiryTime();
+        if (isAuth) {
+            // let's take this opportunity to make sure we have a renewal scheduled
+            this.scheduleRenewal();
+        }
+        return isAuth;
     }
 
     getAccessToken() {
