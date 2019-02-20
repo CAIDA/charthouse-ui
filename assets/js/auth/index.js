@@ -8,6 +8,8 @@ class Auth {
 
     userProfile;
 
+    tokenRenewalTimer;
+
     constructor() {
         this.auth0 = new auth0.WebAuth({
             domain: 'hicube.auth0.com',
@@ -28,6 +30,11 @@ class Auth {
         this.auth0.authorize();
     }
 
+    forceLogin() {
+        this.logout();
+        this.login();
+    }
+
     handleAuthentication(onSuccess, onErr) {
         this.auth0.parseHash((err, authResult) => {
             this.handleAuthResult(err, authResult, onSuccess, onErr);
@@ -43,6 +50,26 @@ class Auth {
         }
     }
 
+    renewSession() {
+        this.auth0.checkSession({}, (err, authResult) => {
+            if (authResult && authResult.accessToken && authResult.idToken) {
+                this.setSession(authResult);
+            } else if (err) {
+                this.forceLogin();
+            }
+        });
+    }
+
+    scheduleRenewal() {
+        let expiresAt = this.getExpiryTime();
+        const timeout = expiresAt - Date.now();
+        if (timeout > 0) {
+            this.tokenRenewalTimer = setTimeout(() => {
+                this.renewSession();
+            }, timeout);
+        }
+    }
+
     setSession(authResult) {
         // Set the time that the Access Token will expire at
         const expiresAt = JSON.stringify((authResult.expiresIn * 1000) + new Date().getTime());
@@ -50,6 +77,8 @@ class Auth {
         localStorage.setItem('id_token', authResult.idToken);
         localStorage.setItem('id_token_payload', JSON.stringify(authResult.idTokenPayload));
         localStorage.setItem('expires_at', expiresAt);
+        // schedule a token renewal
+        this.scheduleRenewal();
     }
 
     logout() {
@@ -58,10 +87,12 @@ class Auth {
         localStorage.removeItem('id_token');
         localStorage.removeItem('id_token_payload');
         localStorage.removeItem('expires_at');
+        // Clear token renewal
+        clearTimeout(this.tokenRenewalTimer);
     }
 
     getExpiryTime() {
-        return JSON.parse(localStorage.getItem('expires_at'));
+        return new Date(JSON.parse(localStorage.getItem('expires_at')));
     }
 
     isAuthenticated() {
