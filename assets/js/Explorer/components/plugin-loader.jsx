@@ -404,12 +404,8 @@ class VizPlugin extends React.Component {
                 // TODO: figure out if there is a better way to do this
                 if (!rThis.props.configMan.globalCfg) {
                     const cp = chData.summary().common_prefix;
-                    const dataTitle = cp ? cp.getCanonicalHumanized() : (rThis.props.title.length < 40 ? rThis.props.title.trim() : '');
-                    document.title = [dataTitle, 'Hi³']
-                        .filter(function (s) {
-                            return s.length;
-                        })
-                        .join(' · ');
+                    document.title = cp ? cp.getCanonicalHumanized()
+                        : (rThis.props.title.length < 40 ? rThis.props.title.trim() : '');
                 }
             },
 
