@@ -69,17 +69,20 @@ class ControlPanel extends React.Component {
         return <div>
             <div className="panel panel-default controller-panel">
                 <div className="panel-heading text-center">
-                    <img
-                        src={hicubeLogo}
-                        style={{
-                            maxWidth: "100%",
-                            maxHeight: "80px"
-                        }}
-                    />
+                    <Link to='/'>
+                        <img
+                            src={hicubeLogo}
+                            style={{
+                                maxWidth: "100%",
+                                maxHeight: "80px"
+                            }}
+                        />
+                    </Link>
                 </div>
                 <div className="panel-body">
                     <span>
-                        Logged in as <a href="#"><i>{auth.getNickname()}</i></a>
+                        {/* TODO: add link to profile page */}
+                        Logged in as <i>{auth.getNickname()}</i>
                     </span>
                     <Link className="btn btn-default btn-xs pull-right"
                        title="Log out" to='/logout'
