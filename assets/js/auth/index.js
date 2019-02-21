@@ -51,9 +51,7 @@ class Auth {
 
     renewSession() {
         this.auth0.checkSession({}, (err, authResult) => {
-            console.log(`Renewing auth token`); // DEBUG
             if (authResult && authResult.accessToken && authResult.idToken) {
-                console.log(`Token renewal successful`); // DEBUG
                 this.setSession(authResult);
             } else if (err) {
                 this.forceLogin();
@@ -64,13 +62,11 @@ class Auth {
     scheduleRenewal() {
         // if there is already a renewal scheduled, don't bother
         if (this.tokenRenewalTimer) {
-            console.log('Renewal timer already running');
             return;
         }
         let expiresAt = this.getExpiryTime();
         const timeout = expiresAt - Date.now();
         if (timeout > 0) {
-            console.log(`Scheduling token renewal for ${expiresAt} (in ${timeout} ms)`); // DEBUG
             this.tokenRenewalTimer = setTimeout(() => {
                 this.renewSession();
                 this.tokenRenewalTimer = null;
