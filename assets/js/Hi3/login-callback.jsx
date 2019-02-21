@@ -27,12 +27,17 @@ class LoginCallbackPage extends React.Component {
     render() {
         // 1. if we're authenticated, then redirect!
         if (auth.isAuthenticated()) {
-            return <Redirect to='/explorer'/>
+            const dest = sessionStorage.getItem('redirect_uri') || '/';
+            sessionStorage.removeItem('redirect_uri');
+            if (!dest.startsWith('http')) {
+                return <Redirect to={dest}/>
+            }
+            location.href = dest;
+            return null;
         }
 
         // 1. if we are processing a callback
         if (this.state.handlingCallback) {
-            // TODO: make this a nicer message
             return <p>Please wait..</p>;
         }
 

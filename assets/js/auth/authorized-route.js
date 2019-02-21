@@ -18,7 +18,10 @@ class AuthorizedRoute extends React.Component {
         const { component, permission, ...props } = this.props;
         if (!auth.isAuthenticated()) {
             return <Route {...props}>
-                <Redirect to='/login'/>
+                <Redirect to={{
+                    pathname: '/login',
+                    state: { referrer: location.href }
+                }}/>
             </Route>;
         }
         if (permission && !auth.hasPermission(permission)) {

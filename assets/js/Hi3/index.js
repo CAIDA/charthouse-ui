@@ -24,6 +24,8 @@ import Profile from './user/profile';
 import Explorer from 'Explorer';
 import Pending from './user/pending';
 
+// TODO: nested routes (see https://devhints.io/react-router)
+// TODO: default route and not-found route
 ReactDOM.render((
     <BrowserRouter>
         <Switch>
