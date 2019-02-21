@@ -12,7 +12,6 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 // auth
-import AuthenticatedRoute from 'Auth/authenticated-route';
 import AuthorizedRoute from 'Auth/authorized-route';
 
 // "pages"
@@ -33,7 +32,7 @@ ReactDOM.render((
             <Route path='/logout' component={Logout}/>
             <Route path='/auth/callback' component={LoginCallback}/>
             <AuthorizedRoute path='/explorer' permission='ui:explorer' component={Explorer}/>
-            <AuthenticatedRoute path='/user/profile' component={Profile}/>
+            <AuthorizedRoute path='/user/profile' component={Profile}/>
             <Route path='/user/pending' component={Pending}/>
             <Route path='/' component={Home}/>
         </Switch>

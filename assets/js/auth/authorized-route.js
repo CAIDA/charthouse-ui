@@ -16,13 +16,12 @@ class AuthorizedRoute extends React.Component {
 
     render() {
         const { component, permission, ...props } = this.props;
-        // TODO: don't duplicate authenticated route code
         if (!auth.isAuthenticated()) {
             return <Route {...props}>
                 <Redirect to='/login'/>
             </Route>;
         }
-        if (!auth.hasPermission(permission)) {
+        if (permission && !auth.hasPermission(permission)) {
             return <Route {...props}>
                 <Redirect to='/user/pending'/>
             </Route>;
