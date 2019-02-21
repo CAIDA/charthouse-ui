@@ -1,0 +1,153 @@
+/* TOP BAR */
+.topbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1030;
+    background-color: #231f20;
+    padding-right: 5%;
+}
+
+.topbar,
+.topbar-pad {
+    height: 60px;
+}
+
+.modal-open .tc-topbar {
+    visibility: hidden;
+}
+
+.sidebar-toggle {
+    padding-top: 14px;
+    font-size: 26px;
+    color: #fff;
+}
+
+/* SIDEBAR */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 1000;
+    padding-top: 15px;
+    background-color: #231f20;
+    overflow-x: hidden;
+    width: 260px;
+    transition: width 0.2s ease;
+}
+
+.sidebar-hidden {
+    width: 0;
+}
+
+/* all links */
+.sidebar .nav > li,
+.sidebar .nav > li > a {
+    padding: 0;
+    height: 55px;
+    display: table;
+    table-layout: fixed;
+}
+
+/* brand */
+.sidebar .nav > li.brand > a > .icon {
+    font-size: unset !important;
+}
+
+.sidebar .nav > li.brand > a > .icon > img {
+    width: 30px;
+}
+
+.sidebar .nav > li.brand > a > .text {
+    font-size: 12px !important;
+}
+
+/* non-active link */
+.sidebar .nav > li > a > div {
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+    color: #b3b3b3;
+}
+
+.sidebar .nav > li > a > .icon {
+    width: 80px;
+    font-size: 20px !important;
+}
+
+.sidebar .nav > li > a > .text {
+    font-size: 14px;
+}
+
+/* non-active link, on hover */
+.sidebar .nav > li > a,
+.sidebar .nav > li > a:hover div,
+.sidebar .nav > li > a:focus div {
+    background-color: transparent;
+    color: #fff;
+    transition: color .3s;
+}
+
+.sidebar .nav > li > a:focus,
+.sidebar .nav > li > a:focus {
+    outline: none;
+}
+
+/* active link (hover is no change) */
+.sidebar .nav > li.active > a,
+.sidebar .nav > li.active > a > div,
+.sidebar .nav > li.active > a:hover > div,
+.sidebar .nav > li.active > a:focus > div {
+    color: #fff;
+    background-color: transparent;
+}
+
+@media (min-width: 768px) {
+
+    .topbar,
+    .topbar-pad {
+        height: 0;
+    }
+
+    .sidebar {
+        width: 60px !important;
+    }
+
+    .sidebar-hidden {
+        width: 60px;
+    }
+
+    .sidebar:hover,
+    .sidebar:focus,
+    .sidebar .nav > li {
+        width: 260px !important;
+        margin: 0;
+    }
+
+    .sidebar .nav > li > a > .text {
+        font-size: 18px !important;
+    }
+
+    .sidebar .nav > li > a > .icon {
+        width: 60px !important;
+        font-size: 22px !important;
+    }
+
+    .sidebar .nav-pills > li > a {
+        border-radius: 0;
+    }
+
+    .sidebar .nav > li.brand > a > .icon {
+        font-size: unset !important;
+    }
+
+    .sidebar .nav > li.brand > a > .text {
+        font-size: 20px !important;
+    }
+
+    #hi3-container {
+        margin-left: 60px;
+    }
+}

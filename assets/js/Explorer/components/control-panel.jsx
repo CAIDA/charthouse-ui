@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Link } from 'react-router-dom';
 
 import { auth } from 'Auth';
 import CharthouseTime from '../utils/time';
@@ -9,7 +8,6 @@ import PluginSelector from './plugin-selector';
 import ExpressionComposer from './expression-composer';
 import ExpressionSet from "../expression/set";
 
-import hicubeLogo from 'images/logos/hicube-full.png';
 import caidaLogo from 'images/logos/caida_logo_small.png';
 
 // Module constants
@@ -67,31 +65,6 @@ class ControlPanel extends React.Component {
     render() {
 
         return <div>
-            <div className="panel panel-default controller-panel">
-                <div className="panel-heading text-center">
-                    <Link to='/'>
-                        <img
-                            src={hicubeLogo}
-                            style={{
-                                maxWidth: "100%",
-                                maxHeight: "80px"
-                            }}
-                        />
-                    </Link>
-                </div>
-                <div className="panel-body">
-                    <span>
-                        {/* TODO: add link to profile page */}
-                        Logged in as <i>{auth.getNickname()}</i>
-                    </span>
-                    <Link className="btn btn-default btn-xs pull-right"
-                       title="Log out" to='/logout'
-                    >
-                        <span className="glyphicon glyphicon-log-out"/>
-                        &nbsp;&nbsp;Log out
-                    </Link>
-                </div>
-            </div>
             <div className="panel panel-default controller-panel">
                 <div className="panel-heading panel-title">
                     Pick a time period

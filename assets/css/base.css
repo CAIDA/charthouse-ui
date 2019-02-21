@@ -4,6 +4,10 @@ html, body {
     height: 100%;
 }
 
+body {
+    background-color: #F0F0F0;
+}
+
 #content-push {
     height: 70px;
 }
@@ -24,12 +28,6 @@ html, body {
 .footer-bar p {
     margin-bottom: 0;
     line-height: 40px;
-}
-
-.logo {
-    /*padding-right: 4px;*/
-    height: 40px;
-    margin-top: -5px;
 }
 
 /* Bootstrap overrides */
