@@ -101,51 +101,6 @@ class ControlPanel extends React.Component {
                     />
                 </div>
             </div>
-            <div className="panel panel-default controller-panel"
-                 style={{
-                     backgroundColor: "#EEEEEE"
-                 }}>
-                <div className="panel-body">
-                    <div style={{
-                        float: "left"
-                    }}>
-                        <a href="https://www.caida.org">
-                            <img
-                                src={caidaLogo}
-                                style={{
-                                    width: "75px"
-                                }}
-                            />
-                        </a>
-                    </div>
-                    <div style={{
-                        marginLeft: "90px",
-                        height: "100%"
-                    }}>
-                        <p className="text-muted"
-                           style={{
-                               margin: 0
-                           }}
-                        >
-                            Hi³ is developed by <a
-                            href="https://www.caida.org"
-                            style={{
-                                color: "#949da4"
-                            }}
-                        >CAIDA</a> and funded by the US Department of
-                            Homeland Security (DHS) Information Marketplace
-                            for Policy and Analysis of Cyber-risk & Trust
-                            (<a
-                            href="https://www.impactcybertrust.org/"
-                            style={{
-                                color: "#949da4"
-                            }}
-                        >IMPACT</a>)
-                            project.
-                        </p>
-                    </div>
-                </div>
-            </div>
         </div>
     }
 }

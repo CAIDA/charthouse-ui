@@ -28,11 +28,6 @@ class Home extends React.Component {
                     </i>
                 </p>
             </div>
-            <div className='row text-center'>
-                <LinkButton bsStyle="primary" bsSize="large" to='/explorer'>
-                    Sign in to Hi³
-                </LinkButton>
-            </div>
         </div>;
     }
 }

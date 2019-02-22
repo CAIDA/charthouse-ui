@@ -56,65 +56,88 @@
 }
 
 /* all links */
-.sidebar .nav > li,
-.sidebar .nav > li > a {
+.sidebar .nav li,
+.sidebar .nav li > a {
     padding: 0;
     height: 55px;
     display: table;
     table-layout: fixed;
 }
 
+.sidebar .nav li > a:hover,
+.sidebar .nav li > a:focus {
+    text-decoration: none;
+}
+
 /* brand */
-.sidebar .nav > li.brand > a > .icon {
+.sidebar .nav li.brand > a > .icon {
     font-size: unset !important;
 }
 
-.sidebar .nav > li.brand > a > .icon > img {
-    width: 30px;
+.sidebar .nav li.brand > a > .icon > img {
+    width: 26px;
 }
 
-.sidebar .nav > li.brand > a > .text {
-    font-size: 12px !important;
+.sidebar .nav li.brand > a > .text {
+    font-size: unset !important;
+}
+
+.sidebar .nav li.brand > a > .text > img {
+    height: 31px;
 }
 
 /* non-active link */
-.sidebar .nav > li > a > div {
+.sidebar .nav li > a > div {
     display: table-cell;
     vertical-align: middle;
     text-align: center;
     color: #b3b3b3;
 }
 
-.sidebar .nav > li > a > .icon {
+.sidebar .nav .icon {
     width: 80px;
     font-size: 20px !important;
 }
 
-.sidebar .nav > li > a > .text {
+.sidebar .nav .text,
+.sidebar .nav .pull-bottom .text {
     font-size: 14px;
+    text-align: left;
+    padding-right: 10px;
 }
 
 /* non-active link, on hover */
-.sidebar .nav > li > a,
-.sidebar .nav > li > a:hover div,
-.sidebar .nav > li > a:focus div {
-    background-color: transparent;
-    color: #fff;
-    transition: color .3s;
+.sidebar .nav a,
+.sidebar .nav a:hover div,
+.sidebar .nav a:focus div {
+    background-color: transparent !important;
+    color: #fff !important;
+    transition: color .2s !important;
 }
 
-.sidebar .nav > li > a:focus,
-.sidebar .nav > li > a:focus {
+.sidebar .nav a:focus,
+.sidebar .nav a:focus {
     outline: none;
 }
 
 /* active link (hover is no change) */
-.sidebar .nav > li.active > a,
-.sidebar .nav > li.active > a > div,
-.sidebar .nav > li.active > a:hover > div,
-.sidebar .nav > li.active > a:focus > div {
+.sidebar .nav li.active > a,
+.sidebar .nav li.active > a > div,
+.sidebar .nav li.active > a:hover > div,
+.sidebar .nav li.active > a:focus > div {
     color: #fff;
     background-color: transparent;
+}
+
+/* bottom of nav (user info) */
+.sidebar .pull-bottom {
+    position: absolute;
+    bottom: 0;
+    transition: all .3s ease;
+}
+
+.sidebar .pull-bottom .hidden-link {
+    display: none;
 }
 
 @media (min-width: 768px) {
@@ -134,7 +157,7 @@
 
     .sidebar:hover,
     .sidebar:focus,
-    .sidebar .nav > li {
+    .sidebar .nav li {
         width: 260px !important;
         margin: 0;
     }
@@ -145,24 +168,42 @@
         margin-right: 10px;
     }
 
-    .sidebar .nav > li > a > .text {
+    /*
+    .sidebar:hover .pull-bottom,
+    .sidebar:focus .pull-bottom {
+        height: 120px;
+    }
+    */
+
+    .sidebar:hover .hidden-link,
+    .sidebar:focus .hidden-link {
+        display: inline !important;
+    }
+
+    .sidebar .nav .text {
         font-size: 18px !important;
     }
 
-    .sidebar .nav > li > a > .icon {
+    /*
+    .sidebar .nav .pull-bottom .text {
+        font-size: 14px !important;
+    }
+    */
+
+    .sidebar .nav .icon {
         width: 60px !important;
         font-size: 22px !important;
     }
 
-    .sidebar .nav-pills > li > a {
+    .sidebar .nav-pills li > a {
         border-radius: 0;
     }
 
-    .sidebar .nav > li.brand > a > .icon {
+    .sidebar .nav li.brand > a > .icon {
         font-size: unset !important;
     }
 
-    .sidebar .nav > li.brand > a > .text {
+    .sidebar .nav li.brand > a > .text {
         font-size: 20px !important;
     }
 

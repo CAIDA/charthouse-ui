@@ -1,8 +1,11 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 
+import {auth} from 'Auth';
+
 import 'Hi3/css/sidebar.css';
 import hicubeLogo from 'images/logos/hicube-icon-white.png';
+import hicubeLogoText from 'images/logos/hicube-text-white.png';
 
 class Sidebar extends React.Component {
     render() {
@@ -17,7 +20,7 @@ class Sidebar extends React.Component {
                     <li className="brand">
                         <a href="/">
                             <div className="icon"><img src={hicubeLogo} /></div>
-                            <div className="text">HI-CUBE</div>
+                            <div className="text"><img src={hicubeLogoText}/></div>
                         </a>
                     </li>
 
@@ -90,6 +93,31 @@ class Sidebar extends React.Component {
                             </div>
                         </a>
                     </li>
+
+                    {auth.isAuthenticated() ?
+                        (<div className='pull-bottom'>
+                        <li>
+                            <a href='/user/profile'>
+                                <div className="icon">
+                                    <span className="glyphicon glyphicon-user"/>
+                                </div>
+                                <div className='text username'>
+                                    Logged in as <i>{auth.getNickname()}</i>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href='/logout'>
+                                <div className="icon">
+                                    <span
+                                        className="glyphicon glyphicon-log-out"/>
+                                </div>
+                                <div className='text logout'>
+                                    Logout
+                                </div>
+                            </a>
+                        </li>
+                    </div>) : null};
                 </ul>
             </div>
         </div>;
