@@ -76,6 +76,7 @@
 
 .sidebar .nav li.brand > a > .icon > img {
     width: 26px;
+    height: 28px;
 }
 
 .sidebar .nav li.brand > a > .text {
@@ -134,6 +135,7 @@
     position: absolute;
     bottom: 0;
     transition: all .3s ease;
+    padding-bottom: 10px;
 }
 
 .sidebar .pull-bottom .hidden-link {
