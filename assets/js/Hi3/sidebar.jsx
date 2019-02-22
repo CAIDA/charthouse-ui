@@ -6,6 +6,12 @@ import 'Hi3/css/sidebar.css';
 import hicubeLogo from 'images/logos/hicube-icon-white.png';
 import hicubeLogoText from 'images/logos/hicube-text-white.png';
 
+// TODO: properly support mobile:
+//       - why does not work on iphone xs?
+//       - handle click on hamburger
+//       - toggle sidebar hidden when link clicked
+//       - toggle sidebar hidden when main container clicked
+
 class Sidebar extends React.Component {
     render() {
         return <div>
