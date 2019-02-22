@@ -83,6 +83,17 @@ class Sidebar extends React.Component {
                         </a>
                     </li>
                     <li>
+                        <a href="/dashboards">
+                            <div className="icon">
+                                <span
+                                    className="glyphicon glyphicon-dashboard"/>
+                            </div>
+                            <div className="text">
+                                Live Dashboards
+                            </div>
+                        </a>
+                    </li>
+                    <li>
                         <a href="/examples">
                             <div className="icon">
                                 <span
