@@ -42,6 +42,19 @@
     width: 0;
 }
 
+.sidebar-separator {
+    height: 10px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #999;
+
+    transition: 0.2s ease;
+}
+
+.sidebar-hidden .sidebar-separator {
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
 /* all links */
 .sidebar .nav > li,
 .sidebar .nav > li > a {
@@ -124,6 +137,12 @@
     .sidebar .nav > li {
         width: 260px !important;
         margin: 0;
+    }
+
+    .sidebar:hover .sidebar-separator,
+    .sidebar:focus .sidebar-separator {
+        margin-left: 10px;
+        margin-right: 10px;
     }
 
     .sidebar .nav > li > a > .text {

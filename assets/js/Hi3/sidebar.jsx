@@ -20,6 +20,31 @@ class Sidebar extends React.Component {
                             <div className="text">HI-CUBE</div>
                         </a>
                     </li>
+
+                    <div className='sidebar-separator'/>
+
+                    <li>
+                        <a href="/quickstart">
+                            <div className="icon">
+                                <span
+                                    className="glyphicon glyphicon-flash"/>
+                            </div>
+                            <div className="text">
+                                Quickstart
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/docs">
+                            <div className="icon">
+                                <span
+                                    className="glyphicon glyphicon-education"/>
+                            </div>
+                            <div className="text">
+                                Documentation
+                            </div>
+                        </a>
+                    </li>
                     <li>
                         <a href="/about">
                             <div className="icon">
@@ -31,12 +56,37 @@ class Sidebar extends React.Component {
                         </a>
                     </li>
                     <li>
+                        <a href="/acks">
+                            <div className="icon">
+                                <span
+                                    className="glyphicon glyphicon-thumbs-up"/>
+                            </div>
+                            <div className="text">
+                                Acknowledgements
+                            </div>
+                        </a>
+                    </li>
+
+                    <div className='sidebar-separator'/>
+
+                    <li>
                         <a href="/explorer">
                             <div className="icon">
                                 <span className="glyphicon glyphicon-equalizer"/>
                             </div>
                             <div className="text">
                                 Time Series Explorer
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/examples">
+                            <div className="icon">
+                                <span
+                                    className="glyphicon glyphicon-heart"/>
+                            </div>
+                            <div className="text">
+                                Sample Analyses
                             </div>
                         </a>
                     </li>
