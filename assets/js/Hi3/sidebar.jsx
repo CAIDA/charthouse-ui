@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import {NavLink} from 'react-router-dom';
 
@@ -13,6 +14,25 @@ import hicubeLogoText from 'images/logos/hicube-text-white.png';
 //       - toggle sidebar hidden when link clicked
 //       - toggle sidebar hidden when main container clicked
 
+class SidebarLink extends React.Component {
+
+    static propTypes = {
+        isBrand: PropTypes.bool,
+        to: PropTypes.string.isRequired,
+        icon: PropTypes.node.isRequired,
+        text: PropTypes.node.isRequired
+    };
+
+    render() {
+        return <li className={this.props.isBrand ? 'brand' : null}>
+            <NavLink to={this.props.to}>
+                <div className="icon">{this.props.icon}</div>
+                <div className="text">{this.props.text}</div>
+            </NavLink>
+        </li>;
+    }
+}
+
 class Sidebar extends React.Component {
     render() {
         return <div>
@@ -23,118 +43,66 @@ class Sidebar extends React.Component {
             </div>
             <div className="sidebar sidebar-hidden">
                 <ul className="nav nav-pills nav-stacked">
-                    <li className="brand">
-                        <NavLink to="/">
-                            <div className="icon"><img src={hicubeLogo} /></div>
-                            <div className="text"><img src={hicubeLogoText}/></div>
-                        </NavLink>
-                    </li>
+                    <SidebarLink to='/' isBrand={true}
+                                 icon={<img src={hicubeLogo}/>}
+                                 text={<img src={hicubeLogoText}/>}
+                    />
 
                     <div className='sidebar-separator'/>
 
-                    <li>
-                        <NavLink to="/quickstart">
-                            <div className="icon">
-                                <span
-                                    className="glyphicon glyphicon-flash"/>
-                            </div>
-                            <div className="text">
-                                Quickstart
-                            </div>
-                        </NavLink>
-                    </li>
-                    <li>
-                        <NavLink to="/docs">
-                            <div className="icon">
-                                <span
-                                    className="glyphicon glyphicon-education"/>
-                            </div>
-                            <div className="text">
-                                Documentation
-                            </div>
-                        </NavLink>
-                    </li>
-                    <li>
-                        <NavLink to="/about">
-                            <div className="icon">
-                                <span className="glyphicon glyphicon-info-sign"/>
-                            </div>
-                            <div className="text">
-                                About Hi³
-                            </div>
-                        </NavLink>
-                    </li>
-                    <li>
-                        <NavLink to="/acks">
-                            <div className="icon">
-                                <span
-                                    className="glyphicon glyphicon-thumbs-up"/>
-                            </div>
-                            <div className="text">
-                                Acknowledgements
-                            </div>
-                        </NavLink>
-                    </li>
+                    <SidebarLink to='/quickstart'
+                                 icon={<span className="glyphicon glyphicon-flash"/>}
+                                 text={'Quickstart'}
+                    />
+                    <SidebarLink to='/docs'
+                                 icon={<span
+                                     className="glyphicon glyphicon-education"/>}
+                                 text={'Documentation'}
+                    />
+                    <SidebarLink to='/about'
+                                 icon={<span
+                                     className="glyphicon glyphicon-info-sign"/>}
+                                 text={'About Hi³'}
+                    />
+                    <SidebarLink to='/acks'
+                                 icon={<span
+                                     className="glyphicon glyphicon-thumbs-up"/>}
+                                 text={'Acknowledgements'}
+                    />
 
                     <div className='sidebar-separator'/>
 
-                    <li>
-                        <NavLink to="/explorer">
-                            <div className="icon">
-                                <span className="glyphicon glyphicon-equalizer"/>
-                            </div>
-                            <div className="text">
-                                Time Series Explorer
-                            </div>
-                        </NavLink>
-                    </li>
-                    <li>
-                        <NavLink to="/dashboards">
-                            <div className="icon">
-                                <span
-                                    className="glyphicon glyphicon-dashboard"/>
-                            </div>
-                            <div className="text">
-                                Live Dashboards
-                            </div>
-                        </NavLink>
-                    </li>
-                    <li>
-                        <NavLink to="/examples">
-                            <div className="icon">
-                                <span
-                                    className="glyphicon glyphicon-heart"/>
-                            </div>
-                            <div className="text">
-                                Sample Analyses
-                            </div>
-                        </NavLink>
-                    </li>
+                    <SidebarLink to='/explorer'
+                                 icon={<span
+                                     className="glyphicon glyphicon-equalizer"/>}
+                                 text={'Time Series Explorer'}
+                    />
+                    <SidebarLink to='/dashboards'
+                                 icon={<span
+                                     className="glyphicon glyphicon-dashboard"/>}
+                                 text={'Live Dashboards'}
+                    />
+                    <SidebarLink to='/examples'
+                                 icon={<span
+                                     className="glyphicon glyphicon-heart"/>}
+                                 text={'Sample Analyses'}
+                    />
 
                     {auth.isAuthenticated() ?
                         (<div className='pull-bottom'>
-                        <li>
-                            <NavLink to='/user/profile'>
-                                <div className="icon">
-                                    <span className="glyphicon glyphicon-user"/>
-                                </div>
-                                <div className='text username'>
-                                    Logged in as <i>{auth.getNickname()}</i>
-                                </div>
-                            </NavLink>
-                        </li>
-                        <li>
-                            <NavLink to='/logout'>
-                                <div className="icon">
-                                    <span
-                                        className="glyphicon glyphicon-log-out"/>
-                                </div>
-                                <div className='text logout'>
-                                    Logout
-                                </div>
-                            </NavLink>
-                        </li>
-                    </div>) : null};
+                            <SidebarLink to='/user/profile'
+                                         icon={<span
+                                             className="glyphicon glyphicon-user"/>}
+                                         text={<div>Logged in
+                                             as <i>{auth.getNickname()}</i></div>}
+                            />
+                            <SidebarLink to='/logout'
+                                         icon={<span
+                                             className="glyphicon glyphicon-log-out"/>}
+                                         text={'Logout'}
+                            />
+                        </div>)
+                        : null};
                 </ul>
             </div>
         </div>;
