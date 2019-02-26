@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import {NavLink} from 'react-router-dom';
+import titleCase from 'title-case';
 
 import {auth} from 'Auth';
 
@@ -17,24 +18,69 @@ import hicubeLogoText from 'images/logos/hicube-text-white.png';
 class SidebarLink extends React.Component {
 
     static propTypes = {
-        isBrand: PropTypes.bool,
-        to: PropTypes.string.isRequired,
+        page: PropTypes.string,
         icon: PropTypes.node.isRequired,
-        text: PropTypes.node.isRequired
+        text: PropTypes.node
     };
 
     render() {
-        return <li className={this.props.isBrand ? 'brand' : null}>
-            <NavLink to={this.props.to}>
+        const text = this.props.text || titleCase(this.props.page);
+        return <li className={!this.props.page ? 'brand' : null}>
+            <NavLink to={`/${this.props.page || ''}`}>
                 <div className="icon">{this.props.icon}</div>
-                <div className="text">{this.props.text}</div>
+                <div className="text">{text}</div>
             </NavLink>
         </li>;
     }
 }
 
+// array of links to render
+// the first element will be the brand
+const LINKS = [
+    {
+        icon: <img src={hicubeLogo}/>,
+        text: <img src={hicubeLogoText}/>,
+    },
+    null, // separator
+    {
+        page: 'quickstart',
+        icon: <span className="glyphicon glyphicon-flash"/>
+    },
+    {
+        page: 'docs',
+        icon: <span className="glyphicon glyphicon-education"/>,
+        text: 'Documentation'
+    },
+    {
+        page: 'about',
+        icon: <span className="glyphicon glyphicon-info-sign"/>
+    },
+    {
+        page: 'acks',
+        icon: <span className="glyphicon glyphicon-thumbs-up"/>,
+        text: 'Acknowledgements'
+    },
+    null, // separator
+    {
+        page: 'explorer',
+        icon: <span className="glyphicon glyphicon-equalizer"/>,
+        text: 'Time Series Explorer'
+    },
+    {
+        page: 'dashboards',
+        icon: <span className="glyphicon glyphicon-dashboard"/>,
+        text: 'Live Dashboards'
+    },
+    {
+        page: 'examples',
+        icon: <span className="glyphicon glyphicon-heart"/>,
+        text: 'Sample Analyses'
+    }
+];
+
 class Sidebar extends React.Component {
     render() {
+        let idx = 0;
         return <div>
             <div className="topbar visible-xs text-right">
                 <div className="sidebar-toggle">
@@ -43,63 +89,23 @@ class Sidebar extends React.Component {
             </div>
             <div className="sidebar sidebar-hidden">
                 <ul className="nav nav-pills nav-stacked">
-                    <SidebarLink to='/' isBrand={true}
-                                 icon={<img src={hicubeLogo}/>}
-                                 text={<img src={hicubeLogoText}/>}
-                    />
-
-                    <div className='sidebar-separator'/>
-
-                    <SidebarLink to='/quickstart'
-                                 icon={<span className="glyphicon glyphicon-flash"/>}
-                                 text={'Quickstart'}
-                    />
-                    <SidebarLink to='/docs'
-                                 icon={<span
-                                     className="glyphicon glyphicon-education"/>}
-                                 text={'Documentation'}
-                    />
-                    <SidebarLink to='/about'
-                                 icon={<span
-                                     className="glyphicon glyphicon-info-sign"/>}
-                                 text={'About Hi³'}
-                    />
-                    <SidebarLink to='/acks'
-                                 icon={<span
-                                     className="glyphicon glyphicon-thumbs-up"/>}
-                                 text={'Acknowledgements'}
-                    />
-
-                    <div className='sidebar-separator'/>
-
-                    <SidebarLink to='/explorer'
-                                 icon={<span
-                                     className="glyphicon glyphicon-equalizer"/>}
-                                 text={'Time Series Explorer'}
-                    />
-                    <SidebarLink to='/dashboards'
-                                 icon={<span
-                                     className="glyphicon glyphicon-dashboard"/>}
-                                 text={'Live Dashboards'}
-                    />
-                    <SidebarLink to='/examples'
-                                 icon={<span
-                                     className="glyphicon glyphicon-heart"/>}
-                                 text={'Sample Analyses'}
-                    />
-
+                    {LINKS.map(link => {
+                        idx++;
+                        return link ?
+                            <SidebarLink key={idx} {...link}/> :
+                            <div className='sidebar-separator' key={idx}/>;
+                    })}
                     {auth.isAuthenticated() ?
                         (<div className='pull-bottom'>
-                            <SidebarLink to='/user/profile'
+                            <SidebarLink page='user/profile'
                                          icon={<span
                                              className="glyphicon glyphicon-user"/>}
                                          text={<div>Logged in
                                              as <i>{auth.getNickname()}</i></div>}
                             />
-                            <SidebarLink to='/logout'
+                            <SidebarLink page='logout'
                                          icon={<span
                                              className="glyphicon glyphicon-log-out"/>}
-                                         text={'Logout'}
                             />
                         </div>)
                         : null};
