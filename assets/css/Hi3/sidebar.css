@@ -92,7 +92,7 @@
     display: table-cell;
     vertical-align: middle;
     text-align: center;
-    color: #b3b3b3;
+    color: #636363;
 }
 
 .sidebar .nav .icon {
@@ -122,10 +122,10 @@
 }
 
 /* active link (hover is no change) */
-.sidebar .nav li.active > a,
-.sidebar .nav li.active > a > div,
-.sidebar .nav li.active > a:hover > div,
-.sidebar .nav li.active > a:focus > div {
+.sidebar .nav li > a.active,
+.sidebar .nav li > a.active > div,
+.sidebar .nav li > a.active:hover > div,
+.sidebar .nav li > a.active:focus > div {
     color: #fff;
     background-color: transparent;
 }

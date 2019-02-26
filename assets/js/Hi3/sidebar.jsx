@@ -1,4 +1,5 @@
 import React from 'react';
+import {NavLink} from 'react-router-dom';
 
 import {auth} from 'Auth';
 
@@ -23,16 +24,16 @@ class Sidebar extends React.Component {
             <div className="sidebar sidebar-hidden">
                 <ul className="nav nav-pills nav-stacked">
                     <li className="brand">
-                        <a href="/">
+                        <NavLink to="/">
                             <div className="icon"><img src={hicubeLogo} /></div>
                             <div className="text"><img src={hicubeLogoText}/></div>
-                        </a>
+                        </NavLink>
                     </li>
 
                     <div className='sidebar-separator'/>
 
                     <li>
-                        <a href="/quickstart">
+                        <NavLink to="/quickstart">
                             <div className="icon">
                                 <span
                                     className="glyphicon glyphicon-flash"/>
@@ -40,10 +41,10 @@ class Sidebar extends React.Component {
                             <div className="text">
                                 Quickstart
                             </div>
-                        </a>
+                        </NavLink>
                     </li>
                     <li>
-                        <a href="/docs">
+                        <NavLink to="/docs">
                             <div className="icon">
                                 <span
                                     className="glyphicon glyphicon-education"/>
@@ -51,20 +52,20 @@ class Sidebar extends React.Component {
                             <div className="text">
                                 Documentation
                             </div>
-                        </a>
+                        </NavLink>
                     </li>
                     <li>
-                        <a href="/about">
+                        <NavLink to="/about">
                             <div className="icon">
                                 <span className="glyphicon glyphicon-info-sign"/>
                             </div>
                             <div className="text">
                                 About Hi³
                             </div>
-                        </a>
+                        </NavLink>
                     </li>
                     <li>
-                        <a href="/acks">
+                        <NavLink to="/acks">
                             <div className="icon">
                                 <span
                                     className="glyphicon glyphicon-thumbs-up"/>
@@ -72,23 +73,23 @@ class Sidebar extends React.Component {
                             <div className="text">
                                 Acknowledgements
                             </div>
-                        </a>
+                        </NavLink>
                     </li>
 
                     <div className='sidebar-separator'/>
 
                     <li>
-                        <a href="/explorer">
+                        <NavLink to="/explorer">
                             <div className="icon">
                                 <span className="glyphicon glyphicon-equalizer"/>
                             </div>
                             <div className="text">
                                 Time Series Explorer
                             </div>
-                        </a>
+                        </NavLink>
                     </li>
                     <li>
-                        <a href="/dashboards">
+                        <NavLink to="/dashboards">
                             <div className="icon">
                                 <span
                                     className="glyphicon glyphicon-dashboard"/>
@@ -96,10 +97,10 @@ class Sidebar extends React.Component {
                             <div className="text">
                                 Live Dashboards
                             </div>
-                        </a>
+                        </NavLink>
                     </li>
                     <li>
-                        <a href="/examples">
+                        <NavLink to="/examples">
                             <div className="icon">
                                 <span
                                     className="glyphicon glyphicon-heart"/>
@@ -107,23 +108,23 @@ class Sidebar extends React.Component {
                             <div className="text">
                                 Sample Analyses
                             </div>
-                        </a>
+                        </NavLink>
                     </li>
 
                     {auth.isAuthenticated() ?
                         (<div className='pull-bottom'>
                         <li>
-                            <a href='/user/profile'>
+                            <NavLink to='/user/profile'>
                                 <div className="icon">
                                     <span className="glyphicon glyphicon-user"/>
                                 </div>
                                 <div className='text username'>
                                     Logged in as <i>{auth.getNickname()}</i>
                                 </div>
-                            </a>
+                            </NavLink>
                         </li>
                         <li>
-                            <a href='/logout'>
+                            <NavLink to='/logout'>
                                 <div className="icon">
                                     <span
                                         className="glyphicon glyphicon-log-out"/>
@@ -131,7 +132,7 @@ class Sidebar extends React.Component {
                                 <div className='text logout'>
                                     Logout
                                 </div>
-                            </a>
+                            </NavLink>
                         </li>
                     </div>) : null};
                 </ul>
