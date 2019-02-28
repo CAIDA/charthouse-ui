@@ -27,8 +27,10 @@ import Profile from './user/profile';
 import Pending from './user/pending';
 
 import Explorer from 'Explorer';
+import Platforms from './pages/platforms';
+import Hijacks from './pages/platforms/hijacks';
 
-import Home from './home';
+import Home from './pages/home';
 
 // TODO: switch to SVG/font so that nav coloring works correctly
 import hicubeLogo from 'images/logos/hicube-icon-white.png';
@@ -55,6 +57,8 @@ class ContentRouter extends React.Component {
             {/* page routes */}
             <AuthorizedRoute path='/explorer' permission='ui:explorer'
                              component={Explorer}/>
+            <Route path='/platforms/hijacks' component={Hijacks}/>
+            <Route path='/platforms' component={Platforms}/>
 
             <Route path='/' component={Home}/>
         </Switch>;
@@ -97,7 +101,7 @@ const SIDEBAR_LINKS = [
     },
     {
         page: 'platforms',
-        icon: <span className="glyphicon glyphicon-dashboard"/>,
+        icon: <span className="glyphicon glyphicon-globe"/>,
         text: 'Event Platforms'
     },
     {
@@ -113,18 +117,22 @@ const SIDEBAR_LINKS = [
 ];
 
 // which pages should/should not have a pinned sidebar
-const PINNED_SIDEBAR_PAGES = {};
+const PINNED_SIDEBAR_PAGES = {
+    '/platforms/hijacks': false // observatory wants lots of space
+};
 SIDEBAR_LINKS.forEach(link => {
     if (link) {
-        PINNED_SIDEBAR_PAGES[`/${link.page || ''}`] = PINNED_SIDEBAR_DEFAULT &&
-            (link.pinned === true || link.pinned !== false)
+        PINNED_SIDEBAR_PAGES[`/${link.page || ''}`] = link.pinned;
     }
 });
 
 class Hi3Content extends React.Component {
 
     render() {
-        const sidebarPinned = PINNED_SIDEBAR_PAGES[this.props.location.pathname];
+        let sidebarPinned = PINNED_SIDEBAR_PAGES[this.props.location.pathname];
+        if (sidebarPinned !== true && sidebarPinned !== false) {
+            sidebarPinned = PINNED_SIDEBAR_DEFAULT;
+        }
         return <div>
             <Sidebar isPinned={sidebarPinned} links={SIDEBAR_LINKS}/>
             <div id='hi3-container'

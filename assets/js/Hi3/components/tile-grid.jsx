@@ -2,13 +2,16 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import {Link} from 'react-router-dom';
 
+import 'Hi3/css/tile-grid.css';
+
+const TILES_PER_ROW = 3;
+
 class Tile extends React.Component {
 
     static propTypes = {
         to: PropTypes.string.isRequired,
         thumb: PropTypes.string.isRequired,
         title: PropTypes.string.isRequired,
-        description: PropTypes.node.isRequired,
         disabled: PropTypes.bool // TODO
     };
 
@@ -18,14 +21,14 @@ class Tile extends React.Component {
 
     render () {
         return <Link to={this.props.to}>
-            <div className="col-md-4">
+            <div className={`col-md-${12/TILES_PER_ROW}`}>
                 <div className="thumbnail">
                     <img src={this.props.thumb}/>
                     <div className="caption text-center">
                         <h4>
                             {this.props.title}
                         </h4>
-                        {this.props.description}
+                        {this.props.children}
                     </div>
                 </div>
             </div>
@@ -36,16 +39,22 @@ class Tile extends React.Component {
 class TileGrid extends React.Component {
 
     static propTypes = {
-        title: PropTypes.node,
-        children: PropTypes.arrayOf(PropTypes.objectOf(Tile)).isRequired
+        title: PropTypes.node
     };
 
     render() {
-        return <div>
+        let children = this.props.children.slice();
+        let rows = [];
+        while (children.length) {
+            rows.push(children.splice(0, TILES_PER_ROW))
+        }
+        return <div className='tilegrid'>
             {this.props.title ? <h3>{this.props.title}</h3> : null }
-            <div className="row row-thumbs">
-                {this.props.tiles}
-            </div>
+            {rows.map((row, idx) => {
+                return <div className="row" key={idx}>
+                    {row}
+                </div>
+            })}
         </div>
     }
 }

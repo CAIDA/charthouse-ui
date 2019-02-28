@@ -47,7 +47,6 @@ class Sidebar extends React.Component {
     };
 
     render() {
-        let idx = 0;
         const collapsed = (!this.props.isPinned && !this.state.isExpanded) ?
             'sidebar-collapsed' : '';
         return <div>
@@ -56,8 +55,7 @@ class Sidebar extends React.Component {
                  onMouseOut={!this.props.isPinned ? this.onLeave : null}
             >
                 <ul>
-                    {this.props.links.map(link => {
-                        idx++;
+                    {this.props.links.map((link, idx) => {
                         return link ?
                             <SidebarLink key={idx} onClick={this.onLeave} {...link}/> :
                             <div className='sidebar-separator' key={idx}/>;
