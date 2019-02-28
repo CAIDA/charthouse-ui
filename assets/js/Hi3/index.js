@@ -17,14 +17,18 @@ import AuthorizedRoute from 'Auth/authorized-route';
 import Sidebar from './sidebar';
 
 // "pages"
-import Home from './home';
 import SymRedirect from './sym-redirect';
+
 import Login from './login';
-import LoginCallback from './login-callback';
 import Logout from './logout';
+import LoginCallback from './login-callback';
+
 import Profile from './user/profile';
-import Explorer from 'Explorer';
 import Pending from './user/pending';
+
+import Explorer from 'Explorer';
+
+import Home from './home';
 
 // TODO: switch to SVG/font so that nav coloring works correctly
 import hicubeLogo from 'images/logos/hicube-icon-white.png';
@@ -36,7 +40,7 @@ import hicubeLogoText from 'images/logos/hicube-text-white.png';
 class ContentRouter extends React.Component {
     render() {
         return <Switch>
-            {/* internal routes (not explicitly linked */}
+            {/* internal routes (not explicitly linked) */}
             <Route path='/@:tag' component={SymRedirect}/>
 
             {/* auth routes */}
@@ -49,9 +53,10 @@ class ContentRouter extends React.Component {
             <Route path='/user/pending' component={Pending}/>
 
             {/* page routes */}
-            <Route path='/' component={Home}/>
             <AuthorizedRoute path='/explorer' permission='ui:explorer'
                              component={Explorer}/>
+
+            <Route path='/' component={Home}/>
         </Switch>;
     }
 }

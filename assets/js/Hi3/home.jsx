@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
 
 import caidaLogo from 'images/logos/caida-logo-cropped.svg';
 import hi3Logo from 'images/logos/hicube-full.png';
@@ -13,7 +14,7 @@ class InterfaceTiles extends React.Component {
         return <div>
             <h3>Data Interfaces</h3>
         <div className="row row-thumbs">
-            <a href="/explorer">
+            <Link to="/explorer">
                 <div className="col-md-4">
                     <div className="thumbnail">
                         <img src={explorerThumb}/>
@@ -32,8 +33,8 @@ class InterfaceTiles extends React.Component {
                         </div>
                     </div>
                 </div>
-            </a>
-            <a href="/dashboards">
+            </Link>
+            <Link to="/dashboards">
                 <div className="col-md-4">
                     <div className="thumbnail">
                         <img src={dashboardThumb}/>
@@ -53,8 +54,8 @@ class InterfaceTiles extends React.Component {
                         </div>
                     </div>
                 </div>
-            </a>
-            <a href="/examples">
+            </Link>
+            <Link to="/examples">
                 <div className="col-md-4">
                     <div className="thumbnail">
                         <img src={examplesThumb}/>
@@ -74,7 +75,7 @@ class InterfaceTiles extends React.Component {
                         </div>
                     </div>
                 </div>
-            </a>
+            </Link>
         </div>
         </div>;
     }
