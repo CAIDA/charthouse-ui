@@ -1,19 +1,18 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
 
 import caidaLogo from 'images/logos/caida-logo-cropped.svg';
 import hi3Logo from 'images/logos/hicube-full.png';
 import explorerThumb from 'images/logos/hicube-icon.png';
 import dashboardThumb from 'images/logos/hicube-icon.png';
 import examplesThumb from 'images/logos/hicube-icon.png';
+import platformsThumb from 'images/logos/hicube-icon.png';
 
 import 'Hi3/css/home.css';
+import {TileGrid} from './components/tile-grid';
 
 class InterfaceTiles extends React.Component {
     render() {
-        return <div>
-            <h3>Data Interfaces</h3>
-        <div className="row row-thumbs">
+        return <TileGrid title='Data Investigation Interfaces'>
             <Link to="/explorer">
                 <div className="col-md-4">
                     <div className="thumbnail">
@@ -29,6 +28,24 @@ class InterfaceTiles extends React.Component {
                                 series
                                 together using specialized post-processing
                                 functions.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </Link>
+            <Link to="/platforms">
+                <div className="col-md-4">
+                    <div className="thumbnail">
+                        <img src={platformsThumb}/>
+                        <div className="caption text-center">
+                            <h4>
+                                Event Platforms
+                            </h4>
+                            <p>
+                                A collection of interfaces and dashboards
+                                tailored for specific types of Internet security
+                                events, including BGP Hijacking, and Large-scale
+                                outages.
                             </p>
                         </div>
                     </div>
@@ -76,8 +93,7 @@ class InterfaceTiles extends React.Component {
                     </div>
                 </div>
             </Link>
-        </div>
-        </div>;
+        </TileGrid>;
     }
 }
 

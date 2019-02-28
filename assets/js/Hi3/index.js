@@ -96,6 +96,11 @@ const SIDEBAR_LINKS = [
         pinned: false
     },
     {
+        page: 'platforms',
+        icon: <span className="glyphicon glyphicon-dashboard"/>,
+        text: 'Event Platforms'
+    },
+    {
         page: 'dashboards',
         icon: <span className="glyphicon glyphicon-dashboard"/>,
         text: 'Live Dashboards'
