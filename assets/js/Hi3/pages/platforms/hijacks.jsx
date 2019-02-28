@@ -1,10 +1,6 @@
 import React from 'react';
 
-import HijacksDashboard from 'Hijacks';
-
 import 'Hi3/css/pages/platforms/hijacks.css';
-
-// TODO: refactor this page into it's own module like the Explorer
 
 class Hijacks extends React.Component {
     render() {
@@ -12,11 +8,13 @@ class Hijacks extends React.Component {
             <div className='page-header'>
                 <h1>BGP Hijacks Observatory</h1>
             </div>
-            <div className='acks pull-right'>
-                acks
-            </div>
-            <div>
-                <HijacksDashboard/>
+            <div className='content'>
+                <div className='acks pull-right text-right'>
+                    <h3>Acknowledgements</h3>
+                </div>
+                <div>
+                    test
+                </div>
             </div>
         </div>;
     }

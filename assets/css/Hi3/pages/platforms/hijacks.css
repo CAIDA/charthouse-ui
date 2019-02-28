@@ -4,6 +4,12 @@
     margin-right: 50px;
 }
 
-#hijacks.acks {
+#hijacks .acks {
+    width: 300px;
+    border-left: #d0d0d0 1px solid;
+    padding-left: 15px;
+    min-height: 600px;
+}
 
+#hijacks > .content {
 }
