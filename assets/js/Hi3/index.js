@@ -53,7 +53,7 @@ const PINNED_SIDEBAR_DEFAULT = true;
 // which pages should be linked to (in addition to home)
 const SIDEBAR_LINKS = [
     {
-        page: '/',
+        isBrand: true,
         icon: <img src={hicubeLogo}/>,
         text: <img src={hicubeLogoText}/>,
     },
@@ -99,7 +99,7 @@ const SIDEBAR_LINKS = [
 const PINNED_SIDEBAR_PAGES = {};
 SIDEBAR_LINKS.forEach(link => {
     if (link) {
-        PINNED_SIDEBAR_PAGES[`/${link.page}`] = PINNED_SIDEBAR_DEFAULT &&
+        PINNED_SIDEBAR_PAGES[`/${link.page || ''}`] = PINNED_SIDEBAR_DEFAULT &&
             (link.pinned === true || link.pinned !== false)
     }
 });

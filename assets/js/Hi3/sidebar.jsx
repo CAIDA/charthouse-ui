@@ -12,6 +12,7 @@ import 'Hi3/css/sidebar.css';
 class SidebarLink extends React.Component {
 
     static propTypes = {
+        isBrand: PropTypes.bool,
         page: PropTypes.string,
         icon: PropTypes.node.isRequired,
         onClick: PropTypes.func.isRequired,
@@ -20,8 +21,9 @@ class SidebarLink extends React.Component {
 
     render() {
         const text = this.props.text || titleCase(this.props.page);
-        return <li className={this.props.page === '/' ? 'brand' : null}>
-            <NavLink to={`/${this.props.page}`} onClick={this.props.onClick}>
+        return <li className={this.props.isBrand ? 'brand' : null}>
+            <NavLink to={`/${this.props.isBrand ? '' : this.props.page}`}
+                     onClick={this.props.onClick}>
                 <div className="icon">{this.props.icon}</div>
                 <div className="text">{text}</div>
             </NavLink>
