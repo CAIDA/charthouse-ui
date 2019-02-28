@@ -38,6 +38,7 @@ class LoginCallbackPage extends React.Component {
 
         // 1. if we are processing a callback
         if (this.state.handlingCallback) {
+            // TODO: make this message prettier (w. spinner)
             return <p>Please wait..</p>;
         }
 
