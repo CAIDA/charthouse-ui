@@ -6,6 +6,7 @@ import titleCase from 'title-case';
 import {auth} from 'Auth';
 
 import 'Hi3/css/sidebar.css';
+// TODO: switch to SVG/font so that nav coloring works correctly
 import hicubeLogo from 'images/logos/hicube-icon-white.png';
 import hicubeLogoText from 'images/logos/hicube-text-white.png';
 
