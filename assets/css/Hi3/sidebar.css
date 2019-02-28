@@ -14,14 +14,14 @@
     transition: width 0.2s ease;
 }
 
-/* collapsed */
 .sidebar {
+    width: 260px;
+}
+.sidebar-collapsed {
     width: 60px;
 }
 
-/* expanded */
-.sidebar:hover,
-.sidebar:focus,
+/* li's are always at expanded width */
 .sidebar > ul li {
     width: 260px !important;
 }
@@ -39,17 +39,14 @@
     transition: 0.2s ease;
 }
 
-/* collapsed */
+.sidebar .sidebar-separator,
 .sidebar .sidebar-separator {
-    margin-left: 20px;
-    margin-right: 20px;
-}
-
-/* expanded */
-.sidebar:hover .sidebar-separator,
-.sidebar:focus .sidebar-separator {
     margin-left: 10px;
     margin-right: 10px;
+}
+.sidebar.sidebar-collapsed .sidebar-separator {
+    margin-left: 20px;
+    margin-right: 20px;
 }
 
 /* all links */

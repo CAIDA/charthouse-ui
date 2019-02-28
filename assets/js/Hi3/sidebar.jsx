@@ -80,10 +80,22 @@ const LINKS = [
 ];
 
 class Sidebar extends React.Component {
+
+    state = {
+        isExpanded: false
+    };
+
     render() {
         let idx = 0;
+        const collapsed = !this.state.isExpanded ? 'sidebar-collapsed' : '';
         return <div>
-            <div className="sidebar">
+            <div className={`sidebar ${collapsed}`}
+                 style={{
+                     width: this.state.width
+                 }}
+                 onMouseOver={this.onHover}
+                 onMouseOut={this.onLeave}
+            >
                 <ul>
                     {LINKS.map(link => {
                         idx++;
@@ -109,6 +121,14 @@ class Sidebar extends React.Component {
             </div>
         </div>;
     }
+
+    onHover = () => {
+        this.setState({isExpanded: true});
+    };
+
+    onLeave = () => {
+        this.setState({isExpanded: false});
+    };
 }
 
 export default Sidebar;
