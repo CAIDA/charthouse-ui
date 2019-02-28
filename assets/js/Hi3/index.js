@@ -36,16 +36,23 @@ import hicubeLogoText from 'images/logos/hicube-text-white.png';
 class ContentRouter extends React.Component {
     render() {
         return <Switch>
-                <Route path='/@:tag' component={SymRedirect}/>
-                <Route path='/login' component={Login}/>
-                <Route path='/logout' component={Logout}/>
-                <Route path='/auth/callback' component={LoginCallback}/>
-                <AuthorizedRoute path='/explorer' permission='ui:explorer'
-                                 component={Explorer}/>
-                <AuthorizedRoute path='/user/profile' component={Profile}/>
-                <Route path='/user/pending' component={Pending}/>
-                <Route path='/' component={Home}/>
-            </Switch>;
+            {/* internal routes (not explicitly linked */}
+            <Route path='/@:tag' component={SymRedirect}/>
+
+            {/* auth routes */}
+            <Route path='/login' component={Login}/>
+            <Route path='/logout' component={Logout}/>
+            <Route path='/auth/callback' component={LoginCallback}/>
+
+            {/* user management routes */}
+            <AuthorizedRoute path='/user/profile' component={Profile}/>
+            <Route path='/user/pending' component={Pending}/>
+
+            {/* page routes */}
+            <Route path='/' component={Home}/>
+            <AuthorizedRoute path='/explorer' permission='ui:explorer'
+                             component={Explorer}/>
+        </Switch>;
     }
 }
 
