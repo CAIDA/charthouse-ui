@@ -7,11 +7,7 @@ import {auth} from 'Auth';
 
 import 'Hi3/css/sidebar.css';
 
-// TODO: properly support mobile:
-//       - why does not work on iphone xs?
-//       - handle click on hamburger
-//       - toggle sidebar hidden when link clicked
-//       - toggle sidebar hidden when main container clicked
+// TODO: properly support mobile
 
 class SidebarLink extends React.Component {
 
