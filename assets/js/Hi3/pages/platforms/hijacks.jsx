@@ -1,12 +1,23 @@
 import React from 'react';
 
-class Platforms extends React.Component {
+import 'Hi3/css/pages/platforms/hijacks.css';
+
+// TODO: refactor this page into it's own module like the Explorer
+
+class Hijacks extends React.Component {
     render() {
-        return <div className='container-fluid'>
-            <h1>BGP Hijacks Observatory</h1>
-            <h4>TODO</h4>
+        return <div id='hijacks' className='container-fluid'>
+            <div className='page-header'>
+                <h1>BGP Hijacks Observatory</h1>
+            </div>
+            <div className='acks pull-right'>
+                acks
+            </div>
+            <div>
+                content
+            </div>
         </div>;
     }
 }
 
-export default Platforms;
+export default Hijacks;

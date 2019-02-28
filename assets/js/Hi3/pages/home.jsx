@@ -9,7 +9,7 @@ import dashboardThumb from 'images/logos/hicube-icon.png';
 import examplesThumb from 'images/logos/hicube-icon.png';
 import platformsThumb from 'images/logos/hicube-icon.png';
 
-import 'Hi3/css/home.css';
+import 'Hi3/css/pages/home.css';
 
 class InterfaceTiles extends React.Component {
     render() {
