@@ -82,20 +82,26 @@ const LINKS = [
 
 class Sidebar extends React.Component {
 
+    static propTypes = {
+        isPinned: PropTypes.bool
+    };
+
+    static defaultProps = {
+        isPinned: false
+    };
+
     state = {
         isExpanded: false
     };
 
     render() {
         let idx = 0;
-        const collapsed = !this.state.isExpanded ? 'sidebar-collapsed' : '';
+        const collapsed = (!this.props.isPinned && !this.state.isExpanded) ?
+            'sidebar-collapsed' : '';
         return <div>
             <div className={`sidebar ${collapsed}`}
-                 style={{
-                     width: this.state.width
-                 }}
-                 onMouseOver={this.onHover}
-                 onMouseOut={this.onLeave}
+                 onMouseOver={!this.props.isPinned ? this.onHover : null}
+                 onMouseOut={!this.props.isPinned ? this.onLeave : null}
             >
                 <ul>
                     {LINKS.map(link => {

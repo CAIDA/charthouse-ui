@@ -2,6 +2,10 @@
     margin-left: 60px;
 }
 
+#hi3-container.sidebar-expanded {
+    margin-left: 260px;
+}
+
 .sidebar {
     position: fixed;
     top: 0;

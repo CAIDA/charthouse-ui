@@ -9,6 +9,7 @@ import 'css/base.css';
 // library imports
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {withRouter} from 'react-router';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 // auth
@@ -45,19 +46,36 @@ class ContentRouter extends React.Component {
     }
 }
 
+// TODO: move sidebar page config here
+
+// which pages should/should not have a pinned sidebar
+const PINNED_SIDEBAR_DEFAULT = true;
+const PINNED_SIDEBAR_PAGES = {
+    '/explorer': false
+};
+class Hi3Content extends React.Component {
+    render() {
+        const thisPagePinned = PINNED_SIDEBAR_PAGES[this.props.location.pathname];
+        const sidebarPinned = PINNED_SIDEBAR_DEFAULT &&
+            (thisPagePinned === true || thisPagePinned !== false);
+        return <div>
+            <Sidebar isPinned={sidebarPinned}/>
+            <div id='hi3-container'
+                 className={sidebarPinned ? 'sidebar-expanded' : ''}>
+                <ContentRouter/>
+            </div>
+        </div>
+    }
+}
+const Hi3ContentWithRouter = withRouter(Hi3Content);
+
 class Hi3App extends React.Component {
 
     render() {
         return <BrowserRouter>
-            <div>
-                <Sidebar/>
-                <div id='hi3-container'>
-                    <ContentRouter/>
-                </div>
-            </div>
+            <Hi3ContentWithRouter/>
         </BrowserRouter>;
     }
 
 }
-
 ReactDOM.render(<Hi3App/>, document.getElementById('root'));
