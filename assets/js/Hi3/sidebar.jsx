@@ -6,9 +6,6 @@ import titleCase from 'title-case';
 import {auth} from 'Auth';
 
 import 'Hi3/css/sidebar.css';
-// TODO: switch to SVG/font so that nav coloring works correctly
-import hicubeLogo from 'images/logos/hicube-icon-white.png';
-import hicubeLogoText from 'images/logos/hicube-text-white.png';
 
 // TODO: properly support mobile:
 //       - why does not work on iphone xs?
@@ -27,22 +24,14 @@ class SidebarLink extends React.Component {
 
     render() {
         const text = this.props.text || titleCase(this.props.page);
-        return <li className={!this.props.page ? 'brand' : null}>
-            <NavLink to={`/${this.props.page || ''}`} onClick={this.props.onClick}>
+        return <li className={this.props.page === '/' ? 'brand' : null}>
+            <NavLink to={`/${this.props.page}`} onClick={this.props.onClick}>
                 <div className="icon">{this.props.icon}</div>
                 <div className="text">{text}</div>
             </NavLink>
         </li>;
     }
 }
-
-const FIXED_LINKS = [
-    {
-        icon: <img src={hicubeLogo}/>,
-        text: <img src={hicubeLogoText}/>,
-    },
-    null, // separator
-];
 
 class Sidebar extends React.Component {
 
@@ -69,7 +58,7 @@ class Sidebar extends React.Component {
                  onMouseOut={!this.props.isPinned ? this.onLeave : null}
             >
                 <ul>
-                    {FIXED_LINKS.concat(this.props.links).map(link => {
+                    {this.props.links.map(link => {
                         idx++;
                         return link ?
                             <SidebarLink key={idx} onClick={this.onLeave} {...link}/> :

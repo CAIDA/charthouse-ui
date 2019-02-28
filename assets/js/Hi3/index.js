@@ -14,7 +14,6 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 // auth
 import AuthorizedRoute from 'Auth/authorized-route';
-
 import Sidebar from './sidebar';
 
 // "pages"
@@ -26,6 +25,10 @@ import Logout from './logout';
 import Profile from './user/profile';
 import Explorer from 'Explorer';
 import Pending from './user/pending';
+
+// TODO: switch to SVG/font so that nav coloring works correctly
+import hicubeLogo from 'images/logos/hicube-icon-white.png';
+import hicubeLogoText from 'images/logos/hicube-text-white.png';
 
 // TODO: nested routes (see https://devhints.io/react-router)
 // TODO: default route and not-found route
@@ -46,15 +49,15 @@ class ContentRouter extends React.Component {
     }
 }
 
-// TODO: move sidebar page config here
-
-// which pages should/should not have a pinned sidebar
 const PINNED_SIDEBAR_DEFAULT = true;
-const PINNED_SIDEBAR_PAGES = {
-    '/explorer': false
-};
 // which pages should be linked to (in addition to home)
 const SIDEBAR_LINKS = [
+    {
+        page: '/',
+        icon: <img src={hicubeLogo}/>,
+        text: <img src={hicubeLogoText}/>,
+    },
+    null, // separator
     {
         page: 'quickstart',
         icon: <span className="glyphicon glyphicon-flash"/>
@@ -77,7 +80,8 @@ const SIDEBAR_LINKS = [
     {
         page: 'explorer',
         icon: <span className="glyphicon glyphicon-equalizer"/>,
-        text: 'Time Series Explorer'
+        text: 'Time Series Explorer',
+        pinned: false
     },
     {
         page: 'dashboards',
@@ -90,11 +94,20 @@ const SIDEBAR_LINKS = [
         text: 'Sample Analyses'
     }
 ];
+
+// which pages should/should not have a pinned sidebar
+const PINNED_SIDEBAR_PAGES = {};
+SIDEBAR_LINKS.forEach(link => {
+    if (link) {
+        PINNED_SIDEBAR_PAGES[`/${link.page}`] = PINNED_SIDEBAR_DEFAULT &&
+            (link.pinned === true || link.pinned !== false)
+    }
+});
+
 class Hi3Content extends React.Component {
+
     render() {
-        const thisPagePinned = PINNED_SIDEBAR_PAGES[this.props.location.pathname];
-        const sidebarPinned = PINNED_SIDEBAR_DEFAULT &&
-            (thisPagePinned === true || thisPagePinned !== false);
+        const sidebarPinned = PINNED_SIDEBAR_PAGES[this.props.location.pathname];
         return <div>
             <Sidebar isPinned={sidebarPinned} links={SIDEBAR_LINKS}/>
             <div id='hi3-container'
