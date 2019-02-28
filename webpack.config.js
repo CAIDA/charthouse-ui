@@ -95,6 +95,8 @@ webpackConfig.resolve.alias = {
     'Config': path.resolve(__dirname, './assets/js/config/'),
     'Explorer/css': path.resolve(__dirname, './assets/css/Explorer/'),
     'Explorer': path.resolve(__dirname, './assets/js/Explorer/'),
+    'Hijacks/css': path.resolve(__dirname, './assets/css/Hijacks/'),
+    'Hijacks': path.resolve(__dirname, './assets/js/Hijacks/'),
     'Hi3/css': path.resolve(__dirname, './assets/css/Hi3/'),
 };
 

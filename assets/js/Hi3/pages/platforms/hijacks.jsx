@@ -1,5 +1,7 @@
 import React from 'react';
 
+import HijacksDashboard from 'Hijacks';
+
 import 'Hi3/css/pages/platforms/hijacks.css';
 
 // TODO: refactor this page into it's own module like the Explorer
@@ -14,7 +16,7 @@ class Hijacks extends React.Component {
                 acks
             </div>
             <div>
-                content
+                <HijacksDashboard/>
             </div>
         </div>;
     }
