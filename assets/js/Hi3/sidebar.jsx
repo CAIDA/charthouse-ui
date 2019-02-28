@@ -83,12 +83,7 @@ class Sidebar extends React.Component {
     render() {
         let idx = 0;
         return <div>
-            <div className="topbar visible-xs text-right">
-                <div className="sidebar-toggle">
-                    <span className="sidebar-toggle-icon glyphicon glyphicon-menu-hamburger"/>
-                </div>
-            </div>
-            <div className="sidebar sidebar-hidden">
+            <div className="sidebar">
                 <ul className="nav nav-pills nav-stacked">
                     {LINKS.map(link => {
                         idx++;

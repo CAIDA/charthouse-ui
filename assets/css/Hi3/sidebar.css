@@ -1,30 +1,7 @@
-/* TOP BAR */
-.topbar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 1030;
-    background-color: #231f20;
-    padding-right: 5%;
+#hi3-container {
+    margin-left: 60px;
 }
 
-.topbar,
-.topbar-pad {
-    height: 60px;
-}
-
-.modal-open .tc-topbar {
-    visibility: hidden;
-}
-
-.sidebar-toggle {
-    padding-top: 14px;
-    font-size: 26px;
-    color: #fff;
-}
-
-/* SIDEBAR */
 .sidebar {
     position: fixed;
     top: 0;
@@ -34,25 +11,39 @@
     padding-top: 15px;
     background-color: #231f20;
     overflow-x: hidden;
-    width: 260px;
     transition: width 0.2s ease;
 }
 
-.sidebar-hidden {
-    width: 0;
+/* collapsed */
+.sidebar {
+    width: 60px;
+}
+
+/* expanded */
+.sidebar:hover,
+.sidebar:focus,
+.sidebar .nav li {
+    width: 260px !important;
 }
 
 .sidebar-separator {
     height: 10px;
     margin-bottom: 10px;
     border-bottom: 1px solid #999;
-
     transition: 0.2s ease;
 }
 
-.sidebar-hidden .sidebar-separator {
+/* collapsed */
+.sidebar .sidebar-separator {
     margin-left: 20px;
     margin-right: 20px;
+}
+
+/* expanded */
+.sidebar:hover .sidebar-separator,
+.sidebar:focus .sidebar-separator {
+    margin-left: 10px;
+    margin-right: 10px;
 }
 
 /* all links */
@@ -62,6 +53,7 @@
     height: 55px;
     display: table;
     table-layout: fixed;
+    border-radius: 0;
 }
 
 .sidebar .nav li > a:hover,
@@ -74,18 +66,24 @@
     font-size: unset !important;
 }
 
+.sidebar:hover .nav li.brand > a > .icon,
+.sidebar:focus .nav li.brand > a > .icon {
+    font-size: unset;
+}
+
+/* TODO: remove when brand is svg */
+.sidebar .nav li.brand > a > .text > img {
+    height: 31px;
+}
+.sidebar .nav li.brand > a > .text {
+    font-size: unset;
+}
+
 .sidebar .nav li.brand > a > .icon > img {
     width: 26px;
     height: 28px;
 }
-
-.sidebar .nav li.brand > a > .text {
-    font-size: unset !important;
-}
-
-.sidebar .nav li.brand > a > .text > img {
-    height: 31px;
-}
+/* end TODO */
 
 /* non-active link */
 .sidebar .nav li > a > div {
@@ -96,13 +94,13 @@
 }
 
 .sidebar .nav .icon {
-    width: 80px;
-    font-size: 20px !important;
+    width: 60px;
+    font-size: 22px;
 }
 
 .sidebar .nav .text,
 .sidebar .nav .pull-bottom .text {
-    font-size: 14px;
+    font-size: 18px;
     text-align: left;
     padding-right: 10px;
 }
@@ -136,80 +134,4 @@
     bottom: 0;
     transition: all .3s ease;
     padding-bottom: 10px;
-}
-
-.sidebar .pull-bottom .hidden-link {
-    display: none;
-}
-
-@media (min-width: 768px) {
-
-    .topbar,
-    .topbar-pad {
-        height: 0;
-    }
-
-    .sidebar {
-        width: 60px !important;
-    }
-
-    .sidebar-hidden {
-        width: 60px;
-    }
-
-    .sidebar:hover,
-    .sidebar:focus,
-    .sidebar .nav li {
-        width: 260px !important;
-        margin: 0;
-    }
-
-    .sidebar:hover .sidebar-separator,
-    .sidebar:focus .sidebar-separator {
-        margin-left: 10px;
-        margin-right: 10px;
-    }
-
-    /*
-    .sidebar:hover .pull-bottom,
-    .sidebar:focus .pull-bottom {
-        height: 120px;
-    }
-    */
-
-    .sidebar:hover .hidden-link,
-    .sidebar:focus .hidden-link {
-        display: inline !important;
-    }
-
-    .sidebar .nav .text {
-        font-size: 18px !important;
-    }
-
-    /*
-    .sidebar .nav .pull-bottom .text {
-        font-size: 14px !important;
-    }
-    */
-
-    .sidebar .nav .icon {
-        width: 60px !important;
-        font-size: 22px !important;
-    }
-
-    .sidebar .nav-pills li > a {
-        border-radius: 0;
-    }
-
-    .sidebar .nav li.brand > a > .icon {
-        font-size: unset !important;
-    }
-
-    .sidebar .nav li.brand > a > .text {
-        font-size: 20px !important;
-    }
-
-    #hi3-container {
-        margin-left: 60px;
-    }
 }
