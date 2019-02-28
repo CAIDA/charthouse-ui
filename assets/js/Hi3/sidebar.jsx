@@ -21,13 +21,14 @@ class SidebarLink extends React.Component {
     static propTypes = {
         page: PropTypes.string,
         icon: PropTypes.node.isRequired,
+        onClick: PropTypes.func.isRequired,
         text: PropTypes.node
     };
 
     render() {
         const text = this.props.text || titleCase(this.props.page);
         return <li className={!this.props.page ? 'brand' : null}>
-            <NavLink to={`/${this.props.page || ''}`}>
+            <NavLink to={`/${this.props.page || ''}`} onClick={this.props.onClick}>
                 <div className="icon">{this.props.icon}</div>
                 <div className="text">{text}</div>
             </NavLink>
@@ -100,18 +101,20 @@ class Sidebar extends React.Component {
                     {LINKS.map(link => {
                         idx++;
                         return link ?
-                            <SidebarLink key={idx} {...link}/> :
+                            <SidebarLink key={idx} onClick={this.onLeave} {...link}/> :
                             <div className='sidebar-separator' key={idx}/>;
                     })}
                     {auth.isAuthenticated() ?
                         (<div className='pull-bottom'>
-                            <SidebarLink page='user/profile'
+                            <SidebarLink onClick={this.onLeave}
+                                         page='user/profile'
                                          icon={<span
                                              className="glyphicon glyphicon-user"/>}
                                          text={<div>Logged in
                                              as <i>{auth.getNickname()}</i></div>}
                             />
-                            <SidebarLink page='logout'
+                            <SidebarLink onClick={this.onLeave}
+                                         page='logout'
                                          icon={<span
                                              className="glyphicon glyphicon-log-out"/>}
                             />
