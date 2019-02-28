@@ -32,6 +32,10 @@ body {
 
 /* Bootstrap overrides */
 
+.container {
+    margin-top: 50px;
+}
+
 .container-fluid {
     padding-left: 5px;
     padding-right: 5px;

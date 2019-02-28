@@ -29,6 +29,8 @@ import Pending from './user/pending';
 import Explorer from 'Explorer';
 import Platforms from './pages/platforms';
 import Hijacks from './pages/platforms/hijacks';
+import Dashboards from './pages/dashboards';
+import Examples from './pages/examples';
 
 import Home from './pages/home';
 
@@ -59,6 +61,10 @@ class ContentRouter extends React.Component {
                              component={Explorer}/>
             <Route path='/platforms/hijacks' component={Hijacks}/>
             <Route path='/platforms' component={Platforms}/>
+
+            <Route path='/dashboards' component={Dashboards}/>
+
+            <Route path='/examples' component={Examples}/>
 
             <Route path='/' component={Home}/>
         </Switch>;
