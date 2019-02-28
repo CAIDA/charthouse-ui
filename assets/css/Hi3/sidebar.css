@@ -22,8 +22,14 @@
 /* expanded */
 .sidebar:hover,
 .sidebar:focus,
-.sidebar .nav li {
+.sidebar > ul li {
     width: 260px !important;
+}
+
+.sidebar > ul {
+    margin-bottom: 0;
+    padding-left: 0;
+    list-style: none;
 }
 
 .sidebar-separator {
@@ -47,8 +53,8 @@
 }
 
 /* all links */
-.sidebar .nav li,
-.sidebar .nav li > a {
+.sidebar > ul li,
+.sidebar > ul li > a {
     padding: 0;
     height: 55px;
     display: table;
@@ -56,74 +62,67 @@
     border-radius: 0;
 }
 
-.sidebar .nav li > a:hover,
-.sidebar .nav li > a:focus {
+.sidebar > ul li > a:hover,
+.sidebar > ul li > a:focus {
     text-decoration: none;
 }
 
 /* brand */
-.sidebar .nav li.brand > a > .icon {
-    font-size: unset !important;
-}
-
-.sidebar:hover .nav li.brand > a > .icon,
-.sidebar:focus .nav li.brand > a > .icon {
+/* TODO: fix/remove when brand is svg */
+.sidebar > ul li.brand > a > .icon {
     font-size: unset;
 }
-
-/* TODO: remove when brand is svg */
-.sidebar .nav li.brand > a > .text > img {
-    height: 31px;
-}
-.sidebar .nav li.brand > a > .text {
-    font-size: unset;
-}
-
-.sidebar .nav li.brand > a > .icon > img {
+.sidebar > ul li.brand > a > .icon > img {
     width: 26px;
     height: 28px;
+}
+.sidebar > ul li.brand > a > .text > img {
+    height: 31px;
+}
+.sidebar > ul li.brand > a > .text {
+    font-size: unset;
 }
 /* end TODO */
 
 /* non-active link */
-.sidebar .nav li > a > div {
+.sidebar > ul li > a > div {
     display: table-cell;
     vertical-align: middle;
     text-align: center;
     color: #636363;
 }
 
-.sidebar .nav .icon {
+.sidebar > ul .icon {
     width: 60px;
     font-size: 22px;
 }
 
-.sidebar .nav .text,
-.sidebar .nav .pull-bottom .text {
+.sidebar > ul .text,
+.sidebar > ul .pull-bottom .text {
     font-size: 18px;
     text-align: left;
     padding-right: 10px;
 }
 
 /* non-active link, on hover */
-.sidebar .nav a,
-.sidebar .nav a:hover div,
-.sidebar .nav a:focus div {
+.sidebar > ul a,
+.sidebar > ul a:hover div,
+.sidebar > ul a:focus div {
     background-color: transparent !important;
     color: #fff !important;
     transition: color .2s !important;
 }
 
-.sidebar .nav a:focus,
-.sidebar .nav a:focus {
+.sidebar > ul a:focus,
+.sidebar > ul a:focus {
     outline: none;
 }
 
 /* active link (hover is no change) */
-.sidebar .nav li > a.active,
-.sidebar .nav li > a.active > div,
-.sidebar .nav li > a.active:hover > div,
-.sidebar .nav li > a.active:focus > div {
+.sidebar > ul li > a.active,
+.sidebar > ul li > a.active > div,
+.sidebar > ul li > a.active:hover > div,
+.sidebar > ul li > a.active:focus > div {
     color: #fff;
     background-color: transparent;
 }

@@ -84,7 +84,7 @@ class Sidebar extends React.Component {
         let idx = 0;
         return <div>
             <div className="sidebar">
-                <ul className="nav nav-pills nav-stacked">
+                <ul>
                     {LINKS.map(link => {
                         idx++;
                         return link ?
