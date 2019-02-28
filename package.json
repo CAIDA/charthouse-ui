@@ -58,6 +58,7 @@
         "react-bootstrap": "^0.32.4",
         "react-bootstrap-slider": "^2.1.5",
         "react-dom": "^16.5.2",
+        "react-iframe": "^1.5.0",
         "react-router-dom": "^4.3.1",
         "react-transition-group": "1.x",
         "title-case": "^2.1.1",
