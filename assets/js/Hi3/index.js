@@ -109,9 +109,7 @@ class Hi3Content extends React.Component {
     render() {
         const sidebarPinned = PINNED_SIDEBAR_PAGES[this.props.location.pathname];
         return <div>
-            {sidebarPinned === undefined ? null :
-                <Sidebar isPinned={sidebarPinned} links={SIDEBAR_LINKS}/>
-            }
+            <Sidebar isPinned={sidebarPinned} links={SIDEBAR_LINKS}/>
             <div id='hi3-container'
                  className={sidebarPinned ? 'sidebar-expanded' : ''}>
                 <ContentRouter/>
