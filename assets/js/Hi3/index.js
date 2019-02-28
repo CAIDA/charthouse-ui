@@ -53,13 +53,50 @@ const PINNED_SIDEBAR_DEFAULT = true;
 const PINNED_SIDEBAR_PAGES = {
     '/explorer': false
 };
+// which pages should be linked to (in addition to home)
+const SIDEBAR_LINKS = [
+    {
+        page: 'quickstart',
+        icon: <span className="glyphicon glyphicon-flash"/>
+    },
+    {
+        page: 'docs',
+        icon: <span className="glyphicon glyphicon-education"/>,
+        text: 'Documentation'
+    },
+    {
+        page: 'about',
+        icon: <span className="glyphicon glyphicon-info-sign"/>
+    },
+    {
+        page: 'acks',
+        icon: <span className="glyphicon glyphicon-thumbs-up"/>,
+        text: 'Acknowledgements'
+    },
+    null, // separator
+    {
+        page: 'explorer',
+        icon: <span className="glyphicon glyphicon-equalizer"/>,
+        text: 'Time Series Explorer'
+    },
+    {
+        page: 'dashboards',
+        icon: <span className="glyphicon glyphicon-dashboard"/>,
+        text: 'Live Dashboards'
+    },
+    {
+        page: 'examples',
+        icon: <span className="glyphicon glyphicon-heart"/>,
+        text: 'Sample Analyses'
+    }
+];
 class Hi3Content extends React.Component {
     render() {
         const thisPagePinned = PINNED_SIDEBAR_PAGES[this.props.location.pathname];
         const sidebarPinned = PINNED_SIDEBAR_DEFAULT &&
             (thisPagePinned === true || thisPagePinned !== false);
         return <div>
-            <Sidebar isPinned={sidebarPinned}/>
+            <Sidebar isPinned={sidebarPinned} links={SIDEBAR_LINKS}/>
             <div id='hi3-container'
                  className={sidebarPinned ? 'sidebar-expanded' : ''}>
                 <ContentRouter/>

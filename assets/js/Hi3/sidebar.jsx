@@ -36,53 +36,18 @@ class SidebarLink extends React.Component {
     }
 }
 
-// array of links to render
-// the first element will be the brand
-const LINKS = [
+const FIXED_LINKS = [
     {
         icon: <img src={hicubeLogo}/>,
         text: <img src={hicubeLogoText}/>,
     },
     null, // separator
-    {
-        page: 'quickstart',
-        icon: <span className="glyphicon glyphicon-flash"/>
-    },
-    {
-        page: 'docs',
-        icon: <span className="glyphicon glyphicon-education"/>,
-        text: 'Documentation'
-    },
-    {
-        page: 'about',
-        icon: <span className="glyphicon glyphicon-info-sign"/>
-    },
-    {
-        page: 'acks',
-        icon: <span className="glyphicon glyphicon-thumbs-up"/>,
-        text: 'Acknowledgements'
-    },
-    null, // separator
-    {
-        page: 'explorer',
-        icon: <span className="glyphicon glyphicon-equalizer"/>,
-        text: 'Time Series Explorer'
-    },
-    {
-        page: 'dashboards',
-        icon: <span className="glyphicon glyphicon-dashboard"/>,
-        text: 'Live Dashboards'
-    },
-    {
-        page: 'examples',
-        icon: <span className="glyphicon glyphicon-heart"/>,
-        text: 'Sample Analyses'
-    }
 ];
 
 class Sidebar extends React.Component {
 
     static propTypes = {
+        links: PropTypes.arrayOf(PropTypes.object).isRequired,
         isPinned: PropTypes.bool
     };
 
@@ -104,7 +69,7 @@ class Sidebar extends React.Component {
                  onMouseOut={!this.props.isPinned ? this.onLeave : null}
             >
                 <ul>
-                    {LINKS.map(link => {
+                    {FIXED_LINKS.concat(this.props.links).map(link => {
                         idx++;
                         return link ?
                             <SidebarLink key={idx} onClick={this.onLeave} {...link}/> :
