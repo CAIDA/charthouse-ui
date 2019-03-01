@@ -47,21 +47,10 @@ class StatsTable extends React.Component {
             <div className='row text-center'>
                 <div className='col-md-6 data-stat'>
                     <div className='data-stat-number'>
-                        {this._formatValue(stats.today.count)}
-                    </div>
-                    <div className='data-stat-caption'>
-                        {name} Events Today
-                    </div>
-                </div>
-                <div className='col-md-6 data-stat'/>
-            </div>
-            <div className='row text-center'>
-                <div className='col-md-6 data-stat'>
-                    <div className='data-stat-number'>
                         {this._formatValue(stats.total.count)}
                     </div>
                     <div className='data-stat-caption'>
-                        {name} Events Total
+                        {name} Events
                     </div>
                 </div>
                 <div className='col-md-6 data-stat'>
@@ -69,9 +58,20 @@ class StatsTable extends React.Component {
                         {this._formatValue(stats.total.bytes, true)}
                     </div>
                     <div className='data-stat-caption'>
-                        {name} Bytes Total
+                        {name} Bytes
                     </div>
                 </div>
+            </div>
+            <div className='row text-center'>
+                <div className='col-md-6 data-stat'>
+                    <div className='data-stat-number'>
+                        {this._formatValue(stats.today.count)}
+                    </div>
+                    <div className='data-stat-caption'>
+                        {name} Events Today
+                    </div>
+                </div>
+                <div className='col-md-6 data-stat'/>
             </div>
         </div>
     }

@@ -48,7 +48,7 @@ class Hijacks extends React.Component {
                         esse cillum dolore eu fugiat nulla pariatur.
                     </p>
                 </div>
-                <div className='col-md-offset-2 col-md-4 stats-header text-right'>
+                <div className='col-md-offset-2 col-md-4 stats-header'>
                     <StatsTable eventType={this.state.eventType}/>
                 </div>
             </div>
