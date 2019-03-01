@@ -2,6 +2,7 @@ import $ from 'jquery';
 
 const API_URL = '//bgp.caida.org/json';
 const EVENTS_QUERY = '/events';
+const STATS_QUERY = '/stats';
 
 class ApiConnector {
 
@@ -29,8 +30,10 @@ class ApiConnector {
             timeout: xThis.timeout
         })
             .done(function (json, textStatus, xOptions) {
-                json.jsonRequestSize = xOptions.responseText.length; // Tag json size (bytes) in data
-                success(json);
+                success({
+                    jsonResponseSize: xOptions.responseText.length, // Tag json size (bytes) in data
+                    data: json
+                });
             })
             .fail(function (jqXHR, textStatus, errorThrown) {
                 if (textStatus === "abort") return;  // Call intentionally aborted
@@ -45,6 +48,17 @@ class ApiConnector {
             'GET',
             this.apiUrl + EVENTS_QUERY + '/' + type,
             params,
+            {},
+            success,
+            error
+        );
+    }
+
+    getStats(type, success, error) {
+        return this._getJson(
+            'GET',
+            this.apiUrl + STATS_QUERY + '/today', //+ '/' + type,
+            {},
             {},
             success,
             error

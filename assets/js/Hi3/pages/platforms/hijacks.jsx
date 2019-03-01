@@ -1,8 +1,10 @@
 import React from 'react';
 import Iframe from 'react-iframe';
+import {ToggleButtonGroup, ToggleButton} from 'react-bootstrap';
+
+import StatsTable from 'Hijacks/components/stats-table';
 
 import 'Hi3/css/pages/platforms/hijacks.css';
-import {ToggleButtonGroup, ToggleButton} from 'react-bootstrap';
 
 import caidaLogo from 'images/logos/caida-logo-cropped.svg';
 import ucsdLogo from 'images/logos/UCSanDiegoLogo-BlueGold.png';
@@ -47,42 +49,7 @@ class Hijacks extends React.Component {
                     </p>
                 </div>
                 <div className='col-md-offset-2 col-md-4 stats-header text-right'>
-                    <div className='row text-center'>
-                        <div className='col-md-6 data-stat'>
-                            <div className='data-stat-number'>
-                                127
-                            </div>
-                            <div className='data-stat-caption'>
-                                Events Today
-                            </div>
-                        </div>
-                        <div className='col-md-6 data-stat'>
-                            <div className='data-stat-number'>
-                                300 MB
-                            </div>
-                            <div className='data-stat-caption'>
-                                Bytes Today
-                            </div>
-                        </div>
-                    </div>
-                    <div className='row text-center'>
-                        <div className='col-md-6 data-stat'>
-                            <div className='data-stat-number'>
-                                12,023
-                            </div>
-                            <div className='data-stat-caption'>
-                                Events Total
-                            </div>
-                        </div>
-                        <div className='col-md-6 data-stat'>
-                            <div className='data-stat-number'>
-                                30.1 GB
-                            </div>
-                            <div className='data-stat-caption'>
-                                Bytes Total
-                            </div>
-                        </div>
-                    </div>
+                    <StatsTable eventType={this.state.eventType}/>
                 </div>
             </div>
             <div className='row'>
