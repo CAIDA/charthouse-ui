@@ -37,7 +37,8 @@ class Hijacks extends React.Component {
             `//bgp.caida.org/hi3/${this.state.eventType}`:
             `//ioda.caida.org/public/hijacks-trworthy-${this.state.eventType === 'all' ? 'overall' : this.state.eventType}`;
 
-        const embedHeight = this.state.vizType === 'timeseries' ? '500px' : null;
+        const embedHeight = this.state.vizType === 'timeseries' ? '500px' : '100%';
+        const embedWidth = `${this.state.frameWidth}px`;
 
         return <div id='hijacks' className='container-fluid'>
             <div className='row header'>
@@ -85,7 +86,7 @@ class Hijacks extends React.Component {
             <div className='row'>
                 <Iframe
                     url={embedUrl}
-                    width={`${this.state.frameWidth}px`}
+                    width={embedWidth}
                     height={embedHeight}
                 />
             </div>

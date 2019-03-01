@@ -3,8 +3,8 @@
     margin-right: 50px;
 }
 
-#hijacks > .row + .row {
-    margin-top: 20px;
+#hijacks > .row {
+    margin-bottom: 20px;
 }
 
 #hijacks .acks {
