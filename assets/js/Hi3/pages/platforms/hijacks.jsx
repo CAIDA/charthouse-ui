@@ -85,13 +85,6 @@ class Hijacks extends React.Component {
                     </div>
                 </div>
             </div>
-            <div className='acks pull-right text-center'>
-                <h2>Data &amp; Analytics provided by</h2>
-                <div className='text-center ack-logos'>
-                    <img src={caidaLogo} className='ack-logo'/>
-                    <img src={ucsdLogo} className='ack-logo'/>
-                </div>
-            </div>
             <div className='row'>
                 <label className='type-label'>
                     Select an event type
@@ -107,11 +100,18 @@ class Hijacks extends React.Component {
                     <ToggleButton value='edges'>New Edge</ToggleButton>
                     <ToggleButton value='defcon'>Defcon</ToggleButton>
                 </ToggleButtonGroup>
-                <Iframe
-                    url={`//bgp.caida.org/hi3/${this.state.eventType}`}
-                    width={`${this.state.frameWidth}px`}
-                />
             </div>
+            <div className='acks pull-right text-center'>
+                <h2>Data &amp; Analytics provided by</h2>
+                <div className='text-center ack-logos'>
+                    <img src={caidaLogo} className='ack-logo'/>
+                    <img src={ucsdLogo} className='ack-logo'/>
+                </div>
+            </div>
+            <Iframe
+                url={`//bgp.caida.org/hi3/${this.state.eventType}`}
+                width={`${this.state.frameWidth}px`}
+            />
         </div>;
     }
 
