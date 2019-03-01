@@ -108,6 +108,12 @@ class Hijacks extends React.Component {
                     </ToggleButtonGroup>
                 </div>
             </div>
+            <div className='row'>
+                <Iframe
+                    url={`//bgp.caida.org/hi3/${this.state.eventType}`}
+                    width={`${this.state.frameWidth}px`}
+                />
+            </div>
             <div className='acks pull-right text-center'>
                 <h2>Data &amp; Analytics provided by</h2>
                 <div className='text-center ack-logos'>
@@ -115,10 +121,6 @@ class Hijacks extends React.Component {
                     <img src={ucsdLogo} className='ack-logo'/>
                 </div>
             </div>
-            <Iframe
-                url={`//bgp.caida.org/hi3/${this.state.eventType}`}
-                width={`${this.state.frameWidth}px`}
-            />
         </div>;
     }
 

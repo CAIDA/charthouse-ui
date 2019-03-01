@@ -3,13 +3,18 @@
     margin-right: 50px;
 }
 
-#hijacks > .content {
+#hijacks > .row + .row {
+    margin-top: 20px;
 }
 
 #hijacks .acks {
     /*margin-top: 120px;*/
     width: 300px;
     padding-left: 25px;
+}
+
+#hijacks .acks > h2 {
+    margin-top: 0;
 }
 
 #hijacks .ack-logos {
