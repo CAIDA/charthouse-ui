@@ -16,6 +16,7 @@ class Hijacks extends React.Component {
     }
 
     state = {
+        eventType: 'all',
         frameWidth: window.innerWidth - HORIZONTAL_OFFSET
     };
 
@@ -85,7 +86,7 @@ class Hijacks extends React.Component {
                 </div>
             </div>
             <div className='acks pull-right text-center'>
-                <h3>Data &amp; Analytics provided by</h3>
+                <h2>Data &amp; Analytics provided by</h2>
                 <div className='text-center ack-logos'>
                     <img src={caidaLogo} className='ack-logo'/>
                     <img src={ucsdLogo} className='ack-logo'/>
@@ -95,13 +96,19 @@ class Hijacks extends React.Component {
                 <label className='type-label'>
                     Select an event type
                 </label>
-                <ToggleButtonGroup type="radio" name="eventType" defaultValue='moas'>
+                {/* onChange on all items due to https://github.com/react-bootstrap/react-bootstrap/issues/2734 */}
+                <ToggleButtonGroup type="radio" name="eventType"
+                                   value={this.state.eventType}
+                                   onChange={this._changeEventType}
+                >
+                    <ToggleButton value='all'>All</ToggleButton>
                     <ToggleButton value='moas'>MOAS</ToggleButton>
                     <ToggleButton value='submoas'>Sub-MOAS</ToggleButton>
                     <ToggleButton value='edges'>New Edge</ToggleButton>
+                    <ToggleButton value='defcon'>Defcon</ToggleButton>
                 </ToggleButtonGroup>
                 <Iframe
-                    url='//bgp.caida.org/hi3/moas'
+                    url={`//bgp.caida.org/hi3/${this.state.eventType}`}
                     width={`${this.state.frameWidth}px`}
                 />
             </div>
@@ -111,6 +118,10 @@ class Hijacks extends React.Component {
     _resize = () => {
         const newWidth = window.innerWidth - HORIZONTAL_OFFSET;
         this.setState({frameWidth: newWidth});
+    };
+
+    _changeEventType = (e) => {
+        this.setState({eventType: e});
     };
 }
 
