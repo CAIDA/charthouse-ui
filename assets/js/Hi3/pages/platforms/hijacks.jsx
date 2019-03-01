@@ -86,20 +86,27 @@ class Hijacks extends React.Component {
                 </div>
             </div>
             <div className='row'>
-                <label className='type-label'>
-                    Select an event type
-                </label>
-                {/* onChange on all items due to https://github.com/react-bootstrap/react-bootstrap/issues/2734 */}
-                <ToggleButtonGroup type="radio" name="eventType"
-                                   value={this.state.eventType}
-                                   onChange={this._changeEventType}
-                >
-                    <ToggleButton value='all'>All</ToggleButton>
-                    <ToggleButton value='moas'>MOAS</ToggleButton>
-                    <ToggleButton value='submoas'>Sub-MOAS</ToggleButton>
-                    <ToggleButton value='edges'>New Edge</ToggleButton>
-                    <ToggleButton value='defcon'>Defcon</ToggleButton>
-                </ToggleButtonGroup>
+                <div className='col-md-12'>
+                    <label className='type-label'>
+                        Select an event type
+                    </label>
+                    {/* onClick hax due to https://github.com/react-bootstrap/react-bootstrap/issues/2734 */}
+                    <ToggleButtonGroup type="radio" name="eventType"
+                                       value={this.state.eventType}
+                                       onChange={this._changeEventType}
+                    >
+                        <ToggleButton value='all' id='all'
+                                      onClick={this._changeEventType}>All</ToggleButton>
+                        <ToggleButton value='moas' id='moas'
+                                      onClick={this._changeEventType}>MOAS</ToggleButton>
+                        <ToggleButton value='submoas' id='submoas'
+                                      onClick={this._changeEventType}>Sub-MOAS</ToggleButton>
+                        <ToggleButton value='edges' id='edges'
+                                      onClick={this._changeEventType}>New Edge</ToggleButton>
+                        <ToggleButton value='defcon' id='defcon'
+                                      onClick={this._changeEventType}>Defcon</ToggleButton>
+                    </ToggleButtonGroup>
+                </div>
             </div>
             <div className='acks pull-right text-center'>
                 <h2>Data &amp; Analytics provided by</h2>
@@ -121,7 +128,7 @@ class Hijacks extends React.Component {
     };
 
     _changeEventType = (e) => {
-        this.setState({eventType: e});
+        this.setState({eventType: e.target.id});
     };
 }
 
