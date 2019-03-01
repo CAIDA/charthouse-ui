@@ -1,15 +1,42 @@
-
 #hijacks.container-fluid {
     margin-left: 50px;
     margin-right: 50px;
 }
 
-#hijacks .acks {
-    width: 300px;
-    border-left: #d0d0d0 1px solid;
-    padding-left: 15px;
-    min-height: 600px;
+#hijacks > .content {
 }
 
-#hijacks > .content {
+#hijacks .acks {
+    width: 300px;
+    padding-left: 25px;
+}
+
+#hijacks .ack-logos {
+    padding-top: 20px;
+}
+
+#hijacks .ack-logo {
+    max-width: 80%;
+    max-height: 80px;
+    margin-bottom: 40px;
+}
+
+#hijacks .stats-header {
+    margin-top: 100px;
+}
+
+#hijacks .stats-header .row {
+    margin-bottom: 20px;
+}
+
+#hijacks .data-stat-number {
+    font-size: 36px;
+}
+
+#hijacks .data-stat-caption {
+    font-size: 18px;
+}
+
+#hijacks .type-label {
+    display: block;
 }

@@ -2,6 +2,10 @@ import React from 'react';
 import Iframe from 'react-iframe';
 
 import 'Hi3/css/pages/platforms/hijacks.css';
+import {ToggleButtonGroup, ToggleButton} from 'react-bootstrap';
+
+import caidaLogo from 'images/logos/caida-logo-cropped.svg';
+import ucsdLogo from 'images/logos/UCSanDiegoLogo-BlueGold.png';
 
 const HORIZONTAL_OFFSET = 460;
 
@@ -25,19 +29,81 @@ class Hijacks extends React.Component {
 
     render() {
         return <div id='hijacks' className='container-fluid'>
-            <div className='page-header'>
-                <h1>BGP Hijacks Observatory</h1>
+            <div className='row header'>
+                <div className='col-md-6 page-header'>
+                    <h1>BGP Hijacks Observatory</h1>
+                    <p className='lead'>
+                        The BGP Hijacks Observatory is a lorem ipsum dolor sit
+                        amet,
+                        consectetur adipiscing elit, sed
+                        do eiusmod tempor incididunt ut labore et dolore magna
+                        aliqua. Ut enim ad minim veniam, quis nostrud
+                        exercitation
+                        ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                        Duis aute irure dolor in reprehenderit in voluptate
+                        velit
+                        esse cillum dolore eu fugiat nulla pariatur.
+                    </p>
+                </div>
+                <div className='col-md-offset-2 col-md-4 stats-header text-right'>
+                    <div className='row text-center'>
+                        <div className='col-md-6 data-stat'>
+                            <div className='data-stat-number'>
+                                127
+                            </div>
+                            <div className='data-stat-caption'>
+                                Events Today
+                            </div>
+                        </div>
+                        <div className='col-md-6 data-stat'>
+                            <div className='data-stat-number'>
+                                300 MB
+                            </div>
+                            <div className='data-stat-caption'>
+                                Bytes Today
+                            </div>
+                        </div>
+                    </div>
+                    <div className='row text-center'>
+                        <div className='col-md-6 data-stat'>
+                            <div className='data-stat-number'>
+                                12,023
+                            </div>
+                            <div className='data-stat-caption'>
+                                Events Total
+                            </div>
+                        </div>
+                        <div className='col-md-6 data-stat'>
+                            <div className='data-stat-number'>
+                                30.1 GB
+                            </div>
+                            <div className='data-stat-caption'>
+                                Bytes Total
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div className='content'>
-                <div className='acks pull-right text-right'>
-                    <h3>Acknowledgements</h3>
+            <div className='acks pull-right text-center'>
+                <h3>Data &amp; Analytics provided by</h3>
+                <div className='text-center ack-logos'>
+                    <img src={caidaLogo} className='ack-logo'/>
+                    <img src={ucsdLogo} className='ack-logo'/>
                 </div>
-                <div>
-                    <Iframe
-                        url='//bgp.caida.org/hi3/moas'
-                        width={`${this.state.frameWidth}px`}
-                    />
-                </div>
+            </div>
+            <div className='row'>
+                <label className='type-label'>
+                    Select an event type
+                </label>
+                <ToggleButtonGroup type="radio" name="eventType" defaultValue='moas'>
+                    <ToggleButton value='moas'>MOAS</ToggleButton>
+                    <ToggleButton value='submoas'>Sub-MOAS</ToggleButton>
+                    <ToggleButton value='edges'>New Edge</ToggleButton>
+                </ToggleButtonGroup>
+                <Iframe
+                    url='//bgp.caida.org/hi3/moas'
+                    width={`${this.state.frameWidth}px`}
+                />
             </div>
         </div>;
     }
