@@ -2,10 +2,12 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import DataApi from '../connectors/data-api';
+import {eventTypeName} from '../utils';
+import {humanizeBytes, humanizeNumber} from 'Hi3/utils';
 
 import 'Hijacks/css/components/stats-table.css';
 
-class StatsTable extends React.PureComponent {
+class StatsTable extends React.Component {
 
     static propTypes = {
         eventType: PropTypes.string
@@ -29,7 +31,7 @@ class StatsTable extends React.PureComponent {
     }
 
     componentWillReceiveProps(newProps) {
-        this._getStats(this.props.eventType);
+        this._getStats(newProps.eventType);
     }
 
     render() {
@@ -38,14 +40,17 @@ class StatsTable extends React.PureComponent {
             // don't render anything while stats are first loading
             return null;
         }
+        const name = this.state.stats.eventType !== 'all'
+            ? eventTypeName(this.state.stats.eventType)
+            : '';
         return <div className='hijacks-statstable'>
             <div className='row text-center'>
                 <div className='col-md-6 data-stat'>
                     <div className='data-stat-number'>
-                        {stats.today.count}
+                        {this._formatValue(stats.today.count)}
                     </div>
                     <div className='data-stat-caption'>
-                        Events Today
+                        {name} Events Today
                     </div>
                 </div>
                 <div className='col-md-6 data-stat'/>
@@ -53,22 +58,26 @@ class StatsTable extends React.PureComponent {
             <div className='row text-center'>
                 <div className='col-md-6 data-stat'>
                     <div className='data-stat-number'>
-                        {stats.total.count}
+                        {this._formatValue(stats.total.count)}
                     </div>
                     <div className='data-stat-caption'>
-                        Events Total
+                        {name} Events Total
                     </div>
                 </div>
                 <div className='col-md-6 data-stat'>
                     <div className='data-stat-number'>
-                        {stats.total.bytes}
+                        {this._formatValue(stats.total.bytes, true)}
                     </div>
                     <div className='data-stat-caption'>
-                        Bytes Total
+                        {name} Bytes Total
                     </div>
                 </div>
             </div>
         </div>
+    }
+
+    _formatValue(value, isBytes) {
+        return isBytes ? humanizeBytes(value) : humanizeNumber(value);
     }
 
     _getStats(eventType) {
@@ -76,6 +85,7 @@ class StatsTable extends React.PureComponent {
     }
 
     _parseStats = (stats) => {
+        stats.data.eventType = this.props.eventType;
         this.setState({stats: stats.data});
     };
 }

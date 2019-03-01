@@ -1,6 +1,7 @@
 import $ from 'jquery';
 import moment from 'moment';
 import crossfilter from 'crossfilter';
+import {humanizeBytes} from 'Hi3/utils';
 
 export class CharthouseDataSet {
 
@@ -28,14 +29,7 @@ export class CharthouseDataSet {
     }
 
     jsonSizeHuman() {
-        const fileSize = this.jsonSize();
-        return (fileSize < 999
-                ? fileSize
-                : (fileSize < 999999
-                        ? ((fileSize < 9999 ? Math.round(fileSize / 100) / 10 : Math.round(fileSize / 1000)) + 'k')
-                        : ((fileSize < 9999999 ? Math.round(fileSize / 100000) / 10 : Math.round(fileSize / 1000000)) + 'M')
-                )
-        ) + 'B';
+        return humanizeBytes(this.jsonSize());
     }
 
     getRequest() {

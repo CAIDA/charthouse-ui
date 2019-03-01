@@ -57,7 +57,7 @@ class ApiConnector {
     getStats(type, success, error) {
         return this._getJson(
             'GET',
-            this.apiUrl + STATS_QUERY + '/today', //+ '/' + type,
+            this.apiUrl + STATS_QUERY + '/' + type,
             {},
             {},
             success,

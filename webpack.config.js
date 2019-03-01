@@ -98,6 +98,7 @@ webpackConfig.resolve.alias = {
     'Hijacks/css': path.resolve(__dirname, './assets/css/Hijacks/'),
     'Hijacks': path.resolve(__dirname, './assets/js/Hijacks/'),
     'Hi3/css': path.resolve(__dirname, './assets/css/Hi3/'),
+    'Hi3': path.resolve(__dirname, './assets/js/Hi3/'),
 };
 
 webpackConfig.plugins.push(
