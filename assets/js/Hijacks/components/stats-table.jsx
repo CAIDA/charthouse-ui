@@ -43,9 +43,17 @@ class StatsTable extends React.Component {
         const name = this.state.stats.eventType !== 'all'
             ? eventTypeName(this.state.stats.eventType)
             : '';
-        return <div className='hijacks-statstable'>
-            <div className='row text-center'>
-                <div className='col-md-6 data-stat'>
+        return <div className='hijacks-statstable panel panel-default'>
+            <div className='row text-center panel-body'>
+                <div className='col-md-4 data-stat'>
+                    <div className='data-stat-number'>
+                        {this._formatValue(stats.today.count)}
+                    </div>
+                    <div className='data-stat-caption'>
+                        {name} Events Today
+                    </div>
+                </div>
+                <div className='col-md-4 data-stat'>
                     <div className='data-stat-number'>
                         {this._formatValue(stats.total.count)}
                     </div>
@@ -53,22 +61,12 @@ class StatsTable extends React.Component {
                         {name} Events
                     </div>
                 </div>
-                <div className='col-md-6 data-stat'>
+                <div className='col-md-4 data-stat'>
                     <div className='data-stat-number'>
                         {this._formatValue(stats.total.bytes, true)}
                     </div>
                     <div className='data-stat-caption'>
                         {name} Bytes
-                    </div>
-                </div>
-            </div>
-            <div className='row text-center'>
-                <div className='col-md-6 data-stat'>
-                    <div className='data-stat-number'>
-                        {this._formatValue(stats.today.count)}
-                    </div>
-                    <div className='data-stat-caption'>
-                        {name} Events Today
                     </div>
                 </div>
                 <div className='col-md-6 data-stat'/>

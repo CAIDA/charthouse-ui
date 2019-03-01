@@ -9,7 +9,7 @@ import 'Hi3/css/pages/platforms/hijacks.css';
 import caidaLogo from 'images/logos/caida-logo-cropped.svg';
 import ucsdLogo from 'images/logos/UCSanDiegoLogo-BlueGold.png';
 
-const HORIZONTAL_OFFSET = 460;
+const HORIZONTAL_OFFSET = 480;
 
 class Hijacks extends React.Component {
 
@@ -48,7 +48,7 @@ class Hijacks extends React.Component {
                         esse cillum dolore eu fugiat nulla pariatur.
                     </p>
                 </div>
-                <div className='col-md-offset-2 col-md-4 stats-header'>
+                <div className='col-md-6 stats-header'>
                     <StatsTable eventType={this.state.eventType}/>
                 </div>
             </div>
@@ -75,17 +75,17 @@ class Hijacks extends React.Component {
                     </ToggleButtonGroup>
                 </div>
             </div>
-            <div className='row'>
-                <Iframe
-                    url={`//bgp.caida.org/hi3/${this.state.eventType}`}
-                    width={`${this.state.frameWidth}px`}
-                />
-            </div>
-            <div className='acks pull-right text-center'>
+            <Iframe
+                url={`//bgp.caida.org/hi3/${this.state.eventType}`}
+                width={`${this.state.frameWidth}px`}
+            />
+            <div className='acks pull-right text-center panel panel-default'>
+                <div className='panel-body'>
                 <h2>Data &amp; Analytics provided by</h2>
                 <div className='text-center ack-logos'>
                     <img src={caidaLogo} className='ack-logo'/>
                     <img src={ucsdLogo} className='ack-logo'/>
+                </div>
                 </div>
             </div>
         </div>;

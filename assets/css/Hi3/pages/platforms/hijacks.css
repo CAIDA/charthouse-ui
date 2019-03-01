@@ -9,8 +9,7 @@
 
 #hijacks .acks {
     /*margin-top: 120px;*/
-    width: 300px;
-    padding-left: 25px;
+    width: 260px;
 }
 
 #hijacks .acks > h2 {
@@ -29,7 +28,6 @@
 
 #hijacks .stats-header {
     margin-top: 100px;
-    max-width: 300px;
 }
 
 #hijacks .type-label {
