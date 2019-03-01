@@ -7,19 +7,17 @@ import {humanizeBytes, humanizeNumber} from 'Hi3/utils';
 
 import 'Hijacks/css/components/stats-table.css';
 
-class StatsTable extends React.Component {
+class StatsRow extends React.Component {
 
     static propTypes = {
-        eventType: PropTypes.string
-    };
-
-    static defaultProps = {
-        eventType: 'all'
+        eventType: PropTypes.string.isRequired
     };
 
     state = {
         stats: null
     };
+
+    refreshTimer = null;
 
     constructor(props) {
         super(props);
@@ -40,14 +38,14 @@ class StatsTable extends React.Component {
             // don't render anything while stats are first loading
             return null;
         }
-        const name = this.state.stats.eventType !== 'all'
-            ? eventTypeName(this.state.stats.eventType)
+        const name = stats.eventType !== 'all'
+            ? eventTypeName(stats.eventType)
             : '';
-        return <div className='hijacks-statstable panel panel-default'>
-            <div className='row text-center panel-body'>
+        return <div className='row text-center panel-body'>
+            <div className='row'>
                 <div className='col-md-4 data-stat'>
                     <div className='data-stat-number'>
-                        {this._formatValue(stats.today.count)}
+                        {stats.today.count.toLocaleString()}
                     </div>
                     <div className='data-stat-caption'>
                         {name} Events Today
@@ -69,7 +67,6 @@ class StatsTable extends React.Component {
                         {name} Bytes
                     </div>
                 </div>
-                <div className='col-md-6 data-stat'/>
             </div>
         </div>
     }
@@ -80,12 +77,36 @@ class StatsTable extends React.Component {
 
     _getStats(eventType) {
         this.api.getStats(eventType, this._parseStats);
+        if (!this.refreshTimer) {
+            this.refreshTimer = setTimeout(() => {
+                this.refreshTimer = null;
+                this.api.getStats(this.props.eventType, this._parseStats);
+            }, 60 * 1000);
+        }
     }
 
     _parseStats = (stats) => {
         stats.data.eventType = this.props.eventType;
         this.setState({stats: stats.data});
     };
+}
+
+class StatsTable extends React.Component {
+
+    static propTypes = {
+        eventType: PropTypes.string
+    };
+
+    static defaultProps = {
+        eventType: 'all'
+    };
+
+    render() {
+        return <div className='hijacks-statstable panel panel-default'>
+            <StatsRow eventType='all'/>
+            {this.props.eventType !== 'all' ? <StatsRow eventType={this.props.eventType}/> : null }
+        </div>
+    }
 }
 
 export default StatsTable;

@@ -18,7 +18,7 @@ class Hijacks extends React.Component {
     }
 
     state = {
-        eventType: 'all',
+        eventType: 'moas',
         frameWidth: window.innerWidth - HORIZONTAL_OFFSET
     };
 
@@ -83,8 +83,12 @@ class Hijacks extends React.Component {
                 <div className='panel-body'>
                 <h2>Data &amp; Analytics provided by</h2>
                 <div className='text-center ack-logos'>
-                    <img src={caidaLogo} className='ack-logo'/>
-                    <img src={ucsdLogo} className='ack-logo'/>
+                    <a href='https://www.caida.org'>
+                        <img src={caidaLogo} className='ack-logo'/>
+                    </a>
+                    <a href='https://www.ucsd.edu'>
+                        <img src={ucsdLogo} className='ack-logo'/>
+                    </a>
                 </div>
                 </div>
             </div>

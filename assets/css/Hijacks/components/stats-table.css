@@ -1,4 +1,4 @@
-.hijacks-statstable .row {
+.hijacks-statstable .row + .row {
     margin-bottom: 20px;
 }
 
