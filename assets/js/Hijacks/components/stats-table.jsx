@@ -32,6 +32,13 @@ class StatsRow extends React.Component {
         this._getStats(newProps.eventType);
     }
 
+    componentWillUnmount() {
+        if (this.refreshTimer) {
+            clearTimeout(this.refreshTimer);
+            this.refreshTimer = null;
+        }
+    }
+
     render() {
         const stats = this.state.stats;
         if (!stats || !stats.today || !stats.total) {
