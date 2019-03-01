@@ -8,6 +8,7 @@ import 'Hi3/css/pages/platforms/hijacks.css';
 
 import caidaLogo from 'images/logos/caida-logo-cropped.svg';
 import ucsdLogo from 'images/logos/UCSanDiegoLogo-BlueGold.png';
+import {ToggleButton, ToggleButtonGroup} from "react-bootstrap";
 
 const HORIZONTAL_OFFSET = 480;
 
@@ -19,6 +20,7 @@ class Hijacks extends React.Component {
 
     state = {
         eventType: 'moas',
+        vizType: 'feed',
         frameWidth: window.innerWidth - HORIZONTAL_OFFSET
     };
 
@@ -31,6 +33,12 @@ class Hijacks extends React.Component {
     }
 
     render() {
+        const embedUrl = this.state.vizType === 'feed' ?
+            `//bgp.caida.org/hi3/${this.state.eventType}`:
+            `//ioda.caida.org/public/hijacks-trworthy-${this.state.eventType === 'all' ? 'overall' : this.state.eventType}`;
+
+        const embedHeight = this.state.vizType === 'timeseries' ? '500px' : null;
+
         return <div id='hijacks' className='container-fluid'>
             <div className='row header'>
                 <div className='col-md-6 page-header'>
@@ -54,14 +62,33 @@ class Hijacks extends React.Component {
             </div>
             <div className='row'>
                 <div className='col-md-12'>
+                    <div style={{display: 'inline-block', marginRight: '25px'}}>
+                        <label style={{display: 'block'}}>
+                            Select visualization
+                        </label>
+                        <ToggleButtonGroup type="radio" name="vizType"
+                                           value={this.state.vizType}
+                                           onChange={this._changeVizType}
+                        >
+                            <ToggleButton value='feed' id='feed'
+                                          onClick={this._changeVizType}>Event Feed</ToggleButton>
+                            <ToggleButton value='timeseries' id='timeseries'
+                                          onClick={this._changeVizType}>Time Series Graphs</ToggleButton>
+                        </ToggleButtonGroup>
+                    </div>
+
                     <EventTypeSelector eventType={this.state.eventType}
-                                       onChange={this._typeChanged}/>
+                                       onChange={this._typeChanged}
+                    />
                 </div>
             </div>
-            <Iframe
-                url={`//bgp.caida.org/hi3/${this.state.eventType}`}
-                width={`${this.state.frameWidth}px`}
-            />
+            <div className='row'>
+                <Iframe
+                    url={embedUrl}
+                    width={`${this.state.frameWidth}px`}
+                    height={embedHeight}
+                />
+            </div>
             <div className='acks pull-right text-center panel panel-default'>
                 <div className='panel-body'>
                 <h2>Data &amp; Analytics provided by</h2>
@@ -81,6 +108,10 @@ class Hijacks extends React.Component {
     _resize = () => {
         const newWidth = window.innerWidth - HORIZONTAL_OFFSET;
         this.setState({frameWidth: newWidth});
+    };
+
+    _changeVizType = (e) => {
+        this.setState({vizType: e.target.id});
     };
 
     _typeChanged = (eventType) => {
