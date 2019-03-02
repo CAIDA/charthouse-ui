@@ -36,12 +36,11 @@ class Platforms extends React.Component {
                 </Tile>
                 <Tile to='/platforms/ioda' thumb={iodaThumb}
                       title='Internet Outages Detection and Analysis (IODA)'>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                    do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                    ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                    Duis aute irure dolor in reprehenderit in voluptate velit
-                    esse cillum dolore eu fugiat nulla pariatur.
+                    A CAIDA project to develop an operational prototype system
+                    that monitors the Internet, in near-realtime, to identify
+                    macroscopic Internet outages affecting the edge of the
+                    network, i.e., significantly impacting an AS or a large
+                    fraction of a country.
                 </Tile>
                 <Tile to='/platforms/mapkit' thumb={mapkitThumb}
                       title='Mapping Key Internet Terrain (MAPKIT)'>
