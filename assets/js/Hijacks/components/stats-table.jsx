@@ -71,7 +71,7 @@ class StatsRow extends React.Component {
                         {this._formatValue(stats.total.bytes, true)}
                     </div>
                     <div className='data-stat-caption'>
-                        {name} Bytes
+                        {name} Dataset Size
                     </div>
                 </div>
             </div>
