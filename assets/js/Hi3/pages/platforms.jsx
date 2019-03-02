@@ -5,6 +5,8 @@ import {Tile, TileGrid} from '../components/tile-grid';
 import hijacksThumb from 'images/thumbs/hijacks.png';
 import iodaThumb from 'images/logos/ioda-logo-brand.svg';
 import mapkitThumb from 'images/logos/hicube-icon.png';
+import ucsdntThumb from 'images/logos/hicube-icon.png';
+import meritntThumb from 'images/logos/hicube-icon.png';
 
 class Platforms extends React.Component {
     render() {
@@ -43,7 +45,25 @@ class Platforms extends React.Component {
                     fraction of a country.
                 </Tile>
                 <Tile to='/platforms/mapkit' thumb={mapkitThumb}
-                      title='Mapping Key Internet Terrain (MAPKIT)'>
+                      title='Mapping Key Internet Terrain (MapKIT)'>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+                    do eiusmod tempor incididunt ut labore et dolore magna
+                    aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+                    ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                    Duis aute irure dolor in reprehenderit in voluptate velit
+                    esse cillum dolore eu fugiat nulla pariatur.
+                </Tile>
+                <Tile to='/platforms/ucsdnt' thumb={ucsdntThumb}
+                      title='UCSD Network Telescope'>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+                    do eiusmod tempor incididunt ut labore et dolore magna
+                    aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+                    ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                    Duis aute irure dolor in reprehenderit in voluptate velit
+                    esse cillum dolore eu fugiat nulla pariatur.
+                </Tile>
+                <Tile to='/platforms/meritnt' thumb={meritntThumb}
+                      title='Merit Network Telescope'>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
                     do eiusmod tempor incididunt ut labore et dolore magna
                     aliqua. Ut enim ad minim veniam, quis nostrud exercitation

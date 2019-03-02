@@ -55,7 +55,7 @@ class StatsRow extends React.Component {
                         {stats.today.count.toLocaleString()}
                     </div>
                     <div className='data-stat-caption'>
-                        {name} Events Today
+                        Suspicious {name} Events Today
                     </div>
                 </div>
                 <div className='col-md-4 data-stat'>
@@ -63,7 +63,7 @@ class StatsRow extends React.Component {
                         {this._formatValue(stats.total.count)}
                     </div>
                     <div className='data-stat-caption'>
-                        {name} Events
+                        Suspicious {name} Events
                     </div>
                 </div>
                 <div className='col-md-4 data-stat'>
