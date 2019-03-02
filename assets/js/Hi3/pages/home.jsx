@@ -1,5 +1,6 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
+import {Alert} from 'react-bootstrap';
 
 import {Tile, TileGrid} from '../components/tile-grid';
 import {HI3} from '../utils';
@@ -61,6 +62,14 @@ class Home extends React.Component {
                     </i>
                 </p>
             </div>
+            <Alert bsStyle="danger">
+                <p className='lead'>
+                    <strong>{HI3} is still under heavy development.</strong>
+                    <br/>
+                    This is a preview version of {HI3}. Much of the content,
+                    and many features are either missing or work-in-progress.
+                </p>
+            </Alert>
             <p className='lead'>
                 Welcome to {HI3}, a <a href="https://www.caida.org">
                 CAIDA</a> project
