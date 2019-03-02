@@ -20,7 +20,8 @@ Encore
      * Add 1 entry for each "page" of your app
      * (including one that's included on every page - e.g. "app")
      */
-    .addEntry('hi3', ['babel-polyfill', './assets/js/Hi3/index.js'])
+    /* TODO: figure out which entries we want here */
+    .addEntry('hi3', ['babel-polyfill', './assets/js/Hi3/index.jsx'])
 
     // shim to webpackify the horribly old jquery BBQ plugin
     .addLoader({
