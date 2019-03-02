@@ -45,7 +45,7 @@ class ContentRouter extends React.Component {
     render() {
         return <Switch>
             {/* internal routes (not explicitly linked) */}
-            <Route path='/@:tag' component={SymRedirect}/>
+            <AuthorizedRoute path='/@:tag' component={SymRedirect}/>
 
             {/* auth routes */}
             <Route path='/login' component={Login}/>
