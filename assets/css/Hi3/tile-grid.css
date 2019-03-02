@@ -31,6 +31,10 @@
     max-width: 200px;
 }
 
+.tilegrid .thumbnail img.screenshot {
+    border: 1px solid #c7c9cc;
+}
+
 .tilegrid .thumbnail > .caption > h4 {
     color: #226d8d;
 }

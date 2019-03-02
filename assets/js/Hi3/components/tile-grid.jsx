@@ -11,11 +11,13 @@ class Tile extends React.Component {
     static propTypes = {
         to: PropTypes.string.isRequired,
         thumb: PropTypes.string.isRequired,
+        isScreenshot: PropTypes.bool,
         title: PropTypes.string.isRequired,
         disabled: PropTypes.bool // TODO
     };
 
     static defaultProps = {
+        isScreenshot: true,
         disabled: false
     };
 
@@ -24,7 +26,8 @@ class Tile extends React.Component {
             <div className={`tile col-md-${12/TILES_PER_ROW}`}>
                 <div className=' panel panel-default'>
                     <div className="thumbnail panel-body">
-                        <img src={this.props.thumb}/>
+                        <img src={this.props.thumb}
+                             className={this.props.isScreenshot ? 'screenshot' : null}/>
                         <div className="caption text-center">
                             <h4>
                                 {this.props.title}

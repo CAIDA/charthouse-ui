@@ -37,7 +37,7 @@ class InterfaceTiles extends React.Component {
                 Pre-configured dashboards tailored for real-time monitoring of
                 Internet dynamics and events.
             </Tile>
-            <Tile to='/examples' thumb={examplesThumb}
+            <Tile to='/examples' thumb={examplesThumb} isScreenshot={false}
                   title='Event Analyses'>
                 Detailed blog-style post-event analyses created using data
                 and visualizations provided by the {HI3} platform.

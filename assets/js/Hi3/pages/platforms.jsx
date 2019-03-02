@@ -37,6 +37,7 @@ class Platforms extends React.Component {
                     esse cillum dolore eu fugiat nulla pariatur.
                 </Tile>
                 <Tile to='/platforms/ioda' thumb={iodaThumb}
+                      isScreenshot={false}
                       title='Internet Outages Detection and Analysis (IODA)'>
                     A CAIDA project to develop an operational prototype system
                     that monitors the Internet, in near-realtime, to identify
@@ -45,6 +46,7 @@ class Platforms extends React.Component {
                     fraction of a country.
                 </Tile>
                 <Tile to='/platforms/mapkit' thumb={mapkitThumb}
+                      isScreenshot={false}
                       title='Mapping Key Internet Terrain (MapKIT)'>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
                     do eiusmod tempor incididunt ut labore et dolore magna
@@ -54,6 +56,7 @@ class Platforms extends React.Component {
                     esse cillum dolore eu fugiat nulla pariatur.
                 </Tile>
                 <Tile to='/platforms/ucsdnt' thumb={ucsdntThumb}
+                      isScreenshot={false}
                       title='UCSD Network Telescope'>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
                     do eiusmod tempor incididunt ut labore et dolore magna
@@ -63,6 +66,7 @@ class Platforms extends React.Component {
                     esse cillum dolore eu fugiat nulla pariatur.
                 </Tile>
                 <Tile to='/platforms/meritnt' thumb={meritntThumb}
+                      isScreenshot={false}
                       title='Merit Network Telescope'>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
                     do eiusmod tempor incididunt ut labore et dolore magna
