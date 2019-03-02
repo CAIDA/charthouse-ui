@@ -4,10 +4,10 @@ import {Tile, TileGrid} from '../components/tile-grid';
 
 import caidaLogo from 'images/logos/caida-logo-cropped.svg';
 import hi3Logo from 'images/logos/hicube-full.png';
-import explorerThumb from 'images/logos/hicube-icon.png';
-import dashboardThumb from 'images/logos/hicube-icon.png';
-import examplesThumb from 'images/logos/hicube-icon.png';
-import platformsThumb from 'images/logos/hicube-icon.png';
+import explorerThumb from 'images/thumbs/explorer.png';
+import dashboardThumb from 'images/logos/hicube-icon.png'; // TODO add thumb
+import examplesThumb from 'images/logos/hicube-icon.png'; // TODO add thumb
+import platformsThumb from 'images/thumbs/platforms.png';
 
 import 'Hi3/css/pages/home.css';
 
