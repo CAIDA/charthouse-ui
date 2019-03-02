@@ -5,7 +5,7 @@ import {Tile, TileGrid} from '../components/tile-grid';
 import caidaLogo from 'images/logos/caida-logo-cropped.svg';
 import hi3Logo from 'images/logos/hicube-full.png';
 import explorerThumb from 'images/thumbs/explorer.png';
-import dashboardThumb from 'images/logos/hicube-icon.png'; // TODO add thumb
+import dashboardThumb from 'images/thumbs/dashboards.png';
 import examplesThumb from 'images/logos/hicube-icon.png'; // TODO add thumb
 import platformsThumb from 'images/thumbs/platforms.png';
 
@@ -25,28 +25,19 @@ class InterfaceTiles extends React.Component {
             </Tile>
             <Tile to='/platforms' thumb={platformsThumb}
                   title='Event Platforms'>
-                A collection of interfaces and dashboards
-                tailored for specific types of Internet security
-                events, including BGP Hijacking, and Large-scale
-                outages.
+                External platforms integrated into the HI³ platform and designed
+                for detecting and analyzing specific types of Internet security
+                events, including BGP Hijacking, and large-scale outages.
             </Tile>
             <Tile to='/dashboards' thumb={dashboardThumb}
                   title='Live Dashboards'>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                do eiusmod tempor incididunt ut labore et dolore magna
-                aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                Duis aute irure dolor in reprehenderit in voluptate velit
-                esse cillum dolore eu fugiat nulla pariatur.
+                Pre-configured dashboards tailored for real-time monitoring of
+                Internet dynamics and events.
             </Tile>
             <Tile to='/examples' thumb={examplesThumb}
-                  title='Sample Event Analyses'>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                do eiusmod tempor incididunt ut labore et dolore magna
-                aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                Duis aute irure dolor in reprehenderit in voluptate velit
-                esse cillum dolore eu fugiat nulla pariatur.
+                  title='Event Analyses'>
+                Detailed blog-style post-event analyses created using data
+                and visualizations provided by the HI³ platform.
             </Tile>
         </TileGrid>;
     }
