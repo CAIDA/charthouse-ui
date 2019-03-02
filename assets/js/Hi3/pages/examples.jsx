@@ -11,7 +11,7 @@ class Examples extends React.Component {
     render() {
         return <div className='container'>
             <div className="page-header">
-                <h1>Sample Event Analyses</h1>
+                <h1>Event Analyses</h1>
             </div>
             <div className='row'>
                 <div className='col-md-12'>

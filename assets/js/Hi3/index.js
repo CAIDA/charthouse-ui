@@ -118,7 +118,7 @@ const SIDEBAR_LINKS = [
     {
         page: 'examples',
         icon: <span className="glyphicon glyphicon-heart"/>,
-        text: 'Sample Analyses'
+        text: 'Event Analyses'
     }
 ];
 

@@ -1,5 +1,7 @@
 import d3 from "d3";
 
+const HI3 = 'HI³';
+
 function humanizeBytes(bytes) {
     return humanizeNumber(bytes) + 'B';
 }
@@ -12,4 +14,4 @@ function humanizeNumber(value, precisionDigits) {
         )(value);
 }
 
-export {humanizeBytes, humanizeNumber};
+export {HI3, humanizeBytes, humanizeNumber};

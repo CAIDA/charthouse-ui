@@ -1,6 +1,8 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
 
 import {Tile, TileGrid} from '../components/tile-grid';
+import {HI3} from '../utils';
 
 import caidaLogo from 'images/logos/caida-logo-cropped.svg';
 import hi3Logo from 'images/logos/hicube-full.png';
@@ -25,7 +27,7 @@ class InterfaceTiles extends React.Component {
             </Tile>
             <Tile to='/platforms' thumb={platformsThumb}
                   title='Event Platforms'>
-                External platforms integrated into the HI³ platform and designed
+                External platforms integrated into the {HI3} platform and designed
                 for detecting and analyzing specific types of Internet security
                 events, including BGP Hijacking, and large-scale outages.
             </Tile>
@@ -37,7 +39,7 @@ class InterfaceTiles extends React.Component {
             <Tile to='/examples' thumb={examplesThumb}
                   title='Event Analyses'>
                 Detailed blog-style post-event analyses created using data
-                and visualizations provided by the HI³ platform.
+                and visualizations provided by the {HI3} platform.
             </Tile>
         </TileGrid>;
     }
@@ -53,21 +55,22 @@ class Home extends React.Component {
                 </h1>
                 <p className="lead">
                     <i>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                        sed do eiusmod tempor incididunt ut labore et dolore
-                        magna aliqua. Ut enim ad minim veniam, quis nostrud
-                        exercitation ullamco laboris nisi ut aliquip ex ea
-                        commodo consequat.
+                        A prototype platform for processing, storing,
+                        investigating, and correlating diverse streams of
+                        large-scale Internet security-related data.
                     </i>
                 </p>
             </div>
             <p className='lead'>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                do eiusmod tempor incididunt ut labore et dolore magna
-                aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                Duis aute irure dolor in reprehenderit in voluptate velit
-                esse cillum dolore eu fugiat nulla pariatur.
+                Welcome to {HI3}, a <a href="https://www.caida.org">
+                CAIDA</a> project
+                to lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                sed do eiusmod tempor incididunt ut labore et dolore
+                magna aliqua.
+                If this is your first time using {HI3}, then you might want to
+                take a look at the
+                <Link to='/quickstart'> Quickstart Guide </Link> and
+                <Link to='/documentation'> Documentation </Link>.
             </p>
             <InterfaceTiles/>
         </div>;
