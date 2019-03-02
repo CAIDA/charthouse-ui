@@ -94,12 +94,24 @@ class Hijacks extends React.Component {
                 <div className='panel-body'>
                 <h2>Data &amp; Analytics provided by</h2>
                 <div className='text-center ack-logos'>
-                    <a href='https://www.caida.org'>
-                        <img src={caidaLogo} className='ack-logo'/>
-                    </a>
-                    <a href='https://www.ucsd.edu'>
-                        <img src={ucsdLogo} className='ack-logo'/>
-                    </a>
+                    <div className='row'>
+                        <a href='https://www.caida.org/funding/hijacks'
+                           target='_blank'>
+                            CAIDA's BGP Hijacks Project
+                        </a>
+                    </div>
+                    <div className='row'>
+                        <a href='https://www.caida.org'
+                           target='_blank'>
+                            <img src={caidaLogo} className='ack-logo'/>
+                        </a>
+                    </div>
+                    <div className='row'>
+                        <a href='https://www.ucsd.edu'
+                           target='_blank'>
+                            <img src={ucsdLogo} className='ack-logo'/>
+                        </a>
+                    </div>
                 </div>
                 </div>
             </div>
