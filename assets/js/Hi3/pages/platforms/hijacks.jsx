@@ -8,7 +8,7 @@ import 'Hi3/css/pages/platforms/hijacks.css';
 
 import caidaLogo from 'images/logos/caida-logo-cropped.svg';
 import ucsdLogo from 'images/logos/UCSanDiegoLogo-BlueGold.png';
-import {ToggleButton, ToggleButtonGroup} from "react-bootstrap";
+import {ToggleButton, ToggleButtonGroup, Button} from "react-bootstrap";
 
 const HORIZONTAL_OFFSET = 480;
 
@@ -63,6 +63,8 @@ class Hijacks extends React.Component {
             </div>
             <div className='row'>
                 <div className='col-md-12'>
+
+                    {/* TODO: refactor into separate class (in this file) */}
                     <div style={{display: 'inline-block', marginRight: '25px'}}>
                         <label style={{display: 'block'}}>
                             Select visualization
@@ -81,6 +83,10 @@ class Hijacks extends React.Component {
                     <EventTypeSelector eventType={this.state.eventType}
                                        onChange={this._typeChanged}
                     />
+
+                    <div style={{display: 'inline-block', marginLeft: '25px'}}>
+                        <Button>Correlate</Button>
+                    </div>
                 </div>
             </div>
             <div className='row' style={{margin: 0}}>
@@ -90,6 +96,7 @@ class Hijacks extends React.Component {
                     height={embedHeight}
                 />
             </div>
+            {/* TODO: refactor into separate class */}
             <div className='acks pull-right text-center panel panel-default'>
                 <div className='panel-body'>
                 <h2>Data &amp; Analytics provided by</h2>
