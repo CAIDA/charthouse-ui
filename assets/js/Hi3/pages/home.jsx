@@ -70,7 +70,7 @@ class Home extends React.Component {
                 If this is your first time using {HI3}, then you might want to
                 take a look at the
                 <Link to='/quickstart'> Quickstart Guide </Link> and
-                <Link to='/documentation'> Documentation </Link>.
+                <Link to='/docs'> Documentation </Link>.
             </p>
             <InterfaceTiles/>
         </div>;

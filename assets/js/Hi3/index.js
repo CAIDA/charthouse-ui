@@ -26,6 +26,10 @@ import LoginCallback from './login-callback';
 import Profile from './user/profile';
 import Pending from './user/pending';
 
+import Quickstart from './pages/quickstart';
+import Docs from './pages/docs';
+import About from './pages/about';
+import Acks from './pages/acks';
 import Explorer from 'Explorer';
 import Platforms from './pages/platforms';
 import Hijacks from './pages/platforms/hijacks';
@@ -57,13 +61,16 @@ class ContentRouter extends React.Component {
             <Route path='/user/pending' component={Pending}/>
 
             {/* page routes */}
+            <Route path='/quickstart' component={Quickstart}/>
+            <Route path='/docs' component={Docs}/>
+            <Route path='/about' component={About}/>
+            <Route path='/acks' component={Acks}/>
+
             <AuthorizedRoute path='/explorer' permission='ui:explorer'
                              component={Explorer}/>
             <Route path='/platforms/hijacks' component={Hijacks}/>
             <Route path='/platforms' component={Platforms}/>
-
             <Route path='/dashboards' component={Dashboards}/>
-
             <Route path='/examples' component={Examples}/>
 
             <Route path='/' component={Home}/>
