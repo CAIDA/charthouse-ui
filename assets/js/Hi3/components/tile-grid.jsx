@@ -21,14 +21,16 @@ class Tile extends React.Component {
 
     render () {
         return <Link to={this.props.to}>
-            <div className={`col-md-${12/TILES_PER_ROW}`}>
-                <div className="thumbnail">
-                    <img src={this.props.thumb}/>
-                    <div className="caption text-center">
-                        <h4>
-                            {this.props.title}
-                        </h4>
-                        {this.props.children}
+            <div className={`tile col-md-${12/TILES_PER_ROW}`}>
+                <div className=' panel panel-default'>
+                    <div className="thumbnail panel-body">
+                        <img src={this.props.thumb}/>
+                        <div className="caption text-center">
+                            <h4>
+                                {this.props.title}
+                            </h4>
+                            {this.props.children}
+                        </div>
                     </div>
                 </div>
             </div>
