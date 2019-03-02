@@ -107,7 +107,7 @@ class Hijacks extends React.Component {
                     <div className='row'>
                         <a href='https://www.caida.org/funding/hijacks'
                            target='_blank'>
-                            CAIDA's BGP Hijacks Project
+                            CAIDA's BGP Hijacks Project <span style={{fontSize: '.8em'}} className='glyphicon glyphicon-share'/>
                         </a>
                     </div>
                     <div className='row'>
