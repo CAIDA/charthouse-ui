@@ -1,5 +1,7 @@
 import React from 'react';
 import Iframe from 'react-iframe';
+import {ToggleButton, ToggleButtonGroup, Button} from "react-bootstrap";
+import {LinkContainer} from 'react-router-bootstrap';
 
 import StatsTable from 'Hijacks/components/stats-table';
 import EventTypeSelector from 'Hijacks/components/event-type-selector';
@@ -8,7 +10,6 @@ import 'Hi3/css/pages/platforms/hijacks.css';
 
 import caidaLogo from 'images/logos/caida-logo-cropped.svg';
 import ucsdLogo from 'images/logos/UCSanDiegoLogo-BlueGold.png';
-import {ToggleButton, ToggleButtonGroup, Button} from "react-bootstrap";
 
 const HORIZONTAL_OFFSET = 480;
 
@@ -85,7 +86,9 @@ class Hijacks extends React.Component {
                     />
 
                     <div style={{display: 'inline-block', marginLeft: '25px'}}>
-                        <Button>Correlate</Button>
+                        <LinkContainer to='/explorer'>
+                            <Button>Correlate</Button>
+                        </LinkContainer>
                     </div>
                 </div>
             </div>
