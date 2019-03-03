@@ -77,6 +77,16 @@ class Feeds extends React.Component {
                     aliqua. Ut enim ad minim veniam, quis nostrud exercitation
                     ullamco laboris nisi ut aliquip ex ea commodo consequat.
                 </Tile>
+                <Tile to='/feeds/thunderping' thumb={meritntThumb}
+                      isScreenshot={false}
+                      title='Thunderping'>
+                    Thunderping is a project from the University of Maryland
+                    that ipsum dolor sit
+                    amet, consectetur adipiscing elit, sed
+                    do eiusmod tempor incididunt ut labore et dolore magna
+                    aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+                    ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                </Tile>
             </TileGrid>
         </div>;
     }
