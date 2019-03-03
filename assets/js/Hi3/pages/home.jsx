@@ -10,7 +10,7 @@ import hi3Logo from 'images/logos/hicube-full.png';
 import explorerThumb from 'images/thumbs/explorer.png';
 import dashboardThumb from 'images/thumbs/dashboards.png';
 import examplesThumb from 'images/logos/hicube-icon.png'; // TODO add thumb
-import platformsThumb from 'images/thumbs/platforms.png';
+import partnersThumb from 'images/thumbs/partners.png';
 
 import 'Hi3/css/pages/home.css';
 
@@ -26,10 +26,10 @@ class InterfaceTiles extends React.Component {
                 together using specialized post-processing
                 functions.
             </Tile>
-            <Tile to='/platforms' thumb={platformsThumb}
-                  title='Event Platforms'>
-                External platforms integrated into the {HI3} platform and designed
-                for detecting and analyzing specific types of Internet security
+            <Tile to='/partners' thumb={partnersThumb}
+                  title='Data &amp; Analytics Partners'>
+                External projects that leverage the {HI3} platform to
+                detect and analyze specific types of Internet security
                 events, including BGP Hijacking, and large-scale outages.
             </Tile>
             <Tile to='/dashboards' thumb={dashboardThumb}

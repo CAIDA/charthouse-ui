@@ -8,7 +8,7 @@ import StatsTable from 'Hijacks/components/stats-table';
 import EventTypeSelector from 'Hijacks/components/event-type-selector';
 import {HI3} from 'Hi3/utils';
 
-import 'Hi3/css/pages/platforms/hijacks.css';
+import 'Hi3/css/pages/partners/hijacks.css';
 
 import caidaLogo from 'images/logos/caida-logo-cropped.svg';
 import ucsdLogo from 'images/logos/UCSanDiegoLogo-BlueGold.png';
@@ -53,7 +53,7 @@ class Hijacks extends React.Component {
                         to detect and characterize BGP hijacking attacks,
                         including stealthy man-in-the-middle (MiTM) Internet
                         traffic interception attacks. The Observatory uses
-                        the <Link to='/platforms'>{HI3} PaaS</Link> offering
+                        the <Link to='/partners'>{HI3} PaaS</Link> offering
                         to power its data collection and
                         analytics platform, and provides event data to {HI3} to
                         allow correlation with other types of Internet

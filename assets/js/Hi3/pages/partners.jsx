@@ -1,6 +1,7 @@
 import React from 'react';
 
-import {Tile, TileGrid} from '../components/tile-grid';
+import {Tile, TileGrid} from 'Hi3/components/tile-grid';
+import {HI3} from 'Hi3/utils';
 
 import hijacksThumb from 'images/thumbs/hijacks.png';
 import iodaThumb from 'images/logos/ioda-logo-brand.svg';
@@ -8,32 +9,36 @@ import mapkitThumb from 'images/logos/hicube-icon.png';
 import ucsdntThumb from 'images/logos/hicube-icon.png';
 import meritntThumb from 'images/logos/hicube-icon.png';
 
-class Platforms extends React.Component {
+class Partners extends React.Component {
     render() {
         return <div className='container'>
             <div className="page-header">
-                <h1>Event Platforms</h1>
+                <h1>Data &amp; Analytics Partners</h1>
             </div>
             <div className='row'>
                 <div className='col-md-12'>
                     <p className='lead' style={{marginBottom: '30px'}}>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                        do eiusmod tempor incididunt ut labore et dolore magna
-                        aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                        ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                        Duis aute irure dolor in reprehenderit in voluptate velit
-                        esse cillum dolore eu fugiat nulla pariatur.
+                        {HI3}'s PaaS and SaaS model provides a win-win
+                        opportunity for data and analytics providers. Providers
+                        can leverage the backend infrastructure
+                        (data collection, ingestion, storage and analysis)
+                        as well as frontend interfaces and UI components to
+                        rapidly build, scale and expose their Internet data
+                        and analytics project. In addition, the data and
+                        analytics that they develop can then be (securely)
+                        correlated with data from other providers within
+                        the {HI3} community.
                     </p>
                 </div>
             </div>
             <TileGrid>
-                <Tile to='/platforms/hijacks' thumb={hijacksThumb}
+                <Tile to='/partners/hijacks' thumb={hijacksThumb}
                       title='BGP Hijacks Observatory'>
                     The BGP Hijacks Observatory is a CAIDA project to detect
                     and characterize BGP hijacking attacks, including stealthy
                     man-in-the-middle (MiTM) Internet traffic interception attacks.
                 </Tile>
-                <Tile to='/platforms/ioda' thumb={iodaThumb}
+                <Tile to='/partners/ioda' thumb={iodaThumb}
                       isScreenshot={false}
                       title='Internet Outages Detection and Analysis (IODA)'>
                     A CAIDA project to develop an operational prototype system
@@ -42,7 +47,7 @@ class Platforms extends React.Component {
                     network, i.e., significantly impacting an AS or a large
                     fraction of a country.
                 </Tile>
-                <Tile to='/platforms/mapkit' thumb={mapkitThumb}
+                <Tile to='/partners/mapkit' thumb={mapkitThumb}
                       isScreenshot={false}
                       title='Mapping Key Internet Terrain (MapKIT)'>
                     MapKIT seeks to identify important components of the Internet topology of a
@@ -51,29 +56,30 @@ class Platforms extends React.Component {
                     physical cable systems which represent the &ldquo;key terrain&rdquo; in
                     cyberspace.
                 </Tile>
-                <Tile to='/platforms/ucsdnt' thumb={ucsdntThumb}
+                <Tile to='/partners/ucsdnt' thumb={ucsdntThumb}
                       isScreenshot={false}
                       title='UCSD Network Telescope'>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                    do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                    ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                    Duis aute irure dolor in reprehenderit in voluptate velit
-                    esse cillum dolore eu fugiat nulla pariatur.
+                    The UCSD Network Telescope (UCSD-NT) is a passive monitoring
+                    system, which captures unsolicited Internet traffic sent to
+                    a large segment of unassigned IPv4 address space and
+                    provides a unique global view of macroscopic Internet
+                    phenomena. Data from UCSD-NT has been used to study network
+                    and systems security and stability, machine learning and
+                    big data processing techniques, and, most recently, for
+                    studies of cyberwarfare and political repression of communication
                 </Tile>
-                <Tile to='/platforms/meritnt' thumb={meritntThumb}
+                <Tile to='/partners/meritnt' thumb={meritntThumb}
                       isScreenshot={false}
                       title='Merit Network Telescope'>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+                    The Merit Network Telescope (Merit-NT) is ipsum dolor sit
+                    amet, consectetur adipiscing elit, sed
                     do eiusmod tempor incididunt ut labore et dolore magna
                     aliqua. Ut enim ad minim veniam, quis nostrud exercitation
                     ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                    Duis aute irure dolor in reprehenderit in voluptate velit
-                    esse cillum dolore eu fugiat nulla pariatur.
                 </Tile>
             </TileGrid>
         </div>;
     }
 }
 
-export default Platforms;
+export default Partners;
