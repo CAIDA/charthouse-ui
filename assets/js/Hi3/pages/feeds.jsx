@@ -19,16 +19,14 @@ class Feeds extends React.Component {
             <div className='row'>
                 <div className='col-md-12'>
                     <p className='lead' style={{marginBottom: '30px'}}>
-                        {HI3}'s PaaS and SaaS model provides a win-win
-                        opportunity for data and analytics providers. Providers
-                        can leverage the backend infrastructure
+                        {HI3} provides access to several data feeds and
+                        analytics projects allowing (secure) correlation between
+                        various types of Internet incident data. Data providers
+                        can also leverage the {HI3} PaaS backend infrastructure
                         (data collection, ingestion, storage and analysis)
-                        as well as frontend interfaces and UI components to
+                        as well as its SaaS frontend interfaces and UI components to
                         rapidly build, scale and expose their Internet data
-                        and analytics project. In addition, the data and
-                        analytics that they develop can then be (securely)
-                        correlated with data from other providers within
-                        the {HI3} community.
+                        and analytics project.
                     </p>
                 </div>
             </div>
