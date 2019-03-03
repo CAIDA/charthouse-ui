@@ -8,6 +8,7 @@ import iodaThumb from 'images/logos/ioda-logo-brand.svg';
 import mapkitThumb from 'images/logos/hicube-icon.png';
 import ucsdntThumb from 'images/logos/hicube-icon.png';
 import meritntThumb from 'images/logos/hicube-icon.png';
+import thunderpingThumb from 'images/logos/hicube-icon.png';
 
 class Feeds extends React.Component {
     render() {
@@ -77,15 +78,16 @@ class Feeds extends React.Component {
                     aliqua. Ut enim ad minim veniam, quis nostrud exercitation
                     ullamco laboris nisi ut aliquip ex ea commodo consequat.
                 </Tile>
-                <Tile to='/feeds/thunderping' thumb={meritntThumb}
+                <Tile to='/feeds/thunderping' thumb={thunderpingThumb}
                       isScreenshot={false}
                       title='Thunderping'>
                     Thunderping is a project from the University of Maryland
-                    that ipsum dolor sit
-                    amet, consectetur adipiscing elit, sed
-                    do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                    ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                    that investigates the resilience of residential Internet
+                    connections during and after weather events.
+                    When the National Weather Service issues a
+                    weather alert for a county in the United States, they ping IP
+                    addresses belonging to residential Internet connections in
+                    that county, before, during, and after the alert.
                 </Tile>
             </TileGrid>
         </div>;
