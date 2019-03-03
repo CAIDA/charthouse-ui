@@ -29,12 +29,9 @@ class Platforms extends React.Component {
             <TileGrid>
                 <Tile to='/platforms/hijacks' thumb={hijacksThumb}
                       title='BGP Hijacks Observatory'>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                    do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                    ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                    Duis aute irure dolor in reprehenderit in voluptate velit
-                    esse cillum dolore eu fugiat nulla pariatur.
+                    The BGP Hijacks Observatory is a CAIDA project to detect
+                    and characterize BGP hijacking attacks, including stealthy
+                    man-in-the-middle (MiTM) Internet traffic interception attacks.
                 </Tile>
                 <Tile to='/platforms/ioda' thumb={iodaThumb}
                       isScreenshot={false}
@@ -48,12 +45,11 @@ class Platforms extends React.Component {
                 <Tile to='/platforms/mapkit' thumb={mapkitThumb}
                       isScreenshot={false}
                       title='Mapping Key Internet Terrain (MapKIT)'>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                    do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                    ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                    Duis aute irure dolor in reprehenderit in voluptate velit
-                    esse cillum dolore eu fugiat nulla pariatur.
+                    MapKIT seeks to identify important components of the Internet topology of a
+                    country/region&mdash;Autonomous Systems (ASes), Internet
+                    Exchange Points (IXPs), PoPs, colocation facilities, and
+                    physical cable systems which represent the &ldquo;key terrain&rdquo; in
+                    cyberspace.
                 </Tile>
                 <Tile to='/platforms/ucsdnt' thumb={ucsdntThumb}
                       isScreenshot={false}

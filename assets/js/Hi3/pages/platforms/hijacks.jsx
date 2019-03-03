@@ -2,9 +2,11 @@ import React from 'react';
 import Iframe from 'react-iframe';
 import {ToggleButton, ToggleButtonGroup, Button} from "react-bootstrap";
 import {LinkContainer} from 'react-router-bootstrap';
+import {Link} from 'react-router-dom';
 
 import StatsTable from 'Hijacks/components/stats-table';
 import EventTypeSelector from 'Hijacks/components/event-type-selector';
+import {HI3} from 'Hi3/utils';
 
 import 'Hi3/css/pages/platforms/hijacks.css';
 
@@ -46,16 +48,16 @@ class Hijacks extends React.Component {
                 <div className='col-md-6 page-header'>
                     <h1>BGP Hijacks Observatory</h1>
                     <p className='lead'>
-                        The BGP Hijacks Observatory is a lorem ipsum dolor sit
-                        amet,
-                        consectetur adipiscing elit, sed
-                        do eiusmod tempor incididunt ut labore et dolore magna
-                        aliqua. Ut enim ad minim veniam, quis nostrud
-                        exercitation
-                        ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                        Duis aute irure dolor in reprehenderit in voluptate
-                        velit
-                        esse cillum dolore eu fugiat nulla pariatur.
+                        The <a href="https://www.caida.org/funding/hijacks">BGP Hijacks Observatory</a> is
+                        a <a href="https://www.caida.org">CAIDA</a> project
+                        to detect and characterize BGP hijacking attacks,
+                        including stealthy man-in-the-middle (MiTM) Internet
+                        traffic interception attacks. The Observatory uses
+                        the <Link to='/platforms'>{HI3} PaaS</Link> offering
+                        to power its data collection and
+                        analytics platform, and provides event data to {HI3} to
+                        allow correlation with other types of Internet
+                        security data.
                     </p>
                 </div>
                 <div className='col-lg-offset-1 col-lg-5 col-md-6 stats-header'>
