@@ -9,11 +9,11 @@ import mapkitThumb from 'images/logos/hicube-icon.png';
 import ucsdntThumb from 'images/logos/hicube-icon.png';
 import meritntThumb from 'images/logos/hicube-icon.png';
 
-class Partners extends React.Component {
+class Feeds extends React.Component {
     render() {
         return <div className='container'>
             <div className="page-header">
-                <h1>Data &amp; Analytics Partners</h1>
+                <h1>Data Feeds &amp; Analytics</h1>
             </div>
             <div className='row'>
                 <div className='col-md-12'>
@@ -32,13 +32,13 @@ class Partners extends React.Component {
                 </div>
             </div>
             <TileGrid>
-                <Tile to='/partners/hijacks' thumb={hijacksThumb}
+                <Tile to='/feeds/hijacks' thumb={hijacksThumb}
                       title='BGP Hijacks Observatory'>
                     The BGP Hijacks Observatory is a CAIDA project to detect
                     and characterize BGP hijacking attacks, including stealthy
                     man-in-the-middle (MiTM) Internet traffic interception attacks.
                 </Tile>
-                <Tile to='/partners/ioda' thumb={iodaThumb}
+                <Tile to='/feeds/ioda' thumb={iodaThumb}
                       isScreenshot={false}
                       title='Internet Outages Detection and Analysis (IODA)'>
                     A CAIDA project to develop an operational prototype system
@@ -47,7 +47,7 @@ class Partners extends React.Component {
                     network, i.e., significantly impacting an AS or a large
                     fraction of a country.
                 </Tile>
-                <Tile to='/partners/mapkit' thumb={mapkitThumb}
+                <Tile to='/feeds/mapkit' thumb={mapkitThumb}
                       isScreenshot={false}
                       title='Mapping Key Internet Terrain (MapKIT)'>
                     MapKIT seeks to identify important components of the Internet topology of a
@@ -56,7 +56,7 @@ class Partners extends React.Component {
                     physical cable systems which represent the &ldquo;key terrain&rdquo; in
                     cyberspace.
                 </Tile>
-                <Tile to='/partners/ucsdnt' thumb={ucsdntThumb}
+                <Tile to='/feeds/ucsdnt' thumb={ucsdntThumb}
                       isScreenshot={false}
                       title='UCSD Network Telescope'>
                     The UCSD Network Telescope (UCSD-NT) is a passive monitoring
@@ -68,7 +68,7 @@ class Partners extends React.Component {
                     big data processing techniques, and, most recently, for
                     studies of cyberwarfare and political repression of communication
                 </Tile>
-                <Tile to='/partners/meritnt' thumb={meritntThumb}
+                <Tile to='/feeds/meritnt' thumb={meritntThumb}
                       isScreenshot={false}
                       title='Merit Network Telescope'>
                     The Merit Network Telescope (Merit-NT) is ipsum dolor sit
@@ -82,4 +82,4 @@ class Partners extends React.Component {
     }
 }
 
-export default Partners;
+export default Feeds;

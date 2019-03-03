@@ -31,8 +31,8 @@ import Docs from './pages/docs';
 import About from './pages/about';
 import Acks from './pages/acks';
 import Explorer from 'Explorer';
-import Platforms from './pages/partners';
-import Hijacks from './pages/partners/hijacks';
+import Platforms from './pages/feeds';
+import Hijacks from './pages/feeds/hijacks';
 import Dashboards from './pages/dashboards';
 import Examples from './pages/examples';
 
@@ -68,8 +68,8 @@ class ContentRouter extends React.Component {
 
             <AuthorizedRoute path='/explorer' permission='ui:explorer'
                              component={Explorer}/>
-            <Route path='/partners/hijacks' component={Hijacks}/>
-            <Route path='/partners' component={Platforms}/>
+            <Route path='/feeds/hijacks' component={Hijacks}/>
+            <Route path='/feeds' component={Platforms}/>
             <Route path='/dashboards' component={Dashboards}/>
             <Route path='/examples' component={Examples}/>
 
@@ -113,9 +113,9 @@ const SIDEBAR_LINKS = [
         pinned: false
     },
     {
-        page: 'partners',
+        page: 'feeds',
         icon: <span className="glyphicon glyphicon-globe"/>,
-        text: 'Data Partners'
+        text: 'Data Feeds'
     },
     {
         page: 'dashboards',
@@ -131,7 +131,7 @@ const SIDEBAR_LINKS = [
 
 // which pages should/should not have a pinned sidebar
 const PINNED_SIDEBAR_PAGES = {
-    '/partners/hijacks': false // observatory wants lots of space
+    '/feeds/hijacks': false // observatory wants lots of space
 };
 SIDEBAR_LINKS.forEach(link => {
     if (link) {
