@@ -1,13 +1,24 @@
-.ackbox {
-    width: 300px;
+.ackgroup {
+    margin-bottom: 60px;
+}
+
+.ackgroup h2 {
+    margin-bottom: 20px;
+}
+
+.ackgroup .ackbox {
     text-align: center;
 }
 
-.ackbox img {
-    max-width: 200px;
-    max-height: 150px;
+.ackgroup .ackbox img {
+    max-width: 80%;
+    max-height: 200px;
 }
 
-.ackbox p {
+.ackgroup .ackbox p {
+    font-size: 18px;
+}
 
+.ackgroup .row + .row {
+    margin-top: 30px;
 }
