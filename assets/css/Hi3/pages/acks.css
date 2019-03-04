@@ -1,0 +1,13 @@
+.ackbox {
+    width: 300px;
+    text-align: center;
+}
+
+.ackbox img {
+    max-width: 200px;
+    max-height: 150px;
+}
+
+.ackbox p {
+
+}
