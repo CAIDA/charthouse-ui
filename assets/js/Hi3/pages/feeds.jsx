@@ -37,7 +37,7 @@ class Feeds extends React.Component {
                     and characterize BGP hijacking attacks, including stealthy
                     man-in-the-middle (MiTM) Internet traffic interception attacks.
                 </Tile>
-                <Tile to='/feeds/ioda' thumb={iodaThumb}
+                <Tile to='https://ioda.caida.org' thumb={iodaThumb}
                       isScreenshot={false}
                       title='Internet Outages Detection and Analysis (IODA)'>
                     A CAIDA project to develop an operational prototype system

@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import {Link} from 'react-router-dom';
+
+import LinkA from 'Hi3/components/linka';
 
 import 'Hi3/css/tile-grid.css';
 
@@ -22,7 +23,7 @@ class Tile extends React.Component {
     };
 
     render () {
-        return <Link to={this.props.to}>
+        return <LinkA to={this.props.to}>
             <div className={`tile col-md-${12/TILES_PER_ROW}`}>
                 <div className=' panel panel-default'>
                     <div className="thumbnail panel-body">
@@ -37,7 +38,7 @@ class Tile extends React.Component {
                     </div>
                 </div>
             </div>
-        </Link>;
+        </LinkA>;
     }
 }
 
