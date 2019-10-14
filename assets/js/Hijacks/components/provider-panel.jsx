@@ -5,7 +5,8 @@ import ucsdLogo from 'images/logos/UCSanDiegoLogo-BlueGold.png';
 
 class DataProvider extends React.Component {
     render(){
-        return <div className='panel-body'>
+        return <div className='acks pull-right text-center panel panel-default'>
+            <div className='panel-body'>
             <h2>Data &amp; Analytics provided by</h2>
             <div className='text-center ack-logos'>
                 <div className='row'>
@@ -27,6 +28,7 @@ class DataProvider extends React.Component {
                     </a>
                 </div>
             </div>
+        </div>
         </div>
     }
 }

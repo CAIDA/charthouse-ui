@@ -1,6 +1,5 @@
 import React from 'react';
-import Iframe from 'react-iframe';
-import {ToggleButton, ToggleButtonGroup, Button} from "react-bootstrap";
+import {Button, ToggleButton, ToggleButtonGroup} from "react-bootstrap";
 import {LinkContainer} from 'react-router-bootstrap';
 import {Link} from 'react-router-dom';
 
@@ -10,6 +9,7 @@ import DataProvider from "Hijacks/components/provider-panel";
 import {HI3} from 'Hi3/utils';
 
 import 'Hi3/css/pages/feeds/hijacks.css';
+import EventTable from "../../../Hijacks/components/event-table";
 
 const HORIZONTAL_OFFSET = 480;
 
@@ -93,20 +93,10 @@ class Hijacks extends React.Component {
                 </div>
             </div>
 
-            /*
-            TODO: migrate observatory code into the following block
-             */
-            <div className='row' style={{margin: 0}}>
-                <Iframe
-                    url={embedUrl}
-                    width={embedWidth}
-                    height={embedHeight}
-                />
-            </div>
+            <EventTable eventType={this.state.eventType} width={embedWidth} height={embedHeight}/>
 
-            <div className='acks pull-right text-center panel panel-default'>
-                <DataProvider/>
-            </div>
+            <DataProvider/>
+
         </div>;
     }
 
