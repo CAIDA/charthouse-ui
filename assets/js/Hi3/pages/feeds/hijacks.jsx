@@ -6,12 +6,10 @@ import {Link} from 'react-router-dom';
 
 import StatsTable from 'Hijacks/components/stats-table';
 import EventTypeSelector from 'Hijacks/components/event-type-selector';
+import DataProvider from "Hijacks/components/provider-panel";
 import {HI3} from 'Hi3/utils';
 
 import 'Hi3/css/pages/feeds/hijacks.css';
-
-import caidaLogo from 'images/logos/caida-logo-cropped.svg';
-import ucsdLogo from 'images/logos/UCSanDiegoLogo-BlueGold.png';
 
 const HORIZONTAL_OFFSET = 480;
 
@@ -94,6 +92,10 @@ class Hijacks extends React.Component {
                     </div>
                 </div>
             </div>
+
+            /*
+            TODO: migrate observatory code into the following block
+             */
             <div className='row' style={{margin: 0}}>
                 <Iframe
                     url={embedUrl}
@@ -101,31 +103,9 @@ class Hijacks extends React.Component {
                     height={embedHeight}
                 />
             </div>
-            {/* TODO: refactor into separate class */}
+
             <div className='acks pull-right text-center panel panel-default'>
-                <div className='panel-body'>
-                <h2>Data &amp; Analytics provided by</h2>
-                <div className='text-center ack-logos'>
-                    <div className='row'>
-                        <a href='https://www.caida.org/funding/hijacks'
-                           target='_blank'>
-                            CAIDA's BGP Hijacks Project <span style={{fontSize: '.8em'}} className='glyphicon glyphicon-share'/>
-                        </a>
-                    </div>
-                    <div className='row'>
-                        <a href='https://www.caida.org'
-                           target='_blank'>
-                            <img src={caidaLogo} className='ack-logo'/>
-                        </a>
-                    </div>
-                    <div className='row'>
-                        <a href='https://www.ucsd.edu'
-                           target='_blank'>
-                            <img src={ucsdLogo} className='ack-logo'/>
-                        </a>
-                    </div>
-                </div>
-                </div>
+                <DataProvider/>
             </div>
         </div>;
     }
