@@ -9,8 +9,7 @@ import DataProvider from "Hijacks/components/provider-panel";
 import {HI3} from 'Hi3/utils';
 
 import 'Hi3/css/pages/feeds/hijacks.css';
-import EventTable from "../../../Hijacks/components/event-table";
-import TestTable from "../../../Hijacks/components/test-table";
+import TestTable2 from "../../../Hijacks/components/test-table-2";
 
 const HORIZONTAL_OFFSET = 480;
 
@@ -94,9 +93,7 @@ class Hijacks extends React.Component {
                 </div>
             </div>
 
-            <TestTable/>
-
-            <EventTable eventType={this.state.eventType} width={embedWidth} height={embedHeight}/>
+            <TestTable2/>
 
             <DataProvider/>
 
