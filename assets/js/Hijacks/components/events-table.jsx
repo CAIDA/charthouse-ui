@@ -99,12 +99,13 @@ class EventsTable extends React.Component {
     static defaultProps = {
         eventType: "all",
     };
+
     state = {
         data: [],
-        eventType: "all",
         loading: false,
         totalRows: 0,
         perPage: 10,
+        curPage: 0,
     };
 
     async componentDidMount() {
@@ -128,12 +129,13 @@ class EventsTable extends React.Component {
         if (prevProps.eventType === this.props.eventType) {
             return
         }
-        const {perPage} = this.state;
+        const {perPage, curPage} = this.state;
+        let page = curPage - 1;
 
         this.setState({loading: true});
 
         const response = await axios.get(
-            `https://bgp.caida.org/json/events/${this.props.eventType}?length=10`,
+            `https://bgp.caida.org/json/events/${this.props.eventType}?length=${perPage}&start=${perPage * page}`,
         );
         console.log(response);
 
@@ -145,12 +147,15 @@ class EventsTable extends React.Component {
     }
 
     handlePageChange = async page => {
+        page -= 1;
+        console.log("page changed to %s", page);
         const {perPage} = this.state;
+        this.state.curPage = page;
 
         this.setState({loading: true});
 
         const response = await axios.get(
-            `https://reqres.in/api/users?page=${page}&per_page=${perPage}&delay=1`,
+            `https://bgp.caida.org/json/events/${this.props.eventType}?length=${perPage}&start=${perPage * page}`,
         );
 
         this.setState({
@@ -160,10 +165,15 @@ class EventsTable extends React.Component {
     };
 
     handlePerRowsChange = async (perPage, page) => {
-        this.setState({loading: true});
+        page -= 1;
+        this.setState({
+            loading: true,
+            perPage: perPage,
+            curPage: page,
+        });
 
         const response = await axios.get(
-            `https://reqres.in/api/users?page=${page}&per_page=${perPage}&delay=1`,
+            `https://bgp.caida.org/json/events/${this.props.eventType}?length=${perPage}&start=${perPage * page}`,
         );
 
         this.setState({
