@@ -37,14 +37,32 @@ const columns = [
         name: 'Potential Attackers',
         selector: 'attackers',
     },
-    // {
-    //     name: 'Largest Prefix',
-    //     selector: 'prefixes',
-    // },
-    // {
-    //     name: '# Prefix Events',
-    //     selector: 'prefixes',
-    // },
+    {
+        name: 'Largest Prefix',
+        selector: 'prefixes',
+        cell: row => {
+            let data = row.prefixes;
+            let maxsize = 32;
+            let maxpfx = data[0];
+            for (let pfx in data.slice(1)) {
+                let size = parseInt(pfx.split("/")[1]);
+                if (size < maxsize) {
+                    maxsize = size;
+                    maxpfx = pfx
+                }
+
+            }
+            return maxpfx
+        }
+    },
+    {
+        name: '# Prefix Events',
+        selector: 'prefixes',
+        cell: row => {
+            let data = row.prefixes;
+            return data.length
+        }
+    },
     {
         name: 'Start Time',
         selector: 'view_ts',
