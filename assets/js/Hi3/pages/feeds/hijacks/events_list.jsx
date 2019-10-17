@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, ToggleButton, ToggleButtonGroup} from "react-bootstrap";
+import {Button} from "react-bootstrap";
 import {LinkContainer} from 'react-router-bootstrap';
 import {Link} from 'react-router-dom';
 
@@ -7,7 +7,7 @@ import EventTypeSelector from 'Hijacks/components/event-type-selector';
 import {HI3} from 'Hi3/utils';
 
 import 'Hi3/css/pages/feeds/hijacks.css';
-import TestTable2 from "../../../../Hijacks/components/test-table-2";
+import EventsTable from "../../../../Hijacks/components/events-table";
 
 const HORIZONTAL_OFFSET = 480;
 
@@ -60,6 +60,7 @@ class EventsList extends React.Component {
                 <div className='col-md-12'>
 
                     {/* TODO: refactor into separate class (in this file) */}
+                    {/*
                     <div style={{display: 'inline-block', marginRight: '25px'}}>
                         <label style={{display: 'block'}}>
                             Select visualization
@@ -74,6 +75,7 @@ class EventsList extends React.Component {
                                           onClick={this._changeVizType}>Time Series Graphs</ToggleButton>
                         </ToggleButtonGroup>
                     </div>
+*/}
 
                     <EventTypeSelector eventType={this.state.eventType}
                                        onChange={this._typeChanged}
@@ -87,7 +89,7 @@ class EventsList extends React.Component {
                 </div>
             </div>
 
-            <TestTable2/>
+            <EventsTable eventType={this.state.eventType}/>
 
         </div>;
     }
@@ -102,6 +104,7 @@ class EventsList extends React.Component {
     };
 
     _typeChanged = (eventType) => {
+        console.log("event type changed to %s", eventType);
         this.setState({eventType});
     };
 }
