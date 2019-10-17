@@ -23,6 +23,8 @@ class EventTable extends React.Component {
             />
         </div>
     }
+
+
 }
 
 export default EventTable;
