@@ -26,7 +26,11 @@ const columns = [
         selector: 'victims',
         cell: row => {
             let data = row.victims;
-            return data.join(",")
+            let res = data.slice(0, 2).join(",");
+            if (data.length > 2) {
+                res += " and more"
+            }
+            return res
         }
     },
     {
