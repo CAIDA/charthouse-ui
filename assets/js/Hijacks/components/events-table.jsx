@@ -30,8 +30,10 @@ const columns = [
             if (data.length > 2) {
                 res += " and more"
             }
-            return res
-        }
+            return <a href="https://google.com">{res}</a>
+        },
+        ignoreRowClick: true,
+        button: true
     },
     {
         name: 'Potential Attackers',
@@ -183,12 +185,17 @@ class EventsTable extends React.Component {
         });
     };
 
+    handleRowClick(row) {
+        // redirect to sub pages
+        window.open(`/feeds/hijacks/events/${row.id}`, "_self");
+    }
+
     render() {
         const {loading, data, totalRows} = this.state;
 
         return (
             <DataTable
-                title="Users"
+                title="Events List"
                 columns={columns}
                 data={data}
                 progressPending={loading}
@@ -197,6 +204,7 @@ class EventsTable extends React.Component {
                 paginationTotalRows={totalRows}
                 onChangeRowsPerPage={this.handlePerRowsChange}
                 onChangePage={this.handlePageChange}
+                onRowClicked={this.handleRowClick}
             />
         );
     }

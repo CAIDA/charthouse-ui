@@ -89,6 +89,13 @@ class EventsList extends React.Component {
                 </div>
             </div>
 
+            {/*<script src="//stat.ripe.net/widgets/widget_api.js"></script>*/}
+            {/*<div className="statwdgtauto">*/}
+            {/*    <script>ripestat.init("as-path-length",{"resource":"AS3333"})*/}
+            {/*    </script>*/}
+            {/*</div>*/}
+
+            HEY
             <EventsTable eventType={this.state.eventType}/>
 
         </div>;
