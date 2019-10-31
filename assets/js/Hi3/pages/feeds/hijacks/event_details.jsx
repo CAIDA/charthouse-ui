@@ -1,6 +1,7 @@
 import React from 'react';
 import 'Hi3/css/pages/feeds/hijacks.css';
 import EventDetailsTable from "../../../../Hijacks/components/event-details-table";
+import PfxEventsTable from "../../../../Hijacks/components/pfx-events-table";
 
 const HORIZONTAL_OFFSET = 480;
 
@@ -25,6 +26,7 @@ class EventDetails extends React.Component {
     render() {
 
         const {eventid} = this.props.match.params;
+        let eventType = eventid.split("-")[0];
         return (
             <div id='hijacks' className='container-fluid'>
                 <div className='row header'>
@@ -32,7 +34,12 @@ class EventDetails extends React.Component {
                         <h1>Event Details</h1>
                     </div>
                 </div>
-                <EventDetailsTable eventId={eventid}/>
+                <div>
+                    <EventDetailsTable eventId={eventid}/>
+                </div>
+                <div>
+                    <PfxEventsTable eventId={eventid} eventType={eventType}/>
+                </div>
             </div>
         );
     }

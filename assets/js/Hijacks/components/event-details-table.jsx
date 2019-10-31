@@ -13,7 +13,7 @@ class EventDetailsTable extends React.Component {
 
     state = {
         data: {},
-        loading: false,
+        loading: true,
         success: false,
         error_msg: "",
     };
@@ -38,6 +38,7 @@ class EventDetailsTable extends React.Component {
         };
 
         let processed = data;
+        processed["victims"] = data.victims.map(origin => <span key={origin}>{origin} </span>);
         processed["largest_prefix"] = extract_largest_prefix(data);
         processed["impact"] = extract_impact(data);
 
@@ -60,8 +61,6 @@ class EventDetailsTable extends React.Component {
     }
 
     async componentDidMount() {
-        this.setState({loading: true});
-
         const response = await axios.get(
             `https://bgp.caida.org/json/event/id/${this.props.eventId}`,
         );

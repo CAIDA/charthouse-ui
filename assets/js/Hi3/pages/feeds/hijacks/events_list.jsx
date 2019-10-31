@@ -95,7 +95,6 @@ class EventsList extends React.Component {
             {/*    </script>*/}
             {/*</div>*/}
 
-            HEY
             <EventsTable eventType={this.state.eventType}/>
 
         </div>;

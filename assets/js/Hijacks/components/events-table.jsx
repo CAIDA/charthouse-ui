@@ -30,7 +30,7 @@ const columns = [
             if (data.length > 2) {
                 res += " and more"
             }
-            return <a href="https://google.com">{res}</a>
+            return res
         },
         ignoreRowClick: true,
         button: true
