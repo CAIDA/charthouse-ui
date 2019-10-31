@@ -1,15 +1,7 @@
 import React from "react";
-import PropTypes from "prop-types";
-import axios from "axios";
 import {extract_impact, extract_largest_prefix, unix_time_to_str} from "../utils/events";
 
 class EventDetailsTable extends React.Component {
-    static propTypes = {
-        eventId: PropTypes.string,
-    };
-    static defaultProps = {
-        eventId: "",
-    };
 
     state = {
         data: {},
@@ -60,25 +52,24 @@ class EventDetailsTable extends React.Component {
         return processed;
     }
 
-    async componentDidMount() {
-        const response = await axios.get(
-            `https://bgp.caida.org/json/event/id/${this.props.eventId}`,
-        );
-
-        if ("error" in response.data) {
+    loadEventData(data) {
+        if ("error" in data) {
             this.setState({
                 loading: false,
                 success: false,
-                error_msg: response.data.error
+                error_msg: data.error
             });
             return;
         }
 
         this.setState({
-            data: this.preprocessData(response.data),
+            data: this.preprocessData(data),
             loading: false,
             success: true,
         });
+    }
+
+    async componentDidMount() {
     }
 
     render() {

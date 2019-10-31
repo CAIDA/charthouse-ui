@@ -1,6 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
-import axios from "axios";
 import DataTable from "react-data-table-component";
 
 const columns1 = [
@@ -51,10 +49,6 @@ const columns2 = [
 ];
 
 class PfxEventsTable extends React.Component {
-    static propTypes = {
-        eventId: PropTypes.string,
-        eventType: PropTypes.string,
-    };
 
     state = {
         data: {},
@@ -63,24 +57,12 @@ class PfxEventsTable extends React.Component {
         error_msg: "",
     };
 
-    async componentDidMount() {
-        const response = await axios.get(
-            `https://bgp.caida.org/json/event/id/${this.props.eventId}`,
-        );
-        if ("error" in response.data) {
-            this.setState({
-                loading: false,
-                success: false,
-                error_msg: response.data.error
-            });
-            return;
-        }
+    constructor(props) {
+        super(props);
+        this.handleRowClick = this.handleRowClick.bind(this);
+    }
 
-        this.setState({
-            data: this.preprocessData(response.data),
-            loading: false,
-            success: true,
-        });
+    async componentDidMount() {
     }
 
     /**
@@ -94,18 +76,25 @@ class PfxEventsTable extends React.Component {
 
         for (let pfx_event of data.pfx_events) {
             let event = {};
+
+            let prefixes = [];
             if ("prefix" in pfx_event) {
                 event.prefix = pfx_event.prefix;
+                prefixes.push(pfx_event.prefix);
             }
             if ("sub_pfx" in pfx_event) {
                 event.sub_pfx = pfx_event.sub_pfx;
+                prefixes.push(pfx_event.sub_pfx);
             }
             if ("super_pfx" in pfx_event) {
                 event.super_pfx = pfx_event.super_pfx;
+                prefixes.push(pfx_event.super_pfx);
             }
             event.tags = pfx_event.tags.map(tag => <span key={tag}>{tag} </span>);
             event.tr_worthy = pfx_event.tr_worthy.toString();
             event.tr_available = pfx_event.tr_available.toString();
+            event.fingerprint = prefixes.join("_")
+                .replace(/\//g, "-");
 
             processed.push(event);
             console.log(event)
@@ -113,17 +102,56 @@ class PfxEventsTable extends React.Component {
         return processed;
     }
 
+
+    handleRowClick(row) {
+        window.open(`/feeds/hijacks/events/${this.eventId}/${row.fingerprint}`, "_self");
+    }
+
+    loadEventData(data) {
+        if ("error" in data) {
+            this.setState({
+                loading: false,
+                success: false,
+                error_msg: data.error
+            });
+            return;
+        }
+
+        this.eventType = data.event_type;
+        this.eventId = data.id;
+
+
+        this.setState({
+            data: this.preprocessData(data),
+            loading: false,
+            success: true,
+        });
+    }
+
     render() {
-        const {loading, data, totalRows} = this.state;
-        console.log("redner pfx table");
-        console.log(data);
-        console.log(this.props);
+        const {loading, data, success, error_msg} = this.state;
+
         if (loading) {
+            // still loading
             return (<div>loading data ...</div>)
         }
 
+        if (!success) {
+            // loading failed
+            return (
+                <div>
+                    <p>
+                        Event details loading failed
+                    </p>
+                    <p>
+                        {error_msg}
+                    </p>
+                </div>
+            )
+        }
+
         let columns = [];
-        if (["moas", "edges"].includes(this.props.eventType)) {
+        if (["moas", "edges"].includes(this.eventType)) {
             columns = columns1
         } else {
             columns = columns2
@@ -135,6 +163,7 @@ class PfxEventsTable extends React.Component {
                 columns={columns}
                 data={data}
                 progressPending={loading}
+                onRowClicked={this.handleRowClick}
                 pagination
             />
         );

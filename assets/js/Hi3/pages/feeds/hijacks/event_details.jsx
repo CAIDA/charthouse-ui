@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from "axios";
 import 'Hi3/css/pages/feeds/hijacks.css';
 import EventDetailsTable from "../../../../Hijacks/components/event-details-table";
 import PfxEventsTable from "../../../../Hijacks/components/pfx-events-table";
@@ -13,20 +14,37 @@ class EventDetails extends React.Component {
 
     constructor(props) {
         super(props);
+        this.pfxTable = React.createRef();
+        this.eventTable = React.createRef();
+
+        this.eventId = this.props.match.params.eventId;
+        console.log(this.eventId);
+        this.eventType = this.eventId.split("-")[0];
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         window.addEventListener('resize', this._resize);
+        this.loadEventData();
+
     }
 
     componentWillUnmount() {
         window.removeEventListener('resize', this._resize);
     }
 
+    async loadEventData() {
+        console.log("loading event data now");
+        const response = await axios.get(
+            `https://bgp.caida.org/json/event/id/${this.eventId}`,
+        );
+        console.log(response.data);
+
+        this.pfxTable.current.loadEventData(response.data);
+        this.eventTable.current.loadEventData(response.data);
+    }
+
     render() {
 
-        const {eventid} = this.props.match.params;
-        let eventType = eventid.split("-")[0];
         return (
             <div id='hijacks' className='container-fluid'>
                 <div className='row header'>
@@ -35,10 +53,10 @@ class EventDetails extends React.Component {
                     </div>
                 </div>
                 <div>
-                    <EventDetailsTable eventId={eventid}/>
+                    <EventDetailsTable ref={this.eventTable}/>
                 </div>
                 <div>
-                    <PfxEventsTable eventId={eventid} eventType={eventType}/>
+                    <PfxEventsTable ref={this.pfxTable}/>
                 </div>
             </div>
         );
