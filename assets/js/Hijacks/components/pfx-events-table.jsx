@@ -22,10 +22,6 @@ const columns1 = [
 ];
 const columns2 = [
     {
-        name: 'Prefix',
-        selector: 'prefix',
-    },
-    {
         name: 'Sub Prefix',
         selector: 'sub_pfx',
     },

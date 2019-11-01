@@ -18,7 +18,6 @@ class EventDetails extends React.Component {
         this.eventTable = React.createRef();
 
         this.eventId = this.props.match.params.eventId;
-        console.log(this.eventId);
         this.eventType = this.eventId.split("-")[0];
     }
 
@@ -33,12 +32,9 @@ class EventDetails extends React.Component {
     }
 
     async loadEventData() {
-        console.log("loading event data now");
         const response = await axios.get(
             `https://bgp.caida.org/json/event/id/${this.eventId}`,
         );
-        console.log(response.data);
-
         this.pfxTable.current.loadEventData(response.data);
         this.eventTable.current.loadEventData(response.data);
     }
