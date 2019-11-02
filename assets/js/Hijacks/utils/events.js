@@ -76,4 +76,18 @@ function unix_time_to_str(unix_time) {
     return `${year}-${month}-${day} ${hour}:${minute}`;
 }
 
-export {extract_impact, extract_largest_prefix, unix_time_to_str}
+function extract_prefixes(pfx_event) {
+    let prefixes = [];
+    if ("prefix" in pfx_event) {
+        prefixes.push(pfx_event.prefix);
+    }
+    if ("sub_pfx" in pfx_event) {
+        prefixes.push(pfx_event.sub_pfx);
+    }
+    if ("super_pfx" in pfx_event) {
+        prefixes.push(pfx_event.super_pfx);
+    }
+    return prefixes
+}
+
+export {extract_impact, extract_largest_prefix, unix_time_to_str, extract_prefixes}

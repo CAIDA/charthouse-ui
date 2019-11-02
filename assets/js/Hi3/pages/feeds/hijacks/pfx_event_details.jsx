@@ -2,6 +2,7 @@ import React from 'react';
 import 'Hi3/css/pages/feeds/hijacks.css';
 import EventDetailsTable from "../../../../Hijacks/components/event-details-table";
 import axios from "axios";
+import SankeyGraph from "../../../../Hijacks/components/sankeyGraph";
 
 const HORIZONTAL_OFFSET = 480;
 
@@ -14,20 +15,38 @@ class PfxEventDetails extends React.Component {
     constructor(props) {
         super(props);
         this.eventTable = React.createRef();
+        this.routesSankey = React.createRef();
 
         this.eventId = this.props.match.params.eventId;
-        this.prefixes = this.props.match.params.pfxEventId
-            .split("_").map(pfx => pfx.replace(/-/g, "/"));
+        this.fingerprint = this.props.match.params.pfxEventId;
         this.eventType = this.eventId.split("-")[0];
     }
 
     componentDidMount() {
         window.addEventListener('resize', this._resize);
-        this.loadEventData()
+        this.loadEventData();
+        this.loadPfxEventData();
     }
 
     componentWillUnmount() {
         window.removeEventListener('resize', this._resize);
+    }
+
+    async loadPfxEventData() {
+        const response = await axios.get(
+            `https://bgp.caida.org/json/pfx_event/id/${this.eventId}/${this.fingerprint}`,
+        );
+
+        console.log(response);
+        if (["submoas", "defcon"].includes(this.eventType)) {
+            // if this is a submoas or defcon events, we should show two sankey graphs
+            let subpaths = response.data.details.sub_aspaths.split(":").map(path => path.split(" "));
+            let superpaths = response.data.details.super_aspaths.split(":").map(path => path.split(" "));
+            this.routesSankey.current.loadData(subpaths);
+        } else {
+            let aspaths = response.data.details.aspaths.split(":").map(path => path.split(" "));
+            this.routesSankey.current.loadData(aspaths);
+        }
     }
 
     async loadEventData() {
@@ -35,6 +54,7 @@ class PfxEventDetails extends React.Component {
             `https://bgp.caida.org/json/event/id/${this.eventId}`,
         );
         this.eventTable.current.loadEventData(response.data);
+
     }
 
     render() {
@@ -47,6 +67,9 @@ class PfxEventDetails extends React.Component {
                 </div>
                 <div>
                     <EventDetailsTable ref={this.eventTable}/>
+                </div>
+                <div>
+                    <SankeyGraph ref={this.routesSankey}/>
                 </div>
             </div>
         );
