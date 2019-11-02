@@ -81,7 +81,7 @@ class SankeyGraph extends React.Component {
                             margin={{top: 40, right: 160, bottom: 40, left: 50}}
                             align="justify"
                             animate={false}
-                            colors={{scheme: 'yellow_orange_red'}}
+                            colors={{scheme: 'red_blue'}}
                         />
                     </div>
                 </div>
