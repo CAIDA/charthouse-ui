@@ -73,15 +73,17 @@ class SankeyGraph extends React.Component {
         } else {
             console.log(this.state.data);
             return (
-                <div style={{height: this.state.data.links.length * 12 + 30}}>
-
-                    <ResponsiveSankey
-                        data={this.state.data}
-                        margin={{top: 40, right: 160, bottom: 40, left: 50}}
-                        align="justify"
-                        animate={false}
-                        colors={{scheme: 'yellow_orange_red'}}
-                    />
+                <div>
+                    <h3>{this.props.title}</h3>
+                    <div style={{height: this.state.data.links.length * 12 + 30}}>
+                        <ResponsiveSankey
+                            data={this.state.data}
+                            margin={{top: 40, right: 160, bottom: 40, left: 50}}
+                            align="justify"
+                            animate={false}
+                            colors={{scheme: 'yellow_orange_red'}}
+                        />
+                    </div>
                 </div>
             );
         }

@@ -16,6 +16,7 @@ class PfxEventDetails extends React.Component {
         super(props);
         this.eventTable = React.createRef();
         this.routesSankey = React.createRef();
+        this.routesSankey2 = React.createRef();
 
         this.eventId = this.props.match.params.eventId;
         this.fingerprint = this.props.match.params.pfxEventId;
@@ -43,6 +44,7 @@ class PfxEventDetails extends React.Component {
             let subpaths = response.data.details.sub_aspaths.split(":").map(path => path.split(" "));
             let superpaths = response.data.details.super_aspaths.split(":").map(path => path.split(" "));
             this.routesSankey.current.loadData(subpaths);
+            this.routesSankey2.current.loadData(superpaths);
         } else {
             let aspaths = response.data.details.aspaths.split(":").map(path => path.split(" "));
             this.routesSankey.current.loadData(aspaths);
@@ -58,6 +60,17 @@ class PfxEventDetails extends React.Component {
     }
 
     render() {
+        let sankey_graphs = null;
+        if (["submoas", "defcon"].includes(this.eventType)) {
+            sankey_graphs = <div>
+                <SankeyGraph ref={this.routesSankey} title={"Route Collectors Sankey Diagram - Sub Prefix"}/>
+                <SankeyGraph ref={this.routesSankey2} title={"Route Collectors Sankey Diagram - Super Prefix"}/>
+            </div>
+        } else {
+            sankey_graphs = <div>
+                <SankeyGraph ref={this.routesSankey} title={"Route Collectors Sankey Diagram"}/>
+            </div>
+        }
         return (
             <div id='hijacks' className='container-fluid'>
                 <div className='row header'>
@@ -68,9 +81,7 @@ class PfxEventDetails extends React.Component {
                 <div>
                     <EventDetailsTable ref={this.eventTable}/>
                 </div>
-                <div>
-                    <SankeyGraph ref={this.routesSankey}/>
-                </div>
+                {sankey_graphs}
             </div>
         );
     }
