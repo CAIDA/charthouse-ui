@@ -112,7 +112,7 @@ class PfxEventsTable extends React.Component {
 
     handleRowClick(row) {
         if (this.props.enableClick) {
-            window.open(`/feeds/hijacks/events/${this.eventId}/${row.fingerprint}`, "_self");
+            window.open(`/feeds/hijacks/events/${this.eventType}/${this.eventId}/${row.fingerprint}`, "_self");
         }
     }
 
