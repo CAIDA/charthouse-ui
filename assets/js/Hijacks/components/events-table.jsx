@@ -187,7 +187,7 @@ class EventsTable extends React.Component {
 
     handleRowClick(row) {
         // redirect to sub pages
-        window.open(`/feeds/hijacks/events/${row.id}`, "_self");
+        window.open(`/feeds/hijacks/events/${row.event_type}/${row.id}`, "_self");
     }
 
     render() {

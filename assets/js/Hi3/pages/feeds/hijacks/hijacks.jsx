@@ -8,8 +8,8 @@ class HijacksRouter extends React.Component {
     render() {
         return <Switch>
             {/* page routes */}
-            <Route path='/feeds/hijacks/events/:eventId/:pfxEventId' component={PfxEventDetails}/>
-            <Route path='/feeds/hijacks/events/:eventId' component={EventDetails}/>
+            <Route path='/feeds/hijacks/events/:eventType/:eventId/:pfxEventId' component={PfxEventDetails}/>
+            <Route path='/feeds/hijacks/events/:eventType/:eventId' component={EventDetails}/>
             <Route path='/feeds/hijacks/events' component={EventsList}/>
             <Redirect from="/" to="/feeds/hijacks/events"/>
         </Switch>;
