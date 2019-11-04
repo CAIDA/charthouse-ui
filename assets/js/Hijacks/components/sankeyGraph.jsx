@@ -70,7 +70,6 @@ class SankeyGraph extends React.Component {
                 </div>
             )
         } else {
-            console.log(this.state.data);
             return (
                 <div>
                     <h3>{this.props.title}</h3>

@@ -35,8 +35,8 @@ class EventDetails extends React.Component {
         const response = await axios.get(
             `https://bgp.caida.org/json/event/id/${this.eventId}`,
         );
-        this.pfxTable.current.loadEventData(response.data);
         this.eventTable.current.loadEventData(response.data);
+        this.pfxTable.current.loadEventData(response.data.pfx_events, this.eventType, this.eventId, response.data.error);
     }
 
     render() {

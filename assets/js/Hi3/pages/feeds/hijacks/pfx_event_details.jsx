@@ -3,13 +3,15 @@ import 'Hi3/css/pages/feeds/hijacks.css';
 import EventDetailsTable from "../../../../Hijacks/components/event-details-table";
 import axios from "axios";
 import SankeyGraph from "../../../../Hijacks/components/sankeyGraph";
+import PfxEventsTable from "../../../../Hijacks/components/pfx-events-table";
 
 const HORIZONTAL_OFFSET = 480;
 
 class PfxEventDetails extends React.Component {
 
     state = {
-        frameWidth: window.innerWidth - HORIZONTAL_OFFSET
+        frameWidth: window.innerWidth - HORIZONTAL_OFFSET,
+        tr_available: false,
     };
 
     constructor(props) {
@@ -17,10 +19,14 @@ class PfxEventDetails extends React.Component {
         this.eventTable = React.createRef();
         this.routesSankey = React.createRef();
         this.routesSankey2 = React.createRef();
+        this.pfxEventTable = React.createRef();
+        this.tracerouteSankey = React.createRef();
 
         this.eventId = this.props.match.params.eventId;
         this.fingerprint = this.props.match.params.pfxEventId;
         this.eventType = this.eventId.split("-")[0];
+
+        this.trResults = this.trResults.bind(this);
     }
 
     componentDidMount() {
@@ -49,6 +55,31 @@ class PfxEventDetails extends React.Component {
             let aspaths = response.data.details.aspaths.split(":").map(path => path.split(" "));
             this.routesSankey.current.loadData(aspaths);
         }
+
+        let data = response.data;
+        let pfxEvent = {
+            "tags": data.tags,
+            "tr_worthy": data.traceroutes.worthy,
+            "tr_available": data.traceroutes.msms.length > 0,
+            "fingerprint": this.fingerprint,
+        };
+        if ("prefix" in data.details) {
+            pfxEvent.prefix = data.details.prefix
+        }
+        if ("sub_pfx" in data.details) {
+            pfxEvent.sub_pfx = data.details.sub_pfx
+        }
+        if ("super_pfx" in data.details) {
+            pfxEvent.super_pfx = data.details.super_pfx
+        }
+        this.pfxEventTable.current.loadEventData([pfxEvent], this.eventType, this.eventId, response.error);
+
+
+        if (response.data.traceroutes.msms.length > 0) {
+            this.setState({"tr_available": false})
+        } else {
+            this.setState({"tr_available": true})
+        }
     }
 
     async loadEventData() {
@@ -59,18 +90,32 @@ class PfxEventDetails extends React.Component {
 
     }
 
-    render() {
-        let sankey_graphs = null;
-        if (["submoas", "defcon"].includes(this.eventType)) {
-            sankey_graphs = <div className={"row"}>
-                <SankeyGraph ref={this.routesSankey} title={"Route Collectors Sankey Diagram - Sub Prefix"}/>
-                <SankeyGraph ref={this.routesSankey2} title={"Route Collectors Sankey Diagram - Super Prefix"}/>
-            </div>
-        } else {
-            sankey_graphs = <div className={"row"}>
-                <SankeyGraph ref={this.routesSankey} title={"Route Collectors Sankey Diagram"}/>
-            </div>
+    trResults(trAvailable) {
+        if (!trAvailable) {
+            console.log("traceroute results not available");
+            return null
         }
+        console.log("traceroute results available");
+    }
+
+    sankeyGraphs(eventType) {
+        if (["submoas", "defcon"].includes(eventType)) {
+            return (
+                <React.Fragment>
+                    <SankeyGraph ref={this.routesSankey} title={"Route Collectors Sankey Diagram - Sub Prefix"}/>
+                    <SankeyGraph ref={this.routesSankey2} title={"Route Collectors Sankey Diagram - Super Prefix"}/>
+                </React.Fragment>
+            )
+        } else {
+            return (
+                <React.Fragment>
+                    <SankeyGraph ref={this.routesSankey} title={"Route Collectors Sankey Diagram"}/>
+                </React.Fragment>
+            )
+        }
+    }
+
+    render() {
         return (
             <div id='hijacks' className='container-fluid'>
                 <div className='row header'>
@@ -78,10 +123,21 @@ class PfxEventDetails extends React.Component {
                         <h1>Prefix Event Details</h1>
                     </div>
                 </div>
+
                 <div className="row">
                     <EventDetailsTable ref={this.eventTable}/>
                 </div>
-                {sankey_graphs}
+                <div className="row">
+                    <PfxEventsTable ref={this.pfxEventTable} enableClick={false} enablePagination={false}/>
+                </div>
+
+                <div className="row">
+                    {this.sankeyGraphs(this.eventType)}
+                </div>
+
+                <div className="row">
+                    {this.trResults(this.state.tr_available)}
+                </div>
             </div>
         );
     }

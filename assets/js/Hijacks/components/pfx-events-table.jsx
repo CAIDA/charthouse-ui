@@ -1,5 +1,6 @@
 import React from "react";
 import DataTable from "react-data-table-component";
+import PropTypes from "prop-types";
 
 const columns1 = [
     {
@@ -46,6 +47,16 @@ const columns2 = [
 
 class PfxEventsTable extends React.Component {
 
+    static propTypes = {
+        enableClick: PropTypes.bool,
+        enablePagination: PropTypes.bool,
+    };
+
+    static defaultProps = {
+        enableClick: true,
+        enablePagination: true,
+    };
+
     state = {
         data: {},
         loading: true,
@@ -66,11 +77,11 @@ class PfxEventsTable extends React.Component {
      * @param data event data
      * @returns {*}
      */
-    preprocessData(data) {
+    preprocessData(pfx_events) {
 
         let processed = [];
 
-        for (let pfx_event of data.pfx_events) {
+        for (let pfx_event of pfx_events) {
             let event = {};
 
             let prefixes = [];
@@ -100,25 +111,25 @@ class PfxEventsTable extends React.Component {
 
 
     handleRowClick(row) {
-        window.open(`/feeds/hijacks/events/${this.eventId}/${row.fingerprint}`, "_self");
+        if (this.props.enableClick) {
+            window.open(`/feeds/hijacks/events/${this.eventId}/${row.fingerprint}`, "_self");
+        }
     }
 
-    loadEventData(data) {
-        if ("error" in data) {
+    loadEventData(pfxEvents, eventType, eventId, error) {
+        this.eventId = eventId;
+        this.eventType = eventType;
+        if (error) {
             this.setState({
                 loading: false,
                 success: false,
-                error_msg: data.error
+                error_msg: error
             });
             return;
         }
 
-        this.eventType = data.event_type;
-        this.eventId = data.id;
-
-
         this.setState({
-            data: this.preprocessData(data),
+            data: this.preprocessData(pfxEvents),
             loading: false,
             success: true,
         });
@@ -155,12 +166,12 @@ class PfxEventsTable extends React.Component {
 
         return (
             <DataTable
-                title="Events List"
+                title="Prefix Events"
                 columns={columns}
                 data={data}
                 progressPending={loading}
                 onRowClicked={this.handleRowClick}
-                pagination
+                pagination={this.props.enablePagination}
             />
         );
     }
