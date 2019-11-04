@@ -43,7 +43,6 @@ class SankeyGraph extends React.Component {
             });
         }
         for (let link in links) {
-            console.log(link);
             let [as1, as2] = link.split("-");
             let count = links[link];
             resJson.links.push({

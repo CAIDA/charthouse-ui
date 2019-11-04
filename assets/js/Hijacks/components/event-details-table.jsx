@@ -90,8 +90,8 @@ class EventDetailsTable extends React.Component {
             )
         }
         return (
-            <div>
-                <div className="col-xs-6">
+            <div className={"row"}>
+                <div className="col-lg-6">
                     <div className="table-responsive">
                         <table className="table table-striped">
                             <tbody>
@@ -115,7 +115,7 @@ class EventDetailsTable extends React.Component {
                         </table>
                     </div>
                 </div>
-                <div className="col-xs-6">
+                <div className="col-lg-6">
                     <div className="table-responsive">
                         <table className="table table-striped">
                             <tbody>
@@ -139,7 +139,7 @@ class EventDetailsTable extends React.Component {
                         </table>
                     </div>
                 </div>
-                <div className="col-xs-12">
+                <div className="col-lg-12">
                     <div className="table-responsive">
                         <table className="table table-striped">
                             <tbody>

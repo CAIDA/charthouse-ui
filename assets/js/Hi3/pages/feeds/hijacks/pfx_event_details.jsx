@@ -62,12 +62,12 @@ class PfxEventDetails extends React.Component {
     render() {
         let sankey_graphs = null;
         if (["submoas", "defcon"].includes(this.eventType)) {
-            sankey_graphs = <div>
+            sankey_graphs = <div className={"row"}>
                 <SankeyGraph ref={this.routesSankey} title={"Route Collectors Sankey Diagram - Sub Prefix"}/>
                 <SankeyGraph ref={this.routesSankey2} title={"Route Collectors Sankey Diagram - Super Prefix"}/>
             </div>
         } else {
-            sankey_graphs = <div>
+            sankey_graphs = <div className={"row"}>
                 <SankeyGraph ref={this.routesSankey} title={"Route Collectors Sankey Diagram"}/>
             </div>
         }
@@ -78,7 +78,7 @@ class PfxEventDetails extends React.Component {
                         <h1>Prefix Event Details</h1>
                     </div>
                 </div>
-                <div>
+                <div className="row">
                     <EventDetailsTable ref={this.eventTable}/>
                 </div>
                 {sankey_graphs}
