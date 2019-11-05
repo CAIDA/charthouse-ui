@@ -4,6 +4,7 @@ import EventDetailsTable from "../../../../Hijacks/components/event-details-tabl
 import axios from "axios";
 import SankeyGraph from "../../../../Hijacks/components/sankeyGraph";
 import PfxEventsTable from "../../../../Hijacks/components/pfx-events-table";
+import TraceroutesTable from "../../../../Hijacks/components/traceroutes-table";
 
 const HORIZONTAL_OFFSET = 480;
 
@@ -11,7 +12,7 @@ class PfxEventDetails extends React.Component {
 
     state = {
         frameWidth: window.innerWidth - HORIZONTAL_OFFSET,
-        tr_available: false,
+        tr_results: [],
     };
 
     constructor(props) {
@@ -75,10 +76,10 @@ class PfxEventDetails extends React.Component {
         this.pfxEventTable.current.loadEventData([pfxEvent], this.eventType, this.eventId, response.error);
 
 
-        if (response.data.traceroutes.msms.length > 0) {
-            this.setState({"tr_available": false})
+        if (response.data.traceroutes.msms.length === 0) {
+            // nothing to do
         } else {
-            this.setState({"tr_available": true})
+            this.setState({"tr_results": response.data.traceroutes.msms})
         }
     }
 
@@ -86,16 +87,39 @@ class PfxEventDetails extends React.Component {
         const response = await axios.get(
             `https://bgp.caida.org/json/event/id/${this.eventId}`,
         );
+        console.log(response.data);
         this.eventTable.current.loadEventData(response.data);
-
     }
 
-    trResults(trAvailable) {
-        if (!trAvailable) {
-            console.log("traceroute results not available");
-            return null
+    trResults() {
+        let msms = this.state.tr_results;
+        if (msms.length > 0) {
+            let as_routes = [];
+            msms.forEach(function (traceroute) {
+                if ("results" in traceroute) {
+                    traceroute["results"].forEach(function (result) {
+                        let as_traceroute = result["as_traceroute"];
+                        if (as_traceroute.length !== 0) {
+                            let tr_path = result["as_traceroute"].filter(asn => asn !== "*");
+                            if (tr_path.length === 0) {
+                                console.log(`error as tr path: '${tr_path}', from ${result["as_traceroute"]}`);
+                            } else {
+                                as_routes.push(tr_path);
+                            }
+                        }
+                    });
+                }
+            });
+
+            return (
+                <React.Fragment>
+                    <TraceroutesTable data={msms}/>
+                    <SankeyGraph title={"Traceroutes Sankey"} data={as_routes}/>
+                </React.Fragment>
+            )
+        } else {
+            return null;
         }
-        console.log("traceroute results available");
     }
 
     sankeyGraphs(eventType) {
@@ -132,11 +156,11 @@ class PfxEventDetails extends React.Component {
                 </div>
 
                 <div className="row">
-                    {this.sankeyGraphs(this.eventType)}
+                    {this.trResults()}
                 </div>
 
                 <div className="row">
-                    {this.trResults(this.state.tr_available)}
+                    {this.sankeyGraphs(this.eventType)}
                 </div>
             </div>
         );

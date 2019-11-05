@@ -4,8 +4,7 @@ import {ResponsiveSankey} from "@nivo/sankey";
 class SankeyGraph extends React.Component {
 
     state = {
-        data: {},
-        loading: true,
+        data: null,
     };
 
     /**
@@ -52,18 +51,27 @@ class SankeyGraph extends React.Component {
             })
         }
 
+        console.log("prepared data for sankey");
+        console.log(resJson);
+
         return resJson
     }
 
     loadData(data) {
         this.setState({
             data: this.prepareDataJson(data),
-            loading: false,
         });
     }
 
     render() {
-        if (this.state.loading) {
+        if ("data" in this.props) {
+            // allow loading data directly from props
+            console.log("loading data directly from props");
+            this.state.data = this.prepareDataJson(this.props.data);
+        }
+
+        if (this.state.data === null) {
+            // if no data available
             return (
                 <div>
                     SANKEY WAITING FOR DATA
