@@ -1,0 +1,12 @@
+.event-list__time {
+    display: flex;
+    width: 500px;
+    justify-content: space-between;
+}
+
+.event-list__time-btn {
+}
+
+.event-list__time-input {
+    width: 340px;
+}
