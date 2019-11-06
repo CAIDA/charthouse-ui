@@ -1,16 +1,13 @@
-import DateRangePicker from 'react-bootstrap-daterangepicker';
 import moment from 'moment'
-// you will need the css that comes with bootstrap@3. if you are using
-// a tool like webpack, you can do the following:
 import 'bootstrap/dist/css/bootstrap.css';
-// you will also need the css that comes with bootstrap-daterangepicker
 import 'bootstrap-daterangepicker/daterangepicker.css';
-
 import 'Hijacks/css/hijacks.css';
 import PropTypes from 'prop-types';
 import React from 'react';
 import DataTable from 'react-data-table-component';
 import axios from 'axios';
+import SearchBar from "./search-bar";
+import {translate_suspicion_level} from "../utils/events";
 
 function zeroPad(num, places) {
     return String(num).padStart(places, '0')
@@ -20,7 +17,7 @@ function unix_time_to_str(unix_time) {
     if (unix_time === null) {
         return ""
     }
-    return moment(unix_time * 1000).format("YYYY-MM-DD HH:mm");
+    return moment(unix_time * 1000).utc().format("YYYY-MM-DD HH:mm");
 }
 
 const columns = [
@@ -113,38 +110,12 @@ class EventsTable extends React.Component {
         curPage: 0,
         startTime: 0,
         endTime: 0,
-        timeRangeStr: ""
+        timeRangeStr: "",
+        suspicionLevel: "suspicious"
     };
 
     constructor(props) {
         super(props);
-
-        this.ranges = {
-            'Today': [
-                moment().startOf('day').utc(true),
-                moment().utc(true)
-            ],
-            'Yesterday': [
-                moment().subtract(2, 'days').startOf('day').utc(true),
-                moment().subtract(1, 'days').startOf('day').utc(true)
-            ],
-            'Last 7 Days': [
-                moment().subtract(6, 'days').startOf('day').utc(true),
-                moment().utc(true)
-            ],
-            'Last 30 Days': [
-                moment().subtract(29, 'days').startOf('day').utc(true),
-                moment().utc(true)
-            ],
-            'This Month': [
-                moment().startOf('month').utc(true),
-                moment().endOf('month').utc(true)
-            ],
-            'Last Month': [
-                moment().subtract(1, 'month').startOf('month').utc(true),
-                moment().subtract(1, 'month').endOf('month').utc(true)
-            ]
-        };
 
         this.state.startTime = moment().startOf('day').utc(true);
         this.state.endTime = moment().utc(true);
@@ -152,6 +123,7 @@ class EventsTable extends React.Component {
         this.state.timeRangeStr = `${this.state.startTime.format()} - ${this.state.endTime.format()}`;
 
         this.handleDateRangeChange = this.handleDateRangeChange.bind(this);
+        this.handleSuspicionChange = this.handleSuspicionChange.bind(this);
         this.loadContent = this.loadContent.bind(this);
 
     }
@@ -179,9 +151,14 @@ class EventsTable extends React.Component {
             perPage: perPage,
         });
 
+        let [min_susp, max_susp] = translate_suspicion_level(this.state.suspicionLevel);
+
         let url = `https://bgp.caida.org/json/events/${this.props.eventType}?length=${perPage}&start=${perPage * curPage}` +
             `&ts_start=${ts_start.format("YYYY-MM-DDTHH:mm")}` +
-            `&ts_end=${ts_end.format("YYYY-MM-DDTHH:mm")}`;
+            `&ts_end=${ts_end.format("YYYY-MM-DDTHH:mm")}` +
+            `&min_susp=${min_susp}` +
+            `&max_susp=${max_susp}` +
+            "";
         console.log(url);
 
         const response = await axios.get(url);
@@ -204,7 +181,7 @@ class EventsTable extends React.Component {
     handlePerRowsChange = async (perPage, page) => {
         this.state.perPage = perPage;
         this.state.curPage = page - 1;
-        this.loadContent(perPage, page);
+        this.loadContent();
     };
 
     handleRowClick(row) {
@@ -221,46 +198,45 @@ class EventsTable extends React.Component {
         this.loadContent()
     }
 
+    handleSuspicionChange(changeEvent) {
+        if (this.state.suspicionLevel !== changeEvent.target.value) {
+            this.state.suspicionLevel = changeEvent.target.value;
+            console.log(changeEvent.target.value);
+            console.log(this.state.suspicionLevel);
+            this.loadContent()
+        }
+    }
+
     render() {
 
         return (
-            <div className={"row"}>
-                <div className={"event-list__time"}>
-                    <DateRangePicker
-                        startDate={this.state.startTime}
-                        endDate={this.state.endTime}
-                        onApply={this.handleDateRangeChange}
-                        ranges={this.ranges}
-                        alwaysShowCalendars={true}
-                        timePicker={true}
-                        timePicker24Hour={true}
-                        timePickerIncrement={15}
-                    >
-                        <a href="#" className="btn btn-info btn-md">
-                            <span className="glyphicon glyphicon-calendar"/> Time Range
-                        </a>
-                    </DateRangePicker>
+            <React.Fragment>
+                <SearchBar
+                    startDate={this.state.startTime}
+                    endDate={this.state.endTime}
+                    onTimeChange={this.handleDateRangeChange}
+                    timeRangeStr={this.state.timeRangeStr}
 
-                    <input
-                        readOnly={true}
-                        className={"form-control event-list__time-input"}
-                        value={this.state.timeRangeStr}
+                    suspicionLevel={this.state.suspicionLevel}
+                    onSuspicionChange={this.handleSuspicionChange}
+                />
+
+                <div className={"row"}>
+                    <DataTable
+                        title="Events List"
+                        columns={columns}
+                        data={this.state.data}
+                        progressPending={this.state.loading}
+                        pagination
+                        paginationServer
+                        paginationTotalRows={this.state.totalRows}
+                        onChangeRowsPerPage={this.handlePerRowsChange}
+                        onChangePage={this.handlePageChange}
+                        onRowClicked={this.handleRowClick}
                     />
                 </div>
 
-                <DataTable
-                    title="Events List"
-                    columns={columns}
-                    data={this.state.data}
-                    progressPending={this.state.loading}
-                    pagination
-                    paginationServer
-                    paginationTotalRows={this.state.totalRows}
-                    onChangeRowsPerPage={this.handlePerRowsChange}
-                    onChangePage={this.handlePageChange}
-                    onRowClicked={this.handleRowClick}
-                />
-            </div>
+            </React.Fragment>
         );
     }
 }

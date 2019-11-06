@@ -1,12 +1,17 @@
-.event-list__time {
+.search-bar {
     display: flex;
-    width: 500px;
     justify-content: space-between;
 }
 
-.event-list__time-btn {
+.search-bar__time {
+    width: 500px;
+    display: flex;
+    justify-content: space-between;
 }
 
-.event-list__time-input {
+.search-bar__time-btn {
+}
+
+.search-bar__time-input {
     width: 340px;
 }

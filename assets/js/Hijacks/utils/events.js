@@ -90,4 +90,20 @@ function extract_prefixes(pfx_event) {
     return prefixes
 }
 
-export {extract_impact, extract_largest_prefix, unix_time_to_str, extract_prefixes}
+function translate_suspicion_level(suspicionLevel) {
+    let min_susp = 0;
+    let max_susp = 100;
+    if (suspicionLevel === "suspicious") {
+        min_susp = 80;
+    } else if (suspicionLevel === "benign") {
+        max_susp = 20;
+    } else if (suspicionLevel === "grey") {
+        max_susp = 79;
+        min_susp = 21;
+    } else if (suspicionLevel === "all") {
+        // nothing to do here
+    }
+    return [min_susp, max_susp]
+}
+
+export {extract_impact, extract_largest_prefix, unix_time_to_str, extract_prefixes, translate_suspicion_level}
