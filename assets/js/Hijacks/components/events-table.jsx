@@ -145,8 +145,8 @@ class EventsTable extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state.startTime = moment().startOf('day').utc(true);
-        this.state.endTime = moment().utc(true);
+        this.state.startTime = moment().utc().startOf('day');
+        this.state.endTime = moment().utc();
 
         this._loadEventsData = this._loadEventsData.bind(this);
 
