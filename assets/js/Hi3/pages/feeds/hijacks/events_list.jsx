@@ -77,23 +77,13 @@ class EventsList extends React.Component {
                     </div>
 */}
 
-                    <EventTypeSelector eventType={this.state.eventType}
-                                       onChange={this._typeChanged}
-                    />
-
-                    <div style={{display: 'inline-block', marginLeft: '25px'}}>
-                        <LinkContainer to='/explorer'>
-                            <Button>Correlate</Button>
-                        </LinkContainer>
-                    </div>
+                    {/*<div style={{display: 'inline-block', marginLeft: '25px'}}>*/}
+                    {/*    <LinkContainer to='/explorer'>*/}
+                    {/*        <Button>Correlate</Button>*/}
+                    {/*    </LinkContainer>*/}
+                    {/*</div>*/}
                 </div>
             </div>
-
-            {/*<script src="//stat.ripe.net/widgets/widget_api.js"></script>*/}
-            {/*<div className="statwdgtauto">*/}
-            {/*    <script>ripestat.init("as-path-length",{"resource":"AS3333"})*/}
-            {/*    </script>*/}
-            {/*</div>*/}
 
             <EventsTable eventType={this.state.eventType}/>
 

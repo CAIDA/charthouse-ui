@@ -9,10 +9,6 @@ import axios from 'axios';
 import SearchBar from "./search-bar";
 import {translate_suspicion_level} from "../utils/events";
 
-function zeroPad(num, places) {
-    return String(num).padStart(places, '0')
-}
-
 function unix_time_to_str(unix_time) {
     if (unix_time === null) {
         return ""
@@ -106,18 +102,21 @@ class EventsTable extends React.Component {
         eventType: PropTypes.string,
     };
     static defaultProps = {
-        eventType: "all",
+        eventType: "moas",
     };
 
     state = {
         data: [],
         loading: false,
+        // datatable states
         totalRows: 0,
         perPage: 10,
         curPage: 0,
+
+        // event search states
         startTime: 0,
         endTime: 0,
-        timeRangeStr: "",
+        eventType: "moas",
         suspicionLevel: "suspicious"
     };
 
@@ -127,26 +126,25 @@ class EventsTable extends React.Component {
         this.state.startTime = moment().startOf('day').utc(true);
         this.state.endTime = moment().utc(true);
 
-        this.state.timeRangeStr = `${this.state.startTime.format()} - ${this.state.endTime.format()}`;
-
-        this.handleDateRangeChange = this.handleDateRangeChange.bind(this);
-        this.handleSuspicionChange = this.handleSuspicionChange.bind(this);
-        this.loadContent = this.loadContent.bind(this);
+        this._handleSearchTimeChange = this._handleSearchTimeChange.bind(this);
+        this._handleSearchSuspicionChange = this._handleSearchSuspicionChange.bind(this);
+        this._handleSearchEventTypeChange = this._handleSearchEventTypeChange.bind(this);
+        this._loadEventsData = this._loadEventsData.bind(this);
 
     }
 
     componentDidMount() {
-        this.loadContent();
+        this._loadEventsData();
     }
 
     componentDidUpdate(prevProps) {
         if (prevProps.eventType === this.props.eventType) {
             return
         }
-        this.loadContent()
+        this._loadEventsData()
     }
 
-    async loadContent(
+    async _loadEventsData(
         perPage = this.state.perPage,
         curPage = this.state.curPage,
         ts_start = this.state.startTime,
@@ -160,7 +158,7 @@ class EventsTable extends React.Component {
 
         let [min_susp, max_susp] = translate_suspicion_level(this.state.suspicionLevel);
 
-        let url = `https://bgp.caida.org/json/events/${this.props.eventType}?length=${perPage}&start=${perPage * curPage}` +
+        let url = `https://bgp.caida.org/json/events/${this.state.eventType}?length=${perPage}&start=${perPage * curPage}` +
             `&ts_start=${ts_start.format("YYYY-MM-DDTHH:mm")}` +
             `&ts_end=${ts_end.format("YYYY-MM-DDTHH:mm")}` +
             `&min_susp=${min_susp}` +
@@ -180,38 +178,54 @@ class EventsTable extends React.Component {
         });
     }
 
-    handlePageChange = async page => {
+    /*
+     *************************
+     * TABLE EVENTS HANDLERS
+     *************************
+     */
+
+    _handleTablePageChange(page){
         this.state.curPage = page - 1;
-        this.loadContent();
+        this._loadEventsData();
     };
 
-    handlePerRowsChange = async (perPage, page) => {
+    _handleTableRowsChange(perPage, page){
         this.state.perPage = perPage;
         this.state.curPage = page - 1;
-        this.loadContent();
+        this._loadEventsData();
     };
 
-    handleRowClick(row) {
+    _handleTableRowClick(row) {
         // redirect to sub pages
         window.open(`/feeds/hijacks/events/${row.event_type}/${row.id}`, "_self");
     }
 
-    handleDateRangeChange(event, picker) {
+    /*
+     ******************************
+     * SEARCH-BAR EVENTS HANDLERS
+     ******************************
+     */
+
+    _handleSearchTimeChange(event, picker) {
         this.setState({
             startTime: picker.startDate.utc(),
             endTime: picker.endDate.utc(),
-            timeRangeStr: `${picker.startDate.utc(true).format()} - ${picker.endDate.utc(true).format()}`,
         });
-        this.loadContent()
+        this._loadEventsData()
     }
 
-    handleSuspicionChange(changeEvent) {
-        if (this.state.suspicionLevel !== changeEvent.target.value) {
-            this.state.suspicionLevel = changeEvent.target.value;
-            console.log(changeEvent.target.value);
-            console.log(this.state.suspicionLevel);
-            this.loadContent()
-        }
+    _handleSearchEventTypeChange(eventType) {
+        console.log("event type changed to %s", eventType);
+        // this.setState({eventType: eventType});
+        this.state.eventType =  eventType;
+        this._loadEventsData()
+    }
+
+    _handleSearchSuspicionChange(suspicionLevel) {
+        console.log("event suspicion level changed to %s", suspicionLevel);
+        // this.setState({eventType: eventType});
+        this.state.suspicionLevel =  suspicionLevel;
+        this._loadEventsData()
     }
 
     render() {
@@ -221,11 +235,13 @@ class EventsTable extends React.Component {
                 <SearchBar
                     startDate={this.state.startTime}
                     endDate={this.state.endTime}
-                    onTimeChange={this.handleDateRangeChange}
-                    timeRangeStr={this.state.timeRangeStr}
+                    onTimeChange={this._handleSearchTimeChange}
 
-                    suspicionLevel={this.state.suspicionLevel}
-                    onSuspicionChange={this.handleSuspicionChange}
+                    eventType={this.state.eventType}
+                    onEventTypeChange={this._handleSearchEventTypeChange}
+
+                    eventSuspicion={this.state.suspicionLevel}
+                    onEventSuspicionChange={this._handleSearchSuspicionChange}
                 />
 
                 <div className={"row"}>
@@ -241,9 +257,9 @@ class EventsTable extends React.Component {
                         pagination
                         paginationServer
                         paginationTotalRows={this.state.totalRows}
-                        onChangeRowsPerPage={this.handlePerRowsChange}
-                        onChangePage={this.handlePageChange}
-                        onRowClicked={this.handleRowClick}
+                        onChangeRowsPerPage={this._handleTableRowsChange}
+                        onChangePage={this._handleTablePageChange}
+                        onRowClicked={this._handleTableRowClick}
                     />
                 </div>
 
