@@ -45,7 +45,6 @@ const columns = [
                 </div>
             );
         },
-        ignoreRowClick: true,
     },
     {
         name: 'Potential Attackers',
