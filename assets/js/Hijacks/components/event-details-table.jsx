@@ -1,5 +1,6 @@
 import React from "react";
 import {extract_impact, extract_largest_prefix, unix_time_to_str} from "../utils/events";
+import AsNumber from "./asn";
 
 class EventDetailsTable extends React.Component {
 
@@ -97,11 +98,23 @@ class EventDetailsTable extends React.Component {
                             <tbody>
                             <tr>
                                 <th>Potential Victim:</th>
-                                <td>{data.victims}</td>
+                                <td>
+                                    {
+                                        data.victims.map(function(asn){
+                                            return <AsNumber key={asn} asn={asn} data={data.external.asrank[parseInt(asn)]} />
+                                        })
+                                    }
+                                </td>
                             </tr>
                             <tr>
                                 <th>Potential Attacker:</th>
-                                <td>{data.attackers}</td>
+                                <td>
+                                    {
+                                        data.attackers.map(function(asn){
+                                            return <AsNumber key={asn} asn={asn} data={data.external.asrank[parseInt(asn)]} />
+                                        })
+                                    }
+                                </td>
                             </tr>
                             <tr>
                                 <th>Largest prefix:</th>

@@ -8,6 +8,7 @@ import DataTable from 'react-data-table-component';
 import axios from 'axios';
 import SearchBar from "./search-bar";
 import {translate_suspicion_level} from "../utils/events";
+import AsNumber from "./asn";
 
 function unix_time_to_str(unix_time) {
     if (unix_time === null) {
@@ -22,12 +23,15 @@ const columns = [
         selector: 'victims',
         grow: 1,
         cell: row => {
-            let data = row.victims;
-            let res = data.slice(0, 2).join(",");
-            if (data.length > 2) {
-                res += " and more"
-            }
-            return res
+            return (
+                <div>
+                    {
+                        row.victims.map(function(asn){
+                            return <AsNumber key={asn} asn={asn} data={row.external.asrank[parseInt(asn)]} />
+                        })
+                    }
+                </div>
+            );
         },
         ignoreRowClick: true,
     },
@@ -35,6 +39,17 @@ const columns = [
         name: 'Potential Attackers',
         selector: 'attackers',
         grow: 1,
+        cell: row => {
+            return (
+                <div>
+                    {
+                        row.attackers.map(function(asn){
+                            return <AsNumber key={asn} asn={asn} data={row.external.asrank[parseInt(asn)]} />
+                        })
+                    }
+                </div>
+            );
+        },
     },
     {
         name: 'Largest Prefix',
@@ -215,15 +230,11 @@ class EventsTable extends React.Component {
     }
 
     _handleSearchEventTypeChange(eventType) {
-        console.log("event type changed to %s", eventType);
-        // this.setState({eventType: eventType});
         this.state.eventType =  eventType;
         this._loadEventsData()
     }
 
     _handleSearchSuspicionChange(suspicionLevel) {
-        console.log("event suspicion level changed to %s", suspicionLevel);
-        // this.setState({eventType: eventType});
         this.state.suspicionLevel =  suspicionLevel;
         this._loadEventsData()
     }
