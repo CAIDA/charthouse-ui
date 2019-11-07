@@ -56,26 +56,33 @@ class AsNumber extends React.Component {
     }
 
     render() {
+        let data = this.props.data;
+        let asn = this.props.asn;
+
         let country_flag = "";
         let as_name = "";
         let tooltip_str = this.tooltip(this.props.data);
         // TODO: consider loading data from asrank api if this.props.data is not available
-        if(this.props.data){
-            country_flag = this.flag(this.props.data.country);
-            as_name = this.abbrFit(this.props.data.name,22);
+        if(data){
+            if(data.country){
+                country_flag = this.flag(data.country);
+            }
+            if(data.name){
+                as_name = this.abbrFit(data.name,22);
+            }
         }
         return (
             <OverlayTrigger
                 key={this.props.asn}
                 placement={"top"}
                 overlay={
-                    <Tooltip id={`tooltip-${this.props.asn}`}>
+                    <Tooltip id={`tooltip-${asn}`}>
                         {tooltip_str}
                     </Tooltip>
                 }
             >
             <span>
-                <span className={`as-country-${this.props.asn}`} style={{whiteSpace: "nowrap"}}> {country_flag}</span>
+                <span className={`as-country-${asn}`} style={{whiteSpace: "nowrap"}}> {country_flag}</span>
                 AS{this.props.asn} {as_name}
             </span>
             </OverlayTrigger>
