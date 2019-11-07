@@ -17,6 +17,22 @@ function unix_time_to_str(unix_time) {
     return moment(unix_time * 1000).utc().format("YYYY-MM-DD HH:mm");
 }
 
+function renderOrigins(origins, data){
+    return (
+        <div>
+            {
+                origins.slice(0,2).map(function(asn){
+                    return <AsNumber key={asn} asn={asn} data={data.asrank[parseInt(asn)]} />
+                })
+            }
+
+            {origins.length>2 &&
+                "..."
+            }
+        </div>
+    )
+}
+
 const columns = [
     {
         name: 'Potential Victims',
@@ -25,11 +41,7 @@ const columns = [
         cell: row => {
             return (
                 <div>
-                    {
-                        row.victims.map(function(asn){
-                            return <AsNumber key={asn} asn={asn} data={row.external.asrank[parseInt(asn)]} />
-                        })
-                    }
+                    {renderOrigins(row.victims, row.external)}
                 </div>
             );
         },
@@ -42,11 +54,7 @@ const columns = [
         cell: row => {
             return (
                 <div>
-                    {
-                        row.attackers.map(function(asn){
-                            return <AsNumber key={asn} asn={asn} data={row.external.asrank[parseInt(asn)]} />
-                        })
-                    }
+                    {renderOrigins(row.attackers, row.external)}
                 </div>
             );
         },
@@ -141,11 +149,15 @@ class EventsTable extends React.Component {
         this.state.startTime = moment().startOf('day').utc(true);
         this.state.endTime = moment().utc(true);
 
+        this._loadEventsData = this._loadEventsData.bind(this);
+
+        this._handleTablePageChange = this._handleTablePageChange.bind(this);
+        this._handleTableRowsChange = this._handleTableRowsChange.bind(this);
+        this._handleTableRowClick = this._handleTableRowClick.bind(this);
+
         this._handleSearchTimeChange = this._handleSearchTimeChange.bind(this);
         this._handleSearchSuspicionChange = this._handleSearchSuspicionChange.bind(this);
         this._handleSearchEventTypeChange = this._handleSearchEventTypeChange.bind(this);
-        this._loadEventsData = this._loadEventsData.bind(this);
-
     }
 
     componentDidMount() {
