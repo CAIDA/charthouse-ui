@@ -24,6 +24,7 @@ const columns = [
     {
         name: 'Potential Victims',
         selector: 'victims',
+        grow: 1,
         cell: row => {
             let data = row.victims;
             let res = data.slice(0, 2).join(",");
@@ -33,15 +34,16 @@ const columns = [
             return res
         },
         ignoreRowClick: true,
-        button: true
     },
     {
         name: 'Potential Attackers',
         selector: 'attackers',
+        grow: 1,
     },
     {
         name: 'Largest Prefix',
         selector: 'prefixes',
+        width: "160px",
         cell: row => {
             let data = row.prefixes;
             let maxsize = 32;
@@ -60,19 +62,23 @@ const columns = [
     {
         name: '# Prefix Events',
         selector: 'prefixes',
+        width: "100px",
         cell: row => {
             let data = row.prefixes;
             return data.length
-        }
+        },
     },
     {
         name: 'Start Time',
         selector: 'view_ts',
+        width: "160px",
         cell: row => `${unix_time_to_str(row.view_ts)}`
     },
     {
         name: 'Duration',
         selector: 'finished_ts',
+        minWidth: '80px',
+        maxWidth: '120px',
         cell: row => {
             let data = row.finished_ts;
             if (data === null) {
@@ -91,6 +97,7 @@ const columns = [
     {
         name: 'Type',
         selector: 'event_type',
+        width: "80px",
     },
 ];
 
@@ -225,8 +232,12 @@ class EventsTable extends React.Component {
                     <DataTable
                         title="Events List"
                         columns={columns}
+                        striped={true}
+                        pointerOnHover={true}
+                        highlightOnHover={true}
                         data={this.state.data}
                         progressPending={this.state.loading}
+                        fixedHeader={true}
                         pagination
                         paginationServer
                         paginationTotalRows={this.state.totalRows}
