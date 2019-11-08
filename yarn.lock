@@ -1606,6 +1606,14 @@ boolbase@~1.0.0:
   resolved "https://registry.yarnpkg.com/boolbase/-/boolbase-1.0.0.tgz#68dff5fbe60c51eb37725ea9e3ed310dcc1e776e"
   integrity sha1-aN/1++YMUes3cl6p4+0xDcwed24=
 
+bootstrap-daterangepicker@^3.0.5:
+  version "3.0.5"
+  resolved "https://registry.yarnpkg.com/bootstrap-daterangepicker/-/bootstrap-daterangepicker-3.0.5.tgz#dc10db6b4854cc63ebb5b17dac55edd7318dcbad"
+  integrity sha512-WdTNB5ZKCpqZltcRkzeE6Xmwp/b8yPnuwsHfqP5mGP2VIV/kzd/6VuTIKEjuskDcsLAYW38LXGjcSm2TBNRdTw==
+  dependencies:
+    jquery ">=1.10"
+    moment "^2.9.0"
+
 bootstrap-select@^1.9.4:
   version "1.9.4"
   resolved "https://registry.yarnpkg.com/bootstrap-select/-/bootstrap-select-1.9.4.tgz#40bc4dfbc1f2e5463dc18748d9902512dee9ae18"
@@ -4879,17 +4887,17 @@ jquery2-bbq@^1.3.1:
   dependencies:
     jquery "^2.2.3"
 
-jquery@2.1.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/jquery/-/jquery-2.1.0.tgz#1c9a8c971d2b53dae10d72e16cbb5a1df16a4ace"
-  integrity sha1-HJqMlx0rU9rhDXLhbLtaHfFqSs4=
+jquery@>=1.10:
+  version "3.4.1"
+  resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.4.1.tgz#714f1f8d9dde4bdfa55764ba37ef214630d80ef2"
+  integrity sha512-36+AdBzCL+y6qjw5Tx7HgzeGCzC81MDDgaUP8ld2zhx58HdqXGoBd+tHdrBMiyjGQs0Hxs/MLZTu/eHNJJuWPw==
 
 jquery@>=1.8, jquery@>=1.9.1:
   version "3.3.1"
   resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.3.1.tgz#958ce29e81c9790f31be7792df5d4d95fc57fbca"
   integrity sha512-Ubldcmxp5np52/ENotGxlLe6aGMvmF4R8S6tZjsP6Knsaxd/xp3Zrh50cG93lR6nPXyUFwzN3ZSOQI0wRJNdGg==
 
-jquery@^2.2.3:
+jquery@^2.1.0, jquery@^2.2.3:
   version "2.2.4"
   resolved "https://registry.yarnpkg.com/jquery/-/jquery-2.2.4.tgz#2c89d6889b5eac522a7eea32c14521559c6cbf02"
   integrity sha1-LInWiJterFIqfuoywUUhVZxsvwI=
@@ -5833,10 +5841,10 @@ mocha@^5.2.0:
     mkdirp "0.5.1"
     supports-color "5.4.0"
 
-moment@^2.22.2:
-  version "2.22.2"
-  resolved "https://registry.yarnpkg.com/moment/-/moment-2.22.2.tgz#3c257f9839fc0e93ff53149632239eb90783ff66"
-  integrity sha1-PCV/mDn8DpP/UxSWMiOeuQeD/2Y=
+moment@^2.24.0, moment@^2.9.0:
+  version "2.24.0"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.24.0.tgz#0d055d53f5052aa653c9f6eb68bb5d12bf5c2b5b"
+  integrity sha512-bV7f+6l2QigeBBZSM/6yTNq4P2fNpSWj/0e7jQcy87A8e7o2nAfP/34/2ky5Vw4B9S446EtIhodAzkFCcR4dQg==
 
 move-concurrently@^1.0.1:
   version "1.0.1"
@@ -7137,6 +7145,11 @@ rc@^1.2.7:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
+react-bootstrap-daterangepicker@^4.1.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/react-bootstrap-daterangepicker/-/react-bootstrap-daterangepicker-4.1.0.tgz#7133e9a959a42e18b49a0aea50a48c31b88aa7d8"
+  integrity sha512-BZwwRaWcUDZVVgzQBtbmnbV1jyNNlfI5v7Jxb9FNEJ9FW8m+hzJgDFUMUlvz3VKCe5JNKcv5fKBizIDFSIUu+A==
+
 react-bootstrap-slider@^2.1.5:
   version "2.1.5"
   resolved "https://registry.yarnpkg.com/react-bootstrap-slider/-/react-bootstrap-slider-2.1.5.tgz#2f79e57b69ddf2b5bd23310bddbd2de0c6bdfef3"
@@ -7327,10 +7340,10 @@ react-transition-group@^4.3.0:
     loose-envify "^1.4.0"
     prop-types "^15.6.2"
 
-react@^16.10.2:
-  version "16.10.2"
-  resolved "https://registry.yarnpkg.com/react/-/react-16.10.2.tgz#a5ede5cdd5c536f745173c8da47bda64797a4cf0"
-  integrity sha512-MFVIq0DpIhrHFyqLU0S3+4dIcBhhOvBE8bJ/5kHPVOVaGdo0KuiQzpcjCPsf585WvhypqtrMILyoE2th6dT+Lw==
+react@^16.11.0:
+  version "16.11.0"
+  resolved "https://registry.yarnpkg.com/react/-/react-16.11.0.tgz#d294545fe62299ccee83363599bf904e4a07fdbb"
+  integrity sha512-M5Y8yITaLmU0ynd0r1Yvfq98Rmll6q8AxaEe88c8e7LxO8fZ2cNgmFt0aGAS9wzf1Ao32NKXtCl+/tVVtkxq6g==
   dependencies:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"

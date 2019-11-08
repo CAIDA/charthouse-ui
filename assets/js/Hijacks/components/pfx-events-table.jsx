@@ -1,6 +1,7 @@
 import React from "react";
 import DataTable from "react-data-table-component";
 import PropTypes from "prop-types";
+import TagsList from "./tags-list";
 
 const columns1 = [
     {
@@ -11,6 +12,10 @@ const columns1 = [
         name: 'Tags',
         selector: 'tags',
         wrap: true,
+        grow:3,
+        cell: row => {
+            return <TagsList tags={row.tags} />
+        }
     },
     {
         name: 'Traceroute Worthy',
@@ -34,6 +39,9 @@ const columns2 = [
         name: 'Tags',
         selector: 'tags',
         wrap: true,
+        cell: row => {
+            return <TagsList tags={row.tags} />
+        }
     },
     {
         name: 'Traceroute Worthy',
@@ -168,6 +176,9 @@ class PfxEventsTable extends React.Component {
             <DataTable
                 title="Prefix Events"
                 columns={columns}
+                striped={true}
+                pointerOnHover={true}
+                highlightOnHover={true}
                 data={data}
                 progressPending={loading}
                 onRowClicked={this.handleRowClick}

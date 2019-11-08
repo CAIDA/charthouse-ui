@@ -15,3 +15,14 @@
 .search-bar__time-input {
     width: 340px;
 }
+
+.tag-list {
+    margin: 5px;
+}
+.tag-label {
+    font-size: 100%;
+    display: inline-block;
+    margin-inline-end: 5px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
