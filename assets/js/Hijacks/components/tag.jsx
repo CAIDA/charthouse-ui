@@ -15,11 +15,12 @@ class Tag extends React.Component{
     };
 
     static defaultProps = {
-        type: "unknown",
+        type: "na",
     };
 
     _translateType(type){
         let res = "warning";
+
         switch(type){
             case "na":
                 res = "default";
