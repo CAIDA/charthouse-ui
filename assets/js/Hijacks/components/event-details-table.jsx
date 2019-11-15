@@ -31,7 +31,6 @@ class EventDetailsTable extends React.Component {
         };
 
         let processed = data;
-        processed["victims"] = data.victims.map(origin => <span key={origin}>{origin} </span>);
         processed["largest_prefix"] = extract_largest_prefix(data);
         processed["impact"] = extract_impact(data);
 
