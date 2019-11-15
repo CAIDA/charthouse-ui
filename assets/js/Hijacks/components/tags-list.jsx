@@ -27,7 +27,6 @@ class TagsList extends React.Component {
 
     async _loadTagsData(){
         const response = await axios.get("https://bgp.caida.org/json/tags");
-        console.log(response.data)
         let definitions = {};
         let tags = Object.keys(response.data.definitions);
         let yes_tags = [];
@@ -62,7 +61,6 @@ class TagsList extends React.Component {
             tagDefinitions: response.data.definitions,
             tagTypes: tagTypes,
         })
-        console.log(this.state)
     }
 
     render() {
@@ -81,7 +79,6 @@ class TagsList extends React.Component {
                     if(tag in tagDefinitions){
                         definition = tagDefinitions[tag].definition;
                     }
-                    console.log(`${tag}: ${type} - ${definition}`);
                     return <Tag key={`tag-${tag}`} name={tag} type={type} definition={definition}/>
                 })}
             </div>

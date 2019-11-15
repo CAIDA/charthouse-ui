@@ -51,9 +51,6 @@ class SankeyGraph extends React.Component {
             })
         }
 
-        console.log("prepared data for sankey");
-        console.log(resJson);
-
         return resJson
     }
 
@@ -66,7 +63,6 @@ class SankeyGraph extends React.Component {
     render() {
         if ("data" in this.props) {
             // allow loading data directly from props
-            console.log("loading data directly from props");
             this.state.data = this.prepareDataJson(this.props.data);
         }
 

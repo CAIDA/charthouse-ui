@@ -37,7 +37,6 @@ class EventSuspicionSelector extends React.Component {
     }
 
     _changeEventSuspicionLevel = (e) => {
-        console.log(`suspicion changes: ${e.target.id}`);
         this.props.onChange(e.target.id);
     };
 }

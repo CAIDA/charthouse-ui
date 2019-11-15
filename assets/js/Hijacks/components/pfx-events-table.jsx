@@ -112,7 +112,6 @@ class PfxEventsTable extends React.Component {
                 .replace(/\//g, "-");
 
             processed.push(event);
-            console.log(event)
         }
         return processed;
     }

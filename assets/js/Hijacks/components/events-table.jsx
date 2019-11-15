@@ -190,10 +190,8 @@ class EventsTable extends React.Component {
             `&min_susp=${min_susp}` +
             `&max_susp=${max_susp}` +
             "";
-        console.log(url);
 
         const response = await axios.get(url);
-        console.log(response);
 
         this.setState({
             data: response.data.data,
