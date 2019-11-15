@@ -38,9 +38,11 @@ class AsNumber extends React.Component {
             : null;
     }
 
-    tooltip(asorg){
+    tooltip(asorg, is_private){
         let res = <p>AS Info Unavailable</p>;
-        if(asorg){
+        if(is_private){
+            res = <p>Private AS Number</p>;
+        } else if(asorg){
             if("org" in asorg && "name" in asorg["org"]){
                 // the `if` statement makes sure the data exists before refer to it
                 asorg["org"]["name"] = asorg["org"]["name"].replace(/"/g, "");
@@ -57,11 +59,12 @@ class AsNumber extends React.Component {
 
     render() {
         let data = this.props.data;
-        let asn = this.props.asn;
+        let asn = parseInt(this.props.asn);
+        let is_private = (asn>=64512 && asn<=65534) || (asn>=4200000000 && asn<=4294967294);
 
         let country_flag = "";
         let as_name = "";
-        let tooltip_str = this.tooltip(this.props.data);
+        let tooltip_str = this.tooltip(this.props.data, is_private);
         // TODO: consider loading data from asrank api if this.props.data is not available
         if(data){
             if(data.country){
@@ -71,6 +74,7 @@ class AsNumber extends React.Component {
                 as_name = this.abbrFit(data.name,22);
             }
         }
+
         return (
             <OverlayTrigger
                 key={this.props.asn}
@@ -83,7 +87,10 @@ class AsNumber extends React.Component {
             >
             <span>
                 <span className={`as-country-${asn}`} style={{whiteSpace: "nowrap"}}> {country_flag}</span>
-                AS{this.props.asn} {as_name}
+                AS{asn} {as_name}
+                {is_private &&
+                    <span className="badge badge-info">private</span>
+                }
             </span>
             </OverlayTrigger>
         )
