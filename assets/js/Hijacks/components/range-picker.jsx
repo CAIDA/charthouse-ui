@@ -53,7 +53,7 @@ class RangePicker extends React.Component {
                     alwaysShowCalendars={true}
                     timePicker={true}
                     timePicker24Hour={true}
-                    timePickerIncrement={15}
+                    timePickerIncrement={5}
                 >
                         <input
                             readOnly={true}
