@@ -11,38 +11,37 @@ class RangePicker extends React.Component {
         this.ranges = {
             'Today': [
                 moment().startOf('day').utc(true),
-                moment().utc(true)
+                moment().utc()
             ],
             'Yesterday': [
-                moment().subtract(2, 'days').startOf('day').utc(true),
-                moment().subtract(1, 'days').startOf('day').utc(true)
+                moment().utc().subtract(2, 'days').startOf('day'),
+                moment().utc().subtract(1, 'days').startOf('day')
             ],
             'Last 7 Days': [
-                moment().subtract(6, 'days').startOf('day').utc(true),
-                moment().utc(true)
+                moment().utc().subtract(6, 'days').startOf('day'),
+                moment().utc()
             ],
             'Last 30 Days': [
-                moment().subtract(29, 'days').startOf('day').utc(true),
-                moment().utc(true)
+                moment().utc().subtract(29, 'days').startOf('day'),
+                moment().utc()
             ],
             'This Month': [
-                moment().startOf('month').utc(true),
-                moment().endOf('month').utc(true)
+                moment().utc().startOf('month'),
+                moment().utc().endOf('month')
             ],
             'Last Month': [
-                moment().subtract(1, 'month').startOf('month').utc(true),
-                moment().subtract(1, 'month').endOf('month').utc(true)
+                moment().utc().subtract(1, 'month').startOf('month'),
+                moment().utc().subtract(1, 'month').endOf('month')
             ]
         };
     }
 
     render() {
-        let timeRangeStr = `${this.props.startDate.utc(true).format()} - ${this.props.endDate.utc(true).format()}`;
+        let timeRangeStr = `${this.props.startDate.utc().format("lll")} - ${this.props.endDate.utc().format("lll")}`;
         return (
-
             <div style={{display: 'inline-block'}}>
                 <label style={{display: 'block'}}>
-                    Select an event time range
+                    Select an event time range (now: {moment().utc().format("lll")})
                 </label>
                 <span className="glyphicon glyphicon-calendar" style={{marginRight: '10px'}}/>
                 <DateRangePicker
