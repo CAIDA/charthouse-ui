@@ -4,6 +4,7 @@ import DateRangePicker from "react-bootstrap-daterangepicker";
 import EventTypeSelector from "./event-type-selector";
 import EventSuspicionSelector from "./event-suspicion-selector";
 import RangePicker from "./range-picker";
+import EventSearchBox from "./event-search-box";
 
 class SearchBar extends React.Component {
 
@@ -27,6 +28,8 @@ class SearchBar extends React.Component {
                     endDate={this.props.endDate}
                     onApply={this.props.onTimeChange}
                 />
+
+                <EventSearchBox onSearch={this.props.onSearch}/>
 
             </div>
         );

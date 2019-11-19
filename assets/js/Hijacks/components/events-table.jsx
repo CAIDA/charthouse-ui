@@ -139,7 +139,10 @@ class EventsTable extends React.Component {
         startTime: 0,
         endTime: 0,
         eventType: "moas",
-        suspicionLevel: "suspicious"
+        suspicionLevel: "suspicious",
+        pfxs: [],
+        asns: [],
+        tags: [],
     };
 
     constructor(props) {
@@ -154,6 +157,7 @@ class EventsTable extends React.Component {
         this._handleTableRowsChange = this._handleTableRowsChange.bind(this);
         this._handleTableRowClick = this._handleTableRowClick.bind(this);
 
+        this._handleSearchSearch = this._handleSearchSearch.bind(this);
         this._handleSearchTimeChange = this._handleSearchTimeChange.bind(this);
         this._handleSearchSuspicionChange = this._handleSearchSuspicionChange.bind(this);
         this._handleSearchEventTypeChange = this._handleSearchEventTypeChange.bind(this);
@@ -171,33 +175,37 @@ class EventsTable extends React.Component {
     }
 
     async _loadEventsData(
-        perPage = this.state.perPage,
-        curPage = this.state.curPage,
-        ts_start = this.state.startTime,
-        ts_end = this.state.endTime,
     ) {
         this.setState({
             loading: true,
-            curPage: curPage,
-            perPage: perPage,
         });
 
         let [min_susp, max_susp] = translate_suspicion_level(this.state.suspicionLevel);
 
-        let url = `https://bgp.caida.org/json/events/${this.state.eventType}?length=${perPage}&start=${perPage * curPage}` +
-            `&ts_start=${ts_start.format("YYYY-MM-DDTHH:mm")}` +
-            `&ts_end=${ts_end.format("YYYY-MM-DDTHH:mm")}` +
+        let url = `https://bgp.caida.org/json/events/${this.state.eventType}?length=${this.state.perPage}` +
+            `&start=${this.state.perPage * this.state.curPage}` +
+            `&ts_start=${this.state.startTime.format("YYYY-MM-DDTHH:mm")}` +
+            `&ts_end=${this.state.endTime.format("YYYY-MM-DDTHH:mm")}` +
             `&min_susp=${min_susp}` +
             `&max_susp=${max_susp}` +
             "";
 
+        if(this.state.pfxs.length>0){
+            url+=`&pfxs=${this.state.pfxs}`
+        }
+        if(this.state.asns.length>0){
+            url+=`&asns=${this.state.asns}`
+        }
+        if(this.state.tags.length>0){
+            url+=`&tags=${this.state.tags}`
+        }
+
+        console.log(url);
         const response = await axios.get(url);
 
         this.setState({
             data: response.data.data,
             totalRows: response.data.recordsTotal,
-            curPage: curPage,
-            perPage: perPage,
             loading: false,
         });
     }
@@ -248,6 +256,13 @@ class EventsTable extends React.Component {
         this._loadEventsData()
     }
 
+    _handleSearchSearch(parameters) {
+        this.state.pfxs =  parameters.pfxs;
+        this.state.asns =  parameters.asns;
+        this.state.tags =  parameters.tags;
+        this._loadEventsData()
+    }
+
     render() {
 
         return (
@@ -262,6 +277,8 @@ class EventsTable extends React.Component {
 
                     eventSuspicion={this.state.suspicionLevel}
                     onEventSuspicionChange={this._handleSearchSuspicionChange}
+
+                    onSearch={this._handleSearchSearch}
                 />
 
                 <div className={"row"}>

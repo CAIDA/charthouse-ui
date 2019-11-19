@@ -16,6 +16,10 @@
     width: 340px;
 }
 
+.search-bar__search-input {
+    width: 80% !important;
+}
+
 .tag-list {
     margin: 5px;
 }

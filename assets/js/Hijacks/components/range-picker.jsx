@@ -39,6 +39,7 @@ class RangePicker extends React.Component {
     render() {
         let timeRangeStr = `${this.props.startDate.utc(true).format()} - ${this.props.endDate.utc(true).format()}`;
         return (
+
             <div style={{display: 'inline-block'}}>
                 <label style={{display: 'block'}}>
                     Select an event time range
