@@ -164,26 +164,30 @@ class EventsTable extends React.Component {
 
         let [min_susp, max_susp] = translate_suspicion_level(this.query.suspicionLevel);
 
-        let baseUrl = `https://bgp.caida.org/json/events/${this.query.eventType}?`;
+        let baseUrl = `https://bgp.caida.org/json/events?`;
 
-        let params = `length=${this.query.perPage}` +
-            `&start=${this.query.perPage * this.query.curPage}` +
-            `&ts_start=${this.query.startTime.format("YYYY-MM-DDTHH:mm")}` +
-            `&ts_end=${this.query.endTime.format("YYYY-MM-DDTHH:mm")}` +
-            `&min_susp=${min_susp}` +
-            `&max_susp=${max_susp}`;
+        let params = new URLSearchParams();
+        params.append("length", this.query.perPage);
+        params.append("start", this.query.perPage * this.query.curPage);
+        params.append("ts_start", this.query.startTime.format("YYYY-MM-DDTHH:mm"));
+        params.append("ts_end", this.query.endTime.format("YYYY-MM-DDTHH:mm"));
+        params.append("min_susp", min_susp);
+        params.append("max_susp", max_susp);
 
+        if(this.query.eventType!=="all"){
+            params.append("event_type", this.query.eventType);
+        }
         if(this.query.pfxs.length>0){
-            params+=`&pfxs=${this.query.pfxs}`
+            params.append("pfxs", this.query.pfxs)
         }
         if(this.query.asns.length>0){
-            params+=`&asns=${this.query.asns}`
+            params.append("asns", this.query.asns)
         }
         if(this.query.tags.length>0){
-            params+=`&tags=${this.query.tags}`
+            params.append("tags", this.query.tags)
         }
 
-        let url = baseUrl + params;
+        let url = baseUrl + params.toString();
         this.history.push(this.history.location.pathname + `?${params}`);
 
         console.log(url);
