@@ -53,7 +53,6 @@ class EventSearchBox extends React.Component {
     _handleSearch = () => {
         let search_text = this.textInput.current.value;
         let [prefixes, tags, asns] = this._parseSearchInput(search_text);
-        console.log(asns);
         this.props.onSearch({pfxs: prefixes, asns: asns, tags:tags});
     };
 
@@ -63,7 +62,6 @@ class EventSearchBox extends React.Component {
             this.props.tags.join(" "),
             this.props.asns.map(asn=> "AS"+asn).join(" ")
         ].join(" ");
-        console.log(res);
         return res
     };
 

@@ -118,7 +118,7 @@ const columns = [
     {
         name: 'Type',
         selector: 'event_type',
-        width: "80px",
+        width: "120px",
     },
 ];
 
