@@ -120,6 +120,11 @@ const columns = [
         selector: 'event_type',
         width: "120px",
     },
+    {
+        name: 'Suspicion',
+        selector: 'inference.suspicion.suspicion_level',
+        width: "120px",
+    },
 ];
 
 class EventsTable extends React.Component {
