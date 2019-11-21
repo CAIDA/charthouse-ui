@@ -1,39 +1,23 @@
-import PropTypes from 'prop-types';
 import React from 'react';
-import {ToggleButtonGroup, ToggleButton} from 'react-bootstrap';
 
 class EventSearchBox extends React.Component {
-
-    static propTypes = {
-        eventType: PropTypes.string,
-        onChange: PropTypes.func
-    };
-
-    static defaultProps = {
-        eventType: 'moas',
-        onChange: ()=>{}
-    };
 
     constructor(props){
         super(props);
         this.textInput = React.createRef();
-        this._handleSearch = this._handleSearch.bind(this);
-        this._handleKeyPress = this._handleKeyPress.bind(this);
     }
 
-
-    _handleKeyPress(event){
+    _handleKeyPress = (event) => {
         if (event.key === "Enter") {
             this._handleSearch()
         }
-    }
+    };
 
     RE_PFX = /^!?[0-9]+[.:][0-9.:/]*$/;
     RE_TAG = /^!?[a-zA-Z\-]+$/;
     RE_ASN = /^!?(AS|as)?[0-9]+$/;
 
-    _handleSearch(){
-        let search_text = this.textInput.current.value;
+    _parseSearchInput = (search_text) => {
         let fields = search_text.trim().split(" ");
 
         let prefixes = [];
@@ -63,9 +47,25 @@ class EventSearchBox extends React.Component {
                 ready = true;
             }
         }
+        return [prefixes, tags, asns]
+    };
 
+    _handleSearch = () => {
+        let search_text = this.textInput.current.value;
+        let [prefixes, tags, asns] = this._parseSearchInput(search_text);
+        console.log(asns);
         this.props.onSearch({pfxs: prefixes, asns: asns, tags:tags});
-    }
+    };
+
+    _queryToString = () => {
+        let res =  [
+            this.props.pfxs.join(" "),
+            this.props.tags.join(" "),
+            this.props.asns.map(asn=> "AS"+asn).join(" ")
+        ].join(" ");
+        console.log(res);
+        return res
+    };
 
     render() {
         return (
@@ -78,6 +78,7 @@ class EventSearchBox extends React.Component {
                        placeholder="Search by prefix/ASN/tags"
                        ref={this.textInput}
                        onKeyPress={this._handleKeyPress}
+                       defaultValue={this._queryToString()}
                 />
                 <button className="btn btn-success" type="button" onClick={this._handleSearch}>Search</button>
             </div>

@@ -89,7 +89,6 @@ class EventDetailsTable extends React.Component {
                 </div>
             )
         }
-        console.log(data);
         return (
             <div className={"row"}>
                 <div className="col-lg-6">

@@ -85,7 +85,7 @@ class EventsList extends React.Component {
                 </div>
             </div>
 
-            <EventsTable eventType={this.state.eventType}/>
+            <EventsTable/>
 
         </div>;
     }

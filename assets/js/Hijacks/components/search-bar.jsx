@@ -15,21 +15,26 @@ class SearchBar extends React.Component {
     render() {
         return (
             <div className={"row search-bar"}>
-                <EventTypeSelector eventType={this.props.eventType}
+                <EventTypeSelector eventType={this.props.query.eventType}
                                    onChange={this.props.onEventTypeChange}
                 />
 
-                <EventSuspicionSelector eventType={this.props.suspicionLevel}
+                <EventSuspicionSelector eventType={this.props.query.suspicionLevel}
                                    onChange={this.props.onEventSuspicionChange}
                 />
 
                 <RangePicker
-                    startDate={this.props.startDate}
-                    endDate={this.props.endDate}
+                    startDate={this.props.query.startTime}
+                    endDate={this.props.query.endTime}
                     onApply={this.props.onTimeChange}
                 />
 
-                <EventSearchBox onSearch={this.props.onSearch}/>
+                <EventSearchBox
+                    pfxs={this.props.query.pfxs}
+                    asns={this.props.query.asns}
+                    tags={this.props.query.tags}
+                    onSearch={this.props.onSearch}
+                />
 
             </div>
         );

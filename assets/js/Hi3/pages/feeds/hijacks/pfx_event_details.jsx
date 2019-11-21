@@ -21,7 +21,6 @@ class PfxEventDetails extends React.Component {
         this.routesSankey = React.createRef();
         this.routesSankey2 = React.createRef();
         this.pfxEventTable = React.createRef();
-        this.tracerouteSankey = React.createRef();
 
         this.eventId = this.props.match.params.eventId;
         this.fingerprint = this.props.match.params.pfxEventId;
@@ -45,7 +44,6 @@ class PfxEventDetails extends React.Component {
             `https://bgp.caida.org/json/pfx_event/id/${this.eventId}/${this.fingerprint}`,
         );
 
-        console.log(response);
         if (["submoas", "defcon"].includes(this.eventType)) {
             // if this is a submoas or defcon events, we should show two sankey graphs
             let subpaths = response.data.details.sub_aspaths.split(":").map(path => path.split(" "));
@@ -87,7 +85,6 @@ class PfxEventDetails extends React.Component {
         const response = await axios.get(
             `https://bgp.caida.org/json/event/id/${this.eventId}`,
         );
-        console.log(response.data);
         this.eventTable.current.loadEventData(response.data);
     }
 

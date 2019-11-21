@@ -2,6 +2,9 @@ import moment from 'moment'
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-daterangepicker/daterangepicker.css';
 import 'Hijacks/css/hijacks.css';
+import { withRouter } from 'react-router-dom';
+import { createBrowserHistory } from "history";
+import queryString from 'query-string'
 import PropTypes from 'prop-types';
 import React from 'react';
 import DataTable from 'react-data-table-component';
@@ -120,22 +123,16 @@ const columns = [
 ];
 
 class EventsTable extends React.Component {
-    static propTypes = {
-        eventType: PropTypes.string,
-    };
-    static defaultProps = {
-        eventType: "moas",
-    };
 
     state = {
         data: [],
         loading: false,
-        // datatable states
         totalRows: 0,
+    };
+
+    query = {
         perPage: 10,
         curPage: 0,
-
-        // event search states
         startTime: 0,
         endTime: 0,
         eventType: "moas",
@@ -148,57 +145,46 @@ class EventsTable extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state.startTime = moment().utc().subtract(1, "days");
-        this.state.endTime = moment().utc();
+        this.query.startTime = moment().utc().subtract(1, "days");
+        this.query.endTime = moment().utc();
+        this._parseQueryString();
 
-        this._loadEventsData = this._loadEventsData.bind(this);
+        this.history = createBrowserHistory();
 
-        this._handleTablePageChange = this._handleTablePageChange.bind(this);
-        this._handleTableRowsChange = this._handleTableRowsChange.bind(this);
-        this._handleTableRowClick = this._handleTableRowClick.bind(this);
-
-        this._handleSearchSearch = this._handleSearchSearch.bind(this);
-        this._handleSearchTimeChange = this._handleSearchTimeChange.bind(this);
-        this._handleSearchSuspicionChange = this._handleSearchSuspicionChange.bind(this);
-        this._handleSearchEventTypeChange = this._handleSearchEventTypeChange.bind(this);
     }
 
     componentDidMount() {
         this._loadEventsData();
     }
 
-    componentDidUpdate(prevProps) {
-        if (prevProps.eventType === this.props.eventType) {
-            return
-        }
-        this._loadEventsData()
-    }
-
-    async _loadEventsData(
-    ) {
+    _loadEventsData = async () => {
         this.setState({
             loading: true,
         });
 
-        let [min_susp, max_susp] = translate_suspicion_level(this.state.suspicionLevel);
+        let [min_susp, max_susp] = translate_suspicion_level(this.query.suspicionLevel);
 
-        let url = `https://bgp.caida.org/json/events/${this.state.eventType}?length=${this.state.perPage}` +
-            `&start=${this.state.perPage * this.state.curPage}` +
-            `&ts_start=${this.state.startTime.format("YYYY-MM-DDTHH:mm")}` +
-            `&ts_end=${this.state.endTime.format("YYYY-MM-DDTHH:mm")}` +
+        let baseUrl = `https://bgp.caida.org/json/events/${this.query.eventType}?`;
+
+        let params = `length=${this.query.perPage}` +
+            `&start=${this.query.perPage * this.query.curPage}` +
+            `&ts_start=${this.query.startTime.format("YYYY-MM-DDTHH:mm")}` +
+            `&ts_end=${this.query.endTime.format("YYYY-MM-DDTHH:mm")}` +
             `&min_susp=${min_susp}` +
-            `&max_susp=${max_susp}` +
-            "";
+            `&max_susp=${max_susp}`;
 
-        if(this.state.pfxs.length>0){
-            url+=`&pfxs=${this.state.pfxs}`
+        if(this.query.pfxs.length>0){
+            params+=`&pfxs=${this.query.pfxs}`
         }
-        if(this.state.asns.length>0){
-            url+=`&asns=${this.state.asns}`
+        if(this.query.asns.length>0){
+            params+=`&asns=${this.query.asns}`
         }
-        if(this.state.tags.length>0){
-            url+=`&tags=${this.state.tags}`
+        if(this.query.tags.length>0){
+            params+=`&tags=${this.query.tags}`
         }
+
+        let url = baseUrl + params;
+        this.history.push(this.history.location.pathname + `?${params}`);
 
         console.log(url);
         const response = await axios.get(url);
@@ -208,7 +194,7 @@ class EventsTable extends React.Component {
             totalRows: response.data.recordsTotal,
             loading: false,
         });
-    }
+    };
 
     /*
      *************************
@@ -216,21 +202,21 @@ class EventsTable extends React.Component {
      *************************
      */
 
-    _handleTablePageChange(page){
-        this.state.curPage = page - 1;
+    _handleTablePageChange = (page) => {
+        this.query.curPage = page - 1;
         this._loadEventsData();
     };
 
-    _handleTableRowsChange(perPage, page){
-        this.state.perPage = perPage;
-        this.state.curPage = page - 1;
+    _handleTableRowsChange = (perPage, page) => {
+        this.query.perPage = perPage;
+        this.query.curPage = page - 1;
         this._loadEventsData();
     };
 
-    _handleTableRowClick(row) {
+    _handleTableRowClick = (row) => {
         // redirect to sub pages
         window.open(`/feeds/hijacks/events/${row.event_type}/${row.id}`, "_self");
-    }
+    };
 
     /*
      ******************************
@@ -238,46 +224,55 @@ class EventsTable extends React.Component {
      ******************************
      */
 
-    _handleSearchTimeChange(event, picker) {
+    _handleSearchTimeChange = (event, picker) => {
         this.setState({
             startTime: picker.startDate.utc(),
             endTime: picker.endDate.utc(),
         });
         this._loadEventsData()
-    }
+    };
 
-    _handleSearchEventTypeChange(eventType) {
-        this.state.eventType =  eventType;
+    _handleSearchEventTypeChange = (eventType) => {
+        this.query.eventType =  eventType;
         this._loadEventsData()
-    }
+    };
 
-    _handleSearchSuspicionChange(suspicionLevel) {
-        this.state.suspicionLevel =  suspicionLevel;
+    _handleSearchSuspicionChange = (suspicionLevel) => {
+        this.query.suspicionLevel =  suspicionLevel;
         this._loadEventsData()
-    }
+    };
 
-    _handleSearchSearch(parameters) {
-        this.state.pfxs =  parameters.pfxs;
-        this.state.asns =  parameters.asns;
-        this.state.tags =  parameters.tags;
+    _handleSearchSearch = (parameters) => {
+        this.query.pfxs =  parameters.pfxs;
+        this.query.asns =  parameters.asns;
+        this.query.tags =  parameters.tags;
+
+        console.log(this.history.location);
         this._loadEventsData()
-    }
+    };
+
+    _parseQueryString = () => {
+        const parsed = queryString.parse(location.search);
+        if("pfxs" in parsed){
+            parsed.pfxs = parsed.pfxs.split(",")
+        }
+        if("tags" in parsed){
+            parsed.tags = parsed.tags.split(",")
+        }
+        if("asns" in parsed){
+            parsed.asns = parsed.asns.split(",")
+        }
+        this.query = Object.assign(this.query, parsed);
+    };
 
     render() {
-
         return (
             <React.Fragment>
                 <SearchBar
-                    startDate={this.state.startTime}
-                    endDate={this.state.endTime}
+                    query={this.query}
                     onTimeChange={this._handleSearchTimeChange}
-
-                    eventType={this.state.eventType}
                     onEventTypeChange={this._handleSearchEventTypeChange}
-
-                    eventSuspicion={this.state.suspicionLevel}
                     onEventSuspicionChange={this._handleSearchSuspicionChange}
-
                     onSearch={this._handleSearchSearch}
                 />
 
@@ -305,4 +300,4 @@ class EventsTable extends React.Component {
     }
 }
 
-export default EventsTable;
+export default withRouter(EventsTable);
