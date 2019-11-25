@@ -65,21 +65,6 @@ class PfxEventsTable extends React.Component {
         enablePagination: true,
     };
 
-    state = {
-        data: {},
-        loading: true,
-        success: false,
-        error_msg: "",
-    };
-
-    constructor(props) {
-        super(props);
-        this.handleRowClick = this.handleRowClick.bind(this);
-    }
-
-    async componentDidMount() {
-    }
-
     /**
      * Preprocess incoming event data
      * @param data event data
@@ -117,55 +102,17 @@ class PfxEventsTable extends React.Component {
     }
 
 
-    handleRowClick(row) {
+    handleRowClick = (row) => {
         if (this.props.enableClick) {
-            window.open(`/feeds/hijacks/events/${this.eventType}/${this.eventId}/${row.fingerprint}`, "_self");
+            window.open(`/feeds/hijacks/events/${this.props.eventType}/${this.props.eventId}/${row.fingerprint}`, "_self");
         }
-    }
-
-    loadEventData(pfxEvents, eventType, eventId, error) {
-        this.eventId = eventId;
-        this.eventType = eventType;
-        if (error) {
-            this.setState({
-                loading: false,
-                success: false,
-                error_msg: error
-            });
-            return;
-        }
-
-        this.setState({
-            data: this.preprocessData(pfxEvents),
-            loading: false,
-            success: true,
-        });
-    }
+    };
 
     render() {
-        const {loading, data, success, error_msg} = this.state;
-
-        if (loading) {
-            // still loading
-            return (<div>loading data ...</div>)
-        }
-
-        if (!success) {
-            // loading failed
-            return (
-                <div>
-                    <p>
-                        Event details loading failed
-                    </p>
-                    <p>
-                        {error_msg}
-                    </p>
-                </div>
-            )
-        }
+        let data = this.preprocessData(this.props.data);
 
         let columns = [];
-        if (["moas", "edges"].includes(this.eventType)) {
+        if (["moas", "edges"].includes(this.props.eventType)) {
             columns = columns1
         } else {
             columns = columns2
@@ -178,7 +125,6 @@ class PfxEventsTable extends React.Component {
                 pointerOnHover={true}
                 highlightOnHover={true}
                 data={data}
-                progressPending={loading}
                 onRowClicked={this.handleRowClick}
                 pagination={this.props.enablePagination}
             />

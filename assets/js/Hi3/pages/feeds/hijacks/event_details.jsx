@@ -9,36 +9,55 @@ const HORIZONTAL_OFFSET = 480;
 class EventDetails extends React.Component {
 
     state = {
-        frameWidth: window.innerWidth - HORIZONTAL_OFFSET
+        loading: true,
+        data: undefined,
     };
 
     constructor(props) {
         super(props);
         this.pfxTable = React.createRef();
-        this.eventTable = React.createRef();
 
         this.eventId = this.props.match.params.eventId;
         this.eventType = this.eventId.split("-")[0];
         this.jsonUrl = `https://bgp.caida.org/json/event/id/${this.eventId}`;
+        console.log(this.jsonUrl);
     }
 
     async componentDidMount() {
-        window.addEventListener('resize', this._resize);
         this.loadEventData();
-
-    }
-
-    componentWillUnmount() {
-        window.removeEventListener('resize', this._resize);
     }
 
     async loadEventData() {
         const response = await axios.get(this.jsonUrl);
-        // this.eventTable.current.loadEventData(response.data);
-        this.pfxTable.current.loadEventData(response.data.pfx_events, this.eventType, this.eventId, response.data.error);
+        // this.pfxTable.current.loadEventData(response.data.pfx_events, this.eventType, this.eventId, response.data.error);
+        this.setState({
+            loading: false,
+            data: response.data,
+        })
     }
 
     render() {
+        const {loading, data} = this.state;
+
+        if(loading){
+            return(
+                <div>
+                    loading event data ...
+                </div>
+            )
+        }
+        if("error" in data){
+            return (
+                <div>
+                    <p>
+                        Event details loading failed
+                    </p>
+                    <p>
+                        {error_msg}
+                    </p>
+                </div>
+            )
+        }
 
         return (
             <div id='hijacks' className='container-fluid'>
@@ -48,19 +67,17 @@ class EventDetails extends React.Component {
                     </div>
                 </div>
                 <div>
-                    <EventDetailsTable eventId={this.eventId}/>
+                    <EventDetailsTable data={this.state.data} jsonUrl={this.jsonUrl}/>
                 </div>
                 <div>
-                    <PfxEventsTable ref={this.pfxTable}/>
+                    <PfxEventsTable data={this.state.data.pfx_events}
+                                    eventId={this.eventId}
+                                    eventType={this.eventType}
+                    />
                 </div>
             </div>
         );
     }
-
-    _resize = () => {
-        const newWidth = window.innerWidth - HORIZONTAL_OFFSET;
-        this.setState({frameWidth: newWidth});
-    };
 }
 
 export default EventDetails;

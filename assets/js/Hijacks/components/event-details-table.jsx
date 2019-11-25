@@ -1,23 +1,8 @@
 import React from "react";
 import {extract_impact, extract_largest_prefix, unix_time_to_str} from "../utils/events";
 import AsNumber from "./asn";
-import axios from "axios";
 
 class EventDetailsTable extends React.Component {
-
-    state = {
-        data: {},
-        loading: true,
-        success: false,
-        error_msg: "",
-    };
-
-    constructor(props){
-        super(props);
-        this.jsonUrl = `https://bgp.caida.org/json/event/id/${this.props.eventId}`;
-
-        this.loadEventData();
-    }
 
     /**
      * Preprocess incoming event data
@@ -60,50 +45,10 @@ class EventDetailsTable extends React.Component {
         return processed;
     }
 
-    loadEventData = async () => {
-        this.setState({
-            loading: true,
-        });
-
-        const response = await axios.get(this.jsonUrl);
-        let data = response.data;
-
-        if ("error" in data) {
-            this.setState({
-                loading: false,
-                success: false,
-                error_msg: data.error
-            });
-            return;
-        }
-
-        this.setState({
-            data: this.preprocessData(data),
-            loading: false,
-            success: true,
-        });
-    };
-
-    async componentDidMount() {
-    }
-
     render() {
-        const {loading, data, success, error_msg} = this.state;
-        if (loading) {
-            return (<div>loading data ...</div>)
-        }
-        if (!success) {
-            return (
-                <div>
-                    <p>
-                        Event details loading failed
-                    </p>
-                    <p>
-                        {error_msg}
-                    </p>
-                </div>
-            )
-        }
+
+        let data = this.preprocessData(this.props.data);
+
         return (
             <div className={"row"}>
                 <div className="col-lg-6">
@@ -179,7 +124,7 @@ class EventDetailsTable extends React.Component {
                     </div>
                 </div>
                 <div className="col-lg-12">
-                    <a target='_blank' type="button" className="btn btn-sm btn-primary" href={this.jsonUrl}>
+                    <a target='_blank' type="button" className="btn btn-sm btn-primary" href={this.props.jsonUrl}>
                         Raw JSON</a>
                 </div>
             </div>

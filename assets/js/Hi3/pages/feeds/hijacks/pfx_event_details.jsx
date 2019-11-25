@@ -11,47 +11,51 @@ const HORIZONTAL_OFFSET = 480;
 class PfxEventDetails extends React.Component {
 
     state = {
-        frameWidth: window.innerWidth - HORIZONTAL_OFFSET,
+        eventData: {},
+        pfxEventData: {},
+        subpaths: [],
+        superpaths: [],
+        pfxEvents: [],
+        tr_aspaths: [],
         tr_results: [],
+        loadingEvent: true,
+        loadingPfxEvent: true,
     };
 
     constructor(props) {
         super(props);
-        this.eventTable = React.createRef();
-        this.routesSankey = React.createRef();
-        this.routesSankey2 = React.createRef();
-        this.pfxEventTable = React.createRef();
-
         this.eventId = this.props.match.params.eventId;
         this.fingerprint = this.props.match.params.pfxEventId;
         this.eventType = this.eventId.split("-")[0];
-
-        this.trResults = this.trResults.bind(this);
     }
 
     componentDidMount() {
-        window.addEventListener('resize', this._resize);
+        this.loadEventData();
         this.loadPfxEventData();
     }
 
-    componentWillUnmount() {
-        window.removeEventListener('resize', this._resize);
-    }
+    loadEventData = async() => {
+        const response = await axios.get(`https://bgp.caida.org/json/event/id/${this.eventId}`);
+        this.setState({
+            loadingEvent: false,
+            eventData: response.data,
+        })
+    };
 
-    async loadPfxEventData() {
+    loadPfxEventData = async () => {
         const response = await axios.get(
             `https://bgp.caida.org/json/pfx_event/id/${this.eventId}/${this.fingerprint}`,
         );
 
+        let subpaths = [];
+        let superpaths = [];
+
         if (["submoas", "defcon"].includes(this.eventType)) {
             // if this is a submoas or defcon events, we should show two sankey graphs
-            let subpaths = response.data.details.sub_aspaths.split(":").map(path => path.split(" "));
-            let superpaths = response.data.details.super_aspaths.split(":").map(path => path.split(" "));
-            this.routesSankey.current.loadData(subpaths);
-            this.routesSankey2.current.loadData(superpaths);
+            subpaths = response.data.details.sub_aspaths.split(":").map(path => path.split(" "));
+            superpaths = response.data.details.super_aspaths.split(":").map(path => path.split(" "));
         } else {
-            let aspaths = response.data.details.aspaths.split(":").map(path => path.split(" "));
-            this.routesSankey.current.loadData(aspaths);
+            subpaths = response.data.details.aspaths.split(":").map(path => path.split(" "));
         }
 
         let data = response.data;
@@ -70,20 +74,10 @@ class PfxEventDetails extends React.Component {
         if ("super_pfx" in data.details) {
             pfxEvent.super_pfx = data.details.super_pfx
         }
-        this.pfxEventTable.current.loadEventData([pfxEvent], this.eventType, this.eventId, response.error);
 
-
-        if (response.data.traceroutes.msms.length === 0) {
-            // nothing to do
-        } else {
-            this.setState({"tr_results": response.data.traceroutes.msms})
-        }
-    }
-
-    trResults() {
-        let msms = this.state.tr_results;
+        let msms = response.data.traceroutes.msms;
+        let as_routes = [];
         if (msms.length > 0) {
-            let as_routes = [];
             msms.forEach(function (traceroute) {
                 if ("results" in traceroute) {
                     traceroute["results"].forEach(function (result) {
@@ -99,36 +93,38 @@ class PfxEventDetails extends React.Component {
                     });
                 }
             });
-
-            return (
-                <React.Fragment>
-                    <TraceroutesTable data={msms}/>
-                    <SankeyGraph title={"Traceroutes Sankey"} data={as_routes}/>
-                </React.Fragment>
-            )
-        } else {
-            return null;
         }
-    }
 
-    sankeyGraphs(eventType) {
-        if (["submoas", "defcon"].includes(eventType)) {
-            return (
-                <React.Fragment>
-                    <SankeyGraph ref={this.routesSankey} title={"Route Collectors Sankey Diagram - Sub Prefix"}/>
-                    <SankeyGraph ref={this.routesSankey2} title={"Route Collectors Sankey Diagram - Super Prefix"}/>
-                </React.Fragment>
-            )
-        } else {
-            return (
-                <React.Fragment>
-                    <SankeyGraph ref={this.routesSankey} title={"Route Collectors Sankey Diagram"}/>
-                </React.Fragment>
-            )
-        }
-    }
+        this.setState({
+            pfxEventData: response.data,
+            subpaths: subpaths,
+            superpaths: superpaths,
+            pfxEvents: [pfxEvent],
+            tr_aspaths: as_routes,
+            tr_results: msms,
+            loadingPfxEvent: false,
+        });
+    };
 
     render() {
+        let showTrResults = this.state.tr_results.length > 0;
+
+        let sankeyGraphs;
+
+        if (["submoas", "defcon"].includes(this.eventType)) {
+            sankeyGraphs =
+                <React.Fragment>
+                    <SankeyGraph data={this.state.subpaths} title={"Route Collectors Sankey Diagram - Sub Prefix"}/>
+                    <SankeyGraph data={this.state.superpaths} title={"Route Collectors Sankey Diagram - Super Prefix"}/>
+                </React.Fragment>
+
+        } else {
+            sankeyGraphs =
+                <React.Fragment>
+                    <SankeyGraph data={this.state.subpaths} title={"Route Collectors Sankey Diagram"}/>
+                </React.Fragment>
+        }
+
         return (
             <div id='hijacks' className='container-fluid'>
                 <div className='row header'>
@@ -137,25 +133,45 @@ class PfxEventDetails extends React.Component {
                     </div>
                 </div>
 
-                <div className="row">
-                    <EventDetailsTable eventId={this.eventId}/>
-                </div>
-                <div className="row">
-                    <PfxEventsTable ref={this.pfxEventTable} enableClick={false} enablePagination={false}/>
-                    <div className="col-lg-12">
-                        <a target='_blank' type="button" className="btn btn-sm btn-primary"
-                           href={`https://bgp.caida.org/json/pfx_event/id/${this.eventId}/${this.fingerprint}`}>
-                            Raw JSON</a>
+                {!this.state.loadingEvent &&
+                    <div className="row">
+                        <EventDetailsTable data={this.state.eventData}/>
                     </div>
-                </div>
+                }
 
-                <div className="row">
-                    {this.trResults()}
-                </div>
+                {!this.state.loadingPfxEvent &&
+                    // pfx event loading finished
 
-                <div className="row">
-                    {this.sankeyGraphs(this.eventType)}
-                </div>
+                    <React.Fragment>
+                        <div className="row">
+                            <PfxEventsTable
+                                data={this.state.pfxEvents}
+                                eventType={this.eventType}
+                                eventId={this.eventId}
+                                enableClick={false} enablePagination={false}/>
+
+                            <div className="col-lg-12">
+                                <a target='_blank' type="button" className="btn btn-sm btn-primary"
+                                   href={`https://bgp.caida.org/json/pfx_event/id/${this.eventId}/${this.fingerprint}`}>
+                                    Raw JSON</a>
+
+                            </div>
+                        </div>
+
+                        { showTrResults &&
+                        <div className="row">
+                            <React.Fragment>
+                                <TraceroutesTable data={this.state.tr_results}/>
+                                <SankeyGraph title={"Traceroutes Sankey"} data={this.state.tr_aspaths}/>
+                            </React.Fragment>
+                        </div>
+                        }
+
+                        <div className="row">
+                            {sankeyGraphs}
+                        </div>
+                    </React.Fragment>
+                }
             </div>
         );
     }
