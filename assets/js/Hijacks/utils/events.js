@@ -90,7 +90,7 @@ function extract_prefixes(pfx_event) {
     return prefixes
 }
 
-function translate_suspicion_level(suspicionLevel) {
+function translate_suspicion_str_to_values(suspicionLevel) {
     let min_susp = 0;
     let max_susp = 100;
     if (suspicionLevel === "suspicious") {
@@ -106,4 +106,18 @@ function translate_suspicion_level(suspicionLevel) {
     return [min_susp, max_susp]
 }
 
-export {extract_impact, extract_largest_prefix, unix_time_to_str, extract_prefixes, translate_suspicion_level}
+function translate_suspicion_values_to_str(min_susp, max_susp) {
+    if(min_susp===80 && max_susp===100){
+        return "suspicious"
+    } else if (min_susp==0 && max_susp==20){
+        return "benign"
+    } else if (min_susp===21 && max_susp===79){
+        return "grey"
+    } else {
+        return "all"
+    }
+}
+
+export {extract_impact, extract_largest_prefix, unix_time_to_str, extract_prefixes,
+    translate_suspicion_str_to_values, translate_suspicion_values_to_str
+}

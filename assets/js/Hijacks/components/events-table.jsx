@@ -10,7 +10,7 @@ import React from 'react';
 import DataTable from 'react-data-table-component';
 import axios from 'axios';
 import SearchBar from "./search-bar";
-import {translate_suspicion_level} from "../utils/events";
+import {translate_suspicion_str_to_values, translate_suspicion_values_to_str} from "../utils/events";
 import AsNumber from "./asn";
 
 function unix_time_to_str(unix_time) {
@@ -116,13 +116,13 @@ const columns = [
         }
     },
     {
-        name: 'Type',
-        selector: 'event_type',
-        width: "120px",
-    },
-    {
         name: 'Suspicion',
         selector: 'inference.suspicion.suspicion_level',
+        width: "60px",
+    },
+    {
+        name: 'Type',
+        selector: 'event_type',
         width: "120px",
     },
 ];
@@ -142,6 +142,8 @@ class EventsTable extends React.Component {
         endTime: 0,
         eventType: "moas",
         suspicionLevel: "suspicious",
+        min_susp: 0,
+        max_susp: 100,
         pfxs: [],
         asns: [],
         tags: [],
@@ -167,7 +169,7 @@ class EventsTable extends React.Component {
             loading: true,
         });
 
-        let [min_susp, max_susp] = translate_suspicion_level(this.query.suspicionLevel);
+        let [min_susp, max_susp] = translate_suspicion_str_to_values(this.query.suspicionLevel);
 
         let baseUrl = `https://bgp.caida.org/json/events?`;
 
@@ -193,7 +195,7 @@ class EventsTable extends React.Component {
         }
 
         let url = baseUrl + params.toString();
-        this.history.push(this.history.location.pathname + `?${params}`);
+        this.history.push(this.history.location.pathname + `?${params.toString()}`);
 
         console.log(url);
         const response = await axios.get(url);
@@ -234,11 +236,9 @@ class EventsTable extends React.Component {
      */
 
     _handleSearchTimeChange = (event, picker) => {
-        this.setState({
-            startTime: picker.startDate.utc(),
-            endTime: picker.endDate.utc(),
-        });
-        this._loadEventsData()
+        this.query.startTime = picker.startDate.utc();
+        this.query.endTime =  picker.endDate.utc();
+        this._loadEventsData();
     };
 
     _handleSearchEventTypeChange = (eventType) => {
@@ -262,16 +262,80 @@ class EventsTable extends React.Component {
 
     _parseQueryString = () => {
         const parsed = queryString.parse(location.search);
+        console.log(parsed);
         if("pfxs" in parsed){
-            parsed.pfxs = parsed.pfxs.split(",")
+            this.query.pfxs = parsed.pfxs.split(",");
         }
         if("tags" in parsed){
-            parsed.tags = parsed.tags.split(",")
+            this.query.tags = parsed.tags.split(",");
         }
         if("asns" in parsed){
-            parsed.asns = parsed.asns.split(",")
+            this.query.asns = parsed.asns.split(",");
         }
-        this.query = Object.assign(this.query, parsed);
+        if("length" in parsed){
+            this.query.perPage = parseInt(parsed.length);
+        }
+        if("start" in parsed){
+            this.query.curPage = parseInt(parsed.start)/this.query.perPage;
+        }
+        if("event_type" in parsed){
+            this.query.eventType = parsed.event_type;
+        }
+        if("min_susp" in parsed){
+            this.query.min_susp = parseInt(parsed.min_susp);
+        }
+        if("max_susp" in parsed){
+            this.query.max_susp = parseInt(parsed.max_susp);
+        }
+        if("ts_start" in parsed){
+            this.query.startTime = moment.utc(parsed.ts_start, "YYYY-MM-DDTHH:mm")
+        }
+        if("ts_end" in parsed){
+            this.query.endTime = moment.utc(parsed.ts_end, "YYYY-MM-DDTHH:mm")
+        }
+
+        this.query.suspicionLevel = translate_suspicion_values_to_str(this.query.min_susp, this.query.max_susp);
+        [this.query.min_susp, this.query.max_susp] = translate_suspicion_str_to_values(this.query.suspicionLevel);
+
+        console.log(this.query);
+    };
+
+    _updateQueryString = () => {
+        if("pfxs" in parsed){
+            this.query.pfxs = parsed.pfxs.split(",");
+        }
+        if("tags" in parsed){
+            this.query.tags = parsed.tags.split(",");
+        }
+        if("asns" in parsed){
+            this.query.asns = parsed.asns.split(",");
+        }
+        if("length" in parsed){
+            this.query.perPage = parseInt(parsed.length);
+        }
+        if("start" in parsed){
+            this.query.curPage = parseInt(parsed.start)/this.query.perPage;
+        }
+        if("event_type" in parsed){
+            this.query.eventType = parsed.event_type;
+        }
+        if("min_susp" in parsed){
+            this.query.min_susp = parseInt(parsed.min_susp);
+        }
+        if("max_susp" in parsed){
+            this.query.max_susp = parseInt(parsed.max_susp);
+        }
+        if("ts_start" in parsed){
+            this.query.startTime = moment.utc(parsed.ts_start, "YYYY-MM-DDTHH:mm")
+        }
+        if("ts_end" in parsed){
+            this.query.endTime = moment.utc(parsed.ts_end, "YYYY-MM-DDTHH:mm")
+        }
+
+        this.query.suspicionLevel = translate_suspicion_values_to_str(this.query.min_susp, this.query.max_susp);
+        [this.query.min_susp, this.query.max_susp] = translate_suspicion_str_to_values(this.query.suspicionLevel);
+
+        console.log(this.query);
     };
 
     render() {

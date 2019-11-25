@@ -19,7 +19,7 @@ class SearchBar extends React.Component {
                                    onChange={this.props.onEventTypeChange}
                 />
 
-                <EventSuspicionSelector eventType={this.props.query.suspicionLevel}
+                <EventSuspicionSelector eventSuspicionLevel={this.props.query.suspicionLevel}
                                    onChange={this.props.onEventSuspicionChange}
                 />
 
