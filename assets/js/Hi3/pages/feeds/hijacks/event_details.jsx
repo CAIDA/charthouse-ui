@@ -19,6 +19,7 @@ class EventDetails extends React.Component {
 
         this.eventId = this.props.match.params.eventId;
         this.eventType = this.eventId.split("-")[0];
+        this.jsonUrl = `https://bgp.caida.org/json/event/id/${this.eventId}`;
     }
 
     async componentDidMount() {
@@ -32,10 +33,8 @@ class EventDetails extends React.Component {
     }
 
     async loadEventData() {
-        const response = await axios.get(
-            `https://bgp.caida.org/json/event/id/${this.eventId}`,
-        );
-        this.eventTable.current.loadEventData(response.data);
+        const response = await axios.get(this.jsonUrl);
+        // this.eventTable.current.loadEventData(response.data);
         this.pfxTable.current.loadEventData(response.data.pfx_events, this.eventType, this.eventId, response.data.error);
     }
 
@@ -49,7 +48,7 @@ class EventDetails extends React.Component {
                     </div>
                 </div>
                 <div>
-                    <EventDetailsTable ref={this.eventTable}/>
+                    <EventDetailsTable eventId={this.eventId}/>
                 </div>
                 <div>
                     <PfxEventsTable ref={this.pfxTable}/>

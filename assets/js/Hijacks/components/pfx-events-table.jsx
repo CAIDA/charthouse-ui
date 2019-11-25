@@ -173,7 +173,6 @@ class PfxEventsTable extends React.Component {
 
         return (
             <DataTable
-                title="Prefix Events"
                 columns={columns}
                 striped={true}
                 pointerOnHover={true}

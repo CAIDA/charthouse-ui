@@ -1,6 +1,7 @@
 import React from "react";
 import {extract_impact, extract_largest_prefix, unix_time_to_str} from "../utils/events";
 import AsNumber from "./asn";
+import axios from "axios";
 
 class EventDetailsTable extends React.Component {
 
@@ -10,6 +11,13 @@ class EventDetailsTable extends React.Component {
         success: false,
         error_msg: "",
     };
+
+    constructor(props){
+        super(props);
+        this.jsonUrl = `https://bgp.caida.org/json/event/id/${this.props.eventId}`;
+
+        this.loadEventData();
+    }
 
     /**
      * Preprocess incoming event data
@@ -52,7 +60,14 @@ class EventDetailsTable extends React.Component {
         return processed;
     }
 
-    loadEventData(data) {
+    loadEventData = async () => {
+        this.setState({
+            loading: true,
+        });
+
+        const response = await axios.get(this.jsonUrl);
+        let data = response.data;
+
         if ("error" in data) {
             this.setState({
                 loading: false,
@@ -67,7 +82,7 @@ class EventDetailsTable extends React.Component {
             loading: false,
             success: true,
         });
-    }
+    };
 
     async componentDidMount() {
     }
@@ -163,9 +178,13 @@ class EventDetailsTable extends React.Component {
                         </table>
                     </div>
                 </div>
+                <div className="col-lg-12">
+                    <a target='_blank' type="button" className="btn btn-sm btn-primary" href={this.jsonUrl}>
+                        Raw JSON</a>
+                </div>
             </div>
 
-        );
+    );
     }
 }
 

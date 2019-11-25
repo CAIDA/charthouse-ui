@@ -31,7 +31,6 @@ class PfxEventDetails extends React.Component {
 
     componentDidMount() {
         window.addEventListener('resize', this._resize);
-        this.loadEventData();
         this.loadPfxEventData();
     }
 
@@ -79,13 +78,6 @@ class PfxEventDetails extends React.Component {
         } else {
             this.setState({"tr_results": response.data.traceroutes.msms})
         }
-    }
-
-    async loadEventData() {
-        const response = await axios.get(
-            `https://bgp.caida.org/json/event/id/${this.eventId}`,
-        );
-        this.eventTable.current.loadEventData(response.data);
     }
 
     trResults() {
@@ -146,10 +138,15 @@ class PfxEventDetails extends React.Component {
                 </div>
 
                 <div className="row">
-                    <EventDetailsTable ref={this.eventTable}/>
+                    <EventDetailsTable eventId={this.eventId}/>
                 </div>
                 <div className="row">
                     <PfxEventsTable ref={this.pfxEventTable} enableClick={false} enablePagination={false}/>
+                    <div className="col-lg-12">
+                        <a target='_blank' type="button" className="btn btn-sm btn-primary"
+                           href={`https://bgp.caida.org/json/pfx_event/id/${this.eventId}/${this.fingerprint}`}>
+                            Raw JSON</a>
+                    </div>
                 </div>
 
                 <div className="row">
