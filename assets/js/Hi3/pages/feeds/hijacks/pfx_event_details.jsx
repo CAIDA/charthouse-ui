@@ -146,9 +146,11 @@ class PfxEventDetails extends React.Component {
                         <div className="row">
                             <PfxEventsTable
                                 data={this.state.pfxEvents}
+                                inference={this.state.eventData.inference}
                                 eventType={this.eventType}
                                 eventId={this.eventId}
-                                enableClick={false} enablePagination={false}/>
+                                enableClick={false} enablePagination={false}
+                            />
 
                             <div className="col-lg-12">
                                 <a target='_blank' type="button" className="btn btn-sm btn-primary"

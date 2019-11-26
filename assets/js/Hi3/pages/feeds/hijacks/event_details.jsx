@@ -71,6 +71,7 @@ class EventDetails extends React.Component {
                 </div>
                 <div>
                     <PfxEventsTable data={this.state.data.pfx_events}
+                                    inference={this.state.data.inference}
                                     eventId={this.eventId}
                                     eventType={this.eventType}
                                     title={"Prefix Event List"}

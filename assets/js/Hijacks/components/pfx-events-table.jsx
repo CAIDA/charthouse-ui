@@ -2,6 +2,7 @@ import React from "react";
 import DataTable from "react-data-table-component";
 import PropTypes from "prop-types";
 import TagsList from "./tags-list";
+import {extract_tags_dict_from_inference} from "../utils/tags";
 
 const columns1 = [
     {
@@ -14,7 +15,7 @@ const columns1 = [
         wrap: true,
         grow:3,
         cell: row => {
-            return <TagsList tags={row.tags} />
+            return <TagsList tags={row.tags_dict} />
         }
     },
     {
@@ -40,7 +41,7 @@ const columns2 = [
         selector: 'tags',
         wrap: true,
         cell: row => {
-            return <TagsList tags={row.tags} />
+            return <TagsList tags={row.tags_dict} />
         }
     },
     {
@@ -70,12 +71,15 @@ class PfxEventsTable extends React.Component {
      * @param data event data
      * @returns {*}
      */
-    preprocessData(pfx_events) {
+    preprocessData(pfx_events, inference) {
 
         let processed = [];
 
+        let tags_inference_dict = extract_tags_dict_from_inference(inference);
+
         for (let pfx_event of pfx_events) {
             let event = {};
+            let tags_dict={}
 
             let prefixes = [];
             if ("prefix" in pfx_event) {
@@ -95,9 +99,13 @@ class PfxEventsTable extends React.Component {
             event.tr_available = pfx_event.tr_available.toString();
             event.fingerprint = prefixes.join("_")
                 .replace(/\//g, "-");
-
+            pfx_event.tags.forEach((tag_name)=>{
+                tags_dict[tag_name] = tag_name in tags_inference_dict? tags_inference_dict[tag_name]: "unknown";
+            });
+            event.tags_dict=tags_dict;
             processed.push(event);
         }
+        console.log(processed);
         return processed;
     }
 
@@ -109,8 +117,7 @@ class PfxEventsTable extends React.Component {
     };
 
     render() {
-        let data = this.preprocessData(this.props.data);
-
+        let data = this.preprocessData(this.props.data, this.props.inference);
         let columns = [];
         if (["moas", "edges"].includes(this.props.eventType)) {
             columns = columns1

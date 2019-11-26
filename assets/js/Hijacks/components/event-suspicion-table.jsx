@@ -1,6 +1,7 @@
 import React from "react";
 import TagsList from "./tags-list";
 import DataTable from "react-data-table-component";
+import {suspicion_level_to_type} from "../utils/tags";
 
 const columns = [
     {
@@ -9,8 +10,14 @@ const columns = [
         wrap: true,
         grow:3,
         cell: row => {
-            console.log(row.tags);
-            return <TagsList tags={row.tags} />
+            let tag_dict={};
+            for(let tag of row.tags){
+                tag_dict[tag]= {
+                    'type': suspicion_level_to_type(row.suspicion_level)
+                }
+            }
+
+            return <TagsList tags={tag_dict} />
         }
     },
     {
@@ -22,28 +29,47 @@ const columns = [
         selector: 'confidence',
     },
     {
-        name: 'Explain',
-        selector: 'explain',
+        name: 'Comments',
+        selector: 'comments',
     },
 ];
+
 
 /**
  * This component takes Inference result from event dictionary and visualize with a table
  */
 class EventSuspicionTable extends React.Component {
 
-
     render() {
+        let data = this.props.suspicion_tags;
+        let used_tags = new Set();
+        data.forEach((info)=>{
+            info.tags.forEach((tag)=>{used_tags.add(tag)})
+        });
+        let unknown_tags = new Set();
+        this.props.all_tags.forEach((tag)=>{
+            if(!(tag in used_tags)){
+                unknown_tags.add(tag)
+            }
+        });
+        data.push({
+            tags: unknown_tags,
+            suspicion_level: "na",
+            confidence: "na",
+            comments: "Unknown nature"
+        });
+        console.log(data);
         return (
+            <React.Fragment>
             <DataTable
                 columns={columns}
                 title={this.props.title}
                 striped={true}
                 highlightOnHover={true}
-                data={this.props.data}
+                data={data}
                 pagination={false}
             />
-
+            </React.Fragment>
     );
     }
 }

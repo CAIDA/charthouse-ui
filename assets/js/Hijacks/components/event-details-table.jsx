@@ -42,9 +42,7 @@ class EventDetailsTable extends React.Component {
         processed["comments"] = data.inference.comments.map((value, index) => {
             return <p key={`comment-${index}`}>{value}</p>
         });
-        processed["tags"] = data.inference.suspicion.suspicion_tags;
-        console.log(data.inference);
-        console.log(processed);
+        processed["suspicion_tags"] = data.inference.suspicion.suspicion_tags;
 
         return processed;
     }
@@ -151,7 +149,8 @@ class EventDetailsTable extends React.Component {
 
                 <div className={"row"}>
                     <div className="col-lg-12">
-                        <EventSuspicionTable data={data.tags}
+                        <EventSuspicionTable suspicion_tags={data.suspicion_tags}
+                                             all_tags={data.tags}
                                              title={"Tags Suspicion Table"}
                         />
                     </div>

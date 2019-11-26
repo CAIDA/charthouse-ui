@@ -1,5 +1,6 @@
 import * as React from "react";
 import PropTypes from "prop-types";
+import {OverlayTrigger, Tooltip} from "react-bootstrap";
 
 class Tag extends React.Component{
 
@@ -19,17 +20,20 @@ class Tag extends React.Component{
     };
 
     _translateType(type){
-        let res = "warning";
+        let res = "default";
 
         switch(type){
-            case "na":
-                res = "default";
+            case "suspicious":
+                res = "danger";
                 break;
-            case "no":
+            case "grey":
+                res = "warning";
+                break;
+            case "benign":
                 res = "success";
                 break;
-            case "yes":
-                res = "danger";
+            case "unknown":
+                res = "default";
                 break;
             default:
                 break
@@ -50,9 +54,19 @@ class Tag extends React.Component{
         let name = this._renderTagName(this.props.name);
         let type = this._translateType(this.props.type);
         return (
+            <OverlayTrigger
+                key={name}
+                placement={"top"}
+                overlay={
+                    <Tooltip id={`tooltip-${name}`}>
+                        {this.props.definition}
+                    </Tooltip>
+                }
+            >
             <span className={`label tag-label label-${type}`}>
                 {name}
             </span>
+            </OverlayTrigger>
         )
     }
 }
