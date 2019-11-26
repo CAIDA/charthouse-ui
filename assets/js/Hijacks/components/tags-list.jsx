@@ -72,7 +72,6 @@ class TagsList extends React.Component {
                 {tags.map(function(tag){
                     let type = "na";
                     let definition = "";
-                    tag = tag.key;
                     if(tag in tagTypes){
                         type = tagTypes[tag];
                     }

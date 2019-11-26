@@ -90,7 +90,7 @@ class PfxEventsTable extends React.Component {
                 event.super_pfx = pfx_event.super_pfx;
                 prefixes.push(pfx_event.super_pfx);
             }
-            event.tags = pfx_event.tags.map(tag => <span key={tag}>{tag} </span>);
+            event.tags = pfx_event.tags;
             event.tr_worthy = pfx_event.tr_worthy.toString();
             event.tr_available = pfx_event.tr_available.toString();
             event.fingerprint = prefixes.join("_")
@@ -120,6 +120,7 @@ class PfxEventsTable extends React.Component {
 
         return (
             <DataTable
+                title={this.props.title}
                 columns={columns}
                 striped={true}
                 pointerOnHover={true}
