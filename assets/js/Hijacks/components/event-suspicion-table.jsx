@@ -48,7 +48,7 @@ class EventSuspicionTable extends React.Component {
         });
         let unknown_tags = new Set();
         this.props.all_tags.forEach((tag)=>{
-            if(!(tag in used_tags)){
+            if(!(used_tags.has(tag))){
                 unknown_tags.add(tag)
             }
         });
@@ -58,7 +58,6 @@ class EventSuspicionTable extends React.Component {
             confidence: "na",
             comments: "Unknown nature"
         });
-        console.log(data);
         return (
             <React.Fragment>
             <DataTable
