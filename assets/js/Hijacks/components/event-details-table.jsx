@@ -42,7 +42,6 @@ class EventDetailsTable extends React.Component {
         processed["comments"] = data.inference.comments.map((value, index) => {
             return <p key={`comment-${index}`}>{value}</p>
         });
-        processed["suspicion_tags"] = data.inference.suspicion.suspicion_tags;
 
         return processed;
     }
@@ -144,15 +143,6 @@ class EventDetailsTable extends React.Component {
                     <div className="col-lg-12">
                         <a target='_blank' type="button" className="btn btn-sm btn-primary" href={this.props.jsonUrl}>
                             Raw JSON</a>
-                    </div>
-                </div>
-
-                <div className={"row"}>
-                    <div className="col-lg-12">
-                        <EventSuspicionTable suspicion_tags={data.suspicion_tags}
-                                             all_tags={data.tags}
-                                             title={"Tags Suspicion Table"}
-                        />
                     </div>
                 </div>
             </React.Fragment>

@@ -3,6 +3,8 @@ import axios from "axios";
 import 'Hi3/css/pages/feeds/hijacks.css';
 import EventDetailsTable from "../../../../Hijacks/components/event-details-table";
 import PfxEventsTable from "../../../../Hijacks/components/pfx-events-table";
+import EventSuspicionTable from "../../../../Hijacks/components/event-suspicion-table";
+import EventTrTagsTable from "../../../../Hijacks/components/event-tr-tags-table";
 
 const HORIZONTAL_OFFSET = 480;
 
@@ -10,34 +12,41 @@ class EventDetails extends React.Component {
 
     state = {
         loading: true,
-        data: undefined,
+        eventData: undefined,
+        tagsData: undefined,
     };
 
     constructor(props) {
         super(props);
-        this.pfxTable = React.createRef();
 
         this.eventId = this.props.match.params.eventId;
         this.eventType = this.eventId.split("-")[0];
         this.jsonUrl = `https://bgp.caida.org/json/event/id/${this.eventId}`;
-        console.log(this.jsonUrl);
+        this.tagsUrl = `https://bgp.caida.org/json/tags`;
     }
 
     async componentDidMount() {
         this.loadEventData();
+        this.loadTagsData();
     }
 
     async loadEventData() {
         const response = await axios.get(this.jsonUrl);
-        // this.pfxTable.current.loadEventData(response.data.pfx_events, this.eventType, this.eventId, response.data.error);
         this.setState({
             loading: false,
-            data: response.data,
+            eventData: response.data,
         })
     }
 
+    async loadTagsData() {
+        const response = await axios.get(this.tagsUrl);
+        this.setState({
+            tagsData: response.data,
+        });
+    }
+
     render() {
-        const {loading, data} = this.state;
+        const {loading, eventData} = this.state;
 
         if(loading){
             return(
@@ -46,7 +55,7 @@ class EventDetails extends React.Component {
                 </div>
             )
         }
-        if("error" in data){
+        if("error" in eventData){
             return (
                 <div>
                     <p>
@@ -67,11 +76,28 @@ class EventDetails extends React.Component {
                     </div>
                 </div>
                 <div>
-                    <EventDetailsTable data={this.state.data} jsonUrl={this.jsonUrl}/>
+                    <EventDetailsTable data={this.state.eventData} jsonUrl={this.jsonUrl}/>
                 </div>
+
                 <div>
-                    <PfxEventsTable data={this.state.data.pfx_events}
-                                    inference={this.state.data.inference}
+                    <EventSuspicionTable suspicion_tags={this.state.eventData.inference.suspicion.suspicion_tags}
+                                         all_tags={this.state.eventData.tags}
+                                         title={"Tags Suspicion Table"}
+                    />
+                </div>
+
+                <div>
+                    {this.state.tagsData!==undefined &&
+                    <EventTrTagsTable eventTags={this.state.eventData.tags}
+                                      allTags={this.state.tagsData}
+                                      title={"Tags Traceroute Worthiness Table"}
+                    />
+                    }
+                </div>
+
+                <div>
+                    <PfxEventsTable data={this.state.eventData.pfx_events}
+                                    inference={this.state.eventData.inference}
                                     eventId={this.eventId}
                                     eventType={this.eventType}
                                     title={"Prefix Event List"}

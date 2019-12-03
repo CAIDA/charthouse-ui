@@ -105,7 +105,6 @@ class PfxEventsTable extends React.Component {
             event.tags_dict=tags_dict;
             processed.push(event);
         }
-        console.log(processed);
         return processed;
     }
 
