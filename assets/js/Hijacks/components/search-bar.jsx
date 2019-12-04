@@ -33,6 +33,7 @@ class SearchBar extends React.Component {
                     pfxs={this.props.query.pfxs}
                     asns={this.props.query.asns}
                     tags={this.props.query.tags}
+                    codes={this.props.query.codes}
                     onSearch={this.props.onSearch}
                 />
 

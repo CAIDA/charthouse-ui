@@ -147,6 +147,7 @@ class EventsTable extends React.Component {
         pfxs: [],
         asns: [],
         tags: [],
+        codes: [],
     };
 
     constructor(props) {
@@ -192,6 +193,9 @@ class EventsTable extends React.Component {
         }
         if(this.query.tags.length>0){
             params.append("tags", this.query.tags)
+        }
+        if(this.query.codes.length>0){
+            params.append("codes", this.query.codes)
         }
 
         let url = baseUrl + params.toString();
@@ -255,6 +259,7 @@ class EventsTable extends React.Component {
         this.query.pfxs =  parameters.pfxs;
         this.query.asns =  parameters.asns;
         this.query.tags =  parameters.tags;
+        this.query.codes =  parameters.codes;
 
         console.log(this.history.location);
         this._loadEventsData()
@@ -269,43 +274,8 @@ class EventsTable extends React.Component {
         if("tags" in parsed){
             this.query.tags = parsed.tags.split(",");
         }
-        if("asns" in parsed){
-            this.query.asns = parsed.asns.split(",");
-        }
-        if("length" in parsed){
-            this.query.perPage = parseInt(parsed.length);
-        }
-        if("start" in parsed){
-            this.query.curPage = parseInt(parsed.start)/this.query.perPage;
-        }
-        if("event_type" in parsed){
-            this.query.eventType = parsed.event_type;
-        }
-        if("min_susp" in parsed){
-            this.query.min_susp = parseInt(parsed.min_susp);
-        }
-        if("max_susp" in parsed){
-            this.query.max_susp = parseInt(parsed.max_susp);
-        }
-        if("ts_start" in parsed){
-            this.query.startTime = moment.utc(parsed.ts_start, "YYYY-MM-DDTHH:mm")
-        }
-        if("ts_end" in parsed){
-            this.query.endTime = moment.utc(parsed.ts_end, "YYYY-MM-DDTHH:mm")
-        }
-
-        this.query.suspicionLevel = translate_suspicion_values_to_str(this.query.min_susp, this.query.max_susp);
-        [this.query.min_susp, this.query.max_susp] = translate_suspicion_str_to_values(this.query.suspicionLevel);
-
-        console.log(this.query);
-    };
-
-    _updateQueryString = () => {
-        if("pfxs" in parsed){
-            this.query.pfxs = parsed.pfxs.split(",");
-        }
-        if("tags" in parsed){
-            this.query.tags = parsed.tags.split(",");
+        if("codes" in parsed){
+            this.query.codes = parsed.codes.split(",");
         }
         if("asns" in parsed){
             this.query.asns = parsed.asns.split(",");

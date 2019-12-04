@@ -15,6 +15,7 @@ class EventSearchBox extends React.Component {
 
     RE_PFX = /^!?[0-9]+[.:][0-9.:/]*$/;
     RE_TAG = /^!?[a-zA-Z\-]+$/;
+    RE_CODE = /^!?code:[a-zA-Z\-]+$/;
     RE_ASN = /^!?(AS|as)?[0-9]+$/;
 
     _parseSearchInput = (search_text) => {
@@ -22,6 +23,7 @@ class EventSearchBox extends React.Component {
 
         let prefixes = [];
         let tags = [];
+        let codes = [];
         let asns = [];
 
 
@@ -40,6 +42,12 @@ class EventSearchBox extends React.Component {
                 ready = true;
             }
 
+            // check if it's a code
+            if(this.RE_CODE.test(v)){
+                codes.push(v.split(":")[1]);
+                ready = true;
+            }
+
             // check if it's an as number
             if(this.RE_ASN.test(v)){
                 v = v.replace(/as/i,"");
@@ -47,19 +55,20 @@ class EventSearchBox extends React.Component {
                 ready = true;
             }
         }
-        return [prefixes, tags, asns]
+        return [prefixes, tags, codes, asns]
     };
 
     _handleSearch = () => {
         let search_text = this.textInput.current.value;
-        let [prefixes, tags, asns] = this._parseSearchInput(search_text);
-        this.props.onSearch({pfxs: prefixes, asns: asns, tags:tags});
+        let [prefixes, tags, codes, asns] = this._parseSearchInput(search_text);
+        this.props.onSearch({pfxs: prefixes, asns: asns, tags:tags, codes: codes});
     };
 
     _queryToString = () => {
         let res =  [
             this.props.pfxs.join(" "),
             this.props.tags.join(" "),
+            this.props.codes.map(code=>"code:"+code).join(" "),
             this.props.asns.map(asn=> "AS"+asn).join(" ")
         ].join(" ");
         return res
