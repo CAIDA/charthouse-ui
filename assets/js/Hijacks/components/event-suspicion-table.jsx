@@ -31,6 +31,13 @@ const columns = [
     {
         name: 'Comments',
         selector: 'comments',
+        cell: row => {
+            if(row.comments.length>0){
+                return row.comments.map(comment => <p key={comment}>{comment}</p>)
+            } else {
+                return ""
+            }
+        }
     },
 ];
 
@@ -56,7 +63,7 @@ class EventSuspicionTable extends React.Component {
             tags: unknown_tags,
             suspicion_level: "na",
             confidence: "na",
-            comments: "Unknown nature"
+            comments: ["Unknown nature"]
         });
         return (
             <React.Fragment>
