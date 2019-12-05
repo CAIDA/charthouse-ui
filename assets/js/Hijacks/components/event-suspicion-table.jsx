@@ -32,10 +32,11 @@ const columns = [
         name: 'Comments',
         selector: 'comments',
         cell: row => {
-            if(row.comments.length>0){
-                return row.comments.map(comment => <p key={comment}>{comment}</p>)
-            } else {
+            console.log(row);
+            if(row.comments === undefined || row.comments.length === 0){
                 return ""
+            } else {
+                return row.comments.map(comment => <p key={comment}>{comment}</p>)
             }
         }
     },
