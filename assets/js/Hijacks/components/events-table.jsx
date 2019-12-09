@@ -146,7 +146,7 @@ class EventsTable extends React.Component {
             endTime: moment().utc(),
             eventType: "moas",
             suspicionLevel: "suspicious",
-            min_susp: 0,
+            min_susp: 80,
             max_susp: 100,
             pfxs: [],
             asns: [],
