@@ -131,10 +131,6 @@ class EventsTable extends React.Component {
     constructor(props) {
         super(props);
 
-        this.query.startTime = moment().utc().subtract(1, "days");
-        this.query.endTime = moment().utc();
-        this._parseQueryString();
-
         this.history = createBrowserHistory();
 
         this.state = {
@@ -146,8 +142,8 @@ class EventsTable extends React.Component {
         this.query = {
             perPage: 10,
             curPage: 0,
-            startTime: 0,
-            endTime: 0,
+            startTime: moment().utc().subtract(1, "days"),
+            endTime: moment().utc(),
             eventType: "moas",
             suspicionLevel: "suspicious",
             min_susp: 0,
@@ -157,6 +153,8 @@ class EventsTable extends React.Component {
             tags: [],
             codes: [],
         };
+
+        this._parseQueryString();
 
     }
 
