@@ -79,7 +79,7 @@ class PfxEventsTable extends React.Component {
 
         for (let pfx_event of pfx_events) {
             let event = {};
-            let tags_dict={}
+            let tags_dict={};
 
             let prefixes = [];
             if ("prefix" in pfx_event) {

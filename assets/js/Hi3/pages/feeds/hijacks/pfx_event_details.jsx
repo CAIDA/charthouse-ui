@@ -66,13 +66,13 @@ class PfxEventDetails extends React.Component {
             "fingerprint": this.fingerprint,
         };
         if ("prefix" in data.details) {
-            pfxEvent.prefix = data.details.prefix
+            pfxEvent.prefix = data.details.prefix;
         }
         if ("sub_pfx" in data.details) {
-            pfxEvent.sub_pfx = data.details.sub_pfx
+            pfxEvent.sub_pfx = data.details.sub_pfx;
         }
         if ("super_pfx" in data.details) {
-            pfxEvent.super_pfx = data.details.super_pfx
+            pfxEvent.super_pfx = data.details.super_pfx;
         }
 
         let msms = response.data.traceroutes.msms;

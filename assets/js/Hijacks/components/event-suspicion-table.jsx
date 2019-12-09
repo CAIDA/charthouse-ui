@@ -17,7 +17,7 @@ const columns = [
                 }
             }
 
-            return <TagsList tags={tag_dict} />
+            return <TagsList tags={tag_dict} />;
         }
     },
     {
@@ -33,9 +33,9 @@ const columns = [
         selector: 'comments',
         cell: row => {
             if(row.comments === undefined || row.comments.length === 0){
-                return ""
+                return "";
             } else {
-                return row.comments.map(comment => <p key={comment}>{comment}</p>)
+                return row.comments.map(comment => <p key={comment}>{comment}</p>);
             }
         }
     },
@@ -67,16 +67,16 @@ class EventSuspicionTable extends React.Component {
         });
         return (
             <React.Fragment>
-            <DataTable
-                columns={columns}
-                title={this.props.title}
-                striped={true}
-                highlightOnHover={true}
-                data={data}
-                pagination={false}
-            />
+                <DataTable
+                    columns={columns}
+                    title={this.props.title}
+                    striped={true}
+                    highlightOnHover={true}
+                    data={data}
+                    pagination={false}
+                />
             </React.Fragment>
-    );
+        );
     }
 }
 

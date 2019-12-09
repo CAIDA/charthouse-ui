@@ -36,7 +36,7 @@ class Tag extends React.Component{
                 res = "default";
                 break;
             default:
-                break
+                break;
         }
         return res;
     }

@@ -54,7 +54,7 @@ class AsNumber extends React.Component {
                 </React.Fragment>
             }
         }
-        return res
+        return res;
     }
 
     render() {

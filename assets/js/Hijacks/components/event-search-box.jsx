@@ -55,7 +55,7 @@ class EventSearchBox extends React.Component {
                 ready = true;
             }
         }
-        return [prefixes, tags, codes, asns]
+        return [prefixes, tags, codes, asns];
     };
 
     _handleSearch = () => {
@@ -71,7 +71,7 @@ class EventSearchBox extends React.Component {
             this.props.codes.map(code=>"code:"+code).join(" "),
             this.props.asns.map(asn=> "AS"+asn).join(" ")
         ].join(" ");
-        return res
+        return res;
     };
 
     render() {

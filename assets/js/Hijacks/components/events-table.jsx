@@ -183,16 +183,16 @@ class EventsTable extends React.Component {
             params.append("event_type", this.query.eventType);
         }
         if(this.query.pfxs.length>0){
-            params.append("pfxs", this.query.pfxs)
+            params.append("pfxs", this.query.pfxs);
         }
         if(this.query.asns.length>0){
-            params.append("asns", this.query.asns)
+            params.append("asns", this.query.asns);
         }
         if(this.query.tags.length>0){
-            params.append("tags", this.query.tags)
+            params.append("tags", this.query.tags);
         }
         if(this.query.codes.length>0){
-            params.append("codes", this.query.codes)
+            params.append("codes", this.query.codes);
         }
 
         let url = baseUrl + params.toString();
@@ -243,12 +243,12 @@ class EventsTable extends React.Component {
 
     _handleSearchEventTypeChange = (eventType) => {
         this.query.eventType =  eventType;
-        this._loadEventsData()
+        this._loadEventsData();
     };
 
     _handleSearchSuspicionChange = (suspicionLevel) => {
         this.query.suspicionLevel =  suspicionLevel;
-        this._loadEventsData()
+        this._loadEventsData();
     };
 
     _handleSearchSearch = (parameters) => {
@@ -256,7 +256,7 @@ class EventsTable extends React.Component {
         this.query.asns =  parameters.asns;
         this.query.tags =  parameters.tags;
         this.query.codes =  parameters.codes;
-        this._loadEventsData()
+        this._loadEventsData();
     };
 
     _parseQueryString = () => {
@@ -289,10 +289,10 @@ class EventsTable extends React.Component {
             this.query.max_susp = parseInt(parsed.max_susp);
         }
         if("ts_start" in parsed){
-            this.query.startTime = moment.utc(parsed.ts_start, "YYYY-MM-DDTHH:mm")
+            this.query.startTime = moment.utc(parsed.ts_start, "YYYY-MM-DDTHH:mm");
         }
         if("ts_end" in parsed){
-            this.query.endTime = moment.utc(parsed.ts_end, "YYYY-MM-DDTHH:mm")
+            this.query.endTime = moment.utc(parsed.ts_end, "YYYY-MM-DDTHH:mm");
         }
 
         this.query.suspicionLevel = translate_suspicion_values_to_str(this.query.min_susp, this.query.max_susp);
