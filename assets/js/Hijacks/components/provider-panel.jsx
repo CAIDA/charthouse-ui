@@ -18,13 +18,13 @@ class DataProvider extends React.Component {
                 <div className='row'>
                     <a href='https://www.caida.org'
                        target='_blank'>
-                        <img src={caidaLogo} className='ack-logo'/>
+                        <img src={caidaLogo} className='ack-logo' alt="CAIDA Logo"/>
                     </a>
                 </div>
                 <div className='row'>
                     <a href='https://www.ucsd.edu'
                        target='_blank'>
-                        <img src={ucsdLogo} className='ack-logo'/>
+                        <img src={ucsdLogo} className='ack-logo'alt="UCSD Logo"/>
                     </a>
                 </div>
             </div>
