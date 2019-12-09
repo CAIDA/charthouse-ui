@@ -15,7 +15,7 @@ import AsNumber from "./asn";
 
 function unix_time_to_str(unix_time) {
     if (unix_time === null) {
-        return ""
+        return "";
     }
     return moment(unix_time * 1000).utc().format("YYYY-MM-DD HH:mm");
 }
@@ -103,15 +103,13 @@ const columns = [
         cell: row => {
             let data = row.finished_ts;
             if (data === null) {
-                return "ongoing"
+                return "ongoing";
             } else {
                 let duration = (row.finished_ts - row.view_ts) / 60;
                 if (duration < 0) {
-                    console.log("negative duration for event");
-                    console.log(row);
                     duration = 0;
                 }
-                return `${duration} min`
+                return `${duration} min`;
             }
         }
     },
@@ -201,7 +199,6 @@ class EventsTable extends React.Component {
         let url = baseUrl + params.toString();
         this.history.push(this.history.location.pathname + `?${params.toString()}`);
 
-        console.log(url);
         const response = await axios.get(url);
 
         this.setState({
@@ -260,14 +257,11 @@ class EventsTable extends React.Component {
         this.query.asns =  parameters.asns;
         this.query.tags =  parameters.tags;
         this.query.codes =  parameters.codes;
-
-        console.log(this.history.location);
         this._loadEventsData()
     };
 
     _parseQueryString = () => {
         const parsed = queryString.parse(location.search);
-        console.log(parsed);
         if("pfxs" in parsed){
             this.query.pfxs = parsed.pfxs.split(",");
         }
@@ -304,8 +298,6 @@ class EventsTable extends React.Component {
 
         this.query.suspicionLevel = translate_suspicion_values_to_str(this.query.min_susp, this.query.max_susp);
         [this.query.min_susp, this.query.max_susp] = translate_suspicion_str_to_values(this.query.suspicionLevel);
-
-        console.log(this.query);
     };
 
     render() {

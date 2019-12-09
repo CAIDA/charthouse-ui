@@ -32,7 +32,6 @@ const columns = [
         name: 'Comments',
         selector: 'comments',
         cell: row => {
-            console.log(row);
             if(row.comments === undefined || row.comments.length === 0){
                 return ""
             } else {

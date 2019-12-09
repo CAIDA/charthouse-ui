@@ -15,25 +15,27 @@ class EventSuspicionSelector extends React.Component {
     };
 
     render() {
-        return <div style={{display: 'inline-block'}}>
-            <label style={{display: 'block'}}>
-                Select an event suspicion level
-            </label>
-            {/* onClick hax due to https://github.com/react-bootstrap/react-bootstrap/issues/2734 */}
-            <ToggleButtonGroup type="radio" name="eventSuspicionLevel"
-                               value={this.props.eventSuspicionLevel}
-                               onChange={this._changeEventSuspicionLevel}
-            >
-                <ToggleButton value='all' id='all'
-                              onClick={this._changeEventSuspicionLevel}>All</ToggleButton>
-                <ToggleButton value='suspicious' id='suspicious'
-                              onClick={this._changeEventSuspicionLevel}>Suspicious</ToggleButton>
-                <ToggleButton value='grey' id='grey'
-                              onClick={this._changeEventSuspicionLevel}>Grey</ToggleButton>
-                <ToggleButton value='benign' id='benign'
-                              onClick={this._changeEventSuspicionLevel}>Benign</ToggleButton>
-            </ToggleButtonGroup>
-        </div>
+        return (
+            <div className="search-bar__component">
+                <label className="search-bar__label">
+                    Select an event suspicion level
+                </label>
+                {/* onClick hax due to https://github.com/react-bootstrap/react-bootstrap/issues/2734 */}
+                <ToggleButtonGroup type="radio" name="eventSuspicionLevel"
+                                   value={this.props.eventSuspicionLevel}
+                                   onChange={this._changeEventSuspicionLevel}
+                >
+                    <ToggleButton value='all' id='all'
+                                  onClick={this._changeEventSuspicionLevel}>All</ToggleButton>
+                    <ToggleButton value='suspicious' id='suspicious'
+                                  onClick={this._changeEventSuspicionLevel}>Suspicious</ToggleButton>
+                    <ToggleButton value='grey' id='grey'
+                                  onClick={this._changeEventSuspicionLevel}>Grey</ToggleButton>
+                    <ToggleButton value='benign' id='benign'
+                                  onClick={this._changeEventSuspicionLevel}>Benign</ToggleButton>
+                </ToggleButtonGroup>
+            </div>
+        )
     }
 
     _changeEventSuspicionLevel = (e) => {

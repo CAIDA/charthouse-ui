@@ -14,7 +14,7 @@ class SearchBar extends React.Component {
 
     render() {
         return (
-            <div className={"row search-bar"}>
+            <div className="row search-bar">
                 <EventTypeSelector eventType={this.props.query.eventType}
                                    onChange={this.props.onEventTypeChange}
                 />

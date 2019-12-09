@@ -50,39 +50,6 @@ class EventsList extends React.Component {
                         security data.
                     </p>
                 </div>
-                {/*<div className='col-lg-offset-1 col-lg-5 col-md-6 stats-header'>*/}
-                {/*    /!*<statstable eventtype={this.state.eventtype}/>*!/*/}
-                {/*    <DataProvider/>*/}
-                {/*</div>*/}
-
-            </div>
-            <div className='row'>
-                <div className='col-md-12'>
-
-                    {/* TODO: refactor into separate class (in this file) */}
-                    {/*
-                    <div style={{display: 'inline-block', marginRight: '25px'}}>
-                        <label style={{display: 'block'}}>
-                            Select visualization
-                        </label>
-                        <ToggleButtonGroup type="radio" name="vizType"
-                                           value={this.state.vizType}
-                                           onChange={this._changeVizType}
-                        >
-                            <ToggleButton value='feed' id='feed'
-                                          onClick={this._changeVizType}>Event Feed</ToggleButton>
-                            <ToggleButton value='timeseries' id='timeseries'
-                                          onClick={this._changeVizType}>Time Series Graphs</ToggleButton>
-                        </ToggleButtonGroup>
-                    </div>
-*/}
-
-                    {/*<div style={{display: 'inline-block', marginLeft: '25px'}}>*/}
-                    {/*    <LinkContainer to='/explorer'>*/}
-                    {/*        <Button>Correlate</Button>*/}
-                    {/*    </LinkContainer>*/}
-                    {/*</div>*/}
-                </div>
             </div>
 
             <EventsTable/>
@@ -100,7 +67,6 @@ class EventsList extends React.Component {
     };
 
     _typeChanged = (eventType) => {
-        console.log("event type changed to %s", eventType);
         this.setState({eventType});
     };
 }

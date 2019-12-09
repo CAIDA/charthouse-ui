@@ -86,7 +86,7 @@ class AsNumber extends React.Component {
                 }
             >
             <span>
-                <span className={`as-country-${asn}`} style={{whiteSpace: "nowrap"}}> {country_flag}</span>
+                <span className="asn__country"> {country_flag}</span>
                 AS{asn} {as_name}
                 {is_private &&
                     <span className="badge badge-info">private</span>

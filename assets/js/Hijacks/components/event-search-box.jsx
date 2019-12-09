@@ -76,8 +76,8 @@ class EventSearchBox extends React.Component {
 
     render() {
         return (
-            <div className="input-group col-lg-3" style={{display: 'inline-block'}}>
-                <label style={{display: 'block'}}>
+            <div className="input-group col-lg-3 search-bar__component">
+                <label className="search-bar__label">
                     Search for events by prefix/ASN/tags
                 </label>
                 <input type="text"

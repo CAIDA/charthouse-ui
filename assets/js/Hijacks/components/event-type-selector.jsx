@@ -16,8 +16,8 @@ class EventTypeSelector extends React.Component {
 
     render() {
         return (
-            <div style={{display: 'inline-block'}}>
-                <label style={{display: 'block'}}>
+            <div className="search-bar__component">
+                <label className="search-bar__label">
                     Select an event type
                 </label>
                 {/* onClick hax due to https://github.com/react-bootstrap/react-bootstrap/issues/2734 */}

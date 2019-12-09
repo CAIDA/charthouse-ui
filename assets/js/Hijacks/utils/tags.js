@@ -4,39 +4,39 @@
  */
 function suspicion_level_to_type(suspicion_level){
     if(suspicion_level>=80){
-        return "suspicious"
+        return "suspicious";
     } else if(suspicion_level>20){
-        return "grey"
+        return "grey";
     } else if (suspicion_level>=0){
-        return "benign"
+        return "benign";
     } else {
-        return "unknown"
+        return "unknown";
     }
 }
 
 function tr_to_type(tr_worthiness){
     if(tr_worthiness==="yes"){
-        return "suspicious"
+        return "suspicious";
     } else if (tr_worthiness === "no"){
-        return "benign"
+        return "benign";
     } else {
-        return "unknown"
+        return "unknown";
     }
 }
 
 function tr_str_to_value(tr_worthiness){
     if(tr_worthiness==="yes"){
-        return 1
+        return 1;
     } else if (tr_worthiness === "no"){
-        return 0
+        return 0;
     } else {
-        return -1
+        return -1;
     }
 }
 
 function extract_tags_dict_from_inference(inference){
     if(inference===undefined){
-        return {}
+        return {};
     }
     let tags_dict = {};
     let tags_dict_tmp = {};
@@ -65,7 +65,7 @@ function extract_tags_dict_from_inference(inference){
         }
     }
 
-    return tags_dict
+    return tags_dict;
 }
 
 export {suspicion_level_to_type, extract_tags_dict_from_inference, tr_to_type}

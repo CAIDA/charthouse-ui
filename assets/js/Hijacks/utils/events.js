@@ -8,16 +8,16 @@ function _extract_prefixes(pfx_events) {
             prefixes.push(pfx_event["sub_pfx"])
         }
     }
-    return prefixes
+    return prefixes;
 }
 
 function zeroPad(num, places) {
-    return String(num).padStart(places, '0')
+    return String(num).padStart(places, '0');
 }
 
 function extract_largest_prefix(event) {
     if (!('pfx_events' in event)) {
-        return ""
+        return "";
     }
     let prefixes = _extract_prefixes(event["pfx_events"]);
     let largest_pfx_len = 1000;
@@ -34,7 +34,7 @@ function extract_largest_prefix(event) {
 
 function extract_impact(event) {
     if (!('pfx_events' in event)) {
-        return ""
+        return "";
     }
     let prefixes = _extract_prefixes(event["pfx_events"]);
     let num_pfx = 0;
@@ -63,7 +63,7 @@ function extract_impact(event) {
     } else {
         impact_str += `(${num_addrs} addrs)`
     }
-    return impact_str
+    return impact_str;
 }
 
 function unix_time_to_str(unix_time) {
@@ -87,7 +87,7 @@ function extract_prefixes(pfx_event) {
     if ("super_pfx" in pfx_event) {
         prefixes.push(pfx_event.super_pfx);
     }
-    return prefixes
+    return prefixes;
 }
 
 function translate_suspicion_str_to_values(suspicionLevel) {
@@ -103,18 +103,18 @@ function translate_suspicion_str_to_values(suspicionLevel) {
     } else if (suspicionLevel === "all") {
         // nothing to do here
     }
-    return [min_susp, max_susp]
+    return [min_susp, max_susp];
 }
 
 function translate_suspicion_values_to_str(min_susp, max_susp) {
     if(min_susp===80 && max_susp===100){
-        return "suspicious"
-    } else if (min_susp==0 && max_susp==20){
-        return "benign"
+        return "suspicious";
+    } else if (min_susp===0 && max_susp===20){
+        return "benign";
     } else if (min_susp===21 && max_susp===79){
-        return "grey"
+        return "grey";
     } else {
-        return "all"
+        return "all";
     }
 }
 

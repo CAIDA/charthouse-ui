@@ -39,11 +39,11 @@ class RangePicker extends React.Component {
     render() {
         let timeRangeStr = `${this.props.startDate.utc().format("lll")} - ${this.props.endDate.utc().format("lll")}`;
         return (
-            <div style={{display: 'inline-block'}}>
-                <label style={{display: 'block'}}>
+            <div className="search-bar__component">
+                <label className="search-bar__label">
                     Select an event time range (now: {moment().utc().format("lll")})
                 </label>
-                <span className="glyphicon glyphicon-calendar" style={{marginRight: '10px'}}/>
+                <span className="glyphicon glyphicon-calendar search-bar__time-icon"/>
                 <DateRangePicker
                     startDate={this.props.startDate}
                     endDate={this.props.endDate}
@@ -56,7 +56,7 @@ class RangePicker extends React.Component {
                 >
                         <input
                             readOnly={true}
-                            className={"form-control search-bar__time-input"}
+                            className="form-control search-bar__time-input"
                             value={timeRangeStr}
                         />
                 </DateRangePicker>

@@ -33,7 +33,7 @@ class TagsList extends React.Component {
         let tags = this.props.tags;
         let tagDefinitions = this.state.tagDefinitions;
         return (
-            <div className={"tag-list"}>
+            <div className="tag-list">
                 {Object.keys(tags).map(function(tag_name, index){
                     let definition = "";
                     if(tag_name in tagDefinitions){
