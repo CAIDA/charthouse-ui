@@ -1,21 +1,17 @@
 // external CSS deps
 // TODO: fix green color on success button hover
 import 'css/theme/css/bootstrap-flatly.css';
-
 // global CSS styles
 // TODO: there are probably some explorer-specific styles in here
 import 'css/base.css';
-
 // library imports
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {withRouter} from 'react-router';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
-
+import {BrowserRouter, Route, Switch} from 'react-router-dom';
 // auth
 import AuthorizedRoute from 'Auth/authorized-route';
 import Sidebar from './sidebar';
-
 // "pages"
 import SymRedirect from './sym-redirect';
 
@@ -32,15 +28,14 @@ import About from './pages/about';
 import Acks from './pages/acks';
 import Explorer from 'Explorer';
 import Platforms from './pages/feeds';
-import Hijacks from './pages/feeds/hijacks';
 import Dashboards from './pages/dashboards';
 import Examples from './pages/examples';
 
 import Home from './pages/home';
-
 // TODO: switch to SVG/font so that nav coloring works correctly
 import hicubeLogo from 'images/logos/hicube-icon-white.png';
 import hicubeLogoText from 'images/logos/hicube-text-white.png';
+import HijacksApp from "./pages/feeds/hijacks/hijacks";
 
 // TODO: nested routes (see https://devhints.io/react-router)
 // TODO: default route and not-found route
@@ -68,7 +63,7 @@ class ContentRouter extends React.Component {
 
             <AuthorizedRoute path='/explorer' permission='ui:explorer'
                              component={Explorer}/>
-            <Route path='/feeds/hijacks' component={Hijacks}/>
+            <Route path='/feeds/hijacks' component={HijacksApp}/>
             <Route path='/feeds' component={Platforms}/>
             <Route path='/dashboards' component={Dashboards}/>
             <Route path='/examples' component={Examples}/>
@@ -131,7 +126,7 @@ const SIDEBAR_LINKS = [
 
 // which pages should/should not have a pinned sidebar
 const PINNED_SIDEBAR_PAGES = {
-    '/feeds/hijacks': false // observatory wants lots of space
+    '/feeds/hijacks/hijacks': false // observatory wants lots of space
 };
 SIDEBAR_LINKS.forEach(link => {
     if (link) {

@@ -1,0 +1,48 @@
+.search-bar {
+    display: flex;
+    /*justify-content: space-between;*/
+}
+
+.search-bar__component{
+    display: inline-block;
+    margin: 5px;
+}
+
+.search-bar__label {
+    display: block;
+}
+
+.search-bar__time {
+    width: 500px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.search-bar__time-input {
+    width: 340px;
+}
+
+.search-bar__time-icon {
+    margin-right: 10px;
+}
+
+.search-bar__search-input {
+    width: 80% !important;
+    margin: 3px;
+}
+
+.tag-list {
+    margin: 5px;
+}
+
+.tag-label {
+    font-size: 100%;
+    display: inline-block;
+    margin-inline-end: 5px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.asn__country {
+    white-space: nowrap;
+}
