@@ -10,12 +10,12 @@ import Tag from "./tag";
  */
 class TagsList extends React.Component {
 
-    state = {
-        tagDefinitions: {},
-    };
 
     constructor(props){
         super(props);
+        this.state = {
+            tagDefinitions: {},
+        };
     }
 
     componentDidMount() {

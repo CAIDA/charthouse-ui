@@ -13,15 +13,15 @@ class StatsRow extends React.Component {
         eventType: PropTypes.string.isRequired
     };
 
-    state = {
-        stats: null
-    };
-
     refreshTimer = null;
 
     constructor(props) {
         super(props);
         this.api = new DataApi();
+        this.state = {
+            stats: null
+        };
+
     }
 
     componentDidMount() {

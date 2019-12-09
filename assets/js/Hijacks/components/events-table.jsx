@@ -127,26 +127,6 @@ const columns = [
 
 class EventsTable extends React.Component {
 
-    state = {
-        data: [],
-        loading: false,
-        totalRows: 0,
-    };
-
-    query = {
-        perPage: 10,
-        curPage: 0,
-        startTime: 0,
-        endTime: 0,
-        eventType: "moas",
-        suspicionLevel: "suspicious",
-        min_susp: 0,
-        max_susp: 100,
-        pfxs: [],
-        asns: [],
-        tags: [],
-        codes: [],
-    };
 
     constructor(props) {
         super(props);
@@ -156,6 +136,27 @@ class EventsTable extends React.Component {
         this._parseQueryString();
 
         this.history = createBrowserHistory();
+
+        this.state = {
+            data: [],
+            loading: false,
+            totalRows: 0,
+        };
+
+        this.query = {
+            perPage: 10,
+            curPage: 0,
+            startTime: 0,
+            endTime: 0,
+            eventType: "moas",
+            suspicionLevel: "suspicious",
+            min_susp: 0,
+            max_susp: 100,
+            pfxs: [],
+            asns: [],
+            tags: [],
+            codes: [],
+        };
 
     }
 
