@@ -10,23 +10,23 @@ const HORIZONTAL_OFFSET = 480;
 
 class PfxEventDetails extends React.Component {
 
-    state = {
-        eventData: {},
-        pfxEventData: {},
-        subpaths: [],
-        superpaths: [],
-        pfxEvents: [],
-        tr_aspaths: [],
-        tr_results: [],
-        loadingEvent: true,
-        loadingPfxEvent: true,
-    };
-
     constructor(props) {
         super(props);
         this.eventId = this.props.match.params.eventId;
         this.fingerprint = this.props.match.params.pfxEventId;
         this.eventType = this.eventId.split("-")[0];
+        this.state = {
+            eventData: {},
+            pfxEventData: {},
+            subpaths: [],
+            superpaths: [],
+            pfxEvents: [],
+            tr_aspaths: [],
+            tr_results: [],
+            loadingEvent: true,
+            loadingPfxEvent: true,
+        };
+
     }
 
     componentDidMount() {

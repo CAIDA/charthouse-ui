@@ -10,12 +10,6 @@ const HORIZONTAL_OFFSET = 480;
 
 class EventDetails extends React.Component {
 
-    state = {
-        loading: true,
-        eventData: undefined,
-        tagsData: undefined,
-    };
-
     constructor(props) {
         super(props);
 
@@ -23,6 +17,13 @@ class EventDetails extends React.Component {
         this.eventType = this.eventId.split("-")[0];
         this.jsonUrl = `https://bgp.caida.org/json/event/id/${this.eventId}`;
         this.tagsUrl = `https://bgp.caida.org/json/tags`;
+
+        this.state = {
+            loading: true,
+            eventData: undefined,
+            tagsData: undefined,
+        };
+
     }
 
     async componentDidMount() {

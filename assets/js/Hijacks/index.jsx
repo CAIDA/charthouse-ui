@@ -7,13 +7,13 @@ import EventTypeSelector from "./components/event-type-selector";
 
 class HijacksDashboard extends React.Component {
 
-    state = {
-        eventType: 'moas',
-        vizType: 'feed',
-    };
-
     constructor(props) {
         super(props);
+        this.state = {
+            eventType: 'moas',
+            vizType: 'feed',
+        };
+
     }
 
     render() {

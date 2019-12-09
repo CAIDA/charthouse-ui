@@ -13,14 +13,14 @@ const HORIZONTAL_OFFSET = 480;
 
 class EventsList extends React.Component {
 
-    state = {
-        eventType: 'moas',
-        vizType: 'feed',
-        frameWidth: window.innerWidth - HORIZONTAL_OFFSET
-    };
-
     constructor(props) {
         super(props);
+        this.state = {
+            eventType: 'moas',
+            vizType: 'feed',
+            frameWidth: window.innerWidth - HORIZONTAL_OFFSET
+        };
+
     }
 
     componentDidMount() {
