@@ -1,5 +1,6 @@
 import * as React from "react";
 import {OverlayTrigger, Tooltip} from "react-bootstrap";
+import LinkA from "../../Hi3/components/linka";
 
 
 
@@ -86,11 +87,13 @@ class AsNumber extends React.Component {
                 }
             >
             <span>
-                <span className="asn__country"> {country_flag}</span>
-                AS{asn} {as_name}
-                {is_private &&
-                    <span className="badge badge-info">private</span>
-                }
+                <LinkA to={`https://asrank.caida.org/asns?asn=${asn}`}>
+                    <span className="asn__country"> {country_flag}</span>
+                    AS{asn} {as_name}
+                    {is_private &&
+                        <span className="badge badge-info">private</span>
+                    }
+                </LinkA>
             </span>
             </OverlayTrigger>
         )
