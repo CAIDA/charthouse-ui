@@ -87,7 +87,7 @@ class AsNumber extends React.Component {
                 }
             >
             <span>
-                <LinkA to={`https://asrank.caida.org/asns?asn=${asn}`}>
+                <LinkA to={`https://asrank.caida.org/asns?asn=${asn}`} new_page={true}>
                     <span className="asn__country"> {country_flag}</span>
                     AS{asn} {as_name}
                     {is_private &&
