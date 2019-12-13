@@ -13,7 +13,6 @@ class LinkA extends React.Component {
         return isExternal(this.props.to) ?
             <a
                 href={this.props.to}
-                target={target}
                 {...this.props}
             />
             :
