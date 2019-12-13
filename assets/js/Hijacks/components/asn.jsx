@@ -74,6 +74,23 @@ class AsNumber extends React.Component {
             }
         }
 
+        let res;
+        if(this.props.simple){
+           res =  <React.Fragment>
+                AS{asn}
+            </React.Fragment>
+
+        } else {
+            res =
+                <React.Fragment>
+                    <span className="asn__country"> {country_flag}</span>
+                    AS{asn} {as_name}
+                    {is_private &&
+                    <span className="badge badge-info">private</span>
+                    }
+                </React.Fragment>
+        }
+
         return (
             <OverlayTrigger
                 key={this.props.asn}
@@ -86,11 +103,7 @@ class AsNumber extends React.Component {
             >
             <span>
                 <a href={`https://asrank.caida.org/asns?asn=${asn}`} target="_blank">
-                    <span className="asn__country"> {country_flag}</span>
-                    AS{asn} {as_name}
-                    {is_private &&
-                        <span className="badge badge-info">private</span>
-                    }
+                    {res}
                 </a>
             </span>
             </OverlayTrigger>

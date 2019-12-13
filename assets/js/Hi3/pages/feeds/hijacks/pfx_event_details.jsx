@@ -60,6 +60,7 @@ class PfxEventDetails extends React.Component {
 
         let data = response.data;
         let pfxEvent = {
+            "details": data.details,
             "tags": data.tags,
             "tr_worthy": data.traceroutes.worthy,
             "tr_available": data.traceroutes.msms.length > 0,
