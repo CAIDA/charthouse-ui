@@ -1,6 +1,7 @@
 import * as React from "react";
 import PropTypes from "prop-types";
 import {OverlayTrigger, Tooltip} from "react-bootstrap";
+import Link from "react-router-dom/Link";
 
 class Tag extends React.Component{
 
@@ -54,19 +55,27 @@ class Tag extends React.Component{
         let name = this._renderTagName(this.props.name);
         let type = this._translateType(this.props.type);
         return (
-            <OverlayTrigger
-                key={name}
-                placement={"top"}
-                overlay={
-                    <Tooltip id={`tooltip-${name}`}>
-                        {this.props.definition}
-                    </Tooltip>
-                }
+            <Link to={{
+                pathname:"/feeds/hijacks/events",
+                search: `?tags=${this.props.name}`
+            }}
+                  replace={true}
+                  target={"_blank"}
             >
+                <OverlayTrigger
+                    key={name}
+                    placement={"top"}
+                    overlay={
+                        <Tooltip id={`tooltip-${name}`}>
+                            {this.props.definition}
+                        </Tooltip>
+                    }
+                >
             <span className={`label tag-label label-${type}`}>
                 {name}
             </span>
-            </OverlayTrigger>
+                </OverlayTrigger>
+            </Link>
         )
     }
 }
