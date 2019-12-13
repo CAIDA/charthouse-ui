@@ -87,13 +87,13 @@ class AsNumber extends React.Component {
                 }
             >
             <span>
-                <LinkA to={`https://asrank.caida.org/asns?asn=${asn}`} new_page={true}>
+                <a href={`https://asrank.caida.org/asns?asn=${asn}`} target="_blank">
                     <span className="asn__country"> {country_flag}</span>
                     AS{asn} {as_name}
                     {is_private &&
                         <span className="badge badge-info">private</span>
                     }
-                </LinkA>
+                </a>
             </span>
             </OverlayTrigger>
         )
