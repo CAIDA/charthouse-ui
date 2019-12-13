@@ -1,7 +1,7 @@
 import React from "react";
 import TagsList from "./tags-list";
 import DataTable from "react-data-table-component";
-import {suspicion_level_to_type, tr_to_type} from "../utils/tags";
+import {tr_to_type} from "../utils/tags";
 
 const columns = [
     {

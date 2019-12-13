@@ -1,6 +1,4 @@
-import PropTypes from 'prop-types';
 import React from 'react';
-import {ToggleButtonGroup, ToggleButton} from 'react-bootstrap';
 import DateRangePicker from "react-bootstrap-daterangepicker";
 import moment from "moment";
 

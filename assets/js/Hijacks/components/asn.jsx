@@ -1,7 +1,5 @@
 import * as React from "react";
 import {OverlayTrigger, Tooltip} from "react-bootstrap";
-import LinkA from "../../Hi3/components/linka";
-
 
 
 class AsNumber extends React.Component {

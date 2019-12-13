@@ -2,10 +2,9 @@ import moment from 'moment'
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-daterangepicker/daterangepicker.css';
 import 'Hijacks/css/hijacks.css';
-import { withRouter } from 'react-router-dom';
-import { createBrowserHistory } from "history";
+import {withRouter} from 'react-router-dom';
+import {createBrowserHistory} from "history";
 import queryString from 'query-string'
-import PropTypes from 'prop-types';
 import React from 'react';
 import DataTable from 'react-data-table-component';
 import axios from 'axios';

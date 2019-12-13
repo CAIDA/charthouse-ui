@@ -1,7 +1,6 @@
 import React from "react";
 import {extract_impact, extract_largest_prefix, unix_time_to_str} from "../utils/events";
 import AsNumber from "./asn";
-import EventSuspicionTable from "./event-suspicion-table";
 
 class EventDetailsTable extends React.Component {
 

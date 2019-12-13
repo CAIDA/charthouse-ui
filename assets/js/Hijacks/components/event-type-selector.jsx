@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import {ToggleButtonGroup, ToggleButton} from 'react-bootstrap';
+import {ToggleButton, ToggleButtonGroup} from 'react-bootstrap';
 
 class EventTypeSelector extends React.Component {
 
