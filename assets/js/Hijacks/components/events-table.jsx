@@ -178,10 +178,8 @@ class EventsTable extends React.Component {
         params.append("ts_end", this.query.endTime.format("YYYY-MM-DDTHH:mm"));
         params.append("min_susp", min_susp);
         params.append("max_susp", max_susp);
+        params.append("event_type", this.query.eventType);
 
-        if(this.query.eventType!=="all"){
-            params.append("event_type", this.query.eventType);
-        }
         if(this.query.pfxs.length>0){
             params.append("pfxs", this.query.pfxs);
         }
