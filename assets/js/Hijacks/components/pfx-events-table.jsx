@@ -3,6 +3,7 @@ import DataTable from "react-data-table-component";
 import PropTypes from "prop-types";
 import TagsList from "./tags-list";
 import {extract_tags_dict_from_inference} from "../utils/tags";
+import IPPrefix from "./ip-prefix";
 
 const columns1 = [
     {
@@ -10,14 +11,13 @@ const columns1 = [
         selector: 'prefix',
         cell: row=>{
             let ases = row.details.origins.map(asn=>{
-                return <a href={`https://asrank.caida.org/asns?asn=${asn}`} target="_blank"> AS{asn} </a>
+                return <a key={asn} href={`https://asrank.caida.org/asns?asn=${asn}`} target="_blank"> AS{asn} </a>
             }).reduce((prev, curr) => [prev, ', ', curr]);
 
             return <React.Fragment>
-                {row.prefix} ({ases})
+                <IPPrefix prefix={row.prefix}/> ({ases})
             </React.Fragment>
         }
-        // TODO: finish here
     },
     {
         name: 'Tags',
@@ -47,7 +47,7 @@ const columns2 = [
             }).reduce((prev, curr) => [prev, ', ', curr]);
 
             return <React.Fragment>
-                {row.sub_pfx} ({ases})
+                <IPPrefix prefix={row.sub_pfx}/> ({ases})
             </React.Fragment>
         }
     },
@@ -60,7 +60,7 @@ const columns2 = [
             }).reduce((prev, curr) => [prev, ', ', curr]);
 
             return <React.Fragment>
-                {row.super_pfx} ({ases})
+                <IPPrefix prefix={row.super_pfx}/> ({ases})
             </React.Fragment>
         }
     },

@@ -46,3 +46,7 @@
 .asn__country {
     white-space: nowrap;
 }
+
+.ipprefix__span {
+    margin-right: 5px;
+}

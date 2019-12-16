@@ -1,6 +1,7 @@
 import React from "react";
 import {extract_impact, extract_largest_prefix, unix_time_to_str} from "../utils/events";
 import AsNumber from "./asn";
+import IPPrefix from "./ip-prefix";
 
 class EventDetailsTable extends React.Component {
 
@@ -82,7 +83,7 @@ class EventDetailsTable extends React.Component {
                                 </tr>
                                 <tr>
                                     <th>Largest prefix:</th>
-                                    <td>{data.largest_prefix}</td>
+                                    <td> <IPPrefix prefix={data.largest_prefix}/> </td>
                                 </tr>
                                 <tr>
                                     <th>Impact:</th>

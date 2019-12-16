@@ -11,6 +11,7 @@ import axios from 'axios';
 import SearchBar from "./search-bar";
 import {translate_suspicion_str_to_values, translate_suspicion_values_to_str} from "../utils/events";
 import AsNumber from "./asn";
+import IPPrefix from "./ip-prefix";
 
 function unix_time_to_str(unix_time) {
     if (unix_time === null) {
@@ -76,7 +77,7 @@ const columns = [
                 }
 
             }
-            return maxpfx
+            return <IPPrefix prefix={maxpfx}/>
         }
     },
     {
