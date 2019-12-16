@@ -3,11 +3,21 @@ import DataTable from "react-data-table-component";
 import PropTypes from "prop-types";
 import TagsList from "./tags-list";
 import {extract_tags_dict_from_inference} from "../utils/tags";
+import IPPrefix from "./ip-prefix";
 
 const columns1 = [
     {
         name: 'Prefix',
         selector: 'prefix',
+        cell: row=>{
+            let ases = row.details.origins.map(asn=>{
+                return <a key={asn} href={`https://asrank.caida.org/asns?asn=${asn}`} target="_blank"> AS{asn} </a>
+            }).reduce((prev, curr) => [prev, ', ', curr]);
+
+            return <React.Fragment>
+                <IPPrefix prefix={row.prefix}/> ({ases})
+            </React.Fragment>
+        }
     },
     {
         name: 'Tags',
@@ -31,10 +41,28 @@ const columns2 = [
     {
         name: 'Sub Prefix',
         selector: 'sub_pfx',
+        cell: row =>{
+            let ases = row.details.sub_origins.map(asn=>{
+                return <a href={`https://asrank.caida.org/asns?asn=${asn}`} target="_blank"> AS{asn} </a>
+            }).reduce((prev, curr) => [prev, ', ', curr]);
+
+            return <React.Fragment>
+                <IPPrefix prefix={row.sub_pfx}/> ({ases})
+            </React.Fragment>
+        }
     },
     {
         name: 'Super Prefix',
         selector: 'super_pfx',
+        cell: row=>{
+            let ases = row.details.super_origins.map(asn=>{
+                return <a href={`https://asrank.caida.org/asns?asn=${asn}`} target="_blank"> AS{asn} </a>
+            }).reduce((prev, curr) => [prev, ', ', curr]);
+
+            return <React.Fragment>
+                <IPPrefix prefix={row.super_pfx}/> ({ases})
+            </React.Fragment>
+        }
     },
     {
         name: 'Tags',
@@ -66,11 +94,6 @@ class PfxEventsTable extends React.Component {
         enablePagination: true,
     };
 
-    /**
-     * Preprocess incoming event data
-     * @param data event data
-     * @returns {*}
-     */
     preprocessData(pfx_events, inference) {
 
         let processed = [];
@@ -103,6 +126,7 @@ class PfxEventsTable extends React.Component {
                 tags_dict[tag_name] = tag_name in tags_inference_dict? tags_inference_dict[tag_name]: "unknown";
             });
             event.tags_dict=tags_dict;
+            event.details=pfx_event.details;
             processed.push(event);
         }
         return processed;

@@ -1,7 +1,8 @@
 import React from "react";
 import {extract_impact, extract_largest_prefix, unix_time_to_str} from "../utils/events";
 import AsNumber from "./asn";
-import EventSuspicionTable from "./event-suspicion-table";
+import IPPrefix from "./ip-prefix";
+import TagsList from "./tags-list";
 
 class EventDetailsTable extends React.Component {
 
@@ -43,6 +44,13 @@ class EventDetailsTable extends React.Component {
             return <p key={`comment-${index}`}>{value}</p>
         });
 
+        let codes = {};
+        data.inference.event_codes.forEach(code => {
+            codes[code] = {};
+            codes[code].type="unknown";
+        });
+        processed["codes"] = <TagsList tags={codes} is_code={true}/>;
+
         return processed;
     }
 
@@ -83,7 +91,7 @@ class EventDetailsTable extends React.Component {
                                 </tr>
                                 <tr>
                                     <th>Largest prefix:</th>
-                                    <td>{data.largest_prefix}</td>
+                                    <td> <IPPrefix prefix={data.largest_prefix}/> </td>
                                 </tr>
                                 <tr>
                                     <th>Impact:</th>
@@ -113,9 +121,13 @@ class EventDetailsTable extends React.Component {
                                     <th>Suspicion Level:</th>
                                     <td>{data.suspicion}</td>
                                 </tr>
+                                {/*<tr>*/}
+                                {/*    <th>Misconfiguration</th>*/}
+                                {/*    <td>{data.misconf}</td>*/}
+                                {/*</tr>*/}
                                 <tr>
-                                    <th>Misconfiguration</th>
-                                    <td>{data.misconf}</td>
+                                    <th>Event Codes</th>
+                                    <td>{data.codes}</td>
                                 </tr>
                                 </tbody>
                             </table>

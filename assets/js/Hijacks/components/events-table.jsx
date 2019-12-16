@@ -2,16 +2,16 @@ import moment from 'moment'
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-daterangepicker/daterangepicker.css';
 import 'Hijacks/css/hijacks.css';
-import { withRouter } from 'react-router-dom';
-import { createBrowserHistory } from "history";
+import {withRouter} from 'react-router-dom';
+import {createBrowserHistory} from "history";
 import queryString from 'query-string'
-import PropTypes from 'prop-types';
 import React from 'react';
 import DataTable from 'react-data-table-component';
 import axios from 'axios';
 import SearchBar from "./search-bar";
 import {translate_suspicion_str_to_values, translate_suspicion_values_to_str} from "../utils/events";
 import AsNumber from "./asn";
+import IPPrefix from "./ip-prefix";
 
 function unix_time_to_str(unix_time) {
     if (unix_time === null) {
@@ -77,7 +77,7 @@ const columns = [
                 }
 
             }
-            return maxpfx
+            return <IPPrefix prefix={maxpfx}/>
         }
     },
     {
@@ -178,10 +178,8 @@ class EventsTable extends React.Component {
         params.append("ts_end", this.query.endTime.format("YYYY-MM-DDTHH:mm"));
         params.append("min_susp", min_susp);
         params.append("max_susp", max_susp);
+        params.append("event_type", this.query.eventType);
 
-        if(this.query.eventType!=="all"){
-            params.append("event_type", this.query.eventType);
-        }
         if(this.query.pfxs.length>0){
             params.append("pfxs", this.query.pfxs);
         }

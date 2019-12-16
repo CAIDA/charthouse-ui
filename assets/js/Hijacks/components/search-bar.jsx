@@ -1,6 +1,4 @@
 import React from "react";
-import moment from "moment";
-import DateRangePicker from "react-bootstrap-daterangepicker";
 import EventTypeSelector from "./event-type-selector";
 import EventSuspicionSelector from "./event-suspicion-selector";
 import RangePicker from "./range-picker";
