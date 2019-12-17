@@ -115,14 +115,33 @@ class PfxEventDetails extends React.Component {
         if (["submoas", "defcon"].includes(this.eventType)) {
             sankeyGraphs =
                 <React.Fragment>
-                    <SankeyGraph data={this.state.subpaths} title={"Route Collectors Sankey Diagram - Sub Prefix"}/>
-                    <SankeyGraph data={this.state.superpaths} title={"Route Collectors Sankey Diagram - Super Prefix"}/>
+                    <SankeyGraph
+                        data={this.state.subpaths}
+                        title={"Route Collectors Sankey Diagram - Sub Prefix"}
+                        id={"sub_sankey"}
+                        benign_nodes={this.state.eventData.victims}
+                        suspicious_nodes={this.state.eventData.attackers}
+                    />
+                    <SankeyGraph
+                        data={this.state.superpaths}
+                        title={"Route Collectors Sankey Diagram - Super Prefix"}
+                        id={"super_sankey"}
+                        benign_nodes={this.state.eventData.victims}
+                        suspicious_nodes={this.state.eventData.attackers}
+                    />
                 </React.Fragment>
 
         } else {
+            console.log(this.state.eventData);
             sankeyGraphs =
                 <React.Fragment>
-                    <SankeyGraph data={this.state.subpaths} title={"Route Collectors Sankey Diagram"}/>
+                    <SankeyGraph
+                        data={this.state.subpaths}
+                        title={"Route Collectors Sankey Diagram"}
+                        id={"pfx_sankey"}
+                        benign_nodes={this.state.eventData.victims}
+                        suspicious_nodes={this.state.eventData.attackers}
+                    />
                 </React.Fragment>
         }
 
@@ -165,7 +184,13 @@ class PfxEventDetails extends React.Component {
                         <div className="row">
                             <React.Fragment>
                                 <TraceroutesTable data={this.state.tr_results}/>
-                                <SankeyGraph title={"Traceroutes Sankey"} data={this.state.tr_aspaths}/>
+                                <SankeyGraph
+                                    title={"Traceroutes Sankey"}
+                                    data={this.state.tr_aspaths}
+                                    id={"tr_sankey"}
+                                    benign_nodes={this.state.eventData.victims}
+                                    suspicious_nodes={this.state.eventData.attackers}
+                                />
                             </React.Fragment>
                         </div>
                         }
