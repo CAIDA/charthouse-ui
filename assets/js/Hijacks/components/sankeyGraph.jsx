@@ -13,39 +13,20 @@ class SankeyGraph extends React.Component {
         super(props);
     }
 
-    /**
-     * convert list of paths, each is a list of asn, into a json object for nivo sankey
-     * @param paths
-     */
-    prepareDataJsonNino = (paths) => {
-        let links = this._count_links(paths);
-
-        let resJson = {
-            "nodes": [],
-            "links": [],
-        };
-        for (let asn of nodes) {
-            resJson.nodes.push({
-                "id": asn,
-            });
-        }
-        for (let link in links) {
-            let [as1, as2] = link.split("-");
-            let count = links[link];
-            resJson.links.push({
-                "source": as1,
-                "target": as2,
-                "value": count,
-            })
-        }
-
-        return resJson
-    };
-
-    _count_links(paths){
+    _count_links(paths, benign_nodes, suspicious_nodes){
         let nodes = new Set();
         let links = {};
         for (let path of paths) {
+            // check if the path contains suspicous and benign nodes
+            let [benign,suspicous] = [false, false];
+            for(let asn of path){
+                if(benign_nodes && benign_nodes.includes(asn)){
+                    benign=true;
+                }
+                if(suspicious_nodes && suspicious_nodes.includes(asn)){
+                    suspicous=true;
+                }
+            }
             for (let i = 0; i < path.length - 1; i++) {
                 let as1 = path[i];
                 let as2 = path[i + 1];
@@ -56,9 +37,13 @@ class SankeyGraph extends React.Component {
                 nodes.add(as2);
                 let link = `${as1}-${as2}`;
                 if (!(link in links)) {
-                    links[link] = 0
+                    links[link] = {
+                        "count":0,
+                        "suspicious":suspicous,
+                        "benign":benign,
+                    }
                 }
-                links[link] += 1
+                links[link]["count"] += 1
             }
         }
         return links
@@ -73,24 +58,25 @@ class SankeyGraph extends React.Component {
      * @param paths
      */
     prepareData = (paths) => {
-        let links = this._count_links(paths);
+        let links = this._count_links(paths, this.props.benign_nodes, this.props.suspicious_nodes);
         let resData = [];
         let weight_sum = 0;
-        console.log(this.props.benign_nodes);
-        for (let link in links) {
-            let [as1, as2] = link.split("-");
-            let weight = this.getBaseLog(2, links[link])+1;
-            let style = "color:grey";
-            if(this.props.benign_nodes && this.props.benign_nodes.includes(as2)){
-                    style = "color:blue";
-            }
-            if(this.props.suspicious_nodes && this.props.suspicious_nodes.includes(as2)){
-                    style = "color:red";
-            }
-            resData.push([as1, as2, weight, style]);
-            weight_sum += weight;
-        }
+        Object.keys(links).forEach(link => {
+                let [as1, as2] = link.split("-");
+                let weight = this.getBaseLog(2, links[link]["count"])+1;
 
+                let benign = links[link]["benign"];
+                let suspicious = links[link]["suspicious"];
+                let style = "color:grey";
+                if (benign && !suspicious){
+                    style = "color:grey"
+                } else if (suspicious){
+                    style = "color:red"
+                }
+                resData.push([as1, as2, weight, style]);
+                weight_sum += weight;
+            }
+        );
         return resData;
     };
 
@@ -102,24 +88,6 @@ class SankeyGraph extends React.Component {
                 }
             );
         }
-    }
-
-    ninoSankey(title, data){
-        let preparedData = this.prepareDataJsonNino(data);
-        return (
-            <div>
-                <h3>{title}</h3>
-                <div style={{height: data.links.length * 12 + 30}}>
-                    <ResponsiveSankey
-                        data={preparedData}
-                        margin={{top: 40, right: 160, bottom: 40, left: 50}}
-                        align="justify"
-                        animate={false}
-                        colors={{scheme: 'red_blue'}}
-                    />
-                </div>
-            </div>
-        );
     }
 
     componentWillUnmount() {
@@ -138,14 +106,17 @@ class SankeyGraph extends React.Component {
             )
         } else {
             let data = this.prepareData(this.state.data);
-            console.log(data);
-
             return (
                 <Chart
                     width={"100%"}
                     height={data.length * 12 + 30}
                     chartType="Sankey"
                     loader={<div>Loading Chart</div>}
+                    options={
+                        {
+                            title: this.props.title
+                        }
+                    }
                     columns={[
                         {type:"string", label:"from"},
                         {type:"string", label:"to"},

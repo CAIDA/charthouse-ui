@@ -132,7 +132,6 @@ class PfxEventDetails extends React.Component {
                 </React.Fragment>
 
         } else {
-            console.log(this.state.eventData);
             sankeyGraphs =
                 <React.Fragment>
                     <SankeyGraph
