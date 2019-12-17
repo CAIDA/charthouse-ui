@@ -21,7 +21,7 @@ Encore
      * (including one that's included on every page - e.g. "app")
      */
     /* TODO: figure out which entries we want here */
-    .addEntry('hi3', ['babel-polyfill', './assets/js/Hi3/index.jsx'])
+    .addEntry('hi3', ['@babel/polyfill', './assets/js/Hi3/index.jsx'])
 
     // shim to webpackify the horribly old jquery BBQ plugin
     .addLoader({
@@ -73,10 +73,10 @@ Encore
     //.autoProvidejQuery()
 
     .configureBabel(function (babelConfig) {
-        babelConfig.plugins.push('transform-class-properties');
-        babelConfig.plugins.push('syntax-dynamic-import');
-        babelConfig.plugins.push('transform-object-rest-spread');
-        babelConfig.plugins.push('istanbul');
+        babelConfig.plugins.push('@babel/plugin-proposal-class-properties');
+    }, {
+        // following is unused, but could be helpful to transpile ES6 modules
+        // includeNodeModules: ['foundation-sites']
     })
 ;
 
