@@ -148,6 +148,8 @@ class EventsTable extends React.Component {
             suspicionLevel: "suspicious",
             min_susp: 80,
             max_susp: 100,
+            min_duration:0,
+            max_duration:0,
             pfxs: [],
             asns: [],
             tags: [],
@@ -191,6 +193,12 @@ class EventsTable extends React.Component {
         }
         if(this.query.codes.length>0){
             params.append("codes", this.query.codes);
+        }
+        if(this.query.min_duration>0){
+            params.append("min_duration", this.query.min_duration);
+        }
+        if(this.query.max_duration>0){
+            params.append("max_duration", this.query.max_duration);
         }
 
         let url = baseUrl + params.toString();
@@ -285,6 +293,12 @@ class EventsTable extends React.Component {
         }
         if("max_susp" in parsed){
             this.query.max_susp = parseInt(parsed.max_susp);
+        }
+        if("min_duration" in parsed){
+            this.query.min_duration = parseInt(parsed.min_duration);
+        }
+        if("max_duration" in parsed){
+            this.query.max_duration = parseInt(parsed.max_duration);
         }
         if("ts_start" in parsed){
             this.query.startTime = moment.utc(parsed.ts_start, "YYYY-MM-DDTHH:mm");
