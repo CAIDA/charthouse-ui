@@ -1,5 +1,4 @@
 import React from 'react';
-import {ResponsiveSankey} from "@nivo/sankey";
 import {clean_graph} from "../utils/vis";
 import Chart from "react-google-charts";
 
