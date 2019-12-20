@@ -37,50 +37,62 @@ class AsNumber extends React.Component {
             : null;
     }
 
-    tooltip(asorg, is_private, on_blacklist){
-        let res = <p>AS Info Unavailable</p>;
+    tooltip(asn, external, is_private, on_blacklist){
+        // let res = <p>AS Info Unavailable</p>;
+        let res = [];
+        let count=0;
         if(is_private){
-            res = <p>Private AS Number</p>;
-        } else if(asorg){
-            if("org" in asorg && "name" in asorg["org"]){
-                // the `if` statement makes sure the data exists before refer to it
+            res.push(<p key={`tooltip-${count++}`}>Private AS Number</p>);
+        }
+        if(on_blacklist){
+            res.push(<p key={`tooltip-${count++}`}>AS is on a blacklist</p>)
+        }
+        if ("asrank" in external && asn in external.asrank) {
+            let asorg = external.asrank[asn];
+            if ("org" in asorg && "name" in asorg["org"]) {
                 asorg["org"]["name"] = asorg["org"]["name"].replace(/"/g, "");
-                let blacklist = "";
-                res = <React.Fragment>
-                    {on_blacklist &&
-                        <p>AS is on a blacklist</p>
-                    }
-                    <p> ASN: {asorg["id"]} </p>
-                    <p> Name: {asorg["org"]["name"]} </p>
-                    <p> Country: {asorg["country_name"]} </p>
-                    <p> Rank: {asorg["rank"]} </p>
-                </React.Fragment>
+                res.push(<p key={`tooltip-${count++}`}> ASN: {asorg["id"]} </p>);
+                res.push(<p key={`tooltip-${count++}`}> Name: {asorg["org"]["name"]} </p>);
+                res.push(<p key={`tooltip-${count++}`}> Country: {asorg["country_name"]} </p>);
+                res.push(<p key={`tooltip-${count++}`}> Rank: {asorg["rank"]} </p>);
             }
         }
-        return res;
+        if ("hegemony" in external && asn in external.asrank) {
+            res.push(<p key={`tooltip-${count++}`}> Hegemony: {external.hegemony[asn]} </p>);
+        }
+        if(res.length===0){
+            res.push(<p key={`tooltip-${count++}`}>AS Info Unavailable</p>);
+        }
+        return (
+            <>
+                {res}
+            </>
+        );
     }
 
     render() {
-        let data = this.props.asrank;
-
-        let on_blacklist = false;
-        if(this.props.blacklist && this.props.blacklist.includes(parseInt(this.props.asn))){
-            on_blacklist = true;
-        }
-
+        let data = this.props.data;
         let asn = parseInt(this.props.asn);
+
+        // check blacklist and private asn
+        let on_blacklist = false;
+        if(data.blacklist && data.blacklist.includes(asn)){ on_blacklist = true; }
         let is_private = (asn>=64512 && asn<=65534) || (asn>=4200000000 && asn<=4294967294);
 
+        // construct tooltip
+        let tooltip_str = this.tooltip(asn, data, is_private, on_blacklist);
+
+        // TODO: consider loading data from asrank api if this.props.data is not available
+        // render country flag and org name
+        let asorg = data.asrank[asn];
         let country_flag = "";
         let as_name = "";
-        let tooltip_str = this.tooltip(this.props.data, is_private, on_blacklist);
-        // TODO: consider loading data from asrank api if this.props.data is not available
-        if(data){
-            if(data.country){
-                country_flag = this.flag(data.country);
+        if(asorg){
+            if(asorg.country){
+                country_flag = this.flag(asorg.country);
             }
-            if(data.name){
-                as_name = this.abbrFit(data.name,22);
+            if(asorg.name){
+                as_name = this.abbrFit(asorg.name,22);
             }
         }
 

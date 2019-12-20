@@ -70,7 +70,7 @@ class EventDetailsTable extends React.Component {
                                     <td>
                                         {
                                             data.victims.map(function(asn){
-                                                return <AsNumber key={asn} asn={asn} data={data.external.asrank[parseInt(asn)]} />
+                                                return <AsNumber key={asn} asn={asn} data={data.external} />
                                             })
                                         }
                                     </td>
@@ -80,7 +80,7 @@ class EventDetailsTable extends React.Component {
                                     <td>
                                         {
                                             data.attackers.map(function(asn){
-                                                return <AsNumber key={asn} asn={asn} data={data.external.asrank[parseInt(asn)]} />
+                                                return <AsNumber key={asn} asn={asn} data={data.external} />
                                             })
                                         }
                                     </td>

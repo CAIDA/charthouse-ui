@@ -25,7 +25,7 @@ function renderOrigins(origins, data){
         <div>
             {
                 origins.slice(0,2).map(function(asn){
-                    return <AsNumber key={asn} asn={asn} asrank={data.asrank[parseInt(asn)]} blacklist={data.blacklist}/>
+                    return <AsNumber key={asn} asn={asn} data={data}/>
                 })
             }
 
