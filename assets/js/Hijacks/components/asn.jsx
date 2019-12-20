@@ -37,7 +37,7 @@ class AsNumber extends React.Component {
             : null;
     }
 
-    tooltip(asorg, is_private){
+    tooltip(asorg, is_private, on_blacklist){
         let res = <p>AS Info Unavailable</p>;
         if(is_private){
             res = <p>Private AS Number</p>;
@@ -45,7 +45,11 @@ class AsNumber extends React.Component {
             if("org" in asorg && "name" in asorg["org"]){
                 // the `if` statement makes sure the data exists before refer to it
                 asorg["org"]["name"] = asorg["org"]["name"].replace(/"/g, "");
+                let blacklist = "";
                 res = <React.Fragment>
+                    {on_blacklist &&
+                        <p>AS is on a blacklist</p>
+                    }
                     <p> ASN: {asorg["id"]} </p>
                     <p> Name: {asorg["org"]["name"]} </p>
                     <p> Country: {asorg["country_name"]} </p>
@@ -57,13 +61,19 @@ class AsNumber extends React.Component {
     }
 
     render() {
-        let data = this.props.data;
+        let data = this.props.asrank;
+
+        let on_blacklist = false;
+        if(this.props.blacklist && this.props.blacklist.includes(parseInt(this.props.asn))){
+            on_blacklist = true;
+        }
+
         let asn = parseInt(this.props.asn);
         let is_private = (asn>=64512 && asn<=65534) || (asn>=4200000000 && asn<=4294967294);
 
         let country_flag = "";
         let as_name = "";
-        let tooltip_str = this.tooltip(this.props.data, is_private);
+        let tooltip_str = this.tooltip(this.props.data, is_private, on_blacklist);
         // TODO: consider loading data from asrank api if this.props.data is not available
         if(data){
             if(data.country){
@@ -87,6 +97,9 @@ class AsNumber extends React.Component {
                     AS{asn} {as_name}
                     {is_private &&
                     <span className="badge badge-info">private</span>
+                    }
+                    {on_blacklist &&
+                    <span className="badge badge-info">blacklist</span>
                     }
                 </React.Fragment>
         }
