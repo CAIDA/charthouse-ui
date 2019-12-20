@@ -25,7 +25,7 @@ function renderOrigins(origins, data){
         <div>
             {
                 origins.slice(0,2).map(function(asn){
-                    return <AsNumber key={asn} asn={asn} data={data.asrank[parseInt(asn)]} />
+                    return <AsNumber key={asn} asn={asn} data={data}/>
                 })
             }
 
@@ -135,7 +135,8 @@ class EventsTable extends React.Component {
 
         this.state = {
             data: [],
-            loading: false,
+            events: [],
+            blacklist:[],
             totalRows: 0,
         };
 
@@ -148,6 +149,8 @@ class EventsTable extends React.Component {
             suspicionLevel: "suspicious",
             min_susp: 80,
             max_susp: 100,
+            min_duration:0,
+            max_duration:0,
             pfxs: [],
             asns: [],
             tags: [],
@@ -160,13 +163,17 @@ class EventsTable extends React.Component {
 
     componentDidMount() {
         this._loadEventsData();
+        this._loadBlackList();
     }
 
-    _loadEventsData = async () => {
+    _loadBlackList = async () => {
+        const blacklist = await axios.get("https://bgp.caida.org/json/blacklist");
         this.setState({
-            loading: true,
-        });
+            blacklist: blacklist.data.blacklist
+        })
+    };
 
+    _loadEventsData = async () => {
         let [min_susp, max_susp] = translate_suspicion_str_to_values(this.query.suspicionLevel);
 
         let baseUrl = `https://bgp.caida.org/json/events?`;
@@ -192,16 +199,22 @@ class EventsTable extends React.Component {
         if(this.query.codes.length>0){
             params.append("codes", this.query.codes);
         }
+        if(this.query.min_duration>0){
+            params.append("min_duration", this.query.min_duration);
+        }
+        if(this.query.max_duration>0){
+            params.append("max_duration", this.query.max_duration);
+        }
 
         let url = baseUrl + params.toString();
         this.history.push(this.history.location.pathname + `?${params.toString()}`);
 
         const response = await axios.get(url);
+        let events = response.data.data;
 
         this.setState({
-            data: response.data.data,
+            events: events,
             totalRows: response.data.recordsTotal,
-            loading: false,
         });
     };
 
@@ -286,6 +299,12 @@ class EventsTable extends React.Component {
         if("max_susp" in parsed){
             this.query.max_susp = parseInt(parsed.max_susp);
         }
+        if("min_duration" in parsed){
+            this.query.min_duration = parseInt(parsed.min_duration);
+        }
+        if("max_duration" in parsed){
+            this.query.max_duration = parseInt(parsed.max_duration);
+        }
         if("ts_start" in parsed){
             this.query.startTime = moment.utc(parsed.ts_start, "YYYY-MM-DDTHH:mm");
         }
@@ -298,6 +317,15 @@ class EventsTable extends React.Component {
     };
 
     render() {
+        let data = [];
+        let loading = true;
+        if(this.state.events && this.state.blacklist){
+            data = this.state.events;
+            data.forEach(event => {
+                event.external["blacklist"] = this.state.blacklist;
+            });
+            loading = false;
+        }
         return (
             <React.Fragment>
                 <SearchBar
@@ -315,8 +343,8 @@ class EventsTable extends React.Component {
                         striped={true}
                         pointerOnHover={true}
                         highlightOnHover={true}
-                        data={this.state.data}
-                        progressPending={this.state.loading}
+                        data={data}
+                        progressPending={loading}
                         fixedHeader={true}
                         pagination
                         paginationServer

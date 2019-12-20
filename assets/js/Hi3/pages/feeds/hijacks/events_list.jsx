@@ -1,9 +1,6 @@
 import React from 'react';
-import {Button} from "react-bootstrap";
-import {LinkContainer} from 'react-router-bootstrap';
 import {Link} from 'react-router-dom';
 
-import EventTypeSelector from 'Hijacks/components/event-type-selector';
 import {HI3} from 'Hi3/utils';
 
 import 'Hi3/css/pages/feeds/hijacks.css';
