@@ -247,22 +247,26 @@ class EventsTable extends React.Component {
      */
 
     _handleSearchTimeChange = (event, picker) => {
+        this.query.curPage = 0;
         this.query.startTime = picker.startDate.utc();
         this.query.endTime =  picker.endDate.utc();
         this._loadEventsData();
     };
 
     _handleSearchEventTypeChange = (eventType) => {
+        this.query.curPage = 0;
         this.query.eventType =  eventType;
         this._loadEventsData();
     };
 
     _handleSearchSuspicionChange = (suspicionLevel) => {
+        this.query.curPage = 0;
         this.query.suspicionLevel =  suspicionLevel;
         this._loadEventsData();
     };
 
     _handleSearchSearch = (parameters) => {
+        this.query.curPage = 0;
         this.query.pfxs =  parameters.pfxs;
         this.query.asns =  parameters.asns;
         this.query.tags =  parameters.tags;
