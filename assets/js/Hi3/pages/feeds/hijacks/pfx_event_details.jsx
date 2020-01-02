@@ -13,6 +13,7 @@ class PfxEventDetails extends React.Component {
     constructor(props) {
         super(props);
         this.eventId = this.props.match.params.eventId;
+        this.jsonUrl = `https://bgp.caida.org/json/event/id/${this.eventId}`;
         this.fingerprint = this.props.match.params.pfxEventId;
         this.eventType = this.eventId.split("-")[0];
         this.state = {
@@ -154,7 +155,7 @@ class PfxEventDetails extends React.Component {
 
                 {!this.state.loadingEvent &&
                     <div className="row">
-                        <EventDetailsTable data={this.state.eventData}/>
+                        <EventDetailsTable data={this.state.eventData} jsonUrl={this.jsonUrl}/>
                     </div>
                 }
 

@@ -10,7 +10,13 @@ const columns1 = [
         name: 'Prefix',
         selector: 'prefix',
         cell: row=>{
-            let ases = row.details.origins.map(asn=>{
+            let origins = [];
+            if("origins" in row.details){
+                origins = row.details.origins;
+            } else if ("as1" in row.details){
+                origins = [row.details.as1, row.details.as2]
+            }
+            let ases = origins.map(asn=>{
                 return <a key={asn} href={`https://asrank.caida.org/asns?asn=${asn}`} target="_blank"> AS{asn} </a>
             }).reduce((prev, curr) => [prev, ', ', curr]);
 
@@ -42,7 +48,14 @@ const columns2 = [
         name: 'Sub Prefix',
         selector: 'sub_pfx',
         cell: row =>{
-            let ases = row.details.sub_origins.map(asn=>{
+            let origins = [];
+            if('sub_origins' in row.details){
+                origins = row.details.sub_origins;
+            } else if ('old_origins' in row.details){
+                origins = row.details.old_origins
+            }
+
+            let ases = origins.map(asn=>{
                 return <a href={`https://asrank.caida.org/asns?asn=${asn}`} target="_blank"> AS{asn} </a>
             }).reduce((prev, curr) => [prev, ', ', curr]);
 
@@ -55,7 +68,14 @@ const columns2 = [
         name: 'Super Prefix',
         selector: 'super_pfx',
         cell: row=>{
-            let ases = row.details.super_origins.map(asn=>{
+            let origins = [];
+            if('super_origins' in row.details){
+                origins = row.details.super_origins;
+            } else if ('old_origins' in row.details){
+                origins = row.details.old_origins
+            }
+
+            let ases = origins.map(asn=>{
                 return <a href={`https://asrank.caida.org/asns?asn=${asn}`} target="_blank"> AS{asn} </a>
             }).reduce((prev, curr) => [prev, ', ', curr]);
 
