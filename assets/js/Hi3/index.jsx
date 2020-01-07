@@ -126,7 +126,7 @@ const SIDEBAR_LINKS = [
 
 // which pages should/should not have a pinned sidebar
 const PINNED_SIDEBAR_PAGES = {
-    '/feeds/hijacks/hijacks': false // observatory wants lots of space
+    '/feeds/hijacks/events': false // observatory wants lots of space
 };
 SIDEBAR_LINKS.forEach(link => {
     if (link) {
