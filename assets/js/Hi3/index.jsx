@@ -134,12 +134,19 @@ SIDEBAR_LINKS.forEach(link => {
     }
 });
 
+const UNPINNED_PAGES_PREFIXES = ['/feeds/hijacks/events'];
+
 class Hi3Content extends React.Component {
 
     render() {
         let sidebarPinned = PINNED_SIDEBAR_PAGES[this.props.location.pathname];
         if (sidebarPinned !== true && sidebarPinned !== false) {
             sidebarPinned = PINNED_SIDEBAR_DEFAULT;
+        }
+        for(let unpinned of UNPINNED_PAGES_PREFIXES){
+            if(this.props.location.pathname.startsWith(unpinned)){
+                sidebarPinned = false;
+            }
         }
         return <div>
             <Sidebar isPinned={sidebarPinned} links={SIDEBAR_LINKS}/>
