@@ -5,6 +5,7 @@ import EventDetailsTable from "../../../../Hijacks/components/event-details-tabl
 import PfxEventsTable from "../../../../Hijacks/components/pfx-events-table";
 import EventSuspicionTable from "../../../../Hijacks/components/event-suspicion-table";
 import EventTrTagsTable from "../../../../Hijacks/components/event-tr-tags-table";
+import queryString from "query-string";
 
 const HORIZONTAL_OFFSET = 480;
 
@@ -69,6 +70,12 @@ class EventDetails extends React.Component {
             )
         }
 
+        const parsed = queryString.parse(location.search);
+        let debug = false;
+        if("debug" in parsed || "dbg" in parsed){
+            debug = true
+        }
+
         return (
             <div id='hijacks' className='container-fluid'>
                 <div className='row header'>
@@ -80,15 +87,18 @@ class EventDetails extends React.Component {
                     <EventDetailsTable data={this.state.eventData} jsonUrl={this.jsonUrl}/>
                 </div>
 
+
                 <div>
+                    { debug &&
                     <EventSuspicionTable suspicion_tags={this.state.eventData.inference.suspicion.suspicion_tags}
                                          all_tags={this.state.eventData.tags}
                                          title={"Tags Suspicion Table"}
                     />
+                    }
                 </div>
 
                 <div>
-                    {this.state.tagsData!==undefined &&
+                    {this.state.tagsData!==undefined && debug &&
                     <EventTrTagsTable eventTags={this.state.eventData.tags}
                                       allTags={this.state.tagsData}
                                       title={"Tags Traceroute Worthiness Table"}
