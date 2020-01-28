@@ -13,6 +13,7 @@ class SankeyGraph extends React.Component {
     }
 
     _count_links(paths, benign_nodes, suspicious_nodes){
+        console.log(benign_nodes, suspicious_nodes);
         let nodes = new Set();
         let links = {};
         for (let path of paths) {
@@ -70,6 +71,8 @@ class SankeyGraph extends React.Component {
                 let style = "color:grey";
                 if (benign && !suspicious){
                     style = "color:grey"
+                } else if (benign && suspicious){
+                    style = "color:orange"
                 } else if (suspicious){
                     style = "color:red"
                 }
