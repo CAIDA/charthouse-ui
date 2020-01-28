@@ -62,7 +62,8 @@ class SankeyGraph extends React.Component {
         let weight_sum = 0;
         Object.keys(links).forEach(link => {
                 let [as1, as2] = link.split("-");
-                let weight = this.getBaseLog(2, links[link]["count"])+1;
+                // let weight = this.getBaseLog(2, links[link]["count"])+1;
+                let weight = links[link]["count"];
 
                 let benign = links[link]["benign"];
                 let suspicious = links[link]["suspicious"];
@@ -119,7 +120,7 @@ class SankeyGraph extends React.Component {
                     columns={[
                         {type:"string", label:"from"},
                         {type:"string", label:"to"},
-                        {type:"number", label:"weight"},
+                        {type:"number", label:"count"},
                         {type:"string", role:"style"},
                     ]}
                     rows={data}
