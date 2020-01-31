@@ -111,7 +111,7 @@ class AsNumber extends React.Component {
             res =
                 <React.Fragment>
                     <span className="asn__country"> {country_flag}</span>
-                    AS{asn} {as_name}
+                    AS{asn} {as_name} {" "}
                     {is_private &&
                     <span className="badge badge-info">private</span>
                     }
