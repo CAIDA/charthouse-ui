@@ -3,8 +3,19 @@ import {extract_impact, extract_largest_prefix, unix_time_to_str} from "../utils
 import AsNumber from "./asn";
 import IPPrefix from "./ip-prefix";
 import TagsList from "./tags-list";
+import axios from "axios";
 
 class EventDetailsTable extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            "blacklist": [],
+            "asndrop": [],
+            "eventData": this.preprocessData(this.props.data),
+            "ready": false,
+        }
+    }
 
     /**
      * Preprocess incoming event data
@@ -12,12 +23,6 @@ class EventDetailsTable extends React.Component {
      * @returns {*}
      */
     preprocessData(data) {
-
-        function hashCode(str) {
-            return str.split('').reduce((prevHash, currVal) =>
-                (((prevHash << 5) - prevHash) + currVal.charCodeAt(0)) | 0, 0);
-        }
-
         let event_type_explain = {
             'moas': "origin hijack (moas)",
             'submoas': "origin hijack (submoas)",
@@ -51,12 +56,31 @@ class EventDetailsTable extends React.Component {
         });
         processed["codes"] = <TagsList tags={codes} is_code={true}/>;
 
-        return processed;
+        return processed
     }
+
+    _loadBlackList = async () => {
+        const blacklist = await axios.get("https://bgp.caida.org/json/blacklist");
+        const asndrop = await axios.get("https://bgp.caida.org/json/asndrop");
+        this.setState({
+            blacklist: blacklist.data.blacklist,
+            asndrop: asndrop.data.asndrop,
+        })
+    };
 
     render() {
 
-        let data = this.preprocessData(this.props.data);
+        if(this.state.eventData === null){
+            return ""
+        }
+        this._loadBlackList();
+
+
+        let data = this.state.eventData;
+        if(this.state.blacklist.length>0){
+            data.external.blacklist = this.state.blacklist;
+            data.external.asndrop = this.state.asndrop;
+        }
 
         return (
             <React.Fragment>

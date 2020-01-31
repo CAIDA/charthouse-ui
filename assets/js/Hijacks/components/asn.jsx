@@ -37,7 +37,7 @@ class AsNumber extends React.Component {
             : null;
     }
 
-    tooltip(asn, external, is_private, on_blacklist){
+    tooltip(asn, external, is_private, on_blacklist, on_asndrop){
         // let res = <p>AS Info Unavailable</p>;
         let res = [];
         let count=0;
@@ -46,6 +46,9 @@ class AsNumber extends React.Component {
         }
         if(on_blacklist){
             res.push(<p key={`tooltip-${count++}`}>AS is on a blacklist</p>)
+        }
+        if(on_asndrop){
+            res.push(<p key={`tooltip-${count++}`}>AS is on Spamhaus ASN DROP list</p>)
         }
         if ("asrank" in external && asn in external.asrank) {
             let asorg = external.asrank[asn];
@@ -76,11 +79,13 @@ class AsNumber extends React.Component {
 
         // check blacklist and private asn
         let on_blacklist = false;
+        let on_asndrop = false;
         if(data.blacklist && data.blacklist.includes(asn)){ on_blacklist = true; }
+        if(data.asndrop && data.asndrop.includes(asn)){ on_asndrop = true; }
         let is_private = (asn>=64512 && asn<=65534) || (asn>=4200000000 && asn<=4294967294);
 
         // construct tooltip
-        let tooltip_str = this.tooltip(asn, data, is_private, on_blacklist);
+        let tooltip_str = this.tooltip(asn, data, is_private, on_blacklist, on_asndrop);
 
         // TODO: consider loading data from asrank api if this.props.data is not available
         // render country flag and org name
@@ -106,12 +111,15 @@ class AsNumber extends React.Component {
             res =
                 <React.Fragment>
                     <span className="asn__country"> {country_flag}</span>
-                    AS{asn} {as_name}
+                    AS{asn} {as_name} {" "}
                     {is_private &&
                     <span className="badge badge-info">private</span>
                     }
                     {on_blacklist &&
                     <span className="badge badge-info">blacklist</span>
+                    }
+                    {on_asndrop &&
+                    <span className="badge badge-info">asndrop</span>
                     }
                 </React.Fragment>
         }
