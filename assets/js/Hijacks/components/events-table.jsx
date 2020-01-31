@@ -137,6 +137,8 @@ class EventsTable extends React.Component {
             data: [],
             events: [],
             blacklist:[],
+            asndrop:[],
+            externalDataReady: false,
             totalRows: 0,
         };
 
@@ -168,12 +170,16 @@ class EventsTable extends React.Component {
 
     _loadBlackList = async () => {
         const blacklist = await axios.get("https://bgp.caida.org/json/blacklist");
+        const asndrop = await axios.get("https://bgp.caida.org/json/asndrop");
         this.setState({
-            blacklist: blacklist.data.blacklist
+            blacklist: blacklist.data.blacklist,
+            asndrop: asndrop.data.asndrop,
+            externalDataReady: true,
         })
     };
 
     _loadEventsData = async () => {
+        console.log("loading events data");
         let [min_susp, max_susp] = translate_suspicion_str_to_values(this.query.suspicionLevel);
 
         let baseUrl = `https://bgp.caida.org/json/events?`;
@@ -323,10 +329,13 @@ class EventsTable extends React.Component {
     render() {
         let data = [];
         let loading = true;
-        if(this.state.events && this.state.blacklist){
+        if(this.state.events.length>0 && this.state.externalDataReady){
+            console.log("loading finished");
             data = this.state.events;
+            console.log(this.state);
             data.forEach(event => {
                 event.external["blacklist"] = this.state.blacklist;
+                event.external["asndrop"] = this.state.asndrop;
             });
             loading = false;
         }
