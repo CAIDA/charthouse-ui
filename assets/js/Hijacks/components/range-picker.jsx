@@ -9,27 +9,27 @@ class RangePicker extends React.Component {
         this.ranges = {
             'Today': [
                 moment().startOf('day').utc(true),
-                moment().utc()
+                moment.utc()
             ],
-            'Yesterday': [
-                moment().utc().subtract(2, 'days').startOf('day'),
-                moment().utc().subtract(1, 'days').startOf('day')
+            '-4 hours': [
+                moment.utc().subtract(4, 'hours'),
+                moment.utc()
             ],
-            'Last 7 Days': [
-                moment().utc().subtract(6, 'days').startOf('day'),
-                moment().utc()
+            '-24 hours': [
+                moment.utc().subtract(1, 'days'),
+                moment.utc()
             ],
-            'Last 30 Days': [
-                moment().utc().subtract(29, 'days').startOf('day'),
-                moment().utc()
+            '-7 days': [
+                moment.utc().subtract(7, 'days'),
+                moment.utc()
             ],
-            'This Month': [
-                moment().utc().startOf('month'),
-                moment().utc().endOf('month')
+            '-1 month': [
+                moment.utc().subtract(1, 'months'),
+                moment.utc()
             ],
-            'Last Month': [
-                moment().utc().subtract(1, 'month').startOf('month'),
-                moment().utc().subtract(1, 'month').endOf('month')
+            '-1 year': [
+                moment.utc().subtract(1, 'years'),
+                moment.utc()
             ]
         };
     }
@@ -39,7 +39,7 @@ class RangePicker extends React.Component {
         return (
             <div className="search-bar__component">
                 <label className="search-bar__label">
-                    Select an event time range (now: {moment().utc().format("lll")})
+                    Select time period (UTC now: {moment().utc().format("lll")})
                 </label>
                 <span className="glyphicon glyphicon-calendar search-bar__time-icon"/>
                 <DateRangePicker
@@ -47,7 +47,10 @@ class RangePicker extends React.Component {
                     endDate={this.props.endDate}
                     onApply={this.props.onApply}
                     ranges={this.ranges}
+                    showDropdowns={true}
+                    minYear={2000}
                     alwaysShowCalendars={true}
+                    autoApply={true}
                     timePicker={true}
                     timePicker24Hour={true}
                     timePickerIncrement={5}
