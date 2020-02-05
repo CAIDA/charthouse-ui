@@ -54,7 +54,7 @@ class AsNumber extends React.Component {
             let asorg = external.asrank[asn];
             if ("org" in asorg && "name" in asorg["org"]) {
                 asorg["org"]["name"] = asorg["org"]["name"].replace(/"/g, "");
-                res.push(<p key={`tooltip-${count++}`}> ASN: {asorg["id"]} </p>);
+                res.push(<p key={`tooltip-${count++}`}> ASN: {asn} </p>);
                 res.push(<p key={`tooltip-${count++}`}> Name: {asorg["org"]["name"]} </p>);
                 res.push(<p key={`tooltip-${count++}`}> Country: {asorg["country_name"]} </p>);
                 res.push(<p key={`tooltip-${count++}`}> Rank: {asorg["rank"]} </p>);
