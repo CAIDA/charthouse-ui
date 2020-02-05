@@ -80,7 +80,8 @@ class EventDetails extends React.Component {
             <div id='hijacks' className='container-fluid'>
                 <div className='row header'>
                     <div className='col-md-12 page-header'>
-                        <h1>Event Details</h1>
+                        <h1><a href={"/feeds/hijacks/events"}> 	&#128281; </a></h1>
+                        <h1> Event Details </h1>
                     </div>
                 </div>
                 <div>
