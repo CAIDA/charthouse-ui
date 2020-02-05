@@ -118,14 +118,14 @@ class PfxEventDetails extends React.Component {
                 <React.Fragment>
                     <SankeyGraph
                         data={this.state.subpaths}
-                        title={"Route Collectors Sankey Diagram - Sub Prefix"}
+                        title={"Route Collectors AS Path Sankey Diagram - Sub Prefix"}
                         id={"sub_sankey"}
                         benign_nodes={this.state.eventData.victims}
                         suspicious_nodes={this.state.eventData.attackers}
                     />
                     <SankeyGraph
                         data={this.state.superpaths}
-                        title={"Route Collectors Sankey Diagram - Super Prefix"}
+                        title={"Route Collectors AS Path Sankey Diagram - Super Prefix"}
                         id={"super_sankey"}
                         benign_nodes={this.state.eventData.victims}
                         suspicious_nodes={this.state.eventData.attackers}
@@ -137,7 +137,7 @@ class PfxEventDetails extends React.Component {
                 <React.Fragment>
                     <SankeyGraph
                         data={this.state.subpaths}
-                        title={"Route Collectors Sankey Diagram"}
+                        title={"Route Collectors AS Path Sankey Diagram"}
                         id={"pfx_sankey"}
                         benign_nodes={this.state.eventData.victims}
                         suspicious_nodes={this.state.eventData.attackers}
@@ -149,6 +149,7 @@ class PfxEventDetails extends React.Component {
             <div id='hijacks' className='container-fluid'>
                 <div className='row header'>
                     <div className='col-md-12 page-header'>
+                        <h1><a href={`/feeds/hijacks/events/${this.state.eventData.event_type}/${this.state.eventData.id}`}> 	&#128281; </a></h1>
                         <h1>Prefix Event Details</h1>
                     </div>
                 </div>
