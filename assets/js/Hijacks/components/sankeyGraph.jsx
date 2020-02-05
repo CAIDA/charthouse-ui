@@ -13,7 +13,6 @@ class SankeyGraph extends React.Component {
     }
 
     _count_links(paths, benign_nodes, suspicious_nodes){
-        console.log(benign_nodes, suspicious_nodes);
         let nodes = new Set();
         let links = {};
         for (let path of paths) {
@@ -110,24 +109,29 @@ class SankeyGraph extends React.Component {
         } else {
             let data = this.prepareData(this.state.data);
             return (
-                <Chart
-                    width={"100%"}
-                    height={data.length * 12 + 30}
-                    chartType="Sankey"
-                    loader={<div>Loading Chart</div>}
-                    options={
-                        {
-                            title: this.props.title
+                <div>
+                    <h3> {this.props.title} </h3>
+                    <Chart
+                        width={"100%"}
+                        height={data.length * 12 + 30}
+                        chartType="Sankey"
+                        title={"test"}
+                        loader={<div>Loading Chart</div>}
+                        options={
+                            {
+                                title: this.props.title
+                            }
                         }
-                    }
-                    columns={[
-                        {type:"string", label:"from"},
-                        {type:"string", label:"to"},
-                        {type:"number", label:"count"},
-                        {type:"string", role:"style"},
-                    ]}
-                    rows={data}
-                />
+                        columns={[
+                            {type:"string", label:"from"},
+                            {type:"string", label:"to"},
+                            {type:"number", label:"count"},
+                            {type:"string", role:"style"},
+                        ]}
+                        rows={data}
+                    />
+
+                </div>
             )
         }
     }
