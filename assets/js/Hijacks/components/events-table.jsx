@@ -153,6 +153,7 @@ class EventsTable extends React.Component {
             max_susp: 100,
             min_duration:0,
             max_duration:0,
+            loading: true,
             pfxs: [],
             asns: [],
             tags: [],
@@ -179,7 +180,6 @@ class EventsTable extends React.Component {
     };
 
     _loadEventsData = async () => {
-        console.log("loading events data");
         let [min_susp, max_susp] = translate_suspicion_str_to_values(this.query.suspicionLevel);
 
         let baseUrl = `https://bgp.caida.org/json/events?`;
@@ -220,6 +220,7 @@ class EventsTable extends React.Component {
 
         this.setState({
             events: events,
+            loading: false,
             totalRows: response.data.recordsTotal,
         });
     };
@@ -329,7 +330,7 @@ class EventsTable extends React.Component {
     render() {
         let data = [];
         let loading = true;
-        if(this.state.events.length>0 && this.state.externalDataReady){
+        if(!this.state.loading){
             console.log("loading finished");
             data = this.state.events;
             console.log(this.state);
