@@ -7595,6 +7595,13 @@ react-router@^4.3.1:
     prop-types "^15.6.1"
     warning "^4.0.1"
 
+react-skylight@^0.5.1:
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/react-skylight/-/react-skylight-0.5.1.tgz#bf7f9d7f2929a83fe16cac8edacdeda025218d40"
+  integrity sha512-gwzTlsKuSvDbKCASZZAeQ/Dma4XxHl2bVxe6u32t3KLDnlNtKO+P8Au4GdNi1sdCuSwhsP8A0/E3SMHKI4LMjg==
+  dependencies:
+    prop-types "^15.5.10"
+
 react-to-print@^2.0.0-alpha.7:
   version "2.5.0"
   resolved "https://registry.yarnpkg.com/react-to-print/-/react-to-print-2.5.0.tgz#1aabdf18fd9b10b85311e16e8a7a81a441ee2a09"

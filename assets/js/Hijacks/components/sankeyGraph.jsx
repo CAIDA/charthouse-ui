@@ -1,6 +1,7 @@
 import React from 'react';
 import {clean_graph} from "../utils/vis";
 import Chart from "react-google-charts";
+import PopupModal from "./popup-modal";
 
 class SankeyGraph extends React.Component {
 
@@ -10,6 +11,7 @@ class SankeyGraph extends React.Component {
 
     constructor(props) {
         super(props);
+        this.modal_content = "test";
     }
 
     _count_links(paths, benign_nodes, suspicious_nodes){
@@ -110,6 +112,7 @@ class SankeyGraph extends React.Component {
             let data = this.prepareData(this.state.data);
             return (
                 <div>
+                    <PopupModal ref={ref => this.simpleDialog = ref}/>
                     <h3> {this.props.title} </h3>
                     <Chart
                         width={"100%"}
@@ -119,9 +122,43 @@ class SankeyGraph extends React.Component {
                         loader={<div>Loading Chart</div>}
                         options={
                             {
-                                title: this.props.title
+                                title: this.props.title,
+                                sankey: {
+                                    node: {
+                                        interactivity: true, // Allows you to select nodes.
+                                    }
+                                }
                             }
                         }
+                        chartEvents={[
+                            {
+                                eventName: 'select',
+                                callback: ({ chartWrapper }) => {
+                                    const chart = chartWrapper.getChart();
+                                    const selection = chart.getSelection();
+                                    if(selection.length>0){
+                                        this.simpleDialog.setContent(selection[0].name);
+                                        this.simpleDialog.show();
+                                    }
+                                    // if (selection.length === 1) {
+                                    //     const [selectedItem] = selection
+                                    //     const dataTable = chartWrapper.getDataTable()
+                                    //     const { row, column } = selectedItem
+                                    //     alert(
+                                    //         'You selected : ' +
+                                    //         JSON.stringify({
+                                    //             row,
+                                    //             column,
+                                    //             value: dataTable.getValue(row, column),
+                                    //         }),
+                                    //         null,
+                                    //         2,
+                                    //     )
+                                    // }
+                                    console.log(selection)
+                                },
+                            },
+                        ]}
                         columns={[
                             {type:"string", label:"from"},
                             {type:"string", label:"to"},
