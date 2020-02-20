@@ -60,9 +60,12 @@ class SankeyGraph extends React.Component {
         let links = this._count_links(paths, this.props.benign_nodes, this.props.suspicious_nodes);
         let resData = [];
         let weight_sum = 0;
+        let highlights = [];
+        for(let highlight of this.props.highlights){
+            highlights.push(new Set(highlight))
+        }
         Object.keys(links).forEach(link => {
                 let [as1, as2] = link.split("-");
-                // let weight = this.getBaseLog(2, links[link]["count"])+1;
                 let weight = links[link]["count"];
 
                 let benign = links[link]["benign"];
@@ -74,6 +77,12 @@ class SankeyGraph extends React.Component {
                     style = "color:orange"
                 } else if (suspicious){
                     style = "color:red"
+                }
+
+                for(let highlight of highlights){
+                    if(highlight.has(as1) && highlight.has(as2)){
+                        style = "color:red";
+                    }
                 }
                 resData.push([as1, as2, weight, style]);
                 weight_sum += weight;
