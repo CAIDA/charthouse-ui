@@ -120,6 +120,7 @@ class PfxEventDetails extends React.Component {
                         data={this.state.subpaths}
                         title={"Route Collectors AS Path Sankey Diagram - Sub Prefix"}
                         id={"sub_sankey"}
+                        highlights={[]}
                         benign_nodes={this.state.eventData.victims}
                         suspicious_nodes={this.state.eventData.attackers}
                     />
@@ -127,17 +128,24 @@ class PfxEventDetails extends React.Component {
                         data={this.state.superpaths}
                         title={"Route Collectors AS Path Sankey Diagram - Super Prefix"}
                         id={"super_sankey"}
+                        highlights={[]}
                         benign_nodes={this.state.eventData.victims}
                         suspicious_nodes={this.state.eventData.attackers}
                     />
                 </React.Fragment>
 
         } else {
+            let highlights = [];
+            if(this.eventType==="edges"){
+                highlights.push(this.eventId.split("-")[2].split("_"))
+            }
+            // edges and moas
             sankeyGraphs =
                 <React.Fragment>
                     <SankeyGraph
                         data={this.state.subpaths}
                         title={"Route Collectors AS Path Sankey Diagram"}
+                        highlights={highlights}
                         id={"pfx_sankey"}
                         benign_nodes={this.state.eventData.victims}
                         suspicious_nodes={this.state.eventData.attackers}
@@ -188,6 +196,7 @@ class PfxEventDetails extends React.Component {
                                 <SankeyGraph
                                     title={"Traceroutes Sankey"}
                                     data={this.state.tr_aspaths}
+                                    highlights={[]}
                                     id={"tr_sankey"}
                                     benign_nodes={this.state.eventData.victims}
                                     suspicious_nodes={this.state.eventData.attackers}

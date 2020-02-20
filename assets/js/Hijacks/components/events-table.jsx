@@ -109,7 +109,15 @@ const columns = [
                 if (duration < 0) {
                     duration = 0;
                 }
-                return `${duration} min`;
+                if(duration>1440){
+                    // longer than one day
+                    return `${Math.round(duration/1440)} day`;
+                } else if (duration>60) {
+                    // longer than one hour
+                    return `${Math.round(duration/60)} hour`;
+                } else {
+                    return `${duration} min`;
+                }
             }
         }
     },
