@@ -68,13 +68,15 @@ class EventDetailsTable extends React.Component {
         })
     };
 
+    componentDidMount() {
+        this._loadBlackList();
+    }
+
     render() {
 
         if(this.state.eventData === null){
             return ""
         }
-        this._loadBlackList();
-
 
         let data = this.state.eventData;
         if(this.state.blacklist.length>0){
