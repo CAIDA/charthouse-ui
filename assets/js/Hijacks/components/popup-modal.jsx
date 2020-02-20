@@ -36,7 +36,7 @@ class PopupModal extends React.Component {
     setContent(content){
         this.modalContent.setContent(
             <div>
-                <b>AS {content}</b>
+                <b>{content}</b>
             </div>
         )
     }

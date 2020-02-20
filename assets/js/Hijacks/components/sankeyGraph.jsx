@@ -2,6 +2,7 @@ import React from 'react';
 import {clean_graph} from "../utils/vis";
 import Chart from "react-google-charts";
 import PopupModal from "./popup-modal";
+import AsRank from "./asrank";
 
 class SankeyGraph extends React.Component {
 
@@ -112,7 +113,7 @@ class SankeyGraph extends React.Component {
             let data = this.prepareData(this.state.data);
             return (
                 <div>
-                    <PopupModal ref={ref => this.simpleDialog = ref}/>
+                    <PopupModal ref={ref => this.modal = ref}/>
                     <h3> {this.props.title} </h3>
                     <Chart
                         width={"100%"}
@@ -134,28 +135,13 @@ class SankeyGraph extends React.Component {
                             {
                                 eventName: 'select',
                                 callback: ({ chartWrapper }) => {
-                                    const chart = chartWrapper.getChart();
-                                    const selection = chart.getSelection();
+                                    // on click of the AS to pop up more information
+                                    const selection = chartWrapper.getChart().getSelection();
                                     if(selection.length>0){
-                                        this.simpleDialog.setContent(selection[0].name);
-                                        this.simpleDialog.show();
+                                        // only pop up modal when selecting (not when de-selecting)
+                                        this.modal.setContent(<AsRank asn={selection[0].name}/>);
+                                        this.modal.show();
                                     }
-                                    // if (selection.length === 1) {
-                                    //     const [selectedItem] = selection
-                                    //     const dataTable = chartWrapper.getDataTable()
-                                    //     const { row, column } = selectedItem
-                                    //     alert(
-                                    //         'You selected : ' +
-                                    //         JSON.stringify({
-                                    //             row,
-                                    //             column,
-                                    //             value: dataTable.getValue(row, column),
-                                    //         }),
-                                    //         null,
-                                    //         2,
-                                    //     )
-                                    // }
-                                    console.log(selection)
                                 },
                             },
                         ]}
