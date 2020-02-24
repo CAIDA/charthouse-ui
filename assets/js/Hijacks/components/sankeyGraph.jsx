@@ -20,13 +20,13 @@ class SankeyGraph extends React.Component {
         let links = {};
         for (let path of paths) {
             // check if the path contains suspicous and benign nodes
-            let [benign,suspicous] = [false, false];
+            let [benign,suspicious] = [false, false];
             for(let asn of path){
                 if(benign_nodes && benign_nodes.includes(asn)){
                     benign=true;
                 }
                 if(suspicious_nodes && suspicious_nodes.includes(asn)){
-                    suspicous=true;
+                    suspicious=true;
                 }
             }
             for (let i = 0; i < path.length - 1; i++) {
@@ -41,11 +41,13 @@ class SankeyGraph extends React.Component {
                 if (!(link in links)) {
                     links[link] = {
                         "count":0,
-                        "suspicious":suspicous,
+                        "suspicious":suspicious,
                         "benign":benign,
                     }
                 }
-                links[link]["count"] += 1
+                links[link]["count"] += 1;
+                links[link]["suspicious"] = links[link]["suspicious"] || suspicious;
+                links[link]["benign"] = links[link]["benign"] || benign;
             }
         }
         return links
@@ -60,6 +62,7 @@ class SankeyGraph extends React.Component {
      * @param paths
      */
     prepareData = (paths) => {
+        console.log(this.props);
         let links = this._count_links(paths, this.props.benign_nodes, this.props.suspicious_nodes);
         let resData = [];
         let weight_sum = 0;
@@ -136,12 +139,15 @@ class SankeyGraph extends React.Component {
                                 eventName: 'select',
                                 callback: ({ chartWrapper }) => {
                                     // on click of the AS to pop up more information
+                                    /*
+                                    // temporarily disabled the pop up until feature is needed
                                     const selection = chartWrapper.getChart().getSelection();
                                     if(selection.length>0){
                                         // only pop up modal when selecting (not when de-selecting)
                                         this.modal.setContent(<AsRank asn={selection[0].name}/>);
                                         this.modal.show();
                                     }
+                                     */
                                 },
                             },
                         ]}
