@@ -14,16 +14,18 @@ class Tile extends React.Component {
         thumb: PropTypes.string.isRequired,
         isScreenshot: PropTypes.bool,
         title: PropTypes.string.isRequired,
+        forceA: PropTypes.bool,
         disabled: PropTypes.bool // TODO
     };
 
     static defaultProps = {
         isScreenshot: true,
-        disabled: false
+        disabled: false,
+        forceA: false,
     };
 
     render () {
-        return <LinkA to={this.props.to}>
+        return <LinkA to={this.props.to} forceA={this.props.forceA}>
             <div className={`tile col-md-${12/TILES_PER_ROW}`}>
                 <div className=' panel panel-default'>
                     <div className="thumbnail panel-body">

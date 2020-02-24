@@ -31,7 +31,7 @@ class Feeds extends React.Component {
                 </div>
             </div>
             <TileGrid>
-                <Tile to='/feeds/hijacks' thumb={hijacksThumb}
+                <Tile to='/feeds/hijacks/events' thumb={hijacksThumb} forceA={true}
                       title='BGP Hijacks Observatory'>
                     The BGP Hijacks Observatory is a CAIDA project to detect
                     and characterize BGP hijacking attacks, including stealthy
