@@ -62,7 +62,6 @@ class SankeyGraph extends React.Component {
      * @param paths
      */
     prepareData = (paths) => {
-        console.log(this.props);
         let links = this._count_links(paths, this.props.benign_nodes, this.props.suspicious_nodes);
         let resData = [];
         let weight_sum = 0;
