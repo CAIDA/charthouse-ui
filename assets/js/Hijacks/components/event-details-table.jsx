@@ -59,6 +59,10 @@ class EventDetailsTable extends React.Component {
         return processed
     }
 
+    componentDidMount() {
+        this._loadBlackList();
+    }
+
     _loadBlackList = async () => {
         const blacklist = await axios.get("https://bgp.caida.org/json/blacklist");
         const asndrop = await axios.get("https://bgp.caida.org/json/asndrop");
@@ -68,15 +72,12 @@ class EventDetailsTable extends React.Component {
         })
     };
 
-    componentDidMount() {
-        this._loadBlackList();
-    }
-
     render() {
 
         if(this.state.eventData === null){
             return ""
         }
+
 
         let data = this.state.eventData;
         if(this.state.blacklist.length>0){
