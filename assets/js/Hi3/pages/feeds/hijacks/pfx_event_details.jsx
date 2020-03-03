@@ -85,7 +85,22 @@ class PfxEventDetails extends React.Component {
                     traceroute["results"].forEach(function (result) {
                         let as_traceroute = result["as_traceroute"];
                         if (as_traceroute.length !== 0) {
-                            let tr_path = result["as_traceroute"].filter(asn => asn !== "*");
+                            let raw_path = result["as_traceroute"];
+                            let tr_path = [];
+                            // properly render missing traceroute nodes
+                            for(let i = 0; i < raw_path.length; i++){
+                                let asn = raw_path[i];
+                                if(asn!=="*"){
+                                    tr_path.push(asn);
+                                } else {
+                                    if(i===raw_path.length -1){
+                                        // if * appears as the last hop
+                                        tr_path.push(`*`.replace(" ","_"));
+                                    } else {
+                                        tr_path.push(`*_${raw_path[i+1]}`.replace(" ","_"));
+                                    }
+                                }
+                            }
                             if (tr_path.length === 0) {
                                 console.log(`error as tr path: '${tr_path}', from ${result["as_traceroute"]}`);
                             } else {
@@ -109,6 +124,7 @@ class PfxEventDetails extends React.Component {
     };
 
     render() {
+        console.log(this.state);
         let showTrResults = this.state.tr_results.length > 0;
 
         let sankeyGraphs;
