@@ -34,6 +34,13 @@ class TagsList extends React.Component {
         })
     };
 
+    handleClick = (e) => {
+        if(e.target.className==="tags-list" && this.props.enableClick){
+            // if clicking on the empty area of the TagsList
+            window.open(this.props.url, "_self");
+        }
+    };
+
     render() {
         let tags = this.props.tags;
         let is_code = !!this.props.is_code;
@@ -41,7 +48,7 @@ class TagsList extends React.Component {
         let tagDefinitions = this.state.tagDefinitions;
 
         return (
-            <div className="tag-list">
+            <div className="tags-list" onClick={(e) => this.handleClick(e)}>
                 {Object.keys(tags).map(function(tag_name, index){
                     let definition = "";
                     let tag_key = is_code? `tag-${tag_name}` : `code-${tag_name}`;
