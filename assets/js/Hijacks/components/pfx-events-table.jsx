@@ -33,6 +33,7 @@ class PfxEventsTable extends React.Component {
             {
                 name: 'Prefix',
                 selector: 'prefix',
+                grow:1,
                 cell: row=>{
                     let origins = [];
                     if("origins" in row.details){
@@ -44,16 +45,16 @@ class PfxEventsTable extends React.Component {
                         return <a key={asn} href={`https://asrank.caida.org/asns?asn=${asn}`} target="_blank"> AS{asn} </a>
                     }).reduce((prev, curr) => [prev, ', ', curr]);
 
-                    return <React.Fragment>
+                    return <div>
                         <IPPrefix prefix={row.prefix}/> ({ases})
-                    </React.Fragment>
+                    </div>
                 }
             },
             {
                 name: 'Tags',
                 selector: 'tags',
                 wrap: true,
-                grow:3,
+                grow:2,
                 cell: row => {
                     let url = `/feeds/hijacks/events/${this.props.eventType}/${this.props.eventId}/${row.fingerprint}`;
                     return <TagsList tags={row.tags_dict} enableClick={this.props.enableClick} url={url}/>
@@ -62,10 +63,12 @@ class PfxEventsTable extends React.Component {
             {
                 name: 'Traceroute Worthy',
                 selector: 'tr_worthy',
+                width: "150px",
             },
             {
                 name: 'Traceroute Available',
                 selector: 'tr_available',
+                width: "150px",
             },
         ];
 
