@@ -40,6 +40,9 @@ class SankeyGraph extends React.Component {
                 if(suspicious_nodes && suspicious_nodes.includes(as1) && suspicious){
                     suspicious = false
                 }
+                if(benign_nodes && benign_nodes.includes(as1) && benign){
+                    benign = false
+                }
                 if (!(link in links)) {
                     links[link] = {
                         "count":0,
