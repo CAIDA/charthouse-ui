@@ -5,104 +5,12 @@ import TagsList from "./tags-list";
 import {extract_tags_dict_from_inference} from "../utils/tags";
 import IPPrefix from "./ip-prefix";
 
-const columns1 = [
-    {
-        name: 'Prefix',
-        selector: 'prefix',
-        cell: row=>{
-            let origins = [];
-            if("origins" in row.details){
-                origins = row.details.origins;
-            } else if ("as1" in row.details){
-                origins = [row.details.as1, row.details.as2]
-            }
-            let ases = origins.map(asn=>{
-                return <a key={asn} href={`https://asrank.caida.org/asns?asn=${asn}`} target="_blank"> AS{asn} </a>
-            }).reduce((prev, curr) => [prev, ', ', curr]);
-
-            return <React.Fragment>
-                <IPPrefix prefix={row.prefix}/> ({ases})
-            </React.Fragment>
-        }
-    },
-    {
-        name: 'Tags',
-        selector: 'tags',
-        wrap: true,
-        grow:3,
-        cell: row => {
-            return <TagsList tags={row.tags_dict} />
-        }
-    },
-    {
-        name: 'Traceroute Worthy',
-        selector: 'tr_worthy',
-    },
-    {
-        name: 'Traceroute Available',
-        selector: 'tr_available',
-    },
-];
-const columns2 = [
-    {
-        name: 'Sub Prefix',
-        selector: 'sub_pfx',
-        cell: row =>{
-            let origins = [];
-            if('sub_origins' in row.details){
-                origins = row.details.sub_origins;
-            } else if ('old_origins' in row.details){
-                origins = row.details.old_origins
-            }
-
-            let ases = origins.map(asn=>{
-                return <a href={`https://asrank.caida.org/asns?asn=${asn}`} target="_blank"> AS{asn} </a>
-            }).reduce((prev, curr) => [prev, ', ', curr]);
-
-            return <React.Fragment>
-                <IPPrefix prefix={row.sub_pfx}/> ({ases})
-            </React.Fragment>
-        }
-    },
-    {
-        name: 'Super Prefix',
-        selector: 'super_pfx',
-        cell: row=>{
-            let origins = [];
-            if('super_origins' in row.details){
-                origins = row.details.super_origins;
-            } else if ('old_origins' in row.details){
-                origins = row.details.old_origins
-            }
-
-            let ases = origins.map(asn=>{
-                return <a href={`https://asrank.caida.org/asns?asn=${asn}`} target="_blank"> AS{asn} </a>
-            }).reduce((prev, curr) => [prev, ', ', curr]);
-
-            return <React.Fragment>
-                <IPPrefix prefix={row.super_pfx}/> ({ases})
-            </React.Fragment>
-        }
-    },
-    {
-        name: 'Tags',
-        selector: 'tags',
-        wrap: true,
-        cell: row => {
-            return <TagsList tags={row.tags_dict} />
-        }
-    },
-    {
-        name: 'Traceroute Worthy',
-        selector: 'tr_worthy',
-    },
-    {
-        name: 'Traceroute Available',
-        selector: 'tr_available',
-    },
-];
 
 class PfxEventsTable extends React.Component {
+
+    columns1 = [];
+    columns2 = [];
+
 
     static propTypes = {
         enableClick: PropTypes.bool,
@@ -112,6 +20,114 @@ class PfxEventsTable extends React.Component {
     static defaultProps = {
         enableClick: true,
         enablePagination: true,
+    };
+
+    constructor(props){
+        super(props);
+        this.constructColumns()
+    }
+
+    constructColumns = () => {
+
+        this.columns1 = [
+            {
+                name: 'Prefix',
+                selector: 'prefix',
+                cell: row=>{
+                    let origins = [];
+                    if("origins" in row.details){
+                        origins = row.details.origins;
+                    } else if ("as1" in row.details){
+                        origins = [row.details.as1, row.details.as2]
+                    }
+                    let ases = origins.map(asn=>{
+                        return <a key={asn} href={`https://asrank.caida.org/asns?asn=${asn}`} target="_blank"> AS{asn} </a>
+                    }).reduce((prev, curr) => [prev, ', ', curr]);
+
+                    return <React.Fragment>
+                        <IPPrefix prefix={row.prefix}/> ({ases})
+                    </React.Fragment>
+                }
+            },
+            {
+                name: 'Tags',
+                selector: 'tags',
+                wrap: true,
+                grow:3,
+                cell: row => {
+                    let url = `/feeds/hijacks/events/${this.props.eventType}/${this.props.eventId}/${row.fingerprint}`;
+                    return <TagsList tags={row.tags_dict} enableClick={this.props.enableClick} url={url}/>
+                }
+            },
+            {
+                name: 'Traceroute Worthy',
+                selector: 'tr_worthy',
+            },
+            {
+                name: 'Traceroute Available',
+                selector: 'tr_available',
+            },
+        ];
+
+        this.columns2 = [
+            {
+                name: 'Sub Prefix',
+                selector: 'sub_pfx',
+                cell: row =>{
+                    let origins = [];
+                    if('sub_origins' in row.details){
+                        origins = row.details.sub_origins;
+                    } else if ('old_origins' in row.details){
+                        origins = row.details.old_origins
+                    }
+
+                    let ases = origins.map(asn=>{
+                        return <a href={`https://asrank.caida.org/asns?asn=${asn}`} target="_blank"> AS{asn} </a>
+                    }).reduce((prev, curr) => [prev, ', ', curr]);
+
+                    return <React.Fragment>
+                        <IPPrefix prefix={row.sub_pfx}/> ({ases})
+                    </React.Fragment>
+                }
+            },
+            {
+                name: 'Super Prefix',
+                selector: 'super_pfx',
+                cell: row=>{
+                    let origins = [];
+                    if('super_origins' in row.details){
+                        origins = row.details.super_origins;
+                    } else if ('old_origins' in row.details){
+                        origins = row.details.old_origins
+                    }
+
+                    let ases = origins.map(asn=>{
+                        return <a href={`https://asrank.caida.org/asns?asn=${asn}`} target="_blank"> AS{asn} </a>
+                    }).reduce((prev, curr) => [prev, ', ', curr]);
+
+                    return <React.Fragment>
+                        <IPPrefix prefix={row.super_pfx}/> ({ases})
+                    </React.Fragment>
+                }
+            },
+            {
+                name: 'Tags',
+                selector: 'tags',
+                wrap: true,
+                cell: row => {
+                    let url = `/feeds/hijacks/events/${this.props.eventType}/${this.props.eventId}/${row.fingerprint}`;
+                    return <TagsList tags={row.tags_dict} enableClick={this.props.enableClick} url={url}/>
+                }
+            },
+            {
+                name: 'Traceroute Worthy',
+                selector: 'tr_worthy',
+            },
+            {
+                name: 'Traceroute Available',
+                selector: 'tr_available',
+            },
+        ];
     };
 
     preprocessData(pfx_events, inference) {
@@ -154,6 +170,7 @@ class PfxEventsTable extends React.Component {
 
 
     handleRowClick = (row) => {
+        // window.open(`/feeds/hijacks/events/${this.props.eventType}/${this.props.eventId}/${row.fingerprint}`, "_self");
         if (this.props.enableClick) {
             window.open(`/feeds/hijacks/events/${this.props.eventType}/${this.props.eventId}/${row.fingerprint}`, "_self");
         }
@@ -163,9 +180,9 @@ class PfxEventsTable extends React.Component {
         let data = this.preprocessData(this.props.data, this.props.inference);
         let columns = [];
         if (["moas", "edges"].includes(this.props.eventType)) {
-            columns = columns1
+            columns = this.columns1
         } else {
-            columns = columns2
+            columns = this.columns2
         }
 
         return (

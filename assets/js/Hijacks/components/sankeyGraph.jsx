@@ -12,7 +12,6 @@ class SankeyGraph extends React.Component {
 
     constructor(props) {
         super(props);
-        this.modal_content = "test";
     }
 
     _count_links(paths, benign_nodes, suspicious_nodes){
@@ -38,6 +37,12 @@ class SankeyGraph extends React.Component {
                 nodes.add(as1);
                 nodes.add(as2);
                 let link = `${as1}-${as2}`;
+                if(suspicious_nodes && suspicious_nodes.includes(as1) && suspicious){
+                    suspicious = false
+                }
+                if(benign_nodes && benign_nodes.includes(as1) && benign){
+                    benign = false
+                }
                 if (!(link in links)) {
                     links[link] = {
                         "count":0,

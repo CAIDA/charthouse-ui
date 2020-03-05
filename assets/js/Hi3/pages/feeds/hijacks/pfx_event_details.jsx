@@ -78,6 +78,7 @@ class PfxEventDetails extends React.Component {
         }
 
         let msms = response.data.traceroutes.msms;
+        let targets = new Set(msms.map(msm=>msm["target_asn"]));
         let as_routes = [];
         if (msms.length > 0) {
             msms.forEach(function (traceroute) {
@@ -85,7 +86,27 @@ class PfxEventDetails extends React.Component {
                     traceroute["results"].forEach(function (result) {
                         let as_traceroute = result["as_traceroute"];
                         if (as_traceroute.length !== 0) {
-                            let tr_path = result["as_traceroute"].filter(asn => asn !== "*");
+                            let raw_path = result["as_traceroute"];
+                            let tr_path = [];
+                            // properly render missing traceroute nodes
+                            for(let i = 0; i < raw_path.length; i++){
+                                let asn = raw_path[i];
+                                if(asn!=="*"){
+                                    tr_path.push(asn);
+                                } else {
+                                    if(i===raw_path.length -1){
+                                        // if * appears as the last hop
+                                        tr_path.push(`*`.replace(" ","_"));
+                                    } else {
+                                        tr_path.push(`*_${raw_path[i+1]}`.replace(" ","_"));
+                                    }
+                                }
+                            }
+                            // push an extra * if the last hop isn't one of the target ASN
+                            let last_hop = tr_path[tr_path.length-1];
+                            if(last_hop !== "*" && !targets.has(last_hop)){
+                                tr_path.push("*");
+                            }
                             if (tr_path.length === 0) {
                                 console.log(`error as tr path: '${tr_path}', from ${result["as_traceroute"]}`);
                             } else {
