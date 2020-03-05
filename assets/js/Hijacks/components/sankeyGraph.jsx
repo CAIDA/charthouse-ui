@@ -12,7 +12,6 @@ class SankeyGraph extends React.Component {
 
     constructor(props) {
         super(props);
-        this.modal_content = "test";
     }
 
     _count_links(paths, benign_nodes, suspicious_nodes){

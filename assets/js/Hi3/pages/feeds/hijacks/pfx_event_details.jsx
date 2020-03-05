@@ -130,7 +130,6 @@ class PfxEventDetails extends React.Component {
     };
 
     render() {
-        console.log(this.state);
         let showTrResults = this.state.tr_results.length > 0;
 
         let sankeyGraphs;

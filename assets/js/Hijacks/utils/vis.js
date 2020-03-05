@@ -18,7 +18,7 @@ function clean_graph(path_lst){
             }
             newpath.push(asns[i])
         }
-        if(!(asns[asns.length-1] in newpath)){
+        if(!newpath.includes(asns[asns.length-1])){
             newpath.push(asns[asns.length-1])
         }
 
