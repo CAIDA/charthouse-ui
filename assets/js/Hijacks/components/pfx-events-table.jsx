@@ -33,21 +33,6 @@ class PfxEventsTable extends React.Component {
 
         this.columns1 = [
             {
-                name: '',
-                selector: 'tr_worthy',
-                width: "50px",
-                cell: row=>{
-                    // TODO: check if we're already in details page
-                    if(this.props.isEventDetails) {
-                        return <LinkA
-                            to={`/feeds/hijacks/events/${this.props.eventType}/${this.props.eventId}/${row.fingerprint}`}>
-                            <span className="glyphicon glyphicon-zoom-in"/>
-                        </LinkA>
-                    }
-                    return ""
-                }
-            },
-            {
                 name: 'Prefix',
                 selector: 'prefix',
                 grow:1,
@@ -87,12 +72,27 @@ class PfxEventsTable extends React.Component {
                 selector: 'tr_available',
                 width: "150px",
             },
+            {
+                name: '',
+                selector: 'tr_worthy',
+                width: "100px",
+                cell: row=>{
+                    if(this.props.isEventDetails) {
+                        let url = `/feeds/hijacks/events/${this.props.eventType}/${this.props.eventId}/${row.fingerprint}`;
+                        return <LinkA type="button" className="btn btn-sm btn-primary" to={url}>
+                            Details
+                        </LinkA>
+                    }
+                    return ""
+                }
+            },
         ];
 
         this.columns2 = [
             {
                 name: 'Sub Prefix',
                 selector: 'sub_pfx',
+                grow:1,
                 cell: row =>{
                     let origins = [];
                     if('sub_origins' in row.details){
@@ -113,6 +113,7 @@ class PfxEventsTable extends React.Component {
             {
                 name: 'Super Prefix',
                 selector: 'super_pfx',
+                grow:1,
                 cell: row=>{
                     let origins = [];
                     if('super_origins' in row.details){
@@ -134,6 +135,7 @@ class PfxEventsTable extends React.Component {
                 name: 'Tags',
                 selector: 'tags',
                 wrap: true,
+                grow:2,
                 cell: row => {
                     let url = `/feeds/hijacks/events/${this.props.eventType}/${this.props.eventId}/${row.fingerprint}`;
                     return <TagsList tags={row.tags_dict} enableClick={this.props.enableClick} url={url}/>
@@ -142,10 +144,26 @@ class PfxEventsTable extends React.Component {
             {
                 name: 'Traceroute Worthy',
                 selector: 'tr_worthy',
+                width: "150px",
             },
             {
                 name: 'Traceroute Available',
                 selector: 'tr_available',
+                width: "150px",
+            },
+            {
+                name: '',
+                selector: 'tr_worthy',
+                width: "100px",
+                cell: row=>{
+                    if(this.props.isEventDetails) {
+                        let url = `/feeds/hijacks/events/${this.props.eventType}/${this.props.eventId}/${row.fingerprint}`;
+                        return <LinkA type="button" className="btn btn-sm btn-primary" to={url}>
+                            Details
+                        </LinkA>
+                    }
+                    return ""
+                }
             },
         ];
     };
