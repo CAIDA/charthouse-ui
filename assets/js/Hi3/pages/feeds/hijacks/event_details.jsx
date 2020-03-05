@@ -112,6 +112,7 @@ class EventDetails extends React.Component {
                                     inference={this.state.eventData.inference}
                                     eventId={this.eventId}
                                     eventType={this.eventType}
+                                    isEventDetails={true}
                                     title={"Prefix Event List"}
                     />
                 </div>

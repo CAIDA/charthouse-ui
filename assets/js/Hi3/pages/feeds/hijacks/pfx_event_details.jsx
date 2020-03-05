@@ -199,6 +199,7 @@ class PfxEventDetails extends React.Component {
                                 inference={this.state.eventData.inference}
                                 eventType={this.eventType}
                                 eventId={this.eventId}
+                                isEventDetails={false}
                                 enableClick={false} enablePagination={false}
                             />
 

@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import TagsList from "./tags-list";
 import {extract_tags_dict_from_inference} from "../utils/tags";
 import IPPrefix from "./ip-prefix";
+import LinkA from "../../Hi3/components/linka";
 
 
 class PfxEventsTable extends React.Component {
@@ -13,6 +14,7 @@ class PfxEventsTable extends React.Component {
 
 
     static propTypes = {
+        isEventDetails: PropTypes.bool,
         enableClick: PropTypes.bool,
         enablePagination: PropTypes.bool,
     };
@@ -30,6 +32,21 @@ class PfxEventsTable extends React.Component {
     constructColumns = () => {
 
         this.columns1 = [
+            {
+                name: '',
+                selector: 'tr_worthy',
+                width: "50px",
+                cell: row=>{
+                    // TODO: check if we're already in details page
+                    if(this.props.isEventDetails) {
+                        return <LinkA
+                            to={`/feeds/hijacks/events/${this.props.eventType}/${this.props.eventId}/${row.fingerprint}`}>
+                            <span className="glyphicon glyphicon-zoom-in"/>
+                        </LinkA>
+                    }
+                    return ""
+                }
+            },
             {
                 name: 'Prefix',
                 selector: 'prefix',
@@ -193,10 +210,9 @@ class PfxEventsTable extends React.Component {
                 title={this.props.title}
                 columns={columns}
                 striped={true}
-                pointerOnHover={true}
                 highlightOnHover={true}
                 data={data}
-                onRowClicked={this.handleRowClick}
+                // onRowClicked={this.handleRowClick}
                 pagination={this.props.enablePagination}
             />
         );
