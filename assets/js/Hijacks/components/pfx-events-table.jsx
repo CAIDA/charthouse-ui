@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import TagsList from "./tags-list";
 import {extract_tags_dict_from_inference} from "../utils/tags";
 import IPPrefix from "./ip-prefix";
+import LinkA from "../../Hi3/components/linka";
 
 
 class PfxEventsTable extends React.Component {
@@ -13,6 +14,7 @@ class PfxEventsTable extends React.Component {
 
 
     static propTypes = {
+        isEventDetails: PropTypes.bool,
         enableClick: PropTypes.bool,
         enablePagination: PropTypes.bool,
     };
@@ -33,6 +35,7 @@ class PfxEventsTable extends React.Component {
             {
                 name: 'Prefix',
                 selector: 'prefix',
+                grow:1,
                 cell: row=>{
                     let origins = [];
                     if("origins" in row.details){
@@ -44,16 +47,16 @@ class PfxEventsTable extends React.Component {
                         return <a key={asn} href={`https://asrank.caida.org/asns?asn=${asn}`} target="_blank"> AS{asn} </a>
                     }).reduce((prev, curr) => [prev, ', ', curr]);
 
-                    return <React.Fragment>
+                    return <div>
                         <IPPrefix prefix={row.prefix}/> ({ases})
-                    </React.Fragment>
+                    </div>
                 }
             },
             {
                 name: 'Tags',
                 selector: 'tags',
                 wrap: true,
-                grow:3,
+                grow:2,
                 cell: row => {
                     let url = `/feeds/hijacks/events/${this.props.eventType}/${this.props.eventId}/${row.fingerprint}`;
                     return <TagsList tags={row.tags_dict} enableClick={this.props.enableClick} url={url}/>
@@ -62,10 +65,26 @@ class PfxEventsTable extends React.Component {
             {
                 name: 'Traceroute Worthy',
                 selector: 'tr_worthy',
+                width: "150px",
             },
             {
                 name: 'Traceroute Available',
                 selector: 'tr_available',
+                width: "150px",
+            },
+            {
+                name: '',
+                selector: 'tr_worthy',
+                width: "100px",
+                cell: row=>{
+                    if(this.props.isEventDetails) {
+                        let url = `/feeds/hijacks/events/${this.props.eventType}/${this.props.eventId}/${row.fingerprint}`;
+                        return <LinkA type="button" className="btn btn-sm btn-primary" to={url}>
+                            Details
+                        </LinkA>
+                    }
+                    return ""
+                }
             },
         ];
 
@@ -73,6 +92,7 @@ class PfxEventsTable extends React.Component {
             {
                 name: 'Sub Prefix',
                 selector: 'sub_pfx',
+                grow:1,
                 cell: row =>{
                     let origins = [];
                     if('sub_origins' in row.details){
@@ -93,6 +113,7 @@ class PfxEventsTable extends React.Component {
             {
                 name: 'Super Prefix',
                 selector: 'super_pfx',
+                grow:1,
                 cell: row=>{
                     let origins = [];
                     if('super_origins' in row.details){
@@ -114,6 +135,7 @@ class PfxEventsTable extends React.Component {
                 name: 'Tags',
                 selector: 'tags',
                 wrap: true,
+                grow:2,
                 cell: row => {
                     let url = `/feeds/hijacks/events/${this.props.eventType}/${this.props.eventId}/${row.fingerprint}`;
                     return <TagsList tags={row.tags_dict} enableClick={this.props.enableClick} url={url}/>
@@ -122,10 +144,26 @@ class PfxEventsTable extends React.Component {
             {
                 name: 'Traceroute Worthy',
                 selector: 'tr_worthy',
+                width: "150px",
             },
             {
                 name: 'Traceroute Available',
                 selector: 'tr_available',
+                width: "150px",
+            },
+            {
+                name: '',
+                selector: 'tr_worthy',
+                width: "100px",
+                cell: row=>{
+                    if(this.props.isEventDetails) {
+                        let url = `/feeds/hijacks/events/${this.props.eventType}/${this.props.eventId}/${row.fingerprint}`;
+                        return <LinkA type="button" className="btn btn-sm btn-primary" to={url}>
+                            Details
+                        </LinkA>
+                    }
+                    return ""
+                }
             },
         ];
     };
@@ -190,10 +228,9 @@ class PfxEventsTable extends React.Component {
                 title={this.props.title}
                 columns={columns}
                 striped={true}
-                pointerOnHover={true}
                 highlightOnHover={true}
                 data={data}
-                onRowClicked={this.handleRowClick}
+                // onRowClicked={this.handleRowClick}
                 pagination={this.props.enablePagination}
             />
         );
