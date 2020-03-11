@@ -146,9 +146,9 @@ class EventsTable extends React.Component {
             events: [],
             blacklist:[],
             asndrop:[],
-            externalDataReady: false,
+            loadingExternal: true,
             totalRows: 0,
-            loading: true,
+            loadingEvents: true,
         };
 
         this.query = {
@@ -173,8 +173,8 @@ class EventsTable extends React.Component {
     }
 
     componentDidMount() {
-        this._loadEventsData();
         this._loadBlackList();
+        this._loadEventsData();
     }
 
     _loadBlackList = async () => {
@@ -183,7 +183,7 @@ class EventsTable extends React.Component {
         this.setState({
             blacklist: blacklist.data.blacklist,
             asndrop: asndrop.data.asndrop,
-            externalDataReady: true,
+            loadingExternal: false,
         })
     };
 
@@ -228,7 +228,7 @@ class EventsTable extends React.Component {
 
         this.setState({
             events: events,
-            loading: false,
+            loadingEvents: false,
             totalRows: response.data.recordsTotal,
         });
     };
@@ -338,7 +338,7 @@ class EventsTable extends React.Component {
     render() {
         let data = [];
         let loading = true;
-        if(!this.state.loading){
+        if(!this.state.loadingEvents && !this.state.loadingExternal){
             data = this.state.events;
             data.forEach(event => {
                 event.external["blacklist"] = this.state.blacklist;
@@ -346,8 +346,6 @@ class EventsTable extends React.Component {
             });
             loading = false;
         }
-        console.log("still loading? :", loading);
-        console.log(this.state);
         return (
             <React.Fragment>
                 <SearchBar
