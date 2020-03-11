@@ -64,7 +64,7 @@ class PfxEventDetails extends React.Component {
             "details": data.details,
             "tags": data.tags,
             "tr_worthy": data.traceroutes.worthy,
-            "tr_available": data.traceroutes.msms.length > 0,
+            "traceroutes": data.traceroutes.msms,
             "fingerprint": this.fingerprint,
         };
         if ("prefix" in data.details) {
@@ -133,7 +133,6 @@ class PfxEventDetails extends React.Component {
 
     render() {
         let showTrResults = this.state.tr_results.length > 0;
-        console.log(this.state.tr_results);
 
         let sankeyGraphs;
 

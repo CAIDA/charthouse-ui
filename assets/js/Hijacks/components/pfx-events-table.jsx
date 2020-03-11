@@ -199,8 +199,10 @@ class PfxEventsTable extends React.Component {
             }
             event.tags = pfx_event.tags;
             event.tr_worthy = pfx_event.tr_worthy.toString();
-            if("traceroutes" in pfx_event){
+            if("traceroutes" in pfx_event && pfx_event.traceroutes.length>0){
                 event.tr_available = this.tr_available(pfx_event.traceroutes).toString();
+            } else {
+                event.tr_available = "false";
             }
             event.fingerprint = prefixes.join("_")
                 .replace(/\//g, "-");
