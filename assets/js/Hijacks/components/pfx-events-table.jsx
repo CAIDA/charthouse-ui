@@ -29,6 +29,12 @@ class PfxEventsTable extends React.Component {
         this.constructColumns()
     }
 
+    tr_available = (msms) => {
+        return !!msms.every((msm) => {
+            return "msm_id" in msm && msm["msm_id"] > 0
+        });
+    };
+
     constructColumns = () => {
 
         this.columns1 = [
@@ -193,7 +199,7 @@ class PfxEventsTable extends React.Component {
             }
             event.tags = pfx_event.tags;
             event.tr_worthy = pfx_event.tr_worthy.toString();
-            event.tr_available = pfx_event.tr_available.toString();
+            event.tr_available = this.tr_available(pfx_event.traceroutes).toString();
             event.fingerprint = prefixes.join("_")
                 .replace(/\//g, "-");
             pfx_event.tags.forEach((tag_name)=>{
