@@ -78,11 +78,12 @@ class PfxEventDetails extends React.Component {
         }
 
         let msms = response.data.traceroutes.msms;
+        let msms_filtered = []; // store good to use traceroute results
         let targets = new Set(msms.map(msm=>msm["target_asn"]));
         let as_routes = [];
         if (msms.length > 0) {
             msms.forEach(function (traceroute) {
-                if ("results" in traceroute) {
+                if ("results" in traceroute && Object.keys(traceroute["results"]).length > 0) {
                     traceroute["results"].forEach(function (result) {
                         let as_traceroute = result["as_traceroute"];
                         if (as_traceroute.length !== 0) {
@@ -114,6 +115,7 @@ class PfxEventDetails extends React.Component {
                             }
                         }
                     });
+                    msms_filtered.push(traceroute);
                 }
             });
         }
@@ -124,13 +126,14 @@ class PfxEventDetails extends React.Component {
             superpaths: superpaths,
             pfxEvents: [pfxEvent],
             tr_aspaths: as_routes,
-            tr_results: msms,
+            tr_results: msms_filtered,
             loadingPfxEvent: false,
         });
     };
 
     render() {
         let showTrResults = this.state.tr_results.length > 0;
+        console.log(this.state.tr_results);
 
         let sankeyGraphs;
 
