@@ -70,7 +70,7 @@ class EventSearchBox extends React.Component {
             this.props.tags.join(" "),
             this.props.codes.map(code=>"code:"+code).join(" "),
             this.props.asns.map(asn=> "AS"+asn).join(" ")
-        ].join(" ");
+        ].join(" ").trim();
         return res;
     };
 

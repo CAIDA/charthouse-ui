@@ -206,14 +206,6 @@ class PfxEventsTable extends React.Component {
         return processed;
     }
 
-
-    handleRowClick = (row) => {
-        // window.open(`/feeds/hijacks/events/${this.props.eventType}/${this.props.eventId}/${row.fingerprint}`, "_self");
-        if (this.props.enableClick) {
-            window.open(`/feeds/hijacks/events/${this.props.eventType}/${this.props.eventId}/${row.fingerprint}`, "_self");
-        }
-    };
-
     render() {
         let data = this.preprocessData(this.props.data, this.props.inference);
         let columns = [];
@@ -230,7 +222,6 @@ class PfxEventsTable extends React.Component {
                 striped={true}
                 highlightOnHover={true}
                 data={data}
-                // onRowClicked={this.handleRowClick}
                 pagination={this.props.enablePagination}
             />
         );
