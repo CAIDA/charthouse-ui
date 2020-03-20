@@ -52,7 +52,7 @@ const columns = [
     {
         name: 'Potential Attackers',
         selector: 'attackers',
-        grow: 1,
+        grow: 2,
         cell: row => {
             return (
                 <div>
@@ -123,7 +123,7 @@ const columns = [
     },
     {
         name: 'Suspicion',
-        width: "60px",
+        width: "100px",
         cell: row => {
             if(row.inference.suspicion.suspicion_level>=80){
                 return "High"
@@ -133,6 +133,13 @@ const columns = [
                 return "Low"
             }
 
+        }
+    },
+    {
+        name: 'Category',
+        width: "100px",
+        cell: row => {
+            return row.inference.event_codes;
         }
     },
     {
