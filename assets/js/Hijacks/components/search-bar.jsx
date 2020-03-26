@@ -3,6 +3,7 @@ import EventTypeSelector from "./event-type-selector";
 import EventSuspicionSelector from "./event-suspicion-selector";
 import RangePicker from "./range-picker";
 import EventSearchBox from "./event-search-box";
+import EventShortcutSelector from "./event-shortcut-selector";
 
 class SearchBar extends React.Component {
 
@@ -15,6 +16,11 @@ class SearchBar extends React.Component {
             <div className="row search-bar">
                 <EventTypeSelector eventType={this.props.query.eventType}
                                    onChange={this.props.onEventTypeChange}
+                />
+
+                <EventShortcutSelector
+                                   eventCategories={this.props.query.codes}
+                                   onChange={this.props.onEventCategoryChange}
                 />
 
                 <EventSuspicionSelector eventSuspicionLevel={this.props.query.suspicionLevel}
