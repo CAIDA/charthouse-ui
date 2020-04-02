@@ -52,7 +52,7 @@ const columns = [
     {
         name: 'Potential Attackers',
         selector: 'attackers',
-        grow: 1,
+        grow: 2,
         cell: row => {
             return (
                 <div>
@@ -98,8 +98,8 @@ const columns = [
     {
         name: 'Duration',
         selector: 'finished_ts',
-        minWidth: '80px',
-        maxWidth: '120px',
+        width: '100px',
+        center:true,
         cell: row => {
             let data = row.finished_ts;
             if (data === null) {
@@ -123,8 +123,24 @@ const columns = [
     },
     {
         name: 'Suspicion',
-        selector: 'inference.suspicion.suspicion_level',
-        width: "60px",
+        width: "100px",
+        cell: row => {
+            if(row.inference.suspicion.suspicion_level>=80){
+                return "High"
+            } else if(row.inference.suspicion.suspicion_level>20){
+                return "Medium"
+            } else {
+                return "Low"
+            }
+
+        }
+    },
+    {
+        name: 'Category',
+        width: "100px",
+        cell: row => {
+            return row.inference.event_codes;
+        }
     },
     {
         name: 'Type',

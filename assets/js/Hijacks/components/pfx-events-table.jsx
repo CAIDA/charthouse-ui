@@ -104,7 +104,10 @@ class PfxEventsTable extends React.Component {
                     if('sub_origins' in row.details){
                         origins = row.details.sub_origins;
                     } else if ('old_origins' in row.details){
-                        origins = row.details.old_origins
+                        origins = row.details.old_origins;
+                        if(this.props.eventType==="defcon"){
+                            origins = origins.concat(row.details.new_origins);
+                        }
                     }
 
                     let ases = origins.map(asn=>{
@@ -126,6 +129,9 @@ class PfxEventsTable extends React.Component {
                         origins = row.details.super_origins;
                     } else if ('old_origins' in row.details){
                         origins = row.details.old_origins
+                        if(this.props.eventType==="defcon"){
+                            origins = origins.concat(row.details.new_origins);
+                        }
                     }
 
                     let ases = origins.map(asn=>{
