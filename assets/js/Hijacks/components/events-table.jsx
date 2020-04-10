@@ -341,15 +341,26 @@ class EventsTable extends React.Component {
             this.query.max_duration = parseInt(parsed.max_duration);
         }
         if("ts_start" in parsed){
-            this.query.startTime = moment.utc(parsed.ts_start, "YYYY-MM-DDTHH:mm");
+            this.query.startTime = this.parse_time(parsed.ts_start);
         }
         if("ts_end" in parsed){
-            this.query.endTime = moment.utc(parsed.ts_end, "YYYY-MM-DDTHH:mm");
+            this.query.endTime = this.parse_time(parsed.ts_end);
         }
 
         this.query.suspicionLevel = translate_suspicion_values_to_str(this.query.min_susp, this.query.max_susp);
         [this.query.min_susp, this.query.max_susp] = translate_suspicion_str_to_values(this.query.suspicionLevel);
     };
+
+    parse_time(ts_str){
+        if(isNaN(ts_str)){
+            // not a number
+            return moment.utc(ts_str, "YYYY-MM-DDTHH:mm");
+        } else {
+            // is a number
+            let d = new Date(parseInt(ts_str));
+            return moment.utc(d.toUTCString())
+        }
+    }
 
     render() {
         let data = [];
