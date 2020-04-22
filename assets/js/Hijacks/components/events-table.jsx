@@ -9,7 +9,11 @@ import React from 'react';
 import DataTable from 'react-data-table-component';
 import axios from 'axios';
 import SearchBar from "./search-bar";
-import {translate_suspicion_str_to_values, translate_suspicion_values_to_str} from "../utils/events";
+import {
+    extract_largest_prefix,
+    translate_suspicion_str_to_values,
+    translate_suspicion_values_to_str
+} from "../utils/events";
 import AsNumber from "./asn";
 import IPPrefix from "./ip-prefix";
 
@@ -62,22 +66,11 @@ const columns = [
         },
     },
     {
-        name: 'Largest Prefix',
+        name: 'Largest (Sub)Prefix',
         selector: 'prefixes',
         width: "160px",
         cell: row => {
-            let data = row.prefixes;
-            let maxsize = 32;
-            let maxpfx = data[0];
-            for (let pfx in data.slice(1)) {
-                let size = parseInt(pfx.split("/")[1]);
-                if (size < maxsize) {
-                    maxsize = size;
-                    maxpfx = pfx
-                }
-
-            }
-            return <IPPrefix prefix={maxpfx}/>
+            return <IPPrefix prefix={extract_largest_prefix(row)}/>
         }
     },
     {
