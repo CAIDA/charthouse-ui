@@ -101,7 +101,7 @@ const columns = [
         },
     },
     {
-        name: 'Largest Prefix',
+        name: 'Largest (Sub)Prefix',
         selector: 'prefixes',
         width: "160px",
         cell: row => {
