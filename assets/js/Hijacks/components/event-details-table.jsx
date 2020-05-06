@@ -117,7 +117,7 @@ class EventDetailsTable extends React.Component {
                                     <td>{data.event_details_type}</td>
                                 </tr>
                                 <tr>
-                                    <th>Largest prefix:</th>
+                                    <th>Largest (sub)prefix:</th>
                                     <td> <IPPrefix prefix={data.largest_prefix}/> </td>
                                 </tr>
                                 <tr>
