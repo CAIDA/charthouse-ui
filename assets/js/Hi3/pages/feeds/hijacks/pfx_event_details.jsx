@@ -140,6 +140,15 @@ class PfxEventDetails extends React.Component {
             sankeyGraphs =
                 <React.Fragment>
                     <SankeyGraph
+                        data={this.state.subpaths.concat(this.state.superpaths)}
+                        title={"Route Collectors AS Path Sankey Diagram - Combined"}
+                        id={"all_sankey"}
+                        highlights={[]}
+                        benign_nodes={this.state.superpaths.flat()}
+                        suspicious_nodes={this.state.subpaths.flat()}
+                    />
+
+                    <SankeyGraph
                         data={this.state.subpaths}
                         title={"Route Collectors AS Path Sankey Diagram - Sub Prefix"}
                         id={"sub_sankey"}
