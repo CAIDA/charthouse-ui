@@ -50,14 +50,17 @@ class AsNumber extends React.Component {
         if(on_asndrop){
             res.push(<p key={`tooltip-${count++}`}>AS is on Spamhaus ASN DROP list</p>)
         }
-        if ("asrank" in external && asn in external.asrank) {
+        if ("asrank" in external && asn in external.asrank && external.asrank.asn) {
             let asorg = external.asrank[asn];
-            if ("org" in asorg && "name" in asorg["org"]) {
-                asorg["org"]["name"] = asorg["org"]["name"].replace(/"/g, "");
+            let country_name = asorg.organization.country.name;
+            let org_name = asorg.organization.orgName;
+            let rank = asorg.rank;
+            if (org_name) {
+                org_name = org_name.replace(/"/g, "");
                 res.push(<p key={`tooltip-${count++}`}> ASN: {asn} </p>);
-                res.push(<p key={`tooltip-${count++}`}> Name: {asorg["org"]["name"]} </p>);
-                res.push(<p key={`tooltip-${count++}`}> Country: {asorg["country_name"]} </p>);
-                res.push(<p key={`tooltip-${count++}`}> Rank: {asorg["rank"]} </p>);
+                res.push(<p key={`tooltip-${count++}`}> Name: {org_name} </p>);
+                res.push(<p key={`tooltip-${count++}`}> Country: {country_name} </p>);
+                res.push(<p key={`tooltip-${count++}`}> Rank: {rank} </p>);
             }
         }
         if ("hegemony" in external && asn in external.asrank) {
