@@ -2,7 +2,6 @@ import React from "react";
 import {extract_impact, extract_largest_prefix, unix_time_to_str} from "../utils/events";
 import AsNumber from "./asn";
 import IPPrefix from "./ip-prefix";
-import TagsList from "./tags-list";
 import axios from "axios";
 
 class EventDetailsTable extends React.Component {
@@ -43,18 +42,9 @@ class EventDetailsTable extends React.Component {
             processed["duration"] = `${(data["finished_ts"] - data["view_ts"]) / 60} min`;
         }
 
-        processed["suspicion"] = data.inference.suspicion.suspicion_level;
-        processed["misconf"] = data.inference.misconfiguration.toString();
-        processed["comments"] = data.inference.comments.map((value, index) => {
-            return <p key={`comment-${index}`}>{value}</p>
-        });
-
-        let codes = {};
-        data.inference.event_codes.forEach(code => {
-            codes[code] = {};
-            codes[code].type="unknown";
-        });
-        processed["codes"] = <TagsList tags={codes} is_code={true}/>;
+        let primary_inference = data.summary.inference_result.primary_inference;
+        processed["suspicion"] = primary_inference.suspicion_level;
+        processed["explanation"] = <p key={`explanation`}>{primary_inference.explanation}</p>;
 
         return processed
     }
@@ -96,7 +86,7 @@ class EventDetailsTable extends React.Component {
                                     <th>Potential Victim:</th>
                                     <td>
                                         {
-                                            data.victims.map(function(asn){
+                                            data.summary.inference_result.victims.map(function(asn){
                                                 return <AsNumber key={asn} asn={asn} data={data.external} />
                                             })
                                         }
@@ -106,7 +96,7 @@ class EventDetailsTable extends React.Component {
                                     <th>Potential Attacker:</th>
                                     <td>
                                         {
-                                            data.attackers.map(function(asn){
+                                            data.summary.inference_result.attackers.map(function(asn){
                                                 return <AsNumber key={asn} asn={asn} data={data.external} />
                                             })
                                         }
@@ -152,30 +142,28 @@ class EventDetailsTable extends React.Component {
                                 {/*    <th>Misconfiguration</th>*/}
                                 {/*    <td>{data.misconf}</td>*/}
                                 {/*</tr>*/}
-                                <tr>
-                                    <th>Event Codes</th>
-                                    <td>{data.codes}</td>
-                                </tr>
+                                {/*<tr>*/}
+                                {/*    <th>Event Codes</th>*/}
+                                {/*    <td>{data.codes}</td>*/}
+                                {/*</tr>*/}
                                 </tbody>
                             </table>
                         </div>
                     </div>
-                    {data.comments.length>0 &&
                     <div className="col-lg-12">
                         <div className="table-responsive">
                             <table className="table table-striped">
                                 <tbody>
                                 <tr>
-                                    <th>Comments:</th>
+                                    <th>Explanation:</th>
                                     <td>
-                                        {data.comments}
+                                        {data.explanation}
                                     </td>
                                 </tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
-                    }
                 </div>
 
                 <div className={"row"}>

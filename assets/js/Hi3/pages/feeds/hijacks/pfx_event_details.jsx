@@ -47,7 +47,6 @@ class PfxEventDetails extends React.Component {
         const response = await axios.get(
             `https://bgp.caida.org/json/pfx_event/id/${this.eventId}/${this.fingerprint}`,
         );
-
         let subpaths = [];
         let superpaths = [];
 
@@ -135,6 +134,13 @@ class PfxEventDetails extends React.Component {
         let showTrResults = this.state.tr_results.length > 0;
 
         let sankeyGraphs;
+        if(this.state.loadingPfxEvent){
+            return null
+        }
+
+        // TODO: fix pfx_event victim and attacker inference
+        let victims = [];
+        let attackers = [];
 
         if (["submoas", "defcon"].includes(this.eventType)) {
             sankeyGraphs =
@@ -144,16 +150,16 @@ class PfxEventDetails extends React.Component {
                         title={"Route Collectors AS Path Sankey Diagram - Sub Prefix"}
                         id={"sub_sankey"}
                         highlights={[]}
-                        benign_nodes={this.state.eventData.victims}
-                        suspicious_nodes={this.state.eventData.attackers}
+                        benign_nodes={victims}
+                        suspicious_nodes={attackers}
                     />
                     <SankeyGraph
                         data={this.state.superpaths}
                         title={"Route Collectors AS Path Sankey Diagram - Super Prefix"}
                         id={"super_sankey"}
                         highlights={[]}
-                        benign_nodes={this.state.eventData.victims}
-                        suspicious_nodes={this.state.eventData.attackers}
+                        benign_nodes={victims}
+                        suspicious_nodes={attackers}
                     />
                 </React.Fragment>
 
@@ -170,8 +176,8 @@ class PfxEventDetails extends React.Component {
                         title={"Route Collectors AS Path Sankey Diagram"}
                         highlights={highlights}
                         id={"pfx_sankey"}
-                        benign_nodes={this.state.eventData.victims}
-                        suspicious_nodes={this.state.eventData.attackers}
+                        benign_nodes={victims}
+                        suspicious_nodes={attackers}
                     />
                 </React.Fragment>
         }
