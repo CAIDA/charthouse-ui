@@ -93,11 +93,13 @@ class AsNumber extends React.Component {
         let country_flag = "";
         let as_name = "";
         if(asorg){
-            if(asorg.country){
-                country_flag = this.flag(asorg.country);
+            let country_code = asorg.organization.country.iso;
+            let org_name = asorg.organization.orgName;
+            if(country_code){
+                country_flag = this.flag(country_code);
             }
-            if(asorg.name){
-                as_name = this.abbrFit(asorg.name,22);
+            if(org_name){
+                as_name = this.abbrFit(org_name,22);
             }
         }
 
