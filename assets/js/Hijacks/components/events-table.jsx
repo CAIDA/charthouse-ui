@@ -9,7 +9,11 @@ import React from 'react';
 import DataTable from 'react-data-table-component';
 import axios from 'axios';
 import SearchBar from "./search-bar";
-import {translate_suspicion_str_to_values, translate_suspicion_values_to_str} from "../utils/events";
+import {
+    extract_largest_prefix,
+    translate_suspicion_str_to_values,
+    translate_suspicion_values_to_str
+} from "../utils/events";
 import AsNumber from "./asn";
 import IPPrefix from "./ip-prefix";
 
@@ -44,7 +48,7 @@ const columns = [
         cell: row => {
             return (
                 <div>
-                    {renderOrigins(row.victims, row.external)}
+                    {renderOrigins(row.summary.inference_result.victims, row.external)}
                 </div>
             );
         },
@@ -56,7 +60,7 @@ const columns = [
         cell: row => {
             return (
                 <div>
-                    {renderOrigins(row.attackers, row.external)}
+                    {renderOrigins(row.summary.inference_result.attackers, row.external)}
                 </div>
             );
         },
@@ -66,18 +70,8 @@ const columns = [
         selector: 'prefixes',
         width: "160px",
         cell: row => {
-            let data = row.prefixes;
-            let maxsize = 32;
-            let maxpfx = data[0];
-            for (let pfx in data.slice(1)) {
-                let size = parseInt(pfx.split("/")[1]);
-                if (size < maxsize) {
-                    maxsize = size;
-                    maxpfx = pfx
-                }
-
-            }
-            return <IPPrefix prefix={maxpfx}/>
+            let prefix = extract_largest_prefix(row);
+            return <IPPrefix prefix={prefix}/>
         }
     },
     {
@@ -85,8 +79,7 @@ const columns = [
         selector: 'prefixes',
         width: "100px",
         cell: row => {
-            let data = row.prefixes;
-            return data.length
+            return row.pfx_events.length
         },
     },
     {
@@ -125,9 +118,10 @@ const columns = [
         name: 'Suspicion',
         width: "100px",
         cell: row => {
-            if(row.inference.suspicion.suspicion_level>=80){
+            let susp_level = row.summary.inference_result.primary_inference.suspicion_level;
+            if(susp_level >=80){
                 return "High"
-            } else if(row.inference.suspicion.suspicion_level>20){
+            } else if(susp_level>20){
                 return "Medium"
             } else {
                 return "Low"
@@ -139,7 +133,7 @@ const columns = [
         name: 'Category',
         width: "100px",
         cell: row => {
-            return row.inference.event_codes;
+            return row.summary.inference_result.inferences.map( ({inference_id}) => inference_id);
         }
     },
     {
@@ -371,6 +365,7 @@ class EventsTable extends React.Component {
                 event.external["blacklist"] = this.state.blacklist;
                 event.external["asndrop"] = this.state.asndrop;
             });
+            console.log(data);
             loading = false;
         }
         return (
