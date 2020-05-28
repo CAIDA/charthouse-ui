@@ -25,10 +25,6 @@ class TagsList extends React.Component {
     _loadTagsData = async () => {
         const response = await axios.get("https://bgp.caida.org/json/tags");
         let definitions = response.data.definitions;
-        Object.keys(response.data.event_codes).forEach(code_name => {
-           definitions[code_name] = {};
-           definitions[code_name]["definition"] = response.data.event_codes[code_name]["definition"];
-        });
         this.setState({
             tagDefinitions: definitions,
         })
