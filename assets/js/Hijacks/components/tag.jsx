@@ -29,7 +29,6 @@ class Tag extends React.Component{
                 res = "danger";
                 break;
             case "grey":
-            case "na":
                 res = "warning";
                 break;
             case "benign":
@@ -37,6 +36,7 @@ class Tag extends React.Component{
                 res = "success";
                 break;
             case "unknown":
+            case "na":
                 res = "default";
                 break;
             default:
