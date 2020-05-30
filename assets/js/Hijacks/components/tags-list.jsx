@@ -39,23 +39,19 @@ class TagsList extends React.Component {
 
     render() {
         let tags = this.props.tags;
-        let is_code = !!this.props.is_code;
-        let render_name = !is_code;
         let tagDefinitions = this.state.tagDefinitions;
 
+        console.log(tags);
         return (
             <div className="tags-list" onClick={(e) => this.handleClick(e)}>
                 {Object.keys(tags).map(function(tag_name, index){
                     let definition = "";
-                    let tag_key = is_code? `tag-${tag_name}` : `code-${tag_name}`;
                     if(tag_name in tagDefinitions){
                         definition = tagDefinitions[tag_name].definition;
                     }
                     return <Tag key={`tag-${tag_name}`}
                                 name={tag_name}
-                                render_name={render_name}
-                                type={tags[tag_name]["type"]}
-                                is_code={is_code}
+                                type={tags[tag_name]}
                                 definition={definition}/>
                 })}
             </div>

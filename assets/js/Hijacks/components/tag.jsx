@@ -25,12 +25,15 @@ class Tag extends React.Component{
 
         switch(type){
             case "suspicious":
+            case "yes":
                 res = "danger";
                 break;
             case "grey":
+            case "na":
                 res = "warning";
                 break;
             case "benign":
+            case "no":
                 res = "success";
                 break;
             case "unknown":
@@ -52,12 +55,9 @@ class Tag extends React.Component{
     }
 
     render() {
-        let name = this.props.render_name? this._renderTagName(this.props.name): this.props.name;
+        let name = this._renderTagName(this.props.name);
         let type = this._translateType(this.props.type);
         let search_term = `?tags=${this.props.name}`;
-        if(this.props.is_code){
-            search_term = `?codes=${this.props.name}`;
-        }
         return (
             <Link to={{
                 pathname:"/feeds/hijacks/events",

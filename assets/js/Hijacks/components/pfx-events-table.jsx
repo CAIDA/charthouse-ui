@@ -2,7 +2,7 @@ import React from "react";
 import DataTable from "react-data-table-component";
 import PropTypes from "prop-types";
 import TagsList from "./tags-list";
-import {extract_tags_dict_from_inference} from "../utils/tags";
+import {extract_tags_tr_worthiness} from "../utils/tags";
 import IPPrefix from "./ip-prefix";
 import LinkA from "../../Hi3/components/linka";
 
@@ -111,7 +111,7 @@ class PfxEventsTable extends React.Component {
                     }
 
                     let ases = origins.map(asn=>{
-                        return <a href={`https://asrank.caida.org/asns?asn=${asn}`} target="_blank"> AS{asn} </a>
+                        return <a key={`pfx-asn-${asn}`} href={`https://asrank.caida.org/asns?asn=${asn}`} target="_blank"> AS{asn} </a>
                     }).reduce((prev, curr) => [prev, ', ', curr]);
 
                     return <React.Fragment>
@@ -180,11 +180,12 @@ class PfxEventsTable extends React.Component {
         ];
     };
 
-    preprocessData(pfx_events, inference) {
+    preprocessData(pfx_events, tags_data) {
 
         let processed = [];
 
-        let tags_inference_dict = extract_tags_dict_from_inference(inference);
+        let tags_tr_worthy_dict = extract_tags_tr_worthiness(tags_data);
+
 
         for (let pfx_event of pfx_events) {
             let event = {};
@@ -213,7 +214,7 @@ class PfxEventsTable extends React.Component {
             event.fingerprint = prefixes.join("_")
                 .replace(/\//g, "-");
             pfx_event.tags.forEach((tag_name)=>{
-                tags_dict[tag_name] = tag_name in tags_inference_dict? tags_inference_dict[tag_name]: "unknown";
+                tags_dict[tag_name] = tag_name in tags_tr_worthy_dict? tags_tr_worthy_dict[tag_name]: "unknown";
             });
             event.tags_dict=tags_dict;
             event.details=pfx_event.details;
@@ -223,7 +224,7 @@ class PfxEventsTable extends React.Component {
     }
 
     render() {
-        let data = this.preprocessData(this.props.data, this.props.inference);
+        let data = this.preprocessData(this.props.data, this.props.tagsData);
         let columns = [];
         if (["moas", "edges"].includes(this.props.eventType)) {
             columns = this.columns1

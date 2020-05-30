@@ -34,38 +34,21 @@ function tr_str_to_value(tr_worthiness){
     }
 }
 
-function extract_tags_dict_from_inference(inference){
-    if(inference===undefined){
+function extract_tags_tr_worthiness(tags_data){
+    if(tags_data===undefined){
         return {};
     }
-    let tags_dict = {};
-    let tags_dict_tmp = {};
-    for(let tag_comb_info of inference.suspicion.suspicion_tags){
-        for(let tag of tag_comb_info.tags){
-            if(tag in tags_dict_tmp){
-                if(tags_dict_tmp[tag].confidence>tag_comb_info.confidence){
-                    tags_dict_tmp[tag]={
-                        "level": tag_comb_info.suspicion_level,
-                        "confidence": tag_comb_info.confidence,
-                    }
-                }
-            } else {
-                tags_dict_tmp[tag]={
-                    "level": tag_comb_info.suspicion_level,
-                    "confidence": tag_comb_info.confidence,
-                }
+
+    let tags_tr_worthy_dict = {};
+    for(let combination of tags_data["tr_worthy"]){
+        let worthy = combination["worthy"];
+        for(let tag of combination["tags"]){
+            if(!(tag in tags_tr_worthy_dict)){
+                tags_tr_worthy_dict[tag] = worthy;
             }
         }
     }
-
-    for(let tag_name of Object.keys(tags_dict_tmp)){
-        let tag_info = tags_dict_tmp[tag_name];
-        tags_dict[tag_name] = {
-            "type": suspicion_level_to_type(tag_info.level)
-        }
-    }
-
-    return tags_dict;
+    return tags_tr_worthy_dict;
 }
 
-export {suspicion_level_to_type, extract_tags_dict_from_inference, tr_to_type}
+export {suspicion_level_to_type, extract_tags_tr_worthiness, tr_to_type}

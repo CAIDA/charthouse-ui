@@ -3,11 +3,8 @@ import axios from "axios";
 import 'Hi3/css/pages/feeds/hijacks.css';
 import EventDetailsTable from "../../../../Hijacks/components/event-details-table";
 import PfxEventsTable from "../../../../Hijacks/components/pfx-events-table";
-import EventSuspicionTable from "../../../../Hijacks/components/event-suspicion-table";
 import EventTrTagsTable from "../../../../Hijacks/components/event-tr-tags-table";
 import queryString from "query-string";
-
-const HORIZONTAL_OFFSET = 480;
 
 class EventDetails extends React.Component {
 
@@ -89,14 +86,14 @@ class EventDetails extends React.Component {
                 </div>
 
 
-                <div>
-                    { debug &&
-                    <EventSuspicionTable suspicion_tags={this.state.eventData.inference.suspicion.suspicion_tags}
-                                         all_tags={this.state.eventData.tags}
-                                         title={"Tags Suspicion Table"}
-                    />
-                    }
-                </div>
+                {/*<div>*/}
+                {/*    { debug &&*/}
+                {/*    <EventSuspicionTable suspicion_tags={this.state.eventData.inference.suspicion.suspicion_tags}*/}
+                {/*                         all_tags={this.state.eventData.tags}*/}
+                {/*                         title={"Tags Suspicion Table"}*/}
+                {/*    />*/}
+                {/*    }*/}
+                {/*</div>*/}
 
                 <div>
                     {this.state.tagsData!==undefined && debug &&
@@ -109,7 +106,7 @@ class EventDetails extends React.Component {
 
                 <div>
                     <PfxEventsTable data={this.state.eventData.pfx_events}
-                                    inference={this.state.eventData.inference}
+                                    tagsData={this.state.tagsData}
                                     eventId={this.eventId}
                                     eventType={this.eventType}
                                     isEventDetails={true}
