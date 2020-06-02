@@ -41,7 +41,6 @@ class TagsList extends React.Component {
         let tags = this.props.tags;
         let tagDefinitions = this.state.tagDefinitions;
 
-        console.log(tags);
         return (
             <div className="tags-list" onClick={(e) => this.handleClick(e)}>
                 {Object.keys(tags).map(function(tag_name, index){

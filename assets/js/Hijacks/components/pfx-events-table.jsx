@@ -215,7 +215,6 @@ class PfxEventsTable extends React.Component {
             }
             event.tags = pfx_event.tags;
             event.tr_worthy = pfx_event.tr_worthy.toString();
-            console.log(pfx_event.traceroutes);
             event.tr_available = pfx_event.traceroutes.some(msm => msm.results.length>0).toString();
             event.inferences = pfx_event.inferences.map(inference => inference.inference_id).join(", ");
             event.fingerprint = prefixes.join("_")
