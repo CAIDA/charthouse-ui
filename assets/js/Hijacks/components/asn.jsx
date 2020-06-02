@@ -95,7 +95,7 @@ class AsNumber extends React.Component {
         let asorg = data.asrank[asn];
         let country_flag = "";
         let as_name = "";
-        if(asorg){
+        if(asorg && asorg.organization){
             let country_code = asorg.organization.country.iso;
             let org_name = asorg.organization.orgName;
             if(country_code){
