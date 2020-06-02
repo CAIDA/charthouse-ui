@@ -18,10 +18,9 @@ class PfxEventDetails extends React.Component {
         this.eventType = this.eventId.split("-")[0];
         this.state = {
             eventData: {},
-            pfxEventData: {},
             subpaths: [],
             superpaths: [],
-            pfxEvents: [],
+            pfxEvent: [],
             tr_aspaths: [],
             tr_results: [],
             loadingEvent: true,
@@ -64,6 +63,8 @@ class PfxEventDetails extends React.Component {
             "tags": data.tags,
             "tr_worthy": data.traceroutes.worthy,
             "traceroutes": data.traceroutes.msms,
+            "victims": data.victims,
+            "attackers": data.attackers,
             "fingerprint": this.fingerprint,
         };
         if ("prefix" in data.details) {
@@ -120,10 +121,9 @@ class PfxEventDetails extends React.Component {
         }
 
         this.setState({
-            pfxEventData: response.data,
             subpaths: subpaths,
             superpaths: superpaths,
-            pfxEvents: [pfxEvent],
+            pfxEvent: pfxEvent,
             tr_aspaths: as_routes,
             tr_results: msms_filtered,
             loadingPfxEvent: false,
@@ -138,9 +138,8 @@ class PfxEventDetails extends React.Component {
             return null
         }
 
-        // TODO: fix pfx_event victim and attacker inference
-        let victims = [];
-        let attackers = [];
+        let victims = this.state.pfxEvent.victims;
+        let attackers = this.state.pfxEvent.attackers;
 
         if (["submoas", "defcon"].includes(this.eventType)) {
             sankeyGraphs =
@@ -203,7 +202,7 @@ class PfxEventDetails extends React.Component {
                     <React.Fragment>
                         <div className="row">
                             <PfxEventsTable
-                                data={this.state.pfxEvents}
+                                data={[this.state.pfxEvent]}
                                 inference={this.state.eventData.inference}
                                 eventType={this.eventType}
                                 eventId={this.eventId}
