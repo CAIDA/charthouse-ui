@@ -69,6 +69,10 @@ class PfxEventsTable extends React.Component {
                 }
             },
             {
+                name: 'Inferences',
+                selector: 'inferences',
+            },
+            {
                 name: 'Traceroute Worthy',
                 selector: 'tr_worthy',
                 width: "150px",
@@ -154,6 +158,11 @@ class PfxEventsTable extends React.Component {
                 }
             },
             {
+                name: 'Inferences',
+                selector: 'inferences',
+                // width: "150px",
+            },
+            {
                 name: 'Traceroute Worthy',
                 selector: 'tr_worthy',
                 width: "150px",
@@ -206,11 +215,9 @@ class PfxEventsTable extends React.Component {
             }
             event.tags = pfx_event.tags;
             event.tr_worthy = pfx_event.tr_worthy.toString();
-            if("traceroutes" in pfx_event && pfx_event.traceroutes.length>0){
-                event.tr_available = this.tr_available(pfx_event.traceroutes).toString();
-            } else {
-                event.tr_available = "false";
-            }
+            console.log(pfx_event.traceroutes);
+            event.tr_available = pfx_event.traceroutes.some(msm => msm.results.length>0).toString();
+            event.inferences = pfx_event.inferences.map(inference => inference.inference_id).join(", ");
             event.fingerprint = prefixes.join("_")
                 .replace(/\//g, "-");
             pfx_event.tags.forEach((tag_name)=>{

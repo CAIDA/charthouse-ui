@@ -62,6 +62,7 @@ class PfxEventDetails extends React.Component {
             "details": data.details,
             "tags": data.tags,
             "tr_worthy": data.traceroutes.worthy,
+            "inferences": data.inferences,
             "traceroutes": data.traceroutes.msms,
             "victims": data.victims,
             "attackers": data.attackers,
