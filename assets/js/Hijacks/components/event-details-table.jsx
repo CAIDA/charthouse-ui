@@ -43,8 +43,8 @@ class EventDetailsTable extends React.Component {
         }
 
         let primary_inference = data.summary.inference_result.primary_inference;
-        processed["suspicion"] = primary_inference.suspicion_level;
-        processed["explanation"] = <p key={`explanation`}>{primary_inference.explanation}</p>;
+        processed["inference"] = `${primary_inference.inference_id} (${primary_inference.suspicion_level})`;
+        processed["explanation"] = primary_inference.explanation;
 
         return processed
     }
@@ -135,30 +135,12 @@ class EventDetailsTable extends React.Component {
                                     <td>{data.duration}</td>
                                 </tr>
                                 <tr>
-                                    <th>Suspicion Level:</th>
-                                    <td>{data.suspicion}</td>
+                                    <th>Primary Inference (suspicion level):</th>
+                                    <td>{data.inference}</td>
                                 </tr>
-                                {/*<tr>*/}
-                                {/*    <th>Misconfiguration</th>*/}
-                                {/*    <td>{data.misconf}</td>*/}
-                                {/*</tr>*/}
-                                {/*<tr>*/}
-                                {/*    <th>Event Codes</th>*/}
-                                {/*    <td>{data.codes}</td>*/}
-                                {/*</tr>*/}
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <div className="col-lg-12">
-                        <div className="table-responsive">
-                            <table className="table table-striped">
-                                <tbody>
                                 <tr>
                                     <th>Explanation:</th>
-                                    <td>
-                                        {data.explanation}
-                                    </td>
+                                    <td>{data.explanation}</td>
                                 </tr>
                                 </tbody>
                             </table>
