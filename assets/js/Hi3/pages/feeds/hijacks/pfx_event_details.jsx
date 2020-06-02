@@ -62,6 +62,7 @@ class PfxEventDetails extends React.Component {
             "details": data.details,
             "tags": data.tags,
             "tr_worthy": data.traceroutes.worthy,
+            "inferences": data.inferences,
             "traceroutes": data.traceroutes.msms,
             "victims": data.victims,
             "attackers": data.attackers,
@@ -214,7 +215,6 @@ class PfxEventDetails extends React.Component {
                                 <a target='_blank' type="button" className="btn btn-sm btn-primary"
                                    href={`https://bgp.caida.org/json/pfx_event/id/${this.eventId}/${this.fingerprint}`}>
                                     Raw JSON</a>
-
                             </div>
                         </div>
 
