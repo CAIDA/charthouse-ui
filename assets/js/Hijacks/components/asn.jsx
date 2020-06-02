@@ -50,7 +50,7 @@ class AsNumber extends React.Component {
         if(on_asndrop){
             res.push(<p key={`tooltip-${count++}`}>AS is on Spamhaus ASN DROP list</p>)
         }
-        if ("asrank" in external && asn in external.asrank && external.asrank.asn) {
+        if ("asrank" in external && asn in external.asrank && external.asrank[asn]) {
             let asorg = external.asrank[asn];
             let country_name = asorg.organization.country.name;
             let org_name = asorg.organization.orgName;

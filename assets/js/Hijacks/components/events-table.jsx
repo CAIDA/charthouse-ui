@@ -365,7 +365,6 @@ class EventsTable extends React.Component {
                 event.external["blacklist"] = this.state.blacklist;
                 event.external["asndrop"] = this.state.asndrop;
             });
-            console.log(data);
             loading = false;
         }
         return (
