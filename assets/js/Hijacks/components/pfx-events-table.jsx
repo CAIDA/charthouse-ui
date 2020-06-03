@@ -214,8 +214,8 @@ class PfxEventsTable extends React.Component {
                 prefixes.push(pfx_event.super_pfx);
             }
             event.tags = pfx_event.tags;
-            event.tr_worthy = pfx_event.tr_worthy.toString();
-            event.tr_available = pfx_event.traceroutes.some(msm => msm.results.length>0).toString();
+            event.tr_worthy = pfx_event.traceroutes.worthy.toString();
+            event.tr_available = pfx_event.traceroutes.msms.some(msm => msm.results.length>0).toString();
             event.inferences = pfx_event.inferences.map(inference => inference.inference_id).join(", ");
             event.fingerprint = prefixes.join("_")
                 .replace(/\//g, "-");
