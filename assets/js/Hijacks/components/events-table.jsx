@@ -25,6 +25,7 @@ function unix_time_to_str(unix_time) {
 }
 
 function renderOrigins(origins, data){
+    origins = [...new Set(origins)];    // deduplicate origins
     return (
         <div>
             {
