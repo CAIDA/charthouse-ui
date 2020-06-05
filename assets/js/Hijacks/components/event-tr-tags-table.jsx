@@ -1,5 +1,5 @@
 import React from "react";
-import TagsList from "./tags-list";
+import {PropertyTagsList} from "./tags/property-tag";
 import DataTable from "react-data-table-component";
 import {tr_to_type} from "../utils/tags";
 
@@ -16,7 +16,7 @@ const columns = [
                     'type': tr_to_type(row.worthy)
                 }
             }
-            return <TagsList tags={tag_dict} />
+            return <PropertyTagsList tags={tag_dict} />
         }
     },
     {

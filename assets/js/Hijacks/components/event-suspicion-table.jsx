@@ -1,5 +1,5 @@
 import React from "react";
-import TagsList from "./tags-list";
+import {PropertyTagsList} from "./tags/property-tag";
 import DataTable from "react-data-table-component";
 import {suspicion_level_to_type} from "../utils/tags";
 
@@ -17,7 +17,7 @@ const columns = [
                 }
             }
 
-            return <TagsList tags={tag_dict} />;
+            return <PropertyTagsList tags={tag_dict} />;
         }
     },
     {

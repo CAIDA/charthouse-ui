@@ -1,7 +1,7 @@
 import $ from 'jquery';
 import moment from 'moment';
 
-import { auth } from 'Auth';
+import {auth} from 'Auth';
 import config from 'Config';
 import ExpressionFactory from '../expression/factory';
 
@@ -44,7 +44,7 @@ class CharthouseApiConnector {
                     error(json.error + ' (Please contact hicube-info@caida.org to report this error)');
                     return;
                 }
-                json.jsonRequestSize = xOptions.responseText.length; // Tag json size (bytes) in data
+                json.jsonRequestSize = xOptions.responseText.length; // PropertyTag json size (bytes) in data
                 success(json);
             })
             .fail(function (jqXHR, textStatus, errorThrown) {

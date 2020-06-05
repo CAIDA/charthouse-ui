@@ -13,7 +13,7 @@ import HighStock from 'highcharts/highstock.src';
 
 import RadioToolbar from '../components/radio-toolbar';
 import tools from '../utils/tools';
-import { CharthouseDataSet } from '../utils/dataset.js';
+import {CharthouseDataSet} from '../utils/dataset.js';
 import Toggle from '../components/toggle-switch';
 import SelectPicker from '../components/select-picker';
 import '../utils/proto-mods';
@@ -533,7 +533,7 @@ class CharthouseXYChart extends React.PureComponent {
                 redraw = true;
             }
 
-            // Tag series label with y axis (if there's a dual axis)
+            // PropertyTag series label with y axis (if there's a dual axis)
             let name = series.options.name ? series.options.name.split('<span')[0] : series.options.id;
             if (dualYAxis) {
                 name += '<span style="color: ' + YAXIS_COLORS[yAxis] + ';font-size: .7em;"> [y' + (yAxis + 1) + ']</span>';

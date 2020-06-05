@@ -51,4 +51,19 @@ function extract_tags_tr_worthiness(tags_data){
     return tags_tr_worthy_dict;
 }
 
-export {suspicion_level_to_type, extract_tags_tr_worthiness, tr_to_type}
+/**
+ * Convert tag name from "-" separated string to space separated uppercase words
+ * @param name
+ * @returns {string|*}
+ */
+function convertTagName(name){
+    if(name===undefined){
+        return "undefined"
+    }
+    return name.split("-").map(function(x){
+        return x.charAt(0).toUpperCase() + x.slice(1);
+    }).join(" ")
+}
+
+
+export {suspicion_level_to_type, extract_tags_tr_worthiness, tr_to_type, convertTagName}
