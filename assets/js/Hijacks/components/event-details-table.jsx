@@ -136,11 +136,10 @@ class EventDetailsTable extends React.Component {
                                 </tr>
                                 <tr>
                                     <th>Primary Inference (suspicion level):</th>
-                                    <td>{data.inference}</td>
-                                </tr>
-                                <tr>
-                                    <th>Explanation:</th>
-                                    <td>{data.explanation}</td>
+                                    <td>
+                                        <p>{data.inference}</p>
+                                        <p><i>{data.explanation}</i></p>
+                                    </td>
                                 </tr>
                                 </tbody>
                             </table>
