@@ -217,6 +217,10 @@ class PfxEventDetails extends React.Component {
                             </div>
                         </div>
 
+                        <div className="row">
+                            {sankeyGraphs}
+                        </div>
+
                         { showTrResults &&
                         <div className="row">
                             <React.Fragment>
@@ -232,10 +236,6 @@ class PfxEventDetails extends React.Component {
                             </React.Fragment>
                         </div>
                         }
-
-                        <div className="row">
-                            {sankeyGraphs}
-                        </div>
                     </React.Fragment>
                 }
             </div>

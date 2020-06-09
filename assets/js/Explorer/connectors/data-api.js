@@ -1,7 +1,7 @@
 import $ from 'jquery';
 import moment from 'moment';
 
-import { auth } from 'Auth';
+import {auth} from 'Auth';
 import config from 'Config';
 import ExpressionFactory from '../expression/factory';
 

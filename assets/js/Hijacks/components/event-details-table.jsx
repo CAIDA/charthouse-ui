@@ -3,6 +3,7 @@ import {extract_impact, extract_largest_prefix, unix_time_to_str} from "../utils
 import AsNumber from "./asn";
 import IPPrefix from "./ip-prefix";
 import axios from "axios";
+import {InferenceTagsList} from "./tags/inference-tag";
 
 class EventDetailsTable extends React.Component {
 
@@ -42,9 +43,8 @@ class EventDetailsTable extends React.Component {
             processed["duration"] = `${(data["finished_ts"] - data["view_ts"]) / 60} min`;
         }
 
-        let primary_inference = data.summary.inference_result.primary_inference;
-        processed["inference"] = `${primary_inference.inference_id} (${primary_inference.suspicion_level})`;
-        processed["explanation"] = primary_inference.explanation;
+        processed["inferences"] = data.summary.inference_result.inferences;
+        processed["primary_inference"] = data.summary.inference_result.primary_inference;
 
         return processed
     }
@@ -134,13 +134,17 @@ class EventDetailsTable extends React.Component {
                                     <th>Duration:</th>
                                     <td>{data.duration}</td>
                                 </tr>
+                                {/*<tr>*/}
+                                {/*    <th>All Inferences:</th>*/}
+                                {/*    <td>*/}
+                                {/*        <InferenceTagsList inferences={data.inferences}/>*/}
+                                {/*    </td>*/}
+                                {/*</tr>*/}
                                 <tr>
                                     <th>Primary Inference (suspicion level):</th>
-                                    <td>{data.inference}</td>
-                                </tr>
-                                <tr>
-                                    <th>Explanation:</th>
-                                    <td>{data.explanation}</td>
+                                    <td>
+                                        <InferenceTagsList inferences={[data.primary_inference]} render_explanation={true}/>
+                                    </td>
                                 </tr>
                                 </tbody>
                             </table>

@@ -31,7 +31,7 @@ class ApiConnector {
         })
             .done(function (json, textStatus, xOptions) {
                 success({
-                    jsonResponseSize: xOptions.responseText.length, // Tag json size (bytes) in data
+                    jsonResponseSize: xOptions.responseText.length, // PropertyTag json size (bytes) in data
                     data: json
                 });
             })

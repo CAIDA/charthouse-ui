@@ -13,7 +13,7 @@ import HighStock from 'highcharts/highstock.src';
 
 import RadioToolbar from '../components/radio-toolbar';
 import tools from '../utils/tools';
-import { CharthouseDataSet } from '../utils/dataset.js';
+import {CharthouseDataSet} from '../utils/dataset.js';
 import Toggle from '../components/toggle-switch';
 import SelectPicker from '../components/select-picker';
 import '../utils/proto-mods';
