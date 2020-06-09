@@ -45,7 +45,8 @@ class InferenceTag extends React.Component{
                     }
                 >
                 <span className={`label tag-label label-${type[0]}`}>
-                    <i className={`tag-icon fa fa-${type[1]}`} aria-hidden="true"/>
+                    <i className={`tag-icon fa fa-lightbulb-o`} aria-hidden="true"/>
+                    {/*💡*/}
                     {name}
                     {this.props.render_level && ` (${this.props.suspicion_level})` }
                 </span>
