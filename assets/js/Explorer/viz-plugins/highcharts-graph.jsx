@@ -533,7 +533,7 @@ class CharthouseXYChart extends React.PureComponent {
                 redraw = true;
             }
 
-            // PropertyTag series label with y axis (if there's a dual axis)
+            // Tag series label with y axis (if there's a dual axis)
             let name = series.options.name ? series.options.name.split('<span')[0] : series.options.id;
             if (dualYAxis) {
                 name += '<span style="color: ' + YAXIS_COLORS[yAxis] + ';font-size: .7em;"> [y' + (yAxis + 1) + ']</span>';
