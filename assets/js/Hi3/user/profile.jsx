@@ -39,24 +39,43 @@ import { auth } from 'Auth';
 class ProfilePage extends React.Component {
 
     state = {
-        profile: null
+        profile: null,
+        authenticated: false,
+        cbcomplete: false,
     };
+
+    authpromise = null;
 
     constructor(props) {
         super(props);
 
         this._parseProfile = this._parseProfile.bind(this);
+        this.authpromise = auth.makeCancelable(auth.callSilentInit());
+        this.authpromise.promise.then(authed => {
+            this.setState({authenticated: authed, cbcomplete: true});
+        });
     }
 
-    componentWillMount() {
+    componentDidMount() {
         auth.getProfile(this._parseProfile);
     }
 
+    componentWillUnmount() {
+        if (this.authpromise) {
+            this.authpromise.cancel();
+        }
+    }
+
     render() {
-        const profile = this.state.profile;
-        if (!profile) {
+        if (!this.state.cbcomplete) {
             return <p>loading user info</p>;
         }
+
+        if (!this.state.profile) {
+            return <p>processing user info</p>;
+        }
+
+        const profile = this.state.profile;
         return <div>
             <pre>{JSON.stringify(profile, null, 2)}</pre>
             <pre>{JSON.stringify(auth.getIdToken(), null, 2)}</pre>

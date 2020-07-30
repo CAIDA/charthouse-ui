@@ -77,8 +77,26 @@ class Sidebar extends React.Component {
     };
 
     state = {
+        authenticated: false,
         isExpanded: false
     };
+
+    authpromise = null;
+
+    constructor(props) {
+        super(props);
+
+        this.authpromise = auth.makeCancelable(auth.callSilentInit());
+        this.authpromise.promise.then(authed => {
+            this.setState({authenticated: authed})
+        });
+    }
+
+    componentWillUnmount() {
+        if (this.authpromise) {
+            this.authpromise.cancel();
+        }
+    }
 
     render() {
         const collapsed = (!this.props.isPinned && !this.state.isExpanded) ?
@@ -94,7 +112,7 @@ class Sidebar extends React.Component {
                             <SidebarLink key={idx} onClick={this.onLeave} {...link}/> :
                             <div className='sidebar-separator' key={idx}/>;
                     })}
-                    {auth.isAuthenticated() ?
+                    {this.state.authenticated ?
                         (<div className='pull-bottom'>
                             <SidebarLink onClick={this.onLeave}
                                          page='user/profile'
@@ -109,7 +127,15 @@ class Sidebar extends React.Component {
                                              className="glyphicon glyphicon-log-out"/>}
                             />
                         </div>)
-                        : null};
+                        :
+                        (<div className='pull-bottom'>
+                            <SidebarLink onClick={this.onLeave}
+                                         page='login'
+                                         icon={<span
+                                             className="glyphicon glyphicon-log-in"/>}
+                            />
+                        </div>)
+                        };
                 </ul>
             </div>
         </div>;

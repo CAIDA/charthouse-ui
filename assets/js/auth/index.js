@@ -32,117 +32,99 @@
  * MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-import auth0 from 'auth0-js';
-
 import config from 'Config';
+import Keycloak from 'keycloak-js';
 
 class Auth {
 
     idToken;
+    authStatus;
 
     userProfile;
 
-    tokenRenewalTimer;
+    keycloak;
+    keycloakInit;
 
     constructor() {
-        this.auth0 = new auth0.WebAuth({
-            domain: 'hicube.auth0.com',
-            clientID: config.getParam('authClientId'),
-            redirectUri: `${config.getParam('baseUri')}/auth/callback`,
-            responseType: 'token id_token',
-            scope: 'openid profile email',
-            audience: config.getParam('api').url
+        var myself=this;
+        this.keycloak = Keycloak({
+                realm: "demo",
+                "url": process.env.KEYCLOAK_URL + "/auth/",
+                resource: "charthouse-ui",
+                "ssl-required": "external",
+                "confidential-port": "0",
+                "enable-cors": true,
+                "clientId": "charthouse-ui"
         });
+
+        this.keycloak.onTokenExpired = function() {
+
+            myself.keycloak.updateToken(70).success((refreshed) => {
+            }).error(() => {
+                myself.forceLogin();
+            });
+        }
+        this.keycloakInit = false;
+        this.idTokenParsed = null;
+        this.authStatus = false;
+        this.userProfile = null;
+    }
+
+    callSilentInit() {
+        var myself = this;
+        if (this.keycloakInit) {
+            return Promise.resolve(this.authStatus);
+        }
+        return this.keycloak.init({onLoad: 'check-sso',
+                silentCheckSsoRedirectUri: window.location.origin + '/silent-check-sso.html'}).then(function() {
+                        myself.keycloakInit = true;
+                        myself.idToken = myself.keycloak.idTokenParsed;
+                        myself.authStatus = myself.keycloak.authenticated;
+                        localStorage.setItem('idtoken', myself.keycloak.idToken);
+                        return myself.keycloak.authenticated;
+                });
+    }
+
+    callLoginPageInit() {
+        if (this.keycloakInit) {
+            return Promise.resolve(this.keycloak.authenticated);
+        }
+        this.keycloakInit = true;
+        return this.keycloak.init({onLoad: 'login-required'});
     }
 
     login() {
-        if (this.isAuthenticated()) {
+        if (this.isAuthenticated("login() isauth")) {
             // no need to authorize
             return;
         }
-        this.auth0.authorize();
+        this.keycloak.login({
+            redirectUri: sessionStorage.getItem('redirect_uri')
+        });
     }
 
     forceLogin() {
         this.logout();
+        if (this.keycloakInit) {
+                this.keycloak.clearToken();
+        }
         this.login();
     }
 
-    handleAuthentication(onSuccess, onErr) {
-        this.auth0.parseHash((err, authResult) => {
-            this.handleAuthResult(err, authResult, onSuccess, onErr);
-        });
+    startNewSession() {
+        //localStorage.setItem('access_token', this.keycloak.token);
+        //localStorage.setItem('id_token', this.keycloak.idToken);
     }
 
-    handleAuthResult(err, authResult, onSuccess, onErr) {
-        if (authResult && authResult.accessToken && authResult.idToken) {
-            this.setSession(authResult);
-            onSuccess && onSuccess(authResult);
-        } else if (err) {
-            onErr && onErr(err);
-        }
-    }
-
-    renewSession() {
-        this.auth0.checkSession({}, (err, authResult) => {
-            if (authResult && authResult.accessToken && authResult.idToken) {
-                this.setSession(authResult);
-            } else if (err) {
-                this.forceLogin();
-            }
-        });
-    }
-
-    scheduleRenewal() {
-        // if there is already a renewal scheduled, don't bother
-        if (this.tokenRenewalTimer) {
-            return;
-        }
-        let expiresAt = this.getExpiryTime();
-        const timeout = expiresAt - Date.now();
-        if (timeout > 0) {
-            this.tokenRenewalTimer = setTimeout(() => {
-                this.renewSession();
-                this.tokenRenewalTimer = null;
-            }, timeout);
-        }
-    }
-
-    setSession(authResult) {
-        // Set the time that the Access Token will expire at
-        const expiresAt = JSON.stringify((authResult.expiresIn * 1000) + new Date().getTime());
-        localStorage.setItem('access_token', authResult.accessToken);
-        localStorage.setItem('id_token', authResult.idToken);
-        localStorage.setItem('id_token_payload', JSON.stringify(authResult.idTokenPayload));
-        localStorage.setItem('expires_at', expiresAt);
-        // schedule a token renewal
-        this.scheduleRenewal();
-    }
-
-    logout() {
-        // Clear Access Token and ID Token from local storage
-        localStorage.removeItem('access_token');
+    logout(dest) {
+        this.idToken = null;
+        this.authStatus = false;
         localStorage.removeItem('id_token');
-        localStorage.removeItem('id_token_payload');
-        localStorage.removeItem('expires_at');
-        // Clear token renewal
-        if (this.tokenRenewalTimer) {
-            clearTimeout(this.tokenRenewalTimer);
-        }
+        this.keycloak.logout({redirectUri : window.location.protocol + "//" + window.location.host +  dest});
     }
 
-    getExpiryTime() {
-        return new Date(JSON.parse(localStorage.getItem('expires_at')));
-    }
-
-    isAuthenticated() {
-        // Check whether the current time is past the Access Token's expiry time
-        let isAuth = new Date().getTime() < this.getExpiryTime();
-        if (isAuth) {
-            // let's take this opportunity to make sure we have a renewal scheduled
-            this.scheduleRenewal();
-        }
-        return isAuth;
+    isAuthenticated(msg) {
+        return this.authStatus;
     }
 
     getAccessToken() {
@@ -150,28 +132,44 @@ class Auth {
     }
 
     getIdToken() {
-        if (!this.idToken) {
-            this.idToken = JSON.parse(localStorage.getItem('id_token_payload'));
+        if (this.idToken) {
+            return this.idToken;
         }
+        var tok = localStorage.getItem('id_token');
+        if (tok == null) {
+            return null;
+        }
+        this.idToken = this.keycloak.decodeToken(tok);
         return this.idToken;
     }
 
+    getNickname() {
+        var idtoken = this.getIdToken()
+        if (idtoken != null) {
+            return idtoken.preferred_username;
+        }
+        return "";
+    }
+
+    getSubject() {
+        var idtoken = this.getIdToken()
+        if (idtoken != null) {
+            return idtoken.sub;
+        }
+        return "";
+    }
+
+    /*
     getNSClaim(claim) {
         const ns = 'https://hicube.caida.org/';
         return this.getIdToken()[ns + claim];
     }
 
-    getNickname() {
-        return this.getIdToken().nickname;
-    }
 
     getName() {
         return this.getIdToken().name;
     }
 
-    getSubject() {
-        return this.getIdToken().sub;
-    }
 
     getAuthorization() {
         return this.getNSClaim('auth');
@@ -193,19 +191,38 @@ class Auth {
     inGroup(group) {
         return this.getAuthField('groups').includes(group);
     }
+        */
 
     getProfile(cb) {
-        if (this.userProfile) {
-            cb(this.userProfile);
-            return;
+        var myself=this;
+        if (!myself.userProfile) {
+            myself.keycloak.loadUserProfile().then(function(profile) {
+                myself.userProfile = profile;
+                cb(myself.userProfile);
+            }).catch(function(err) {
+                /* TODO invoke cb with an error */
+                return
+            });
+        } else {
+            cb(myself.userProfile);
         }
-        const accessToken = this.getAccessToken();
-        this.auth0.client.userInfo(accessToken, (err, profile) => {
-            if (profile) {
-                this.userProfile = profile;
-            }
-            cb(profile, err);
+    }
+
+    makeCancelable(promise) {
+        let hasCanceled_ = false;
+        const wrappedPromise = new Promise((resolve, reject) => {
+            promise.then(
+                val => hasCanceled_ ? reject({isCanceled: true}) : resolve(val),
+                error => hasCanceled_ ? reject({isCanceled: true}) : reject(error)
+            );
         });
+
+        return {
+            promise: wrappedPromise,
+            cancel() {
+                hasCanceled_ = true;
+            },
+        };
     }
 }
 
