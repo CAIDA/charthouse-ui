@@ -94,7 +94,7 @@ class Auth {
     }
 
     login() {
-        if (this.isAuthenticated("login() isauth")) {
+        if (this.isAuthenticated()) {
             // no need to authorize
             return;
         }
@@ -104,7 +104,6 @@ class Auth {
     }
 
     forceLogin() {
-        this.logout();
         if (this.keycloakInit) {
                 this.keycloak.clearToken();
         }
@@ -118,7 +117,7 @@ class Auth {
         this.keycloak.logout({redirectUri : window.location.protocol + "//" + window.location.host +  dest});
     }
 
-    isAuthenticated(msg) {
+    isAuthenticated() {
         return this.authStatus;
     }
 
