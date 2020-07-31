@@ -111,11 +111,6 @@ class Auth {
         this.login();
     }
 
-    startNewSession() {
-        //localStorage.setItem('access_token', this.keycloak.token);
-        //localStorage.setItem('id_token', this.keycloak.idToken);
-    }
-
     logout(dest) {
         this.idToken = null;
         this.authStatus = false;
@@ -144,54 +139,48 @@ class Auth {
     }
 
     getNickname() {
-        var idtoken = this.getIdToken()
+        var idtoken = this.getIdToken();
         if (idtoken != null) {
             return idtoken.preferred_username;
         }
         return "";
     }
 
+    getName() {
+        var idtoken = this.getIdToken();
+        var name = null;
+        if (idtoken == null) {
+            name = "Unauthenticated User";
+        }
+        else if (idtoken.hasOwnProperty('name')) {
+            name = idtoken.name;
+        }
+        else if (idtoken.hasOwnProperty('preferred_username')) {
+            name = idtoken.preferred_username;
+        } else {
+            name = "Unidentified User";
+        }
+        return name;
+    }
+
     getSubject() {
-        var idtoken = this.getIdToken()
+        var idtoken = this.getIdToken();
         if (idtoken != null) {
             return idtoken.sub;
         }
         return "";
     }
 
-    /*
-    getNSClaim(claim) {
-        const ns = 'https://hicube.caida.org/';
-        return this.getIdToken()[ns + claim];
-    }
-
-
-    getName() {
-        return this.getIdToken().name;
-    }
-
-
-    getAuthorization() {
-        return this.getNSClaim('auth');
-    }
-
-    getAuthField(field) {
-        const auth = this.getNSClaim('auth');
-        return (auth && auth[field]) || [];
-    }
-
-    hasPermission(permission) {
-        return this.getAuthField('permissions').includes(permission);
-    }
-
     hasRole(role) {
-        return this.getAuthField('roles').includes(role);
+        var idtoken = this.getIdToken();
+        if (!idtoken) {
+             return false;
+        }
+        if (!idtoken.hasOwnProperty('roles')) {
+             return false;
+        }
+        return idtoken.roles.includes(role);
     }
-
-    inGroup(group) {
-        return this.getAuthField('groups').includes(group);
-    }
-        */
 
     getProfile(cb) {
         var myself=this;

@@ -42,16 +42,29 @@ class PendingPage extends React.Component {
 
     constructor(props) {
         super(props);
+        this.authpromise = auth.makeCancelable(auth.callSilentInit());
+        this.authpromise.promise.then(authed => {
+            this.setState({authenticated: authed});
+        });
+    }
+
+    componentDidMount() {
+        auth.getName(this._updateName);
+    }
+
+    componentWillUnmount() {
+        if (this.authpromise) {
+            this.authpromise.cancel();
+        }
     }
 
     state = {
-        relogin: false
+        authenticated: false,
     };
 
+    authpromise = null;
+
     render() {
-        if (this.state.relogin) {
-            return <Redirect to='/login'/>;
-        }
         return <div className='container'>
             <div className="jumbotron">
                 <h1>
@@ -60,29 +73,29 @@ class PendingPage extends React.Component {
                              className='glyphicon glyphicon-bullhorn'/></p>
                 </h1>
             </div>
-            <div className='row text-center'>
-                <p className='lead'>
-                    Hello, {auth.getName()}.
-                    <br/>
-                    You have successfully signed into Hi³, but your
-                    account has not yet been approved by an administrator.
-                    <br/>
-                    If you think you are seeing this page in error, please
-                    contact <a href='mailto:hicube-info@caida.org'>
-                    hicube-info.caida.org</a>.
-                </p>
-                <p className='lead'>
-                    If you think your account has been approved recently,
-                    you can <a href="javascript:void(0);" onClick={this._relogin}>log in</a> again.
-                </p>
-            </div>
+            { this.state.authenticated &&
+                (<div className='row text-center'>
+                    <p className='lead'>
+                        Hello, {auth.getName()}.
+                        <br/>
+                        You have successfully signed into Hi³, but your
+                        account has not yet been approved by an administrator.
+                        <br/>
+                        If you think you are seeing this page in error, please
+                        contact <a href='mailto:hicube-info@caida.org'>
+                        hicube-info.caida.org</a>.
+                    </p>
+                    <p className='lead'>
+                        If you think your account has been approved recently,
+                        you can <a href="javascript:void(0);" onClick={this._relogin}>log in</a> again.
+                    </p>
+                </div>)
+            };
         </div>;
     }
 
-
     _relogin = () => {
-        auth.logout();
-        this.setState({relogin: true});
+        auth.logout("/login");
     };
 
 }

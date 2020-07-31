@@ -57,7 +57,7 @@ class AuthorizedRoute extends React.Component {
     };
 
     render() {
-        const { component, permission, ...props } = this.props;
+        const { component, requiredrole, ...props } = this.props;
 
         if (this.state.cbcomplete) {
             if (!this.state.authenticated) {
@@ -68,7 +68,7 @@ class AuthorizedRoute extends React.Component {
                     }}/>
                 </Route>;
             }
-            if (permission && !auth.hasPermission(permission)) {
+            if (requiredrole && !auth.hasRole(requiredrole)) {
                 return <Route {...props}>
                     <Redirect to='/user/pending'/>
                 </Route>;
