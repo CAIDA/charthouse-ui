@@ -48,10 +48,6 @@ class PendingPage extends React.Component {
         });
     }
 
-    componentDidMount() {
-        auth.getName(this._updateName);
-    }
-
     componentWillUnmount() {
         if (this.authpromise) {
             this.authpromise.cancel();
