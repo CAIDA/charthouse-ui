@@ -126,7 +126,10 @@ class AsNumber extends React.Component {
 
         // TODO: consider loading data from asrank api if this.props.data is not available
         // render country flag and org name
-        let asorg = data.asrank[asn];
+        let asorg = null;
+        if(data.asrank){
+            asorg = data.asrank[asn];
+        }
         let country_flag = "";
         let as_name = "";
         if(asorg && asorg.organization){
