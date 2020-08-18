@@ -62,7 +62,7 @@ class PropertyTag extends React.Component{
         switch(type){
             case "suspicious":
             case "yes":
-                res = "danger";
+                res = "warning";
                 break;
             case "benign":
             case "no":

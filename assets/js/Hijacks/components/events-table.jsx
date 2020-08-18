@@ -50,6 +50,7 @@ import {
 } from "../utils/events";
 import AsNumber from "./asn";
 import IPPrefix from "./ip-prefix";
+import {InferenceTagsList} from "./tags/inference-tag";
 
 function unix_time_to_str(unix_time) {
     if (unix_time === null) {
@@ -101,7 +102,7 @@ const columns = [
         },
     },
     {
-        name: 'Largest Prefix',
+        name: 'Largest (Sub)Prefix',
         selector: 'prefixes',
         width: "160px",
         cell: row => {
@@ -166,9 +167,12 @@ const columns = [
     },
     {
         name: 'Category',
-        width: "100px",
+        width: "220px",
         cell: row => {
-            return row.summary.inference_result.inferences.map( ({inference_id}) => inference_id);
+            // return row.summary.inference_result.inferences.map( ({inference_id}) => inference_id);
+            return <InferenceTagsList inferences={[row.summary.inference_result.primary_inference]}
+                                      render_explanation={false} render_level={false}
+            />
         }
     },
     {
