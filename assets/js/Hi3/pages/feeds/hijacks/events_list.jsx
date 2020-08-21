@@ -74,7 +74,7 @@ class EventsList extends React.Component {
                         to detect and characterize BGP hijacking attacks,
                         including stealthy man-in-the-middle (MiTM) Internet
                         traffic interception attacks. The Observatory uses
-                        the <Link to='/feeds'>{HI3} PaaS</Link> offering
+                        the <Link to='/feeds'>{HI3} PaaS</Link> 
                         to power its data collection and
                         analytics platform, and provides event data to {HI3} to
                         allow correlation with other types of Internet
