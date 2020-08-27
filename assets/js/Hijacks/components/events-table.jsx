@@ -428,6 +428,7 @@ class EventsTable extends React.Component {
                         fixedHeader={true}
                         pagination
                         paginationServer
+                        paginationDefaultPage={this.query.curPage+1}
                         paginationTotalRows={this.state.totalRows}
                         paginationPerPage={this.query.perPage}
                         paginationRowsPerPageOptions={[10, 30, 50, 100]}
