@@ -79,7 +79,9 @@ class Auth {
                 silentCheckSsoRedirectUri: window.location.origin + '/silent-check-sso.html'}).then(function() {
                         myself.keycloakInit = true;
                         myself.idToken = myself.keycloak.idTokenParsed;
+                        myself.accessToken = myself.keycloak.token;
                         myself.authStatus = myself.keycloak.authenticated;
+                        localStorage.setItem('access_token', myself.keycloak.token);
                         localStorage.setItem('idtoken', myself.keycloak.idToken);
                         return myself.keycloak.authenticated;
                 });
@@ -113,7 +115,8 @@ class Auth {
     logout(dest) {
         this.idToken = null;
         this.authStatus = false;
-        localStorage.removeItem('id_token');
+        localStorage.removeItem('access_token');
+        localStorage.removeItem('idtoken');
         this.keycloak.logout({redirectUri : window.location.protocol + "//" + window.location.host +  dest});
     }
 
@@ -122,6 +125,9 @@ class Auth {
     }
 
     getAccessToken() {
+        if (this.accessToken) {
+            return this.accessToken;
+        }
         return localStorage.getItem('access_token');
     }
 
@@ -129,7 +135,7 @@ class Auth {
         if (this.idToken) {
             return this.idToken;
         }
-        var tok = localStorage.getItem('id_token');
+        var tok = localStorage.getItem('idtoken');
         if (tok == null) {
             return null;
         }
@@ -175,10 +181,10 @@ class Auth {
         if (!idtoken) {
              return false;
         }
-        if (!idtoken.hasOwnProperty('roles')) {
+        if (!idtoken.hasOwnProperty('realmroles')) {
              return false;
         }
-        return idtoken.roles.includes(role);
+        return idtoken.realmroles.includes(role);
     }
 
     getProfile(cb) {
