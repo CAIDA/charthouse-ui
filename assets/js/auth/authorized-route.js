@@ -46,24 +46,36 @@ class AuthorizedRoute extends React.Component {
 
     constructor(props) {
         super(props);
+        auth.callSilentInit().then(authed => {
+            this.setState({authenticated: authed, cbcomplete: true});
+        });
     }
 
+    state = {
+        authenticated: false,
+        cbcomplete: false
+    };
+
     render() {
-        const { component, permission, ...props } = this.props;
-        if (!auth.isAuthenticated()) {
-            return <Route {...props}>
-                <Redirect to={{
-                    pathname: '/login',
-                    state: { referrer: location.href }
-                }}/>
-            </Route>;
+        const { component, requiredrole, ...props } = this.props;
+
+        if (this.state.cbcomplete) {
+            if (!this.state.authenticated) {
+                return <Route {...props}>
+                    <Redirect to={{
+                            pathname: '/login',
+                            state: { referrer: location.href }
+                    }}/>
+                </Route>;
+            }
+            if (requiredrole && !auth.hasRole(requiredrole)) {
+                return <Route {...props}>
+                    <Redirect to='/user/pending'/>
+                </Route>;
+            }
+            return <Route component={component} {...props}/>
         }
-        if (permission && !auth.hasPermission(permission)) {
-            return <Route {...props}>
-                <Redirect to='/user/pending'/>
-            </Route>;
-        }
-        return <Route component={component} {...props}/>
+        return (<div>Please wait while we check your authorization...</div>);
     }
 }
 

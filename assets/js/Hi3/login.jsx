@@ -51,7 +51,7 @@ class LoginPage extends React.Component {
         }
 
         // first, figure out where we'll redirect to after login
-        const dest = this.props.location.state.referrer;
+        const dest = this.props.location.state != undefined ? this.props.location.state.referrer : window.location.protocol + "//" + window.location.host ;
         console.log(`Saving redirect location as ${dest}`);
         sessionStorage.setItem('redirect_uri', dest);
         // now, ask the auth service to log in

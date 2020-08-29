@@ -42,6 +42,8 @@ export default {
 
     authClientId: process.env.AUTH0_CLIENTID,
 
+    keycloakClientSecret: process.env.KEYCLOAK_CLIENT_SECRET,
+
     baseUri: IS_PRODUCTION ?
         'https://hicube.caida.org' :
         'https://' + process.env.CH_VERSION + '.hicube.caida.org',

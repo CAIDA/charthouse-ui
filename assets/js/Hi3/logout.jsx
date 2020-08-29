@@ -39,8 +39,9 @@ import { auth } from 'Auth';
 
 class LogoutPage extends React.Component {
     render() {
-        auth.logout();
-        return <Redirect to='/'/>
+        auth.logout('/');
+        /* render nothing as keycloak is going to redirect us anyway */
+        return null;
     }
 }
 

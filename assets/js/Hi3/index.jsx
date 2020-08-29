@@ -95,7 +95,7 @@ class ContentRouter extends React.Component {
             <Route path='/about' component={About}/>
             <Route path='/acks' component={Acks}/>
 
-            <AuthorizedRoute path='/explorer' permission='ui:explorer'
+            <AuthorizedRoute path='/explorer' requiredrole='ui:explorer'
                              component={Explorer}/>
             <Route path='/feeds/hijacks' component={HijacksApp}/>
             <Route path='/feeds' component={Platforms}/>
