@@ -48,13 +48,13 @@ class Auth {
     constructor() {
         var myself=this;
         this.keycloak = Keycloak({
-                realm: "demo",
+                realm: process.env.KEYCLOAK_REALM,
                 "url": process.env.KEYCLOAK_URL + "/auth/",
-                resource: "charthouse-ui",
+                resource: process.env.KEYCLOAK_CLIENT,
                 "ssl-required": "external",
                 "confidential-port": "0",
                 "enable-cors": true,
-                "clientId": "charthouse-ui"
+                "clientId": process.env.KEYCLOAK_CLIENT
         });
 
         this.keycloak.onTokenExpired = function() {
