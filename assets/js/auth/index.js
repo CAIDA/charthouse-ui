@@ -181,10 +181,18 @@ class Auth {
         if (!idtoken) {
              return false;
         }
-        if (!idtoken.hasOwnProperty('realmroles')) {
-             return false;
+
+        if (idtoken.hasOwnProperty('realmroles')) {
+            if (idtoken.realmroles.includes(role)) {
+                 return true;
+            }
         }
-        return idtoken.realmroles.includes(role);
+        if (idtoken.hasOwnProperty('roles')) {
+            if (idtoken.roles.includes(role)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     getProfile(cb) {
