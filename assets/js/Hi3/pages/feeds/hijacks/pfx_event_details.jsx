@@ -48,10 +48,12 @@ class PfxEventDetails extends React.Component {
         super(props);
         this.eventId = this.props.match.params.eventId;
         this.jsonUrl = `https://bgp.caida.org/json/event/id/${this.eventId}`;
+        this.tagsUrl = `https://bgp.caida.org/json/tags`;
         this.fingerprint = this.props.match.params.pfxEventId;
         this.eventType = this.eventId.split("-")[0];
         this.state = {
             eventData: {},
+            tagsData: {},
             subpaths: [],
             superpaths: [],
             pfxEvent: [],
@@ -66,6 +68,14 @@ class PfxEventDetails extends React.Component {
     componentDidMount() {
         this.loadEventData();
         this.loadPfxEventData();
+        this.loadTagsData();
+    }
+
+    async loadTagsData() {
+        const response = await axios.get(this.tagsUrl);
+        this.setState({
+            tagsData: response.data,
+        });
     }
 
     loadEventData = async() => {
@@ -240,6 +250,7 @@ class PfxEventDetails extends React.Component {
                                 inference={this.state.eventData.inference}
                                 eventType={this.eventType}
                                 eventId={this.eventId}
+                                tagsData={this.state.tagsData}
                                 isEventDetails={false}
                                 enableClick={false} enablePagination={false}
                             />
