@@ -69,7 +69,7 @@ function tr_str_to_value(tr_worthiness){
 }
 
 function extract_tags_tr_worthiness(tags_data){
-    if(tags_data===undefined){
+    if(tags_data===undefined || tags_data==={}){
         return {};
     }
 
