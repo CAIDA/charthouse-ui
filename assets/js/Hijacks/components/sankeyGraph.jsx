@@ -49,7 +49,6 @@ class SankeyGraph extends React.Component {
     }
 
     _count_links(paths, benign_nodes, suspicious_nodes){
-        let nodes = new Set();
         let links = {};
         for (let path of paths) {
             // check if the path contains suspicous and benign nodes
@@ -62,20 +61,36 @@ class SankeyGraph extends React.Component {
                     suspicious=true;
                 }
             }
-            for (let i = 0; i < path.length - 1; i++) {
-                let as1 = path[i];
-                let as2 = path[i + 1];
-                if (as1 === as2) {
-                    continue
+            let link_pairs = [];
+            if(path.length===1){
+                // single-node path
+                link_pairs.push([path[0], path[0]+"_self"]);
+            } else {
+                // multi-node path
+                for (let i = 0; i < path.length - 1; i++) {
+                    let as1 = path[i];
+                    let as2 = path[i + 1];
+                    if (as1 === as2) {
+                        continue
+                    }
+                    link_pairs.push([as1, as2]);
                 }
-                nodes.add(as1);
-                nodes.add(as2);
+            }
+
+            for(let pair of link_pairs){
+                let as1 = pair[0];
+                let as2 = pair[1];
                 let link = `${as1}-${as2}`;
-                if(suspicious_nodes && suspicious_nodes.includes(as1) && suspicious){
-                    suspicious = false
-                }
-                if(benign_nodes && benign_nodes.includes(as1) && benign){
-                    benign = false
+
+                // the following two if statements disable painting the path segments after the suspicious/benign node
+                // NOTE: we only do that for path segments that has more than one nodes
+                if(!as2.includes("_self")){
+                    if(suspicious_nodes && suspicious_nodes.includes(as1) && suspicious){
+                        suspicious = false
+                    }
+                    if(benign_nodes && benign_nodes.includes(as1) && benign){
+                        benign = false
+                    }
                 }
                 if (!(link in links)) {
                     links[link] = {
@@ -162,6 +177,7 @@ class SankeyGraph extends React.Component {
         } else {
             let data = this.prepareData(this.state.data);
             return (
+
                 <div>
                     <PopupModal ref={ref => this.modal = ref}/>
                     <h3> {this.props.title} </h3>
