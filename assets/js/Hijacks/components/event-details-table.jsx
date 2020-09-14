@@ -120,7 +120,7 @@ class EventDetailsTable extends React.Component {
                                     <th>Potential Victim:</th>
                                     <td>
                                         {
-                                            data.summary.inference_result.victims.map(function(asn){
+                                            data.summary.victims.map(function(asn){
                                                 return <AsNumber key={asn} asn={asn} data={data.external} />
                                             })
                                         }
@@ -130,7 +130,7 @@ class EventDetailsTable extends React.Component {
                                     <th>Potential Attacker:</th>
                                     <td>
                                         {
-                                            data.summary.inference_result.attackers.map(function(asn){
+                                            data.summary.attackers.map(function(asn){
                                                 return <AsNumber key={asn} asn={asn} data={data.external} />
                                             })
                                         }

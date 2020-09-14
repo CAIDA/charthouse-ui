@@ -84,7 +84,7 @@ const columns = [
         cell: row => {
             return (
                 <div>
-                    {renderOrigins(row.summary.inference_result.victims, row.external)}
+                    {renderOrigins(row.summary.victims, row.external)}
                 </div>
             );
         },
@@ -96,7 +96,7 @@ const columns = [
         cell: row => {
             return (
                 <div>
-                    {renderOrigins(row.summary.inference_result.attackers, row.external)}
+                    {renderOrigins(row.summary.attackers, row.external)}
                 </div>
             );
         },
