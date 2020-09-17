@@ -34,11 +34,10 @@
 
 import React from 'react';
 import 'Hi3/css/pages/feeds/hijacks.css';
-import EventDetailsTable from "../../../../Hijacks/components/event-details-table";
 import axios from "axios";
 import SankeyGraph from "../../../../Hijacks/components/sankeyGraph";
-import PfxEventsTable from "../../../../Hijacks/components/pfx-events-table";
 import TraceroutesTable from "../../../../Hijacks/components/traceroutes-table";
+import PfxEventDetailsTable from "../../../../Hijacks/components/pfx-event-details-table";
 
 const HORIZONTAL_OFFSET = 480;
 
@@ -110,7 +109,11 @@ class PfxEventDetails extends React.Component {
             "victims": data.victims,
             "attackers": data.attackers,
             "fingerprint": this.fingerprint,
+            "event_type": data.event_type,
+            "view_ts": data.view_ts,
+            "finished_ts": data.finished_ts,
         };
+        console.log(`event_type = ${data.event_type}`);
         if ("prefix" in data.details) {
             pfxEvent.prefix = data.details.prefix;
         }
@@ -164,6 +167,7 @@ class PfxEventDetails extends React.Component {
             });
         }
 
+        console.log(`event_type = ${pfxEvent.event_type}`);
         this.setState({
             subpaths: subpaths,
             superpaths: superpaths,
@@ -234,32 +238,41 @@ class PfxEventDetails extends React.Component {
                     </div>
                 </div>
 
-                {!this.state.loadingEvent &&
-                    <div className="row">
-                        <EventDetailsTable data={this.state.eventData} jsonUrl={this.jsonUrl}/>
-                    </div>
-                }
+                {/*{!this.state.loadingEvent &&*/}
+                {/*    <div className="row">*/}
+                {/*        <EventDetailsTable data={this.state.eventData} jsonUrl={this.jsonUrl}/>*/}
+                {/*    </div>*/}
+                {/*}*/}
 
-                {!this.state.loadingPfxEvent &&
+
+                {!this.state.loadingPfxEvent && !this.loadingEvent &&
                     // pfx event loading finished
 
                     <React.Fragment>
                         <div className="row">
-                            <PfxEventsTable
-                                data={[this.state.pfxEvent]}
-                                inference={this.state.eventData.inference}
-                                eventType={this.eventType}
-                                eventId={this.eventId}
+                            {/*<PfxEventsTable*/}
+                            {/*    data={[this.state.pfxEvent]}*/}
+                            {/*    inference={this.state.eventData.inference}*/}
+                            {/*    eventType={this.eventType}*/}
+                            {/*    eventId={this.eventId}*/}
+                            {/*    tagsData={this.state.tagsData}*/}
+                            {/*    isEventDetails={false}*/}
+                            {/*    enableClick={false} enablePagination={false}*/}
+                            {/*/>*/}
+
+                            <PfxEventDetailsTable
+                                pfxEvent={this.state.pfxEvent}
                                 tagsData={this.state.tagsData}
-                                isEventDetails={false}
-                                enableClick={false} enablePagination={false}
+                                jsonUrl={`https://bgp.caida.org/json/pfx_event/id/${this.eventId}/${this.fingerprint}`}
+                                external={this.state.eventData.external}
+                                eventData={this.state.eventData}
                             />
 
-                            <div className="col-lg-12">
-                                <a target='_blank' type="button" className="btn btn-sm btn-primary"
-                                   href={`https://bgp.caida.org/json/pfx_event/id/${this.eventId}/${this.fingerprint}`}>
-                                    Raw JSON</a>
-                            </div>
+                            {/*<div className="col-lg-12">*/}
+                            {/*    <a target='_blank' type="button" className="btn btn-sm btn-primary"*/}
+                            {/*       href={`https://bgp.caida.org/json/pfx_event/id/${this.eventId}/${this.fingerprint}`}>*/}
+                            {/*        Raw JSON</a>*/}
+                            {/*</div>*/}
                         </div>
 
                         <div className="row">
