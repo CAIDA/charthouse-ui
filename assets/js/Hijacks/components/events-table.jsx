@@ -92,7 +92,7 @@ const columns = [
     {
         name: 'Potential Attackers',
         selector: 'attackers',
-        grow: 2,
+        grow: 1,
         cell: row => {
             return (
                 <div>
