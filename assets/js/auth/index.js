@@ -60,6 +60,11 @@ class Auth {
         this.keycloak.onTokenExpired = function() {
 
             myself.keycloak.updateToken(70).success((refreshed) => {
+                myself.idToken = myself.keycloak.idTokenParsed;
+                myself.accessToken = myself.keycloak.token;
+                myself.authStatus = myself.keycloak.authenticated;
+                localStorage.setItem('access_token', myself.keycloak.token);
+                localStorage.setItem('idtoken', myself.keycloak.idToken);
             }).error(() => {
                 myself.forceLogin();
             });
@@ -114,7 +119,9 @@ class Auth {
 
     logout(dest) {
         this.idToken = null;
+        this.accessToken = null;
         this.authStatus = false;
+        this.userProfile = null;
         localStorage.removeItem('access_token');
         localStorage.removeItem('idtoken');
         this.keycloak.logout({redirectUri : window.location.protocol + "//" + window.location.host +  dest});
