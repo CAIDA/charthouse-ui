@@ -67,7 +67,7 @@
         "react-bootstrap": "^0.32.4",
         "react-bootstrap-daterangepicker": "^4.1.0",
         "react-bootstrap-slider": "^2.1.5",
-        "react-data-table-component": "^3.6.0",
+        "react-data-table-component": "^6.11.5",
         "react-dom": "^16.10.2",
         "react-google-charts": "^3.0.15",
         "react-iframe": "^1.5.0",
