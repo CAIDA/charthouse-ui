@@ -119,7 +119,7 @@ class EventDetailsTable extends React.Component {
                                 <tr>
                                     <th>Potential Victim:</th>
                                     <td>
-                                        {
+                                        {data.summary && data.summary.victims &&
                                             data.summary.victims.map(function(asn){
                                                 return <AsNumber key={asn} asn={asn} data={data.external} />
                                             })
@@ -129,7 +129,7 @@ class EventDetailsTable extends React.Component {
                                 <tr>
                                     <th>Potential Attacker:</th>
                                     <td>
-                                        {
+                                        {data.summary && data.summary.attackers &&
                                             data.summary.attackers.map(function(asn){
                                                 return <AsNumber key={asn} asn={asn} data={data.external} />
                                             })
