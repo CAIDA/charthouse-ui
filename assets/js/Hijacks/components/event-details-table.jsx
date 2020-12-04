@@ -102,7 +102,6 @@ class EventDetailsTable extends React.Component {
             return ""
         }
 
-
         let data = this.state.eventData;
         if(data.asinfo===undefined){
             data.asinfo={};

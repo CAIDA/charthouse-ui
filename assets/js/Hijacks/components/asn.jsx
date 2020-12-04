@@ -84,8 +84,8 @@ class AsNumber extends React.Component {
         if(on_asndrop){
             res.push(<p key={`tooltip-${count++}`}>AS is on Spamhaus ASN DROP list</p>)
         }
-        if (asinfo.asrank && asinfo.asrank[asn] && asinfo.asrank[asn].organization && asinfo.asrank[asn].organization.country ) {
-            let asorg = asinfo.asrank[asn];
+        if (asinfo[asn] && asinfo[asn].asrank && asinfo[asn].asrank.organization && asinfo[asn].asrank.organization.country ) {
+            let asorg = asinfo[asn].asrank;
             let country_name = asorg.organization.country.name;
             let org_name = asorg.organization.orgName;
             let rank = asorg.rank;
@@ -127,8 +127,8 @@ class AsNumber extends React.Component {
         // TODO: consider loading data from asrank api if this.props.data is not available
         // render country flag and org name
         let asorg = null;
-        if(data.asrank){
-            asorg = data.asrank[asn];
+        if(data[asn] && data[asn].asrank){
+            asorg = data[asn].asrank;
         }
         let country_flag = "";
         let as_name = "";
