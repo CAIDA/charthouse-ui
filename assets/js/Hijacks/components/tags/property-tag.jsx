@@ -157,7 +157,6 @@ class PropertyTagsList extends React.Component {
     render() {
         let tags = this.props.tags;
         let tagDefinitions = this.state.tagDefinitions;
-
         return (
             <div className="tags-list" onClick={(e) => this.handleClick(e)}>
                 {Object.keys(tags).map(function(tag_name, index){

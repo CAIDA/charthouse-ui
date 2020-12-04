@@ -110,8 +110,8 @@ class PfxEventDetailsTable extends React.Component {
 
         processed["inferences"] = data.inferences;
         processed["tags"] = data.tags;
-        processed.tags.forEach((tag_name)=>{
-            tags_dict[tag_name] = tag_name in tags_tr_worthy_dict? tags_tr_worthy_dict[tag_name]: "unknown";
+        processed.tags.forEach((tag)=>{
+            tags_dict[tag.name] = tag.name in tags_tr_worthy_dict? tags_tr_worthy_dict[tag.name]: "unknown";
         });
         processed.tags_dict=tags_dict;
 
