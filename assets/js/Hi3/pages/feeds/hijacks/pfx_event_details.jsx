@@ -264,7 +264,7 @@ class PfxEventDetails extends React.Component {
                                 pfxEvent={this.state.pfxEvent}
                                 tagsData={this.state.tagsData}
                                 jsonUrl={`https://bgp.caida.org/json/pfx_event/id/${this.eventId}/${this.fingerprint}`}
-                                external={this.state.eventData.external}
+                                asinfo={this.state.eventData.asinfo}
                                 eventData={this.state.eventData}
                             />
 

@@ -71,7 +71,7 @@ class AsNumber extends React.Component {
             : null;
     }
 
-    tooltip(asn, external, is_private, on_blacklist, on_asndrop){
+    tooltip(asn, asinfo, is_private, on_blacklist, on_asndrop){
         // let res = <p>AS Info Unavailable</p>;
         let res = [];
         let count=0;
@@ -84,8 +84,8 @@ class AsNumber extends React.Component {
         if(on_asndrop){
             res.push(<p key={`tooltip-${count++}`}>AS is on Spamhaus ASN DROP list</p>)
         }
-        if (external.asrank && external.asrank[asn] && external.asrank[asn].organization && external.asrank[asn].organization.country ) {
-            let asorg = external.asrank[asn];
+        if (asinfo.asrank && asinfo.asrank[asn] && asinfo.asrank[asn].organization && asinfo.asrank[asn].organization.country ) {
+            let asorg = asinfo.asrank[asn];
             let country_name = asorg.organization.country.name;
             let org_name = asorg.organization.orgName;
             let rank = asorg.rank;
@@ -97,8 +97,8 @@ class AsNumber extends React.Component {
                 res.push(<p key={`tooltip-${count++}`}> Rank: {rank} </p>);
             }
         }
-        if ("hegemony" in external && asn in external.asrank) {
-            res.push(<p key={`tooltip-${count++}`}> Hegemony: {external.hegemony[asn]} </p>);
+        if ("hegemony" in asinfo && asn in asinfo.asrank) {
+            res.push(<p key={`tooltip-${count++}`}> Hegemony: {asinfo.hegemony[asn]} </p>);
         }
         if(res.length===0){
             res.push(<p key={`tooltip-${count++}`}>AS Info Unavailable</p>);

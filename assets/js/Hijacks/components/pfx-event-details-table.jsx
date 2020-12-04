@@ -137,13 +137,13 @@ class PfxEventDetailsTable extends React.Component {
             return ""
         }
         let data = this.preprocessData(this.props.pfxEvent);
-        let external = this.props.external;
-        if(external===undefined){
-            external = {};
+        let asinfo = this.props.asinfo;
+        if(asinfo===undefined){
+            asinfo = {};
         }
         if(this.state.blacklist.length>0){
-            external.blacklist = this.state.blacklist;
-            external.asndrop = this.state.asndrop;
+            asinfo.blacklist = this.state.blacklist;
+            asinfo.asndrop = this.state.asndrop;
         }
 
         return (
@@ -159,7 +159,7 @@ class PfxEventDetailsTable extends React.Component {
                                     <td>
                                         {
                                             data.victims.map(function(asn){
-                                                return <AsNumber key={asn} asn={asn} data={external} />
+                                                return <AsNumber key={asn} asn={asn} data={asinfo} />
                                             })
                                         }
                                     </td>
@@ -169,7 +169,7 @@ class PfxEventDetailsTable extends React.Component {
                                     <td>
                                         {
                                             data.attackers.map(function(asn){
-                                                return <AsNumber key={asn} asn={asn} data={external} />
+                                                return <AsNumber key={asn} asn={asn} data={asinfo} />
                                             })
                                         }
                                     </td>

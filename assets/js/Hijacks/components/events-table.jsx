@@ -84,7 +84,7 @@ const columns = [
         cell: row => {
             return (
                 <div>
-                    {renderOrigins(row.summary.victims, row.external)}
+                    {renderOrigins(row.summary.victims, row.asinfo)}
                 </div>
             );
         },
@@ -96,7 +96,7 @@ const columns = [
         cell: row => {
             return (
                 <div>
-                    {renderOrigins(row.summary.attackers, row.external)}
+                    {renderOrigins(row.summary.attackers, row.asinfo)}
                 </div>
             );
         },
@@ -401,8 +401,12 @@ class EventsTable extends React.Component {
         if(!this.state.loadingEvents && !this.state.loadingExternal){
             data = this.state.events;
             data.forEach(event => {
-                event.external["blacklist"] = this.state.blacklist;
-                event.external["asndrop"] = this.state.asndrop;
+                if(event.asinfo === undefined){
+                    event["asinfo"]={}
+                    // TODO: load asrank info
+                }
+                event.asinfo["blacklist"] = this.state.blacklist;
+                event.asinfo["asndrop"] = this.state.asndrop;
             });
             loading = false;
         }
