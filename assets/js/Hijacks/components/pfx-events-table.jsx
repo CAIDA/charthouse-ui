@@ -99,6 +99,7 @@ class PfxEventsTable extends React.Component {
                 wrap: true,
                 grow:2,
                 cell: row => {
+
                     let url = `/feeds/hijacks/events/${this.props.eventType}/${this.props.eventId}/${row.fingerprint}`;
                     return <PropertyTagsList tags={row.tags_dict} enableClick={this.props.enableClick} url={url}/>
                 }
@@ -254,8 +255,8 @@ class PfxEventsTable extends React.Component {
             event.inferences = <InferenceTagsList inferences={pfx_event.inferences}/>;
             event.fingerprint = prefixes.join("_")
                 .replace(/\//g, "-");
-            pfx_event.tags.forEach((tag_name)=>{
-                tags_dict[tag_name] = tag_name in tags_tr_worthy_dict? tags_tr_worthy_dict[tag_name]: "unknown";
+            pfx_event.tags.forEach((tag)=>{
+                tags_dict[tag.name] = tag.name in tags_tr_worthy_dict? tags_tr_worthy_dict[tag.name]: "unknown";
             });
             event.tags_dict=tags_dict;
             event.details=pfx_event.details;

@@ -71,7 +71,7 @@ class AsNumber extends React.Component {
             : null;
     }
 
-    tooltip(asn, external, is_private, on_blacklist, on_asndrop){
+    tooltip(asn, asinfo, is_private, on_blacklist, on_asndrop){
         // let res = <p>AS Info Unavailable</p>;
         let res = [];
         let count=0;
@@ -84,8 +84,8 @@ class AsNumber extends React.Component {
         if(on_asndrop){
             res.push(<p key={`tooltip-${count++}`}>AS is on Spamhaus ASN DROP list</p>)
         }
-        if (external.asrank && external.asrank[asn] && external.asrank[asn].organization && external.asrank[asn].organization.country ) {
-            let asorg = external.asrank[asn];
+        if (asinfo[asn] && asinfo[asn].asrank && asinfo[asn].asrank.organization && asinfo[asn].asrank.organization.country ) {
+            let asorg = asinfo[asn].asrank;
             let country_name = asorg.organization.country.name;
             let org_name = asorg.organization.orgName;
             let rank = asorg.rank;
@@ -97,8 +97,8 @@ class AsNumber extends React.Component {
                 res.push(<p key={`tooltip-${count++}`}> Rank: {rank} </p>);
             }
         }
-        if ("hegemony" in external && asn in external.asrank) {
-            res.push(<p key={`tooltip-${count++}`}> Hegemony: {external.hegemony[asn]} </p>);
+        if ("hegemony" in asinfo && asn in asinfo.asrank) {
+            res.push(<p key={`tooltip-${count++}`}> Hegemony: {asinfo.hegemony[asn]} </p>);
         }
         if(res.length===0){
             res.push(<p key={`tooltip-${count++}`}>AS Info Unavailable</p>);
@@ -127,8 +127,8 @@ class AsNumber extends React.Component {
         // TODO: consider loading data from asrank api if this.props.data is not available
         // render country flag and org name
         let asorg = null;
-        if(data.asrank){
-            asorg = data.asrank[asn];
+        if(data[asn] && data[asn].asrank){
+            asorg = data[asn].asrank;
         }
         let country_flag = "";
         let as_name = "";

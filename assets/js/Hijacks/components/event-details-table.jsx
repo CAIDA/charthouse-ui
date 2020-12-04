@@ -102,11 +102,13 @@ class EventDetailsTable extends React.Component {
             return ""
         }
 
-
         let data = this.state.eventData;
+        if(data.asinfo===undefined){
+            data.asinfo={};
+        }
         if(this.state.blacklist.length>0){
-            data.external.blacklist = this.state.blacklist;
-            data.external.asndrop = this.state.asndrop;
+            data.asinfo.blacklist = this.state.blacklist;
+            data.asinfo.asndrop = this.state.asndrop;
         }
 
         return (
@@ -121,7 +123,7 @@ class EventDetailsTable extends React.Component {
                                     <td>
                                         {data.summary && data.summary.victims &&
                                             data.summary.victims.map(function(asn){
-                                                return <AsNumber key={asn} asn={asn} data={data.external} />
+                                                return <AsNumber key={asn} asn={asn} data={data.asinfo} />
                                             })
                                         }
                                     </td>
@@ -131,7 +133,7 @@ class EventDetailsTable extends React.Component {
                                     <td>
                                         {data.summary && data.summary.attackers &&
                                             data.summary.attackers.map(function(asn){
-                                                return <AsNumber key={asn} asn={asn} data={data.external} />
+                                                return <AsNumber key={asn} asn={asn} data={data.asinfo} />
                                             })
                                         }
                                     </td>

@@ -122,8 +122,6 @@ class EventTagsTable extends React.Component {
             })
         }
 
-        console.log(data);
-
         this.setState({
             tags: tags,
             codes: codes,
