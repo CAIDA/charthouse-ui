@@ -38,6 +38,7 @@ import 'Hijacks/css/hijacks.css';
 import React from 'react';
 import DataTable from 'react-data-table-component';
 import axios from 'axios';
+import {TAGS_URL} from "../utils/endpoints";
 
 const tags_columns = [
     {
@@ -102,7 +103,7 @@ class EventTagsTable extends React.Component {
     }
 
     _loadTagsData = async () => {
-        let url = `https://bgp.caida.org/json/tags`;
+        let url = TAGS_URL;
         const response = await axios.get(url);
         let data = response.data;
 

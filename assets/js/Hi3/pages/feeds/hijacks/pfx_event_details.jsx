@@ -38,6 +38,7 @@ import axios from "axios";
 import SankeyGraph from "../../../../Hijacks/components/sankeyGraph";
 import TraceroutesTable from "../../../../Hijacks/components/traceroutes-table";
 import PfxEventDetailsTable from "../../../../Hijacks/components/pfx-event-details-table";
+import {BASE_URL, TAGS_URL} from "../../../../Hijacks/utils/endpoints";
 
 const HORIZONTAL_OFFSET = 480;
 
@@ -46,8 +47,6 @@ class PfxEventDetails extends React.Component {
     constructor(props) {
         super(props);
         this.eventId = this.props.match.params.eventId;
-        this.jsonUrl = `https://bgp.caida.org/json/event/id/${this.eventId}`;
-        this.tagsUrl = `https://bgp.caida.org/json/tags`;
         this.fingerprint = this.props.match.params.pfxEventId;
         this.eventType = this.eventId.split("-")[0];
         this.state = {
@@ -71,14 +70,14 @@ class PfxEventDetails extends React.Component {
     }
 
     async loadTagsData() {
-        const response = await axios.get(this.tagsUrl);
+        const response = await axios.get(TAGS_URL);
         this.setState({
             tagsData: response.data,
         });
     }
 
     loadEventData = async() => {
-        const response = await axios.get(`https://bgp.caida.org/json/event/id/${this.eventId}`);
+        const response = await axios.get(`https://api.grip.caida.org/dev/json/event/id/${this.eventId}`);
         this.setState({
             loadingEvent: false,
             eventData: response.data,
@@ -87,7 +86,7 @@ class PfxEventDetails extends React.Component {
 
     loadPfxEventData = async () => {
         const response = await axios.get(
-            `https://bgp.caida.org/json/pfx_event/id/${this.eventId}/${this.fingerprint}`,
+            `https://api.grip.caida.org/dev/json/pfx_event/id/${this.eventId}/${this.fingerprint}`,
         );
         let subpaths = [];
         let superpaths = [];
@@ -167,7 +166,6 @@ class PfxEventDetails extends React.Component {
             });
         }
 
-        console.log(`event_type = ${pfxEvent.event_type}`);
         this.setState({
             subpaths: subpaths,
             superpaths: superpaths,
@@ -263,7 +261,7 @@ class PfxEventDetails extends React.Component {
                             <PfxEventDetailsTable
                                 pfxEvent={this.state.pfxEvent}
                                 tagsData={this.state.tagsData}
-                                jsonUrl={`https://bgp.caida.org/json/pfx_event/id/${this.eventId}/${this.fingerprint}`}
+                                jsonUrl={`${BASE_URL}/pfx_event/id/${this.eventId}/${this.fingerprint}`}
                                 asinfo={this.state.eventData.asinfo}
                                 eventData={this.state.eventData}
                             />
@@ -288,8 +286,8 @@ class PfxEventDetails extends React.Component {
                                     data={this.state.tr_aspaths}
                                     highlights={[]}
                                     id={"tr_sankey"}
-                                    benign_nodes={this.state.eventData.victims}
-                                    suspicious_nodes={this.state.eventData.attackers}
+                                    benign_nodes={this.state.pfxEvent.victims}
+                                    suspicious_nodes={this.state.pfxEvent.attackers}
                                 />
                             </React.Fragment>
                         </div>

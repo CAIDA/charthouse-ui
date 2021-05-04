@@ -40,11 +40,10 @@ import axios from "axios";
 import {InferenceTagsList} from "./tags/inference-tag";
 import {PropertyTagsList} from "./tags/property-tag";
 import {extract_tags_tr_worthiness} from "../utils/tags";
+import {ASNDROP_URL, BLOCKLIST_URL} from "../utils/endpoints";
 
 /**
  * Prefix event details table.
- * TODO: finish this
- * TODO: this should replace the pfx-events-table with only one pfx event
  *
  * The table contains the following information:
  * - potential victim(s)
@@ -99,7 +98,6 @@ class PfxEventDetailsTable extends React.Component {
         };
         processed["type"] = event_type_explain[data.event_type];
 
-        //FIXME: processed["prefixes"] = ;
         processed["start_ts_str"] = unix_time_to_str(data["view_ts"]);
         processed["end_ts_str"] = "Unknown";
         processed["duration"] = "Ongoing";
@@ -123,10 +121,10 @@ class PfxEventDetailsTable extends React.Component {
     }
 
     _loadBlackList = async () => {
-        const blacklist = await axios.get("https://bgp.caida.org/json/blacklist");
-        const asndrop = await axios.get("https://bgp.caida.org/json/asndrop");
+        const blacklist = await axios.get(BLOCKLIST_URL);
+        const asndrop = await axios.get(ASNDROP_URL);
         this.setState({
-            blacklist: blacklist.data.blacklist,
+            blacklist: blacklist.data.blocklist,
             asndrop: asndrop.data.asndrop,
         })
     };
@@ -146,6 +144,15 @@ class PfxEventDetailsTable extends React.Component {
             asinfo.asndrop = this.state.asndrop;
         }
 
+        let victims = "None";
+        let attackers = "None";
+        if(data.victims.length>0){
+            victims = data.victims.map(function(asn){ return <AsNumber key={asn} asn={asn} data={asinfo} /> });
+        }
+        if(data.attackers.length>0){
+            attackers = data.attackers.map(function(asn){ return <AsNumber key={asn} asn={asn} data={asinfo} /> });
+        }
+
         return (
             <React.Fragment>
                 <div className={"row"}>
@@ -157,21 +164,13 @@ class PfxEventDetailsTable extends React.Component {
 
                                     <th>Potential Victim:</th>
                                     <td>
-                                        {
-                                            data.victims.map(function(asn){
-                                                return <AsNumber key={asn} asn={asn} data={asinfo} />
-                                            })
-                                        }
+                                        { victims }
                                     </td>
                                 </tr>
                                 <tr>
                                     <th>Potential Attacker:</th>
                                     <td>
-                                        {
-                                            data.attackers.map(function(asn){
-                                                return <AsNumber key={asn} asn={asn} data={asinfo} />
-                                            })
-                                        }
+                                        { attackers }
                                     </td>
                                 </tr>
                                 <tr>

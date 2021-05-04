@@ -39,6 +39,7 @@ import EventDetailsTable from "../../../../Hijacks/components/event-details-tabl
 import PfxEventsTable from "../../../../Hijacks/components/pfx-events-table";
 import EventTrTagsTable from "../../../../Hijacks/components/event-tr-tags-table";
 import queryString from "query-string";
+import {BASE_URL, TAGS_URL} from "../../../../Hijacks/utils/endpoints";
 
 class EventDetails extends React.Component {
 
@@ -47,8 +48,8 @@ class EventDetails extends React.Component {
 
         this.eventId = this.props.match.params.eventId;
         this.eventType = this.eventId.split("-")[0];
-        this.jsonUrl = `https://bgp.caida.org/json/event/id/${this.eventId}`;
-        this.tagsUrl = `https://bgp.caida.org/json/tags`;
+        this.jsonUrl = `${BASE_URL}/event/id/${this.eventId}`;
+        this.tagsUrl = `${TAGS_URL}`;
 
         this.state = {
             loading: true,

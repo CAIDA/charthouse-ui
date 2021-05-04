@@ -38,6 +38,7 @@ import AsNumber from "./asn";
 import IPPrefix from "./ip-prefix";
 import axios from "axios";
 import {InferenceTagsList} from "./tags/inference-tag";
+import {ASNDROP_URL, BLOCKLIST_URL} from "../utils/endpoints";
 
 class EventDetailsTable extends React.Component {
 
@@ -88,10 +89,10 @@ class EventDetailsTable extends React.Component {
     }
 
     _loadBlackList = async () => {
-        const blacklist = await axios.get("https://bgp.caida.org/json/blacklist");
-        const asndrop = await axios.get("https://bgp.caida.org/json/asndrop");
+        const blocklist = await axios.get(BLOCKLIST_URL);
+        const asndrop = await axios.get(ASNDROP_URL);
         this.setState({
-            blacklist: blacklist.data.blacklist,
+            blacklist: blocklist.data.blocklist,
             asndrop: asndrop.data.asndrop,
         })
     };
