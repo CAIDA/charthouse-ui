@@ -38,6 +38,7 @@ import {OverlayTrigger, Tooltip} from "react-bootstrap";
 import Link from "react-router-dom/Link";
 import {convertTagName} from "../../utils/tags";
 import axios from "axios";
+import {TAGS_URL} from "../../utils/endpoints";
 
 class PropertyTag extends React.Component{
 
@@ -140,7 +141,7 @@ class PropertyTagsList extends React.Component {
     }
 
     _loadTagsData = async () => {
-        const response = await axios.get("https://bgp.caida.org/json/tags");
+        const response = await axios.get(TAGS_URL);
         let definitions = response.data.definitions;
         this.setState({
             tagDefinitions: definitions,
