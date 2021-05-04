@@ -266,11 +266,6 @@ class PfxEventDetails extends React.Component {
                                 eventData={this.state.eventData}
                             />
 
-                            {/*<div className="col-lg-12">*/}
-                            {/*    <a target='_blank' type="button" className="btn btn-sm btn-primary"*/}
-                            {/*       href={`https://bgp.caida.org/json/pfx_event/id/${this.eventId}/${this.fingerprint}`}>*/}
-                            {/*        Raw JSON</a>*/}
-                            {/*</div>*/}
                         </div>
 
                         <div className="row">

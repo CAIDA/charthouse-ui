@@ -51,7 +51,7 @@ import {
 import AsNumber from "./asn";
 import IPPrefix from "./ip-prefix";
 import {InferenceTagsList} from "./tags/inference-tag";
-import {ASNDROP_URL, BLOCKLIST_URL} from "../utils/endpoints";
+import {ASNDROP_URL, BASE_URL, BLOCKLIST_URL} from "../utils/endpoints";
 
 function unix_time_to_str(unix_time) {
     if (unix_time === null) {
@@ -240,8 +240,7 @@ class EventsTable extends React.Component {
     _loadEventsData = async () => {
         let [min_susp, max_susp] = translate_suspicion_str_to_values(this.query.suspicionLevel);
 
-        let baseUrl = `https://bgp.caida.org/json/events?`;
-
+        let baseUrl = `${BASE_URL}/events?`;
         let params = new URLSearchParams();
         params.append("length", this.query.perPage);
         params.append("start", this.query.perPage * this.query.curPage);
