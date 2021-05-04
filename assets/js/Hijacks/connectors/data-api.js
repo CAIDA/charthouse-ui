@@ -33,8 +33,9 @@
  */
 
 import $ from 'jquery';
+import {BASE_URL} from "../utils/endpoints";
 
-const API_URL = '//bgp.caida.org/json';
+const API_URL = `//${BASE_URL}`;
 const EVENTS_QUERY = '/events';
 const STATS_QUERY = '/stats';
 
