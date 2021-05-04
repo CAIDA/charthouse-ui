@@ -1892,12 +1892,10 @@ bootstrap-daterangepicker@^3.0.5:
     jquery ">=1.10"
     moment "^2.9.0"
 
-bootstrap-select@^1.9.4:
-  version "1.9.4"
-  resolved "https://registry.yarnpkg.com/bootstrap-select/-/bootstrap-select-1.9.4.tgz#40bc4dfbc1f2e5463dc18748d9902512dee9ae18"
-  integrity sha1-QLxN+8Hy5UY9wYdI2ZAlEt7prhg=
-  dependencies:
-    jquery ">=1.8"
+bootstrap-select@^1.13.6:
+  version "1.13.6"
+  resolved "https://registry.yarnpkg.com/bootstrap-select/-/bootstrap-select-1.13.6.tgz#dc41f8a7385ab4e385562b400d4cf2422f5ef852"
+  integrity sha512-MsOZjYVv0jjHOCUV6CG3J8MSsosrKL8MlA8DacMhMqFq43tTxMjjd7Czo5a/upKPNHW6asFq29oyKJTrPva6FQ==
 
 bootstrap-slider@9.9.0:
   version "9.9.0"
@@ -5294,7 +5292,7 @@ jquery@>=1.10:
   resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.4.1.tgz#714f1f8d9dde4bdfa55764ba37ef214630d80ef2"
   integrity sha512-36+AdBzCL+y6qjw5Tx7HgzeGCzC81MDDgaUP8ld2zhx58HdqXGoBd+tHdrBMiyjGQs0Hxs/MLZTu/eHNJJuWPw==
 
-jquery@>=1.8, jquery@>=1.9.1:
+jquery@>=1.9.1:
   version "3.3.1"
   resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.3.1.tgz#958ce29e81c9790f31be7792df5d4d95fc57fbca"
   integrity sha512-Ubldcmxp5np52/ENotGxlLe6aGMvmF4R8S6tZjsP6Knsaxd/xp3Zrh50cG93lR6nPXyUFwzN3ZSOQI0wRJNdGg==
