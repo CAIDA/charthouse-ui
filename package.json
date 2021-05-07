@@ -78,6 +78,6 @@
         "styled-components": "^4.4.0",
         "title-case": "^2.1.1",
         "topojson": "1.6.18",
-        "underscore": "^1.9.1"
+        "underscore": "^1.12.1"
     }
 }
